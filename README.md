@@ -57,6 +57,11 @@ export interface Rule {
 
 书源不懂的地方可以参考[eso](https://github.com/mabDc/eso_source)
 
+## 开发和调试
+
+1. 修改 `src\start.ts` 文件, 把 `rule` 变量修改为真实的书源
+2. vscode 打开调试终端, 输入 `npm run start`
+
 <!-- Badges -->
 
 [npm-version-src]: https://img.shields.io/npm/v/any-reader?style=flat&colorA=18181B&colorB=F0DB4F

@@ -37,7 +37,7 @@
     "dev": "rollup -c --watch",
     "lint": "eslint .",
     "prepublishOnly": "npm run build",
-    "start": "esno src/index.ts",
+    "start": "esno src/start.ts",
     "typecheck": "tsc --noEmit",
     "test": "jest",
     "coveralls": "jest --coverage"
