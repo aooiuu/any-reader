@@ -4,6 +4,40 @@ import { AnalyzerJSonPath } from './AnalyzerJSonPath'
 import { AnalyzerJS } from './AnalyzerJS'
 import { AnalyzerXPath } from './AnalyzerXPath'
 
+const ruleTypePattern
+  = new RegExp([
+    '@js:', // @js: code
+    '|',
+    '@hetu:', // @hetu: code
+    '|',
+    '@web:', // @web:[(baseUrl|result)@@]script0[\n\s*@@\s*\nscript1]
+    '|',
+    '@webview:', // @webview:[(baseUrl|result)@@]script0[\n\s*@@\s*\nscript1]
+    '|',
+    '@css:', // @css:a, @css:a@href, @css:a@text
+    '|',
+    '@json:', // @json:$.books.*, @json:$.name
+    '|',
+    '@http:', // @http:, @http:/api/$result
+    '|',
+    '@xpath:', // @xpath://a, @xpath:/a/@href, @xpath: /a/text()
+    '|',
+    '@match:', // @match:http.*?jpg， @match:url\("?(.*?jpg)@@1
+    '|',
+    '@regex:', // @regexp:h3[\s\S]*?h3
+    '|',
+    '@regexp:', // @regexp:h3[\s\S]*?h3
+    '|',
+    '@filter:', // @filter:lrc, @filter:m3u8, @filter:mp3
+    '|',
+    '@replace:', // @replace:</?em>, @replace:(?=\d+)@@播放量
+    '|',
+    '@encode:', // @encode:utf8|gbk|md5|base64|hmac|sha|sha256|aes
+    '|',
+    '@decode:', // @decode:utf8|gbk|base64|hmac|sha|sha256|aes
+    '|',
+    '^'].join(''), 'g')
+
 class SingleRule {
   analyzer: Analyzer
   rule: string
@@ -23,18 +57,23 @@ export class AnalyzerManager {
 
   // 规则从后往前解析
   splitRuleReversed(rule: string) {
+    const ruleMath = Array.from(rule.matchAll(ruleTypePattern)).reverse()
     const ruleList: SingleRule[] = []
+    let end = rule.length
+    for (const m of ruleMath) {
+      const start = m.index as number
+      const r = rule.substring(start, end)
+      end = start as number
+      if (r.startsWith('$'))
+        ruleList.push(new SingleRule(new AnalyzerJSonPath(), r))
+      else if (r.startsWith('@js:'))
+        ruleList.push(new SingleRule(new AnalyzerJS(), r.substring(4)))
+      else if (r.startsWith('/'))
+        ruleList.push(new SingleRule(new AnalyzerXPath(), r.substring(4)))
+      else ruleList.push(new SingleRule(new AnalyzerHtml(), r))
+    }
 
-    // 分割规则
-
-    if (rule.startsWith('$'))
-      ruleList.push(new SingleRule(new AnalyzerJSonPath(), rule))
-    else if (rule.startsWith('@js:'))
-      ruleList.push(new SingleRule(new AnalyzerJS(), rule.substring(4)))
-    else if (rule.startsWith('/'))
-      ruleList.push(new SingleRule(new AnalyzerXPath(), rule.substring(4)))
-    else ruleList.push(new SingleRule(new AnalyzerHtml(), rule))
-    return ruleList
+    return ruleList.reverse()
   }
 
   async _getElements(r: SingleRule, rule?: string) {
@@ -56,7 +95,8 @@ export class AnalyzerManager {
   }
 
   async _getString(r: SingleRule, rule?: string): Promise<string> {
-    return (await r.analyzer.getString(rule || r.rule)).join('').trim()
+    const res = await r.analyzer.getString(rule || r.rule)
+    return Array.isArray(res) ? res.join('').trim() : res
   }
 
   async getString(rule: string): Promise<string> {
@@ -82,7 +122,6 @@ export class AnalyzerManager {
     }
 
     let temp: string = this._content
-
     for (const r of this.splitRuleReversed(rule)) {
       r.analyzer.parse(temp as string)
       temp = await this._getString(r)

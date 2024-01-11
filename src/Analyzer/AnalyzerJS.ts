@@ -7,29 +7,29 @@ export class AnalyzerJS implements Analyzer {
     this._content = content
   }
 
-  getString(): Promise<string[]> {
-    return this.getStringList()
+  getString(rule: string): Promise<string[]> {
+    return this.getStringList(rule)
   }
 
-  _getResult(): string {
-    return ''
+  _getResult(rule: string): string {
+    return this.getElements(rule)
   }
 
-  async getStringList(): Promise<string[]> {
-    return []
+  async getStringList(rule: string): Promise<string[]> {
+    return this.getElements(rule)
   }
 
   getElements(rule: string) {
     const environment = `
-    var page = "";
-    var host = "";
-    var cookie = "";
-    var result = "";
-    var baseUrl = "";
-    var keyword = "";
-    var lastResult = "";
+    let page = "";
+    let host = "";
+    let cookie = "";
+    let result = "";
+    let baseUrl = "";
+    let keyword = "";
+    let lastResult = "";
     `
     // eslint-disable-next-line no-eval
-    return eval(`${environment} var result = ${this._content}; ${rule};`)
+    return eval(`${environment}  result = \`${this._content}\`; ${rule};`)
   }
 }
