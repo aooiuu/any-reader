@@ -54,33 +54,6 @@ declare abstract class Analyzer {
     abstract getElements(rule: string): string | string[];
 }
 
-declare class AnalyzerHtml implements Analyzer {
-    _content: string;
-    parse(content: string): void;
-    getString(rule: string): Promise<string[]>;
-    _getResult(lastRule: string, html?: string): string;
-    getStringList(rule: string): Promise<string[]>;
-    getElements(rule: string): string[];
-}
-
-declare class AnalyzerJS implements Analyzer {
-    _content: string;
-    parse(content: string): void;
-    getString(): Promise<string[]>;
-    _getResult(): string;
-    getStringList(): Promise<string[]>;
-    getElements(rule: string): any;
-}
-
-declare class AnalyzerJSonPath implements Analyzer {
-    _content: any;
-    parse(content: string | any): void;
-    getString(rule: string): Promise<string[]>;
-    _getResult(rule: string): string;
-    getStringList(rule: string): Promise<string[]>;
-    getElements(rule: string): any;
-}
-
 declare class SingleRule {
     analyzer: Analyzer;
     rule: string;
@@ -99,4 +72,4 @@ declare class AnalyzerManager {
 
 declare function decodeRule(text: string): any;
 
-export { AnalyzerHtml, AnalyzerJS, AnalyzerJSonPath, AnalyzerManager, ChapterItem, Rule, RuleManager, SearchItem, decodeRule };
+export { AnalyzerManager, ChapterItem, Rule, RuleManager, SearchItem, decodeRule };

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { encode } from 'urlencode'
 import { AnalyzerManager } from './AnalyzerManager'
 
 const http = axios.create()
@@ -54,28 +55,46 @@ export class RuleManager {
    * @returns
    */
   async fetch(url: string, keyword = '', result = '') {
-    url = url.trim().replace('$keyword', keyword).replace('$result', result).replace('$page', '1')
+    const params: any = {
+      method: 'get',
+      headers: {
+        'user-agent':
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.80 Safari/537.36 Edg/98.0.1108.50',
+      },
+      url,
+    }
+
+    const options: any = {}
+    if (params.url.startsWith('{'))
+      Object.assign(options, JSON.parse(params.url))
+
+    if (options.encoding)
+      params.url = params.url.trim().replace('$keyword', encode(keyword, options.encoding)).replace('$result', result).replace('$page', '1')
+    else
+      params.url = params.url.trim().replace('$keyword', keyword).replace('$result', result).replace('$page', '1')
+
+    if (params.url.startsWith('{'))
+      Object.assign(params, JSON.parse(params.url))
 
     const host = this.rule.host.trim()
-    if (url.startsWith('//')) {
+    if (params.url.startsWith('//')) {
       if (host.startsWith('https'))
-        url = `https:${url}`
+        params.url = `https:${params.url}`
       else
-        url = `http:${url}`
+        params.url = `http:${params.url}`
     }
-    else if (!url.startsWith('http') && !url.startsWith('ftp')) {
-      url = host + url
-    }
-
-    const headers = {
-      'user-agent':
-          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.80 Safari/537.36 Edg/98.0.1108.50',
+    else if (!params.url.startsWith('http') && !params.url.startsWith('ftp')) {
+      params.url = host + params.url
     }
 
-    return await http({
-      headers,
-      url,
-    }).then((e) => {
+    if (params.method === 'post' && typeof params.body === 'object') {
+      Object.assign(params, {
+        body: undefined,
+        data: params.body,
+      })
+    }
+
+    return await http(params).then((e) => {
       return typeof e.data === 'object' ? JSON.stringify(e.data) : e.data
     })
   }

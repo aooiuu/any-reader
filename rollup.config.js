@@ -50,7 +50,7 @@ export default [
         name,
       },
     ].filter(o => format.includes(o.format)),
-    external: ['axios', 'base64-js', 'cheerio', 'compressing', 'jsonpath-plus', 'pako'],
+    external: ['axios', 'base64-js', 'cheerio', 'compressing', 'jsonpath-plus', 'pako', 'urlencode'],
     plugins,
   })),
   ...entries.map(({ path: input }) => ({

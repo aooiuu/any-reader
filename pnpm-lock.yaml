@@ -19,6 +19,9 @@ dependencies:
   pako:
     specifier: ^2.1.0
     version: 2.1.0
+  urlencode:
+    specifier: ^2.0.0
+    version: 2.0.0
 
 devDependencies:
   '@antfu/eslint-config':
@@ -1420,7 +1423,7 @@ packages:
       debug: 4.3.4
       globby: 11.1.0
       is-glob: 4.0.3
-      semver: 7.5.1
+      semver: 7.5.4
       tsutils: 3.21.0(typescript@5.1.6)
       typescript: 5.1.6
     transitivePeerDependencies:
@@ -1441,7 +1444,7 @@ packages:
       '@typescript-eslint/typescript-estree': 5.59.8(typescript@5.1.6)
       eslint: 8.44.0
       eslint-scope: 5.1.1
-      semver: 7.5.1
+      semver: 7.5.4
     transitivePeerDependencies:
       - supports-color
       - typescript
@@ -1812,7 +1815,7 @@ packages:
   /builtins@5.0.1:
     resolution: {integrity: sha512-qwVpFEHNfhYJIzNRBvd2C1kyo6jz3ZSMPyyuR47OPdiKWlbYnZNyDWuyR175qDnAJLiCo5fBBqPb3RiXgWlkOQ==}
     dependencies:
-      semver: 7.5.1
+      semver: 7.5.4
     dev: true
 
   /cac@6.7.14:
@@ -2659,7 +2662,7 @@ packages:
       minimatch: 3.1.2
       object.values: 1.1.6
       resolve: 1.22.3
-      semver: 6.3.0
+      semver: 6.3.1
     transitivePeerDependencies:
       - '@typescript-eslint/parser'
       - eslint-import-resolver-typescript
@@ -3330,6 +3333,13 @@ packages:
 
   /iconv-lite@0.5.2:
     resolution: {integrity: sha512-kERHXvpSaB4aU3eANwidg79K8FlrN77m8G9V+0vOR3HYaRifrlwMEpT7ZBJqLSEIHnEgJTHcWK82wwLwwKwtag==}
+    engines: {node: '>=0.10.0'}
+    dependencies:
+      safer-buffer: 2.1.2
+    dev: false
+
+  /iconv-lite@0.6.3:
+    resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==}
     engines: {node: '>=0.10.0'}
     dependencies:
       safer-buffer: 2.1.2
@@ -4792,7 +4802,7 @@ packages:
       rollup: 3.26.0
       typescript: 5.1.6
     optionalDependencies:
-      '@babel/code-frame': 7.18.6
+      '@babel/code-frame': 7.23.5
     dev: true
 
   /rollup-plugin-esbuild@5.0.0(esbuild@0.17.19)(rollup@3.26.0):
@@ -4855,11 +4865,6 @@ packages:
 
   /semver@5.7.1:
     resolution: {integrity: sha512-sauaDf/PZdVgrLTNYHRtpXa1iRiKcaebiKQ1BJdpQlWH2lCvexQdX55snPFyK7QzpudqbCI0qXFfOasHdyNDGQ==}
-    hasBin: true
-    dev: true
-
-  /semver@6.3.0:
-    resolution: {integrity: sha512-b39TBaTSfV6yBrapU89p5fKekE2m/NwnDocOVruQFS1/veMgdzuPcnOM34M6CwxW8jH/lxEa5rBoDeUwu5HHTw==}
     hasBin: true
     dev: true
 
@@ -5312,6 +5317,12 @@ packages:
       punycode: 2.1.1
     dev: true
 
+  /urlencode@2.0.0:
+    resolution: {integrity: sha512-K4+koEq4II9FqKKdLyMwfVFiWvTLJsdsIihXCprumjlOwpviO44E4hAhLYBLb6CEVTZh9hXXMTQHIT+Hwv5BPw==}
+    dependencies:
+      iconv-lite: 0.6.3
+    dev: false
+
   /util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
 
@@ -5463,7 +5474,7 @@ packages:
       espree: 9.6.0
       esquery: 1.5.0
       lodash: 4.17.21
-      semver: 7.5.1
+      semver: 7.5.4
     transitivePeerDependencies:
       - supports-color
     dev: true
