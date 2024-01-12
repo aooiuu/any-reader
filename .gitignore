@@ -80,6 +80,6 @@ dist
 # IDE
 .idea
 
-/src/index.d.ts
+/index.d.ts
 
 __test__

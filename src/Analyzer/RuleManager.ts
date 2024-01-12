@@ -21,6 +21,10 @@ export interface Rule {
   chapterTime: string // 时间
   chapterResult: string // 结果
   contentItems: string // 内容
+
+  id: string // uuid
+  name: string // 书源名称
+  sort: number // 书源排序
 }
 
 export interface SearchItem {

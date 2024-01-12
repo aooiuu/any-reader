@@ -64,9 +64,9 @@ export interface Rule {
 
 <!-- Badges -->
 
-[npm-version-src]: https://img.shields.io/npm/v/any-reader?style=flat&colorA=18181B&colorB=F0DB4F
-[npm-version-href]: https://npmjs.com/package/any-reader
-[bundle-src]: https://img.shields.io/bundlephobia/minzip/any-reader?style=flat&colorA=18181B&colorB=F0DB4F
-[bundle-href]: https://bundlephobia.com/result?p=any-reader
+[npm-version-src]: https://img.shields.io/npm/v/@any-reader/core?style=flat&colorA=18181B&colorB=F0DB4F
+[npm-version-href]: https://npmjs.com/package/@any-reader/core
+[bundle-src]: https://img.shields.io/bundlephobia/minzip/@any-reader/core?style=flat&colorA=18181B&colorB=F0DB4F
+[bundle-href]: https://bundlephobia.com/result?p=@any-reader/core
 [jsdocs-src]: https://img.shields.io/badge/jsDocs.io-reference-18181B?style=flat&colorA=18181B&colorB=F0DB4F
-[jsdocs-href]: https://www.jsdocs.io/package/any-reader
+[jsdocs-href]: https://www.jsdocs.io/package/@any-reader/core
