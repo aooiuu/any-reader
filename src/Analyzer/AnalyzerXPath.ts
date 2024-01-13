@@ -1,3 +1,5 @@
+import xpath from 'xpath.js'
+import { DOMParser } from 'xmldom'
 import type { Analyzer } from './Analyzer'
 
 export class AnalyzerXPath implements Analyzer {
@@ -7,19 +9,28 @@ export class AnalyzerXPath implements Analyzer {
     this._content = content
   }
 
-  getString(): Promise<string[]> {
-    return this.getStringList()
+  getString(rule: string): string[] {
+    return this.getStringList(rule)
   }
 
-  _getResult(): string {
-    return ''
+  _getResult(rule: string): string[] {
+    return [rule]
   }
 
-  async getStringList(): Promise<string[]> {
-    return []
+  getStringList(rule: string): any[] {
+    return this.getElements(rule)
   }
 
-  getElements(rule: string) {
-    return rule
+  getElements(rule: string): any[] {
+    try {
+      const doc = new DOMParser().parseFromString(this._content)
+      const node: any[] = xpath(doc, rule)
+      return node.map(e =>
+        typeof e.value === 'undefined' ? e.toString() : e.value,
+      )
+    }
+    catch (_) {
+      return []
+    }
   }
 }

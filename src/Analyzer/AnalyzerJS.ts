@@ -7,7 +7,7 @@ export class AnalyzerJS implements Analyzer {
     this._content = content
   }
 
-  getString(rule: string): Promise<string[]> {
+  getString(rule: string): string[] {
     return this.getStringList(rule)
   }
 
@@ -15,7 +15,7 @@ export class AnalyzerJS implements Analyzer {
     return this.getElements(rule)
   }
 
-  async getStringList(rule: string): Promise<string[]> {
+  getStringList(rule: string): string[] {
     return this.getElements(rule)
   }
 

@@ -1,8 +1,9 @@
 import type { Analyzer } from './Analyzer'
 import { AnalyzerHtml } from './AnalyzerHtml'
 import { AnalyzerJSonPath } from './AnalyzerJSonPath'
-import { AnalyzerJS } from './AnalyzerJS'
 import { AnalyzerXPath } from './AnalyzerXPath'
+import { AnalyzerRegExp } from './AnalyzerRegExp'
+import { AnalyzerJS } from './AnalyzerJS'
 
 const ruleTypePattern
   = new RegExp([
@@ -41,10 +42,12 @@ const ruleTypePattern
 class SingleRule {
   analyzer: Analyzer
   rule: string
+  replace: string
 
-  constructor(analyzer: Analyzer, rule: string) {
+  constructor(analyzer: Analyzer, rule: string, replace = '') {
     this.analyzer = analyzer
     this.rule = rule
+    this.replace = replace
   }
 }
 
@@ -61,23 +64,120 @@ export class AnalyzerManager {
     const ruleList: SingleRule[] = []
     let end = rule.length
     for (const m of ruleMath) {
+      let analyzer: Analyzer = new AnalyzerHtml()
       const start = m.index as number
-      const r = rule.substring(start, end)
+      let r = rule.substring(start, end)
       end = start as number
-      if (r.startsWith('$'))
-        ruleList.push(new SingleRule(new AnalyzerJSonPath(), r))
-      else if (r.startsWith('@js:'))
-        ruleList.push(new SingleRule(new AnalyzerJS(), r.substring(4)))
-      else if (r.startsWith('/'))
-        ruleList.push(new SingleRule(new AnalyzerXPath(), r.substring(4)))
-      else ruleList.push(new SingleRule(new AnalyzerHtml(), r))
-    }
 
+      switch (r[0]) {
+        case '$':
+          analyzer = new AnalyzerJSonPath()
+          break
+        case '@': {
+          if (r.startsWith('@js:')) {
+            r = r.substring(4)
+            analyzer = new AnalyzerJS()
+          }
+          // else if (r.startsWith("@hetu:")) {
+          //   r = r.substring(6);
+          //   analyzer = new AnalyzerHetu();
+          // }
+          else if (r.startsWith('@css:')) {
+            r = r.substring(5)
+            analyzer = new AnalyzerHtml()
+          }
+          else if (r.startsWith('@json:')) {
+            r = r.substring(6)
+            analyzer = new AnalyzerJSonPath()
+          }
+          else if (r.startsWith('@xpath:')) {
+            r = r.substring(7)
+            analyzer = new AnalyzerXPath()
+          }
+          // else if (r.startsWith("@match:")) {
+          //   r = r.substring(7);
+          //   analyzer = new AnalyzerMatch();
+          // }
+          else if (r.startsWith('@regex:')) {
+            r = r.substring(7)
+            analyzer = new AnalyzerRegExp()
+          }
+          else if (r.startsWith('@regexp:')) {
+            r = r.substring(8)
+            analyzer = new AnalyzerRegExp()
+          }
+          // else if (r.startsWith("@filter:")) {
+          //   r = r.substring(8);
+          //   analyzer = new AnalyzerFilter();
+          // } else if (r.startsWith("@replace:")) {
+          //   r = r.substring(9);
+          //   analyzer = new AnalyzerReplace();
+          // } else if (r.startsWith("@webview:")) {
+          //   r = r.substring(9);
+          //   analyzer = new AnalyzerWebview();
+          // } else if (r.startsWith("@web:")) {
+          //   r = r.substring(5);
+          //   analyzer = new AnalyzerWebview();
+          // }
+          break
+        }
+        case ':':
+          r = r.substring(1)
+          analyzer = new AnalyzerRegExp()
+          break
+        case '/':
+          analyzer = new AnalyzerXPath()
+          break
+        default:
+          analyzer = new AnalyzerHtml()
+      }
+
+      const position = r.indexOf('##')
+      if (position > -1) {
+        ruleList.push(
+          new SingleRule(analyzer, r.substring(0, position), r.substring(position + 2)))
+      }
+      else {
+        ruleList.push(new SingleRule(analyzer, r, ''))
+      }
+    }
     return ruleList.reverse()
   }
 
   async _getElements(r: SingleRule, rule?: string) {
     return r.analyzer.getElements(rule || r.rule)
+  }
+
+  replaceSmart(replace: string) {
+    function _replacement(pattern: string) {
+      return (...match: string[]) => pattern.replace(/\$(\d+)/, (...m: string[]) => match[+m[1]])
+    }
+
+    if (!replace)
+      return (s: string) => s
+
+    const r = replace.split('##')
+    const match = RegExp(r[0], 'g')
+    if (r.length === 1) {
+      return (s: string) => s.replaceAll(match, '')
+    }
+    else {
+      const pattern = r[1]
+      if (pattern.includes('\$')) {
+        if (r.length === 2)
+          return (s: string) => s.replace(match, _replacement(pattern))
+
+        else
+          return (s: string) => s.replace(match, _replacement(pattern))
+      }
+      else {
+        if (r.length === 2)
+          return (s: string) => s.replaceAll(match, pattern)
+
+        else
+          return (s: string) => s.replace(match, pattern)
+      }
+    }
   }
 
   async getElements(rule: string) {
@@ -125,6 +225,9 @@ export class AnalyzerManager {
     for (const r of this.splitRuleReversed(rule)) {
       r.analyzer.parse(temp as string)
       temp = await this._getString(r)
+
+      if (r.replace)
+        temp = this.replaceSmart(r.replace)(temp)
     }
     return temp
   }

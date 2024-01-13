@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { encode } from 'urlencode'
 import { AnalyzerManager } from './AnalyzerManager'
 
 const http = axios.create()
@@ -59,6 +58,17 @@ export class RuleManager {
    * @returns
    */
   async fetch(url: string, keyword = '', result = '') {
+    const vars: any = {
+      $keyword: keyword,
+      $host: this.rule.host,
+      $result: result,
+      searchKey: keyword,
+      searchPage: 1,
+      $page: 1,
+      $pageSize: 20,
+    }
+    url = url.replace(/\$keyword|\$page|\$host|\$result|\$pageSize|searchKey|searchPage/g, m => vars[m] || '')
+
     const params: any = {
       method: 'get',
       headers: {
@@ -67,15 +77,7 @@ export class RuleManager {
       },
       url,
     }
-
-    const options: any = {}
-    if (params.url.startsWith('{'))
-      Object.assign(options, JSON.parse(params.url))
-
-    if (options.encoding)
-      params.url = params.url.trim().replace('$keyword', encode(keyword, options.encoding)).replace('$result', result).replace('$page', '1')
-    else
-      params.url = params.url.trim().replace('$keyword', keyword).replace('$result', result).replace('$page', '1')
+    // TODO: 编码 encoding
 
     if (params.url.startsWith('{'))
       Object.assign(params, JSON.parse(params.url))

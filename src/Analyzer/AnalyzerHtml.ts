@@ -8,7 +8,7 @@ export class AnalyzerHtml implements Analyzer {
     this._content = content
   }
 
-  getString(rule: string): Promise<string[]> {
+  getString(rule: string): string[] {
     return this.getStringList(rule)
   }
 
@@ -33,7 +33,7 @@ export class AnalyzerHtml implements Analyzer {
     return ''
   }
 
-  async getStringList(rule: string): Promise<string[]> {
+  getStringList(rule: string): string[] {
     if (!rule.includes('@'))
       return [this._getResult(rule)]
 
