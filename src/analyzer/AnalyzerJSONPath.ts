@@ -1,7 +1,7 @@
 import { JSONPath } from 'jsonpath-plus'
 import type { Analyzer } from './Analyzer'
 
-export class AnalyzerJSonPath implements Analyzer {
+export class AnalyzerJSONPath implements Analyzer {
   _content!: any
 
   parse(content: string | any) {
