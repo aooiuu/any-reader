@@ -16,9 +16,9 @@ npm install @any-reader/core
 import { RuleManager, decodeRule } from '@any-reader/core';
 
 const ruleManager = new RuleManager(rule);
-r.search(keyword: string); // 搜索
-r.getChapter(url: string); // 获取章节列表
-r.getContent(url: string); // 获取内容
+ruleManager.search(keyword: string); // 搜索
+ruleManager.getChapter(url: string); // 获取章节列表
+ruleManager.getContent(url: string); // 获取内容
 
 decodeRule("eso://") // 可以解码 eso 书源, 得到原始 json
 ```
@@ -61,6 +61,10 @@ export interface Rule {
 
 1. 修改 `src\start.ts` 文件, 把 `rule` 变量修改为真实的书源
 2. vscode 打开调试终端, 输入 `npm run start`
+
+## 相关项目
+
+- [any-reader-vscode](https://github.com/aooiuu/any-reader-vscode) VSCode 插件
 
 <!-- Badges -->
 
