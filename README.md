@@ -59,12 +59,12 @@ export interface Rule {
 
 ### URL 规则
 
-| 特性      | 支持情况 | 示例                                                                                                       |
-| --------- | :------: | ---------------------------------------------------------------------------------------------------------- |
-| 简单结构  |    ✅    | `https://xxx.com/search?q=$keyword&pageSize=10`                                                            |
-| JSON 结构 |    ⚠️    | `{"url":"https://xxx.com/search","method":"post","headers":{"token":"111"},"body":{"keyword":"$keyword"}}` |
-| @js       |    ⚠️    | `@js:(() => { return {url, method, body, encoding, headers}; })();`                                        |
-| 编码      |   ❌🚧   |                                                                                                            |
+| 特性 | 支持情况 | 示例                                                                                                       |
+| ---- | :------: | ---------------------------------------------------------------------------------------------------------- |
+| URL  |    ✅    | `https://xxx.com/search?q=$keyword&pageSize=10`                                                            |
+| JSON |    ⚠️    | `{"url":"https://xxx.com/search","method":"post","headers":{"token":"111"},"body":{"keyword":"$keyword"}}` |
+| @js  |    ⚠️    | `@js:(() => { return {url, method, body, encoding, headers}; })();`                                        |
+| 编码 |   ❌🚧   |                                                                                                            |
 
 #### 变量
 
@@ -86,7 +86,7 @@ export interface Rule {
 | @css       |    ✅    |          | `@css:.box1 .box2@text`            |
 | @json      |    ✅    |          | `@json:$.list[:1].title`           |
 | @xpath     |    ✅    |          | `@xpath://*[@class="box3"]/text()` |
-| @js        |   ❌🚧   |          |                                    |
+| @js        |   ⚠️🚧   |          |                                    |
 | ##         |    ⚠️    | 正则替换 | `@css:.c2 a@href##\\d+\\.html`     |
 | \{\{\}\}   |    ⚠️    | 拼接     | `http://www.aaa.com/{{$.id}}`      |
 | 嵌套\&组合 |    ⚠️    |          | `$.info.body@css:.box1 .box2@text` |

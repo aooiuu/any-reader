@@ -1,3 +1,4 @@
+import { runjs } from '../utils/runjs'
 import type { Analyzer } from './Analyzer'
 
 export class AnalyzerJS implements Analyzer {
@@ -20,16 +21,14 @@ export class AnalyzerJS implements Analyzer {
   }
 
   getElements(rule: string) {
-    const environment = `
-    let page = "";
-    let host = "";
-    let cookie = "";
-    let result = "";
-    let baseUrl = "";
-    let keyword = "";
-    let lastResult = "";
-    `
-    // eslint-disable-next-line no-eval
-    return eval(`${environment}  result = \`${this._content}\`; ${rule};`)
+    return runjs(rule, {
+      page: '',
+      host: '',
+      cookie: '',
+      result: this._content,
+      baseUrl: '',
+      keyword: '',
+      lastResult: '',
+    })
   }
 }

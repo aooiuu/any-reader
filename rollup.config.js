@@ -50,15 +50,23 @@ export default [
         name,
       },
     ].filter(o => format.includes(o.format)),
-    external: ['axios', 'base64-js', 'cheerio', 'compressing', 'jsonpath-plus', 'pako', 'urlencode'],
+    external: [
+      'axios',
+      'base64-js',
+      'cheerio',
+      'compressing',
+      'jsonpath-plus',
+      'pako',
+      'urlencode',
+      'xmldom',
+      'xpath.js',
+    ],
     plugins,
   })),
   ...entries.map(({ path: input }) => ({
     input,
     output: {
-      file: input
-        .replace('src/', '')
-        .replace('.ts', '.d.ts'),
+      file: input.replace('src/', '').replace('.ts', '.d.ts'),
       format: 'esm',
     },
     external: [],
@@ -68,5 +76,4 @@ export default [
       }),
     ],
   })),
-
 ]

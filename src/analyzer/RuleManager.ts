@@ -1,11 +1,8 @@
 import axios from 'axios'
+import { runjs } from '../utils/runjs'
 import { AnalyzerManager } from './AnalyzerManager'
 
 const http = axios.create()
-
-function injectJSVars(options: any) {
-  return Object.keys(options).reduce((p: string, v: string) => p += `let ${v} = "${options[v]}";`, '')
-}
 
 export interface Rule {
   searchUrl: string // 搜索地址
@@ -83,9 +80,11 @@ export class RuleManager {
     // TODO: 编码 encoding
 
     if (params.url.startsWith('@js:')) {
-      const jsText = `${injectJSVars(vars)};${injectJSVars({ keyword })}; ${url.substring(4)};`
-      // eslint-disable-next-line no-eval
-      params = eval(jsText)
+      params = runjs(url.substring(4), {
+        ...vars,
+        keyword,
+      },
+      )
     }
     else {
       params.url = params.url.replace(/\$keyword|\$page|\$host|\$result|\$pageSize|searchKey|searchPage/g, (m: string | number) => vars[m] || '')

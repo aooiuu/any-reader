@@ -19,6 +19,18 @@ describe('analyzer', () => {
     expect(content).toEqual('content3')
   })
 
+  it('JS', async () => {
+    const analyzer = new AnalyzerManager('{"a": "c"}')
+    const content = analyzer.getString('@js:JSON.parse(result).a')
+    expect(content).toEqual('c')
+  })
+
+  it('JS ES6', async () => {
+    const analyzer = new AnalyzerManager('{"a": "c"}')
+    const content = analyzer.getString('@js:(() => JSON.parse(result).a)()')
+    expect(content).toEqual('c')
+  })
+
   it('JSONPath + CSS', async () => {
     const analyzer = new AnalyzerManager(JSON.stringify({
       info: {
