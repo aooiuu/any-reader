@@ -18,4 +18,14 @@ describe('analyzer', () => {
     const content = analyzer.getString('//*[@class="box3"]/text()')
     expect(content).toEqual('content3')
   })
+
+  it('JSONPath + CSS', async () => {
+    const analyzer = new AnalyzerManager(JSON.stringify({
+      info: {
+        body: '<div class="box1"><div class="box2">content</div></div>',
+      },
+    }))
+    const content = analyzer.getString('$.info.body@css:.box1 .box2@text')
+    expect(content).toEqual('content')
+  })
 })
