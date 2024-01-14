@@ -3,6 +3,10 @@ import { AnalyzerManager } from './AnalyzerManager'
 
 const http = axios.create()
 
+function injectJSVars(options: any) {
+  return Object.keys(options).reduce((p: string, v: string) => p += `let ${v} = "${options[v]}";`, '')
+}
+
 export interface Rule {
   searchUrl: string // 搜索地址
   host: string // 根域名
@@ -60,16 +64,15 @@ export class RuleManager {
   async fetch(url: string, keyword = '', result = '') {
     const vars: any = {
       $keyword: keyword,
+      searchKey: keyword,
       $host: this.rule.host,
       $result: result,
-      searchKey: keyword,
       searchPage: 1,
       $page: 1,
       $pageSize: 20,
     }
-    url = url.replace(/\$keyword|\$page|\$host|\$result|\$pageSize|searchKey|searchPage/g, m => vars[m] || '')
 
-    const params: any = {
+    let params: any = {
       method: 'get',
       headers: {
         'user-agent':
@@ -79,25 +82,33 @@ export class RuleManager {
     }
     // TODO: 编码 encoding
 
-    if (params.url.startsWith('{'))
-      Object.assign(params, JSON.parse(params.url))
-
-    const host = this.rule.host.trim()
-    if (params.url.startsWith('//')) {
-      if (host.startsWith('https'))
-        params.url = `https:${params.url}`
-      else
-        params.url = `http:${params.url}`
+    if (params.url.startsWith('@js:')) {
+      const jsText = `${injectJSVars(vars)};${injectJSVars({ keyword })}; ${url.substring(4)};`
+      // eslint-disable-next-line no-eval
+      params = eval(jsText)
     }
-    else if (!params.url.startsWith('http') && !params.url.startsWith('ftp')) {
-      params.url = host + params.url
-    }
+    else {
+      params.url = params.url.replace(/\$keyword|\$page|\$host|\$result|\$pageSize|searchKey|searchPage/g, (m: string | number) => vars[m] || '')
+      if (params.url.startsWith('{'))
+        Object.assign(params, JSON.parse(params.url))
 
-    if (params.method === 'post' && typeof params.body === 'object') {
-      Object.assign(params, {
-        body: undefined,
-        data: params.body,
-      })
+      const host = this.rule.host.trim()
+      if (params.url.startsWith('//')) {
+        if (host.startsWith('https'))
+          params.url = `https:${params.url}`
+        else
+          params.url = `http:${params.url}`
+      }
+      else if (!params.url.startsWith('http') && !params.url.startsWith('ftp')) {
+        params.url = host + params.url
+      }
+
+      if (params.method === 'post' && typeof params.body === 'object') {
+        Object.assign(params, {
+          body: undefined,
+          data: params.body,
+        })
+      }
     }
 
     return await http(params).then((e) => {
@@ -108,19 +119,19 @@ export class RuleManager {
   async search(keyword: string) {
     const body = await this.fetch(this.rule.searchUrl, keyword)
     const bodyAnalyzer = new AnalyzerManager(body)
-    const list = await bodyAnalyzer.getElements(this.rule.searchList)
+    const list = bodyAnalyzer.getElements(this.rule.searchList)
 
     const result: SearchItem[] = []
     for (const row of list) {
       const analyzer = new AnalyzerManager(row)
 
       result.push({
-        cover: await analyzer.getString(this.rule.searchCover),
-        name: (await analyzer.getString(this.rule.searchName)).trim(),
-        author: await analyzer.getString(this.rule.searchAuthor),
-        chapter: await analyzer.getString(this.rule.searchChapter),
-        description: await analyzer.getString(this.rule.searchDescription),
-        url: await analyzer.getUrl(this.rule.searchResult, this.rule.host),
+        cover: analyzer.getString(this.rule.searchCover),
+        name: (analyzer.getString(this.rule.searchName)).trim(),
+        author: analyzer.getString(this.rule.searchAuthor),
+        chapter: analyzer.getString(this.rule.searchChapter),
+        description: analyzer.getString(this.rule.searchDescription),
+        url: analyzer.getUrl(this.rule.searchResult, this.rule.host),
       })
     }
 
@@ -136,15 +147,15 @@ export class RuleManager {
     }
     const body = await this.fetch(this.rule.chapterUrl || url, '', url)
     const bodyAnalyzer = new AnalyzerManager(body)
-    const list = await bodyAnalyzer.getElements(this.rule.chapterList)
+    const list = bodyAnalyzer.getElements(this.rule.chapterList)
     const result: ChapterItem[] = []
     for (const row of list) {
       const analyzer = new AnalyzerManager(row)
       result.push({
-        cover: await analyzer.getString(this.rule.chapterCover),
-        name: (await analyzer.getString(this.rule.chapterName)).trim(),
-        time: await analyzer.getString(this.rule.chapterTime),
-        url: await analyzer.getUrl(this.rule.chapterResult, this.rule.host),
+        cover: analyzer.getString(this.rule.chapterCover),
+        name: (analyzer.getString(this.rule.chapterName)).trim(),
+        time: analyzer.getString(this.rule.chapterTime),
+        url: analyzer.getUrl(this.rule.chapterResult, this.rule.host),
       })
     }
     return result
@@ -153,7 +164,7 @@ export class RuleManager {
   async getContent(url: string) {
     const body = await this.fetch(url)
     const bodyAnalyzer = new AnalyzerManager(body)
-    const list = await bodyAnalyzer.getString(this.rule.contentItems)
+    const list = bodyAnalyzer.getString(this.rule.contentItems)
 
     return list
   }

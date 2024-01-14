@@ -63,8 +63,8 @@ export interface Rule {
 | --------- | :------: | ---------------------------------------------------------------------------------------------------------- |
 | 简单结构  |    ✅    | `https://xxx.com/search?q=$keyword&pageSize=10`                                                            |
 | JSON 结构 |    ⚠️    | `{"url":"https://xxx.com/search","method":"post","headers":{"token":"111"},"body":{"keyword":"$keyword"}}` |
+| @js       |    ⚠️    | `@js:(() => { return {url, method, body, encoding, headers}; })();`                                        |
 | 编码      |   ❌🚧   |                                                                                                            |
-| @js       |   ❌🚧   | `@js:(() => { return {url, method, body, encoding, headers}; })();`                                        |
 
 #### 变量
 

@@ -232,7 +232,7 @@ export class AnalyzerManager {
     return temp
   }
 
-  async getUrl(rule: string, host: string): Promise<string> {
+  getUrl(rule: string, host: string): string {
     let url = this.getString(rule)
 
     if (url.startsWith('//')) {
