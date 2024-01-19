@@ -148,6 +148,20 @@ export class AnalyzerManager {
     return r.analyzer.getElements(rule || r.rule)
   }
 
+  getElements(rule: string): any[] {
+    let temp: string | string [] = this._content
+
+    for (const r of this.splitRuleReversed(rule)) {
+      r.analyzer.parse(temp as string)
+      temp = this._getElements(r)
+    }
+
+    if (Array.isArray(temp))
+      return temp
+    else
+      return [temp]
+  }
+
   replaceSmart(replace: string) {
     function _replacement(pattern: string) {
       return (...match: string[]) => pattern.replace(/\$(\d+)/, (...m: string[]) => match[+m[1]])
@@ -178,20 +192,6 @@ export class AnalyzerManager {
           return (s: string) => s.replace(match, pattern)
       }
     }
-  }
-
-  getElements(rule: string) {
-    let temp: string | string [] = this._content
-
-    for (const r of this.splitRuleReversed(rule)) {
-      r.analyzer.parse(temp as string)
-      temp = this._getElements(r)
-    }
-
-    if (Array.isArray(temp))
-      return temp
-    else
-      return [temp]
   }
 
   _getString(r: SingleRule, rule?: string): string {
@@ -230,6 +230,43 @@ export class AnalyzerManager {
         temp = this.replaceSmart(r.replace)(temp)
     }
     return temp
+  }
+
+  _getStringList(r: SingleRule, rule?: string): string[] | string {
+    const res = r.analyzer.getStringList(rule || r.rule)
+    return res
+  }
+
+  getStringList(rule: string): string[] {
+    if (!rule)
+      return []
+    const expressionPattern = /\{\{(.*?)\}\}/gd
+
+    const pLeft = rule.lastIndexOf('{{')
+    const pRight = rule.lastIndexOf('}}')
+    if (pLeft > -1 && pLeft < pRight) {
+      let position = 0
+      const rs: string[] = []
+      for (const match of rule.matchAll(expressionPattern)) {
+        rs.push(rule.substring(position, match.index))
+        position = (match.index as number) + match[0].length
+        rs.push(this.getString(match[1]))
+      }
+
+      if (position < rule.length)
+        rs.push(rule.substring(position))
+
+      return rs
+    }
+
+    let temp: string | string[] = this._content
+    for (const r of this.splitRuleReversed(rule)) {
+      r.analyzer.parse(temp as string)
+      temp = this._getStringList(r)
+      if (r.replace)
+        temp = this.replaceSmart(r.replace)(Array.isArray(temp) ? temp.join('\n') : temp)
+    }
+    return Array.isArray(temp) ? temp : [temp]
   }
 
   getUrl(rule: string, host: string): string {

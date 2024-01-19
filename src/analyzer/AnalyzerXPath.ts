@@ -9,12 +9,9 @@ export class AnalyzerXPath implements Analyzer {
     this._content = content
   }
 
-  getString(rule: string): string[] {
-    return this.getStringList(rule)
-  }
-
-  _getResult(rule: string): string[] {
-    return [rule]
+  getString(rule: string): string {
+    const val = this.getElements(rule)
+    return Array.isArray(val) ? val.join('  ') : val
   }
 
   getStringList(rule: string): any[] {

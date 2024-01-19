@@ -1,7 +1,7 @@
 {
   "name": "@any-reader/core",
   "type": "module",
-  "version": "0.0.3",
+  "version": "0.1.0-alpha.1",
   "packageManager": "pnpm@8.6.5",
   "description": "",
   "license": "MIT",

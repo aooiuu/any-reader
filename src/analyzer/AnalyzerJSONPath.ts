@@ -7,17 +7,13 @@ export class AnalyzerJSONPath implements Analyzer {
   parse(content: string | any) {
     if (typeof content === 'string')
       this._content = JSON.parse(content)
-
     else
       this._content = content
   }
 
-  getString(rule: string): string[] {
-    return this.getStringList(rule)
-  }
-
-  _getResult(rule: string): string {
-    return this.getElements(rule)
+  getString(rule: string): string {
+    const val = this.getElements(rule)
+    return Array.isArray(val) ? val.join('  ') : val
   }
 
   getStringList(rule: string): string[] {

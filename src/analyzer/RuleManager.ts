@@ -4,6 +4,15 @@ import { AnalyzerManager } from './AnalyzerManager'
 
 const http = axios.create()
 
+export enum ContentType {
+  MANGA = 0,
+  NOVEL = 1,
+  VIDEO = 2,
+  AUDIO = 3,
+  RSS = 4,
+  NOVELMORE = 5,
+}
+
 export interface Rule {
   searchUrl: string // 搜索地址
   host: string // 根域名
@@ -25,6 +34,7 @@ export interface Rule {
   id: string // uuid
   name: string // 书源名称
   sort: number // 书源排序
+  contentType: ContentType // 书源类型
 }
 
 export interface SearchItem {
@@ -83,11 +93,13 @@ export class RuleManager {
       params = runjs(url.substring(4), {
         ...vars,
         keyword,
-      },
-      )
+      })
     }
     else {
-      params.url = params.url.replace(/\$keyword|\$page|\$host|\$result|\$pageSize|searchKey|searchPage/g, (m: string | number) => vars[m] || '')
+      params.url = params.url.replace(
+        /\$keyword|\$page|\$host|\$result|\$pageSize|searchKey|searchPage/g,
+        (m: string | number) => vars[m] || '',
+      )
       if (params.url.startsWith('{'))
         Object.assign(params, JSON.parse(params.url))
 
@@ -95,10 +107,12 @@ export class RuleManager {
       if (params.url.startsWith('//')) {
         if (host.startsWith('https'))
           params.url = `https:${params.url}`
-        else
-          params.url = `http:${params.url}`
+        else params.url = `http:${params.url}`
       }
-      else if (!params.url.startsWith('http') && !params.url.startsWith('ftp')) {
+      else if (
+        !params.url.startsWith('http')
+        && !params.url.startsWith('ftp')
+      ) {
         params.url = host + params.url
       }
 
@@ -126,7 +140,7 @@ export class RuleManager {
 
       result.push({
         cover: analyzer.getString(this.rule.searchCover),
-        name: (analyzer.getString(this.rule.searchName)).trim(),
+        name: analyzer.getString(this.rule.searchName).trim(),
         author: analyzer.getString(this.rule.searchAuthor),
         chapter: analyzer.getString(this.rule.searchChapter),
         description: analyzer.getString(this.rule.searchDescription),
@@ -152,7 +166,7 @@ export class RuleManager {
       const analyzer = new AnalyzerManager(row)
       result.push({
         cover: analyzer.getString(this.rule.chapterCover),
-        name: (analyzer.getString(this.rule.chapterName)).trim(),
+        name: analyzer.getString(this.rule.chapterName).trim(),
         time: analyzer.getString(this.rule.chapterTime),
         url: analyzer.getUrl(this.rule.chapterResult, this.rule.host),
       })
@@ -160,11 +174,10 @@ export class RuleManager {
     return result
   }
 
-  async getContent(url: string) {
+  async getContent(url: string): Promise<string[]> {
     const body = await this.fetch(url)
     const bodyAnalyzer = new AnalyzerManager(body)
-    const list = bodyAnalyzer.getString(this.rule.contentItems)
-
+    const list = bodyAnalyzer.getStringList(this.rule.contentItems)
     return list
   }
 }

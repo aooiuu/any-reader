@@ -7,8 +7,9 @@ export class AnalyzerRegExp implements Analyzer {
     this._content = content
   }
 
-  getString(): string[] {
-    return this.getStringList()
+  getString(rule: string): string {
+    const val = this.getElements(rule)
+    return Array.isArray(val) ? val.join('  ') : val
   }
 
   _getResult(): string {

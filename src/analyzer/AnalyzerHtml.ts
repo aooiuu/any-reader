@@ -8,8 +8,8 @@ export class AnalyzerHtml implements Analyzer {
     this._content = content
   }
 
-  getString(rule: string): string[] {
-    return this.getStringList(rule)
+  getString(rule: string): string {
+    return this.getStringList(rule).join('  ')
   }
 
   _getResult(lastRule: string, html?: string): string {
