@@ -4,8 +4,11 @@ import type { Analyzer } from './Analyzer'
 export class AnalyzerJS implements Analyzer {
   _content!: string
 
-  parse(content: string) {
-    this._content = content
+  parse(content: string | string[]) {
+    if (Array.isArray(content))
+      this._content = content.join('\n')
+    else
+      this._content = content
   }
 
   getString(rule: string): string {
