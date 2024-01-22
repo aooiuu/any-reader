@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { runjs } from '../utils/runjs'
+import { JSEngine } from './JSEngine'
 import { AnalyzerManager } from './AnalyzerManager'
 
 const http = axios.create()
@@ -35,6 +35,8 @@ export interface Rule {
   name: string // 书源名称
   sort: number // 书源排序
   contentType: ContentType // 书源类型
+
+  cookies?: string
 }
 
 export interface SearchItem {
@@ -87,10 +89,10 @@ export class RuleManager {
       },
       url,
     }
-    // TODO: 编码 encoding
 
+    // TODO: 编码 encoding
     if (params.url.startsWith('@js:')) {
-      params = runjs(url.substring(4), {
+      params = JSEngine.evaluate(url.substring(4), {
         ...vars,
         keyword,
       })
@@ -124,27 +126,32 @@ export class RuleManager {
       }
     }
 
-    return await http(params).then((e) => {
+    const body = await http(params).then((e) => {
       return typeof e.data === 'object' ? JSON.stringify(e.data) : e.data
-    })
+    }).catch(() => { })
+
+    return {
+      params,
+      body,
+    }
   }
 
   async search(keyword: string) {
-    const body = await this.fetch(this.rule.searchUrl, keyword)
+    const { body } = await this.fetch(this.rule.searchUrl, keyword)
     const bodyAnalyzer = new AnalyzerManager(body)
-    const list = bodyAnalyzer.getElements(this.rule.searchList)
+    const list = await bodyAnalyzer.getElements(this.rule.searchList)
 
     const result: SearchItem[] = []
     for (const row of list) {
       const analyzer = new AnalyzerManager(row)
 
       result.push({
-        cover: analyzer.getString(this.rule.searchCover),
-        name: analyzer.getString(this.rule.searchName).trim(),
-        author: analyzer.getString(this.rule.searchAuthor),
-        chapter: analyzer.getString(this.rule.searchChapter),
-        description: analyzer.getString(this.rule.searchDescription),
-        url: analyzer.getUrl(this.rule.searchResult, this.rule.host),
+        cover: await analyzer.getString(this.rule.searchCover),
+        name: (await analyzer.getString(this.rule.searchName)).trim(),
+        author: await analyzer.getString(this.rule.searchAuthor),
+        chapter: await analyzer.getString(this.rule.searchChapter),
+        description: await analyzer.getString(this.rule.searchDescription),
+        url: await analyzer.getUrl(this.rule.searchResult, this.rule.host),
       })
     }
 
@@ -158,26 +165,43 @@ export class RuleManager {
         name: this.rule.chapterUrl,
       }]
     }
-    const body = await this.fetch(this.rule.chapterUrl || url, '', url)
+    const chapterUrl = this.rule.chapterUrl || url
+    const { body } = await this.fetch(chapterUrl, '', url)
+    JSEngine.setEnvironment({
+      page: 1,
+      rule: this.rule,
+      result: '',
+      baseUrl: chapterUrl,
+      keyword: '',
+      lastResult: url,
+    })
     const bodyAnalyzer = new AnalyzerManager(body)
-    const list = bodyAnalyzer.getElements(this.rule.chapterList)
+    const list = await bodyAnalyzer.getElements(this.rule.chapterList)
     const result: ChapterItem[] = []
     for (const row of list) {
       const analyzer = new AnalyzerManager(row)
       result.push({
-        cover: analyzer.getString(this.rule.chapterCover),
-        name: analyzer.getString(this.rule.chapterName).trim(),
-        time: analyzer.getString(this.rule.chapterTime),
-        url: analyzer.getUrl(this.rule.chapterResult, this.rule.host),
+        cover: await analyzer.getString(this.rule.chapterCover),
+        name: (await analyzer.getString(this.rule.chapterName)).trim(),
+        time: await analyzer.getString(this.rule.chapterTime),
+        url: await analyzer.getUrl(this.rule.chapterResult, this.rule.host),
       })
     }
     return result
   }
 
   async getContent(url: string): Promise<string[]> {
-    const body = await this.fetch(url)
+    const { body, params } = await this.fetch(url)
+    JSEngine.setEnvironment({
+      page: 1,
+      rule: this.rule,
+      result: '',
+      baseUrl: params.url,
+      keyword: '',
+      lastResult: url,
+    })
     const bodyAnalyzer = new AnalyzerManager(body)
-    const list = bodyAnalyzer.getStringList(this.rule.contentItems)
+    const list = await bodyAnalyzer.getStringList(this.rule.contentItems)
     return list
   }
 }

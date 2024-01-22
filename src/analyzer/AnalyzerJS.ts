@@ -1,4 +1,4 @@
-import { runjs } from '../utils/runjs'
+import { JSEngine } from './JSEngine'
 import type { Analyzer } from './Analyzer'
 
 export class AnalyzerJS implements Analyzer {
@@ -11,24 +11,18 @@ export class AnalyzerJS implements Analyzer {
       this._content = content
   }
 
-  getString(rule: string): string {
-    const val = this.getElements(rule)
+  async getString(rule: string): Promise<string> {
+    const val = await this.getElements(rule)
     return Array.isArray(val) ? val.join('  ') : val
   }
 
-  getStringList(rule: string): string[] {
+  async getStringList(rule: string): Promise<string[]> {
     return this.getElements(rule)
   }
 
-  getElements(rule: string) {
-    return runjs(rule, {
-      page: '',
-      host: '',
-      cookie: '',
+  async getElements(rule: string) {
+    return JSEngine.evaluate(rule, {
       result: this._content,
-      baseUrl: '',
-      keyword: '',
-      lastResult: '',
     })
   }
 }

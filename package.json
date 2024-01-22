@@ -1,7 +1,7 @@
 {
   "name": "@any-reader/core",
   "type": "module",
-  "version": "0.1.0-alpha.2",
+  "version": "0.1.0-alpha.3",
   "packageManager": "pnpm@8.6.5",
   "description": "",
   "license": "MIT",
@@ -67,6 +67,7 @@
     "compressing": "^1.9.0",
     "jsonpath-plus": "^7.2.0",
     "pako": "^2.1.0",
+    "puppeteer": "^21.7.0",
     "urlencode": "^2.0.0",
     "xmldom": "^0.6.0",
     "xpath.js": "^1.1.0"

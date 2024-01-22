@@ -11,8 +11,8 @@ export class AnalyzerHtml implements Analyzer {
       this._content = content
   }
 
-  getString(rule: string): string {
-    return this.getStringList(rule).join('  ')
+  async getString(rule: string): Promise<string> {
+    return (await this.getStringList(rule)).join('  ')
   }
 
   _getResult(lastRule: string, html?: string): string {
@@ -36,7 +36,7 @@ export class AnalyzerHtml implements Analyzer {
     return ''
   }
 
-  getStringList(rule: string): string[] {
+  async getStringList(rule: string): Promise<string[]> {
     if (!rule.includes('@'))
       return [this._getResult(rule)]
 
@@ -45,7 +45,7 @@ export class AnalyzerHtml implements Analyzer {
     return $(selectors).map((_, el) => this._getResult(lastRule, $(el).toString())).get()
   }
 
-  getElements(rule: string) {
+  async getElements(rule: string) {
     const $ = load(this._content, null, false)
     return $(`${rule.trim()}`).map((_, el) => $(el).toString()).get()
   }

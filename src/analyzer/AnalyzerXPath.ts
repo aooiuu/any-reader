@@ -12,16 +12,16 @@ export class AnalyzerXPath implements Analyzer {
       this._content = content
   }
 
-  getString(rule: string): string {
-    const val = this.getElements(rule)
+  async getString(rule: string): Promise<string> {
+    const val = await this.getElements(rule)
     return Array.isArray(val) ? val.join('  ') : val
   }
 
-  getStringList(rule: string): any[] {
+  async getStringList(rule: string): Promise<string[]> {
     return this.getElements(rule)
   }
 
-  getElements(rule: string): any[] {
+  async getElements(rule: string): Promise<string[]> {
     try {
       const doc = new DOMParser().parseFromString(this._content)
       const node: any[] = xpath(doc, rule)

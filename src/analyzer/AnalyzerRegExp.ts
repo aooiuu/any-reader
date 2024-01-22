@@ -7,7 +7,7 @@ export class AnalyzerRegExp implements Analyzer {
     this._content = content
   }
 
-  getString(rule: string): string {
+  async getString(rule: string): Promise<string> {
     const val = this.getElements(rule)
     return Array.isArray(val) ? val.join('  ') : val
   }
@@ -16,11 +16,11 @@ export class AnalyzerRegExp implements Analyzer {
     return ''
   }
 
-  getStringList(): string[] {
+  async getStringList(): Promise<string[]> {
     return []
   }
 
-  getElements(rule: string) {
+  async getElements(rule: string) {
     return rule
   }
 }

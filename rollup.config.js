@@ -60,6 +60,7 @@ export default [
       'urlencode',
       'xmldom',
       'xpath.js',
+      'puppeteer',
     ],
     plugins,
   })),
