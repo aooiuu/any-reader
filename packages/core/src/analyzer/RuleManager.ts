@@ -2,8 +2,6 @@ import axios from 'axios'
 import { JSEngine } from './JSEngine'
 import { AnalyzerManager } from './AnalyzerManager'
 
-const http = axios.create()
-
 export enum ContentType {
   MANGA = 0,
   NOVEL = 1,
@@ -55,6 +53,8 @@ export interface ChapterItem {
   cover?: string
   time?: string
 }
+
+const http = axios.create()
 
 export class RuleManager {
   rule: Rule
@@ -158,47 +158,58 @@ export class RuleManager {
     return result
   }
 
-  async getChapter(url: string): Promise<ChapterItem[]> {
+  async getChapter(result: string): Promise<ChapterItem[]> {
     if (this.rule.chapterUrl === '正文') {
       return [{
-        url,
+        url: result,
         name: this.rule.chapterUrl,
       }]
     }
-    const chapterUrl = this.rule.chapterUrl || url
-    const { body } = await this.fetch(chapterUrl, '', url)
+    const chapterUrl = this.rule.chapterUrl || result
+    const { body } = await this.fetch(chapterUrl, '', result)
+
     JSEngine.setEnvironment({
       page: 1,
       rule: this.rule,
       result: '',
       baseUrl: chapterUrl,
       keyword: '',
-      lastResult: url,
+      lastResult: result,
     })
     const bodyAnalyzer = new AnalyzerManager(body)
     const list = await bodyAnalyzer.getElements(this.rule.chapterList)
-    const result: ChapterItem[] = []
+    const chapterItems: ChapterItem[] = []
     for (const row of list) {
       const analyzer = new AnalyzerManager(row)
-      result.push({
+      chapterItems.push({
         cover: await analyzer.getString(this.rule.chapterCover),
         name: (await analyzer.getString(this.rule.chapterName)).trim(),
         time: await analyzer.getString(this.rule.chapterTime),
         url: await analyzer.getUrl(this.rule.chapterResult, this.rule.host),
       })
     }
-    return result
+    return chapterItems
   }
 
-  async getContent(url: string): Promise<string[]> {
-    const { body, params } = await this.fetch(url)
+  async getContent(result: string, lastResult?: string): Promise<string[]> {
+    if (lastResult) {
+      JSEngine.setEnvironment({
+        page: 1,
+        rule: this.rule,
+        result: lastResult,
+        baseUrl: '',
+        keyword: '',
+        lastResult,
+      })
+    }
+    const { body, params } = await this.fetch(result)
     JSEngine.setEnvironment({
       page: 1,
       rule: this.rule,
       result: '',
       baseUrl: params.url,
       keyword: '',
-      lastResult: url,
+      lastResult: result,
     })
     const bodyAnalyzer = new AnalyzerManager(body)
     const list = await bodyAnalyzer.getStringList(this.rule.contentItems)

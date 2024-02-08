@@ -1,0 +1,150 @@
+{
+  "name": "any-reader-vscode",
+  "displayName": "any-reader",
+  "description": "any-reader for vscode",
+  "icon": "resources/icon.png",
+  "version": "0.1.2",
+  "preview": true,
+  "publisher": "aooiu",
+  "qna": "https://github.com/aooiuu/any-reader-vscode/issues",
+  "bugs": {
+    "url": "https://github.com/aooiuu/any-reader-vscode/issues",
+    "email": "aooiu@qq.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aooiuu/any-reader-vscode"
+  },
+  "keywords": [
+    "阅读",
+    "书源",
+    "摸鱼",
+    "eso"
+  ],
+  "engines": {
+    "vscode": "^1.68.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "main": "./dist/extension.js",
+  "scripts": {
+    "build": "vsce package --no-dependencies",
+    "vscode:prepublish": "yarn run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "yarn run compile-tests && yarn run compile && yarn run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "any-reader.editBookSource",
+        "title": "书源编辑",
+        "icon": "$(settings-edit)",
+        "category": "any-reader"
+      },
+      {
+        "command": "any-reader.getBookSource",
+        "title": "刷新书源",
+        "icon": "$(refresh)",
+        "category": "any-reader"
+      },
+      {
+        "command": "any-reader.searchBook",
+        "title": "搜索",
+        "icon": "$(search)",
+        "category": "any-reader"
+      },
+      {
+        "command": "any-reader.home",
+        "title": "Home",
+        "icon": "$(home)",
+        "category": "any-reader"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "any-reader",
+          "title": "any-reader",
+          "icon": "resources/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "any-reader": [
+        {
+          "id": "any-reader-book",
+          "name": "Book"
+        },
+        {
+          "id": "any-reader-source",
+          "name": "Source"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "any-reader.searchBook",
+          "when": "view == any-reader-book || view == any-reader-source",
+          "group": "navigation"
+        },
+        {
+          "command": "any-reader.editBookSource",
+          "when": "view == any-reader-book || view == any-reader-source",
+          "group": "navigation"
+        },
+        {
+          "command": "any-reader.getBookSource",
+          "when": "view == any-reader-source",
+          "group": "navigation"
+        },
+        {
+          "command": "any-reader.home",
+          "when": "view == any-reader-book",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "any-reader.searchBook",
+          "when": "view == any-reader-source",
+          "group": "inline"
+        }
+      ]
+    }
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/glob": "^7.2.0",
+    "@types/mocha": "^9.1.1",
+    "@types/node": "16.x",
+    "@types/vscode": "^1.68.0",
+    "@typescript-eslint/eslint-plugin": "^5.30.0",
+    "@typescript-eslint/parser": "^5.30.0",
+    "@vscode/test-electron": "^2.1.5",
+    "eslint": "^8.18.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "glob": "^8.0.3",
+    "mocha": "^10.0.0",
+    "prettier": "^2.7.1",
+    "ts-loader": "^9.3.1",
+    "typescript": "^4.7.4",
+    "webpack": "^5.73.0",
+    "webpack-cli": "^4.10.0"
+  },
+  "dependencies": {
+    "@any-reader/core": "workspace:0.1.0-alpha.4",
+    "fs-extra": "^11.1.1"
+  }
+}
