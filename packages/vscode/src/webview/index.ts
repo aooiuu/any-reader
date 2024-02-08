@@ -6,9 +6,10 @@ import { getBookSource, setBookSource } from '../dataManager';
 import { TreeNode } from '../treeview/bookManager';
 
 export class WebView {
-  mSearchToken: any;
-  webviewPanel: any;
-  context: vscode.ExtensionContext;
+  private mSearchToken: any;
+  private webviewPanel?: vscode.WebviewPanel;
+  private context: vscode.ExtensionContext;
+  private isVue = false;
 
   constructor(context: vscode.ExtensionContext) {
     this.context = context;
@@ -25,13 +26,14 @@ export class WebView {
 
   initWebviewPanel(title: string) {
     if (!this.webviewPanel) {
-      this.webviewPanel = vscode.window.createWebviewPanel('rss', title, vscode.ViewColumn.One, {
+      this.webviewPanel = vscode.window.createWebviewPanel('any-reader', title, vscode.ViewColumn.One, {
         retainContextWhenHidden: true,
         enableScripts: true
       });
       this.webviewPanel.onDidDispose(
         () => {
           this.webviewPanel = undefined;
+          this.isVue = false;
         },
         this,
         this.context!.subscriptions
@@ -104,30 +106,25 @@ export class WebView {
     });
   }
 
-  async openHome() {
-    this.initWebviewPanel('Home');
-    this.webviewPanel!.webview.html = this.getWebViewContent(path.join('template-dist', 'index.html'));
-    // this.webviewPanel!.webview.html = `
-    // <style>
-    // html,
-    // body,
-    // iframe {
-    //   width: 100%;
-    //   height: 100%;
-    //   padding: 0;
-    //   margin: 0;
-    // }
-    // iframe {
-    //   border: none;
-    // }
-    // </style>
-    // <iframe id="app" src="http://localhost:8899/" sandbox="allow-scripts allow-same-origin allow-forms allow-pointer-lock allow-downloads" allow="cross-origin-isolated; clipboard-read; clipboard-write;"></iframe>
-    // `;
+  async navigateTo(routePath = '', title = 'Home') {
+    this.initWebviewPanel(title);
+    if (!this.isVue) {
+      this.webviewPanel!.webview.html = this.getWebViewContent(path.join('template-dist', 'index.html'));
+    }
+    this.webviewPanel!.webview.postMessage({
+      type: 'sendToWebview',
+      data: {
+        type: 'router.push',
+        data: routePath
+      }
+    });
+    this.isVue = true;
     this.webviewPanel!.reveal();
   }
 
   // 打开阅读面板
   async openWebviewPanel(article: TreeNode, content: string) {
+    this.isVue = false;
     const title: string = article.data.name;
     this.initWebviewPanel(title);
     this.webviewPanel!.webview.html = content;

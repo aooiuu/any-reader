@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { Rule } from '@any-reader/core';
+import { ContentType, Rule } from '@any-reader/core';
 import { COMMANDS } from './constants';
 import { config } from './config';
 import { BookProvider } from './treeview/book';
@@ -19,16 +19,15 @@ class App {
     ensureFile();
 
     const registerCommand = vscode.commands.registerCommand;
-    const registerTreeDataProvider = vscode.window.registerTreeDataProvider;
     [
       registerCommand(COMMANDS.editBookSource, this.editBookSource, this),
       registerCommand(COMMANDS.searchBook, this.searchBook, this),
       registerCommand(COMMANDS.getContent, this.getContent, this),
-      registerCommand(COMMANDS.home, this.webView.openHome, this.webView),
+      registerCommand(COMMANDS.home, () => this.webView.navigateTo('/'), this.webView),
       registerCommand(COMMANDS.getBookSource, this.getBookSource, this)
     ].forEach((command) => context.subscriptions.push(command));
-    registerTreeDataProvider('any-reader-book', this.bookProvider);
-    registerTreeDataProvider('any-reader-source', this.sourceProvider);
+    vscode.window.createTreeView('any-reader-book', { treeDataProvider: this.bookProvider });
+    vscode.window.createTreeView('any-reader-source', { treeDataProvider: this.sourceProvider });
     vscode.commands.executeCommand(COMMANDS.getBookSource);
   }
 
@@ -54,10 +53,19 @@ class App {
         cancellable: false
       },
       async () => {
-        let content = await bookManager.getContent(article);
-        if (!content) {
+        const textArr = await bookManager.getContent(article);
+        if (!textArr?.length) {
           vscode.window.showWarningMessage('empty content');
         } else {
+          let content = '';
+          if (article.rule.contentType === ContentType.VIDEO) {
+            this.webView.navigateTo('/player?url=' + textArr[0]);
+          } else if (article.rule.contentType === ContentType.MANGA) {
+            content = textArr.map((src) => `<img src="${src}"/>`).join('');
+          } else {
+            content = textArr.join('');
+          }
+
           if (config.app.get('hideImage', false)) {
             content = content.replace(/<img .*?>/gim, '');
           }
