@@ -10,6 +10,9 @@ export default defineConfig({
   server: {
     port: 8899
   },
+  build: {
+    outDir: '../vscode/template-dist'
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))

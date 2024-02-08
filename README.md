@@ -46,6 +46,8 @@ pnpm i
 
 # 编译 core
 pnpm run build:core
+# 实时编译 web 模板 到 vscode
+pnpm run build:web-w
 ```
 
 如果需要调试 `VSCode` 插件, 用 `VSCode` 打开 `/packages/vscode` 目录, `F5` 即可运行调试插件!
