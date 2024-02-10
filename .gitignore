@@ -80,4 +80,4 @@ dist
 # IDE
 .idea
 
-/index.d.ts
+packages/core/index.d.ts
