@@ -9,6 +9,8 @@ export enum ContentType {
   AUDIO = 3,
   RSS = 4,
   NOVELMORE = 5,
+
+  GAME = 101,
 }
 
 export interface Rule {
@@ -35,6 +37,7 @@ export interface Rule {
   contentType: ContentType // 书源类型
 
   cookies?: string
+  enableSearch?: boolean // 启用搜索
 }
 
 export interface SearchItem {

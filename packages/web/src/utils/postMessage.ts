@@ -7,35 +7,17 @@ if (!isDev && !window.vscode) {
 }
 
 export function postMessage(type: string, data: any) {
-  if (isDev) {
-    window.parent?.postMessage(
-      {
-        type: 'sendToVSCode',
-        data: {
-          type,
-          data
-        }
-      },
-      '*'
-    );
-  } else {
-    window.vscode.postMessage({
-      type,
-      data
-    });
-  }
+  window.vscode.postMessage({
+    type,
+    data
+  });
 }
 
 export function useMessage(type: string, cb: any) {
-  function onMessage({ data: _data }: any) {
-    let params = _data;
-    if (!isDev) {
-      params = _data.data;
-    }
-
-    const { type: _type, data } = params;
+  function onMessage({ data }: any) {
+    const { type: _type, data: _data } = data;
     if (type === _type) {
-      cb(data);
+      cb(_data);
     }
   }
 

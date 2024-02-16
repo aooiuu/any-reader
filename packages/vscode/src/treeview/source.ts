@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { Rule } from '@any-reader/core';
+import { Rule, ContentType } from '@any-reader/core';
 import sourceManager from './sourceManager';
 
 export class SourceProvider implements vscode.TreeDataProvider<Rule> {
@@ -13,7 +13,8 @@ export class SourceProvider implements vscode.TreeDataProvider<Rule> {
   getTreeItem(el: Rule): vscode.TreeItem {
     return {
       label: el.name,
-      tooltip: el.name
+      tooltip: el.name,
+      contextValue: el.contentType === ContentType.GAME ? 'GAME' : ''
     };
   }
 

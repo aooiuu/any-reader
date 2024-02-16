@@ -1,5 +1,6 @@
 import * as path from 'path';
 import * as fs from 'fs';
+import { v4 as uuidV4 } from 'uuid';
 import * as vscode from 'vscode';
 import { RuleManager } from '@any-reader/core';
 import { getBookSource, setBookSource } from '../dataManager';
@@ -46,6 +47,28 @@ export class WebView {
       const { type, data } = message;
 
       switch (type) {
+        case 'getRule':
+          {
+            const rules = await getBookSource();
+            this.webviewPanel!.webview.postMessage({
+              type: 'getRule',
+              data: rules.find((e) => e.id === data.id)
+            });
+          }
+          break;
+        case 'addRule':
+          {
+            let rules = await getBookSource();
+            if (!data.id) {
+              data.id = uuidV4();
+              rules.push(data);
+            } else {
+              rules = rules.filter((r) => r.id !== data.id);
+              rules.push(data);
+            }
+            setBookSource(rules);
+          }
+          break;
         case 'setRule':
           {
             const rules = await getBookSource();
@@ -55,21 +78,15 @@ export class WebView {
             }
             await setBookSource(rules);
             this.webviewPanel!.webview.postMessage({
-              type: 'sendToWebview',
-              data: {
-                type: 'getBookSource',
-                data: await getBookSource()
-              }
+              type: 'getBookSource',
+              data: await getBookSource()
             });
           }
           break;
         case 'getBookSource':
           this.webviewPanel!.webview.postMessage({
-            type: 'sendToWebview',
-            data: {
-              type,
-              data: await getBookSource()
-            }
+            type,
+            data: await getBookSource()
           });
           break;
         case 'search':
@@ -85,14 +102,11 @@ export class WebView {
               const searchItems = await analyzer.search(keyword).catch(() => []);
               if (searchItems.length) {
                 this.webviewPanel!.webview.postMessage({
-                  type: 'sendToWebview',
+                  type,
                   data: {
-                    type,
-                    data: {
-                      uuid,
-                      rule,
-                      list: searchItems
-                    }
+                    uuid,
+                    rule,
+                    list: searchItems
                   }
                 });
               }
@@ -112,11 +126,8 @@ export class WebView {
       this.webviewPanel!.webview.html = this.getWebViewContent(path.join('template-dist', 'index.html'));
     }
     this.webviewPanel!.webview.postMessage({
-      type: 'sendToWebview',
-      data: {
-        type: 'router.push',
-        data: routePath
-      }
+      type: 'router.push',
+      data: routePath
     });
     this.isVue = true;
     this.webviewPanel!.reveal();

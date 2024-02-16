@@ -14,6 +14,14 @@ const router = createRouter({
     {
       path: '/rules',
       component: () => import('@/pages/rules/index.vue')
+    },
+    {
+      path: '/rule-info',
+      component: () => import('@/pages/rule-info/index.vue')
+    },
+    {
+      path: '/iframe',
+      component: () => import('@/pages/iframe/index.vue')
     }
   ]
 });

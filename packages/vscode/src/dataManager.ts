@@ -19,7 +19,7 @@ export async function getBookSource(): Promise<Rule[]> {
         list[i] = decodeRule(rule);
       }
     }
-    setBookSource(list);
+    // await setBookSource(list);
     return list;
   } catch (e) {
     console.log(e);

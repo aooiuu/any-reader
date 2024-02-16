@@ -5,5 +5,6 @@ export enum COMMANDS {
 
   // 读取所有书源
   getBookSource = 'any-reader.getBookSource',
-  home = 'any-reader.home'
+  home = 'any-reader.home',
+  gamePlay = 'any-reader.gamePlay'
 }

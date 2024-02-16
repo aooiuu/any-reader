@@ -4,6 +4,9 @@ importers:
 
   .:
     devDependencies:
+      '@types/uuid':
+        specifier: ^9.0.8
+        version: 9.0.8
       husky:
         specifier: ^8.0.0
         version: 8.0.0
@@ -99,11 +102,14 @@ importers:
   packages/vscode:
     dependencies:
       '@any-reader/core':
-        specifier: workspace:0.1.0-alpha.4
+        specifier: workspace:*
         version: link:../core
       fs-extra:
         specifier: ^11.1.1
         version: 11.1.1
+      uuid:
+        specifier: ^9.0.1
+        version: 9.0.1
     devDependencies:
       '@types/fs-extra':
         specifier: ^11.0.4
@@ -2291,6 +2297,10 @@ packages:
     resolution: {integrity: sha512-PBjIUxZHOuj0R15/xuwJYjFi+KZdNFrehocChv4g5hu6aFroHue8m0lBP0POdK2nKzbw0cgV1mws8+V/JAcEkQ==}
     dev: true
 
+  /@types/uuid@9.0.8:
+    resolution: {integrity: sha512-jg+97EGIcY9AGHJJRaaPVgetKDsrTgbRjQ5Msgjh/DQKEFl0DtyRr/VCOyD1T2R1MNeWPK/u7JoGhlDZnKBAfA==}
+    dev: true
+
   /@types/vscode@1.68.0:
     resolution: {integrity: sha512-duBwEK5ta/eBBMJMQ7ECMEsMvlE3XJdRGh3xoS1uOO4jl2Z4LPBl5vx8WvBP10ERAgDRmIt/FaSD4RHyBGbChw==}
     dev: true
@@ -3828,13 +3838,6 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /call-bind@1.0.2:
-    resolution: {integrity: sha512-7O+FbCihrB5WGbFYesctwmTKae6rOiIzmz1icreWJ+0aA7LJfuqhEso2T9ncpcFtzMQtzXf2QGGueWJGTYsqrA==}
-    dependencies:
-      function-bind: 1.1.2
-      get-intrinsic: 1.2.4
-    dev: true
-
   /call-bind@1.0.6:
     resolution: {integrity: sha512-Mj50FLHtlsoVfRfnHaZvyrooHcrlceNZdL/QBvJJVd9Ta55qCQK0gs4ss2oZDeV9zFCs6ewzYgVE5yfVmfFpVg==}
     engines: {node: '>= 0.4'}
@@ -4335,14 +4338,6 @@ packages:
       get-intrinsic: 1.2.4
       gopd: 1.0.1
       has-property-descriptors: 1.0.1
-    dev: true
-
-  /define-properties@1.2.0:
-    resolution: {integrity: sha512-xvqAVKGfT1+UAvPwKTVw/njhdQ8ZhXK4lI0bCIuCMrp2up9nPnaDftrLtmpTazqd1o+UY4zgzU+avtMbDP+ldA==}
-    engines: {node: '>= 0.4'}
-    dependencies:
-      has-property-descriptors: 1.0.1
-      object-keys: 1.1.1
     dev: true
 
   /define-properties@1.2.1:
@@ -8453,8 +8448,8 @@ packages:
     resolution: {integrity: sha512-DOB27b/2UTTD+4myKUFh+/fXWcu/UDyASIXfg+7VzoCNNGOfWvoyU/x5pvVHr++ztyt/oSYI1BcWBBG/hmlNjA==}
     engines: {node: '>= 0.4'}
     dependencies:
-      call-bind: 1.0.2
-      define-properties: 1.2.0
+      call-bind: 1.0.6
+      define-properties: 1.2.1
       es-abstract: 1.22.3
     dev: true
 

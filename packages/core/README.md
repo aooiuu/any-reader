@@ -35,8 +35,8 @@ decodeRule("eso://") // 可以解码 eso 书源, 得到原始 json
 
 ```typescript
 export interface Rule {
-  searchUrl: string; // 搜索地址
   host: string; // 根域名
+  searchUrl: string; // 搜索地址
   searchList: string; // 搜索列表
   searchCover: string; // 封面
   searchName: string; // 标题

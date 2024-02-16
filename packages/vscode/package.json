@@ -1,9 +1,9 @@
 {
-  "name": "any-reader-vscode",
+  "name": "any-reader",
   "displayName": "any-reader",
   "description": "any-reader for vscode",
   "icon": "resources/icon.png",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "preview": true,
   "publisher": "aooiu",
   "qna": "https://github.com/aooiuu/any-reader-vscode/issues",
@@ -19,6 +19,8 @@
     "阅读",
     "书源",
     "摸鱼",
+    "小说",
+    "漫画",
     "eso"
   ],
   "engines": {
@@ -67,6 +69,12 @@
         "command": "any-reader.home",
         "title": "Home",
         "icon": "$(home)",
+        "category": "any-reader"
+      },
+      {
+        "command": "any-reader.gamePlay",
+        "title": "Game Play",
+        "icon": "$(game)",
         "category": "any-reader"
       }
     ],
@@ -117,7 +125,12 @@
       "view/item/context": [
         {
           "command": "any-reader.searchBook",
-          "when": "view == any-reader-source",
+          "when": "view == any-reader-source && viewItem != GAME",
+          "group": "inline"
+        },
+        {
+          "command": "any-reader.gamePlay",
+          "when": "view == any-reader-source && viewItem == GAME",
           "group": "inline"
         }
       ]
@@ -144,7 +157,8 @@
     "webpack-cli": "^4.10.0"
   },
   "dependencies": {
-    "@any-reader/core": "workspace:0.1.0-alpha.4",
-    "fs-extra": "^11.1.1"
+    "@any-reader/core": "workspace:*",
+    "fs-extra": "^11.1.1",
+    "uuid": "^9.0.1"
   }
 }

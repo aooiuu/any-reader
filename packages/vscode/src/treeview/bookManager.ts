@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { getBookSource } from '../dataManager';
-import { RuleManager, Rule, SearchItem, ChapterItem, ContentType } from '@any-reader/core';
+import { RuleManager, Rule, SearchItem, ChapterItem } from '@any-reader/core';
 
 export interface TreeNode {
   rule: Rule;

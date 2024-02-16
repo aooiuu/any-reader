@@ -9,11 +9,11 @@
           </a-checkbox>
         </a-checkbox-group>
       </div>
-      <a-button type="primary" disabled @click="importRules">
+      <a-button type="primary" @click="addRule">
         <template #icon>
           <icon-plus />
         </template>
-        导入规则
+        添加规则
       </a-button>
     </div>
     <div class="flex-1 overflow-hidden">
@@ -33,7 +33,8 @@
 <script setup lang="jsx">
 import { CONTENT_TYPES } from '@/constants';
 import { postMessage, useMessage } from '@/utils/postMessage';
-import { Modal, Input, Textarea } from '@arco-design/web-vue';
+
+const router = useRouter();
 
 const searchText = ref('');
 const contentTypes = ref(CONTENT_TYPES.map((e) => e.value).flat());
@@ -46,16 +47,10 @@ function setRule(row, newRow) {
 }
 
 function editRule(row) {
-  const text = ref(JSON.stringify(row, null, 2));
-  Modal.info({
-    title: '编辑规则',
-    content: () => (
-      <div>
-        <Textarea class="!h-80" v-model={text.value}></Textarea>
-      </div>
-    ),
-    onOk: () => {
-      setRule(row, JSON.parse(text.value));
+  router.push({
+    path: '/rule-info',
+    query: {
+      id: row.id
     }
   });
 }
@@ -107,20 +102,14 @@ const tableData = computed(() => {
   return rules.value.filter((e) => e.name?.includes(searchText.value) && contentTypes.value.includes(e.contentType));
 });
 
-function importRules() {
-  Modal.info({
-    title: '导入规则',
-    content: () => (
-      <div>
-        <div class="mb-10">请输入规则地址: </div>
-        <Input placeholder="http://xx.xxx" />
-      </div>
-    )
-  });
+// 添加规则
+function addRule() {
+  router.push('/rule-info');
 }
 
 useMessage('getBookSource', (data) => {
   rules.value = data;
 });
+
 postMessage('getBookSource', {});
 </script>

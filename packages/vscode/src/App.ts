@@ -24,7 +24,8 @@ class App {
       registerCommand(COMMANDS.searchBook, this.searchBook, this),
       registerCommand(COMMANDS.getContent, this.getContent, this),
       registerCommand(COMMANDS.home, () => this.webView.navigateTo('/'), this.webView),
-      registerCommand(COMMANDS.getBookSource, this.getBookSource, this)
+      registerCommand(COMMANDS.getBookSource, this.getBookSource, this),
+      registerCommand(COMMANDS.gamePlay, (node: any) => this.webView.navigateTo('/iframe?url=' + node.host, node.name), this.webView)
     ].forEach((command) => context.subscriptions.push(command));
     vscode.window.createTreeView('any-reader-book', { treeDataProvider: this.bookProvider });
     vscode.window.createTreeView('any-reader-source', { treeDataProvider: this.sourceProvider });
