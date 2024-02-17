@@ -50,6 +50,20 @@ export interface Rule {
 
   cookies?: string
   enableSearch?: boolean // 启用搜索
+
+  // 发现
+  'enableDiscover': boolean
+  'discoverUrl': string
+  'discoverNextUrl'?: string
+  'discoverItems': string
+  'discoverList': string
+  'discoverTags': string
+  'discoverName': string
+  'discoverCover': string
+  'discoverAuthor': string
+  'discoverChapter': string
+  'discoverDescription': string
+  'discoverResult': string
 }
 
 export interface SearchItem {
@@ -233,5 +247,97 @@ export class RuleManager {
     const bodyAnalyzer = new AnalyzerManager(body)
     const list = await bodyAnalyzer.getStringList(this.rule.contentItems)
     return list
+  }
+
+  async discoverMap() {
+    const map = []
+    const table = new Map()
+
+    let discoverUrl = this.rule.discoverUrl.trimStart()
+
+    try {
+      if (discoverUrl.startsWith('@js:')) {
+        await JSEngine.setEnvironment({
+          page: 1,
+          rule: this.rule,
+          result: '',
+          baseUrl: this.rule.host,
+          keyword: '',
+          lastResult: '',
+        })
+        discoverUrl = await JSEngine.evaluate(`${discoverUrl.substring(4)};`)
+      }
+
+      const discovers = Array.isArray(discoverUrl)
+        ? discoverUrl.map(e => e.toString())
+        : typeof discoverUrl === 'string'
+          ? discoverUrl.split(/[\n\s*]|&&/)
+          : []
+
+      for (const url of discovers) {
+        if (url.trim().length === 0)
+          continue
+
+        const d = url.split('::')
+        const ruleValue = d[d.length - 1].trim()
+        let tab = '全部'
+        let className = '全部'
+
+        if (d.length === 2) {
+          tab = d[0].trim()
+          className = '全部'
+        }
+        else if (d.length === 3) {
+          tab = d[0].trim()
+          className = d[1].trim()
+        }
+
+        if (!table.has(tab)) {
+          table.set(tab, map.length)
+          map.push(new DiscoverMap(tab, [
+            new DiscoverPair(className, ruleValue),
+          ]))
+        }
+        else {
+          map[table.get(tab)].pairs.push(new DiscoverPair(className, ruleValue))
+        }
+      }
+    }
+    catch (error) {}
+
+    if (map.length === 0) {
+      if (this.rule.host.startsWith('http')) {
+        map.push(new DiscoverMap('全部', [
+          new DiscoverPair('全部', this.rule.host),
+        ]))
+      }
+      else {
+        map.push(new DiscoverMap('example', [
+          new DiscoverPair('example', 'http://example.com/'),
+        ]))
+      }
+    }
+
+    return map
+  }
+}
+
+class DiscoverMap {
+  name: string
+  pairs: DiscoverPair[]
+
+  constructor(name: string, pairs: DiscoverPair[]) {
+    this.name = name
+    this.pairs = pairs
+  }
+}
+
+class DiscoverPair {
+  name: string
+  value: string
+
+  constructor(name: string, value: string) {
+    this.name = name
+    this.value = value
   }
 }
