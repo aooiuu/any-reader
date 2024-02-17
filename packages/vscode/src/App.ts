@@ -6,6 +6,7 @@ import { BookProvider } from './treeview/book';
 import { SourceProvider } from './treeview/source';
 import bookManager, { TreeNode } from './treeview/bookManager';
 import sourceManager from './treeview/sourceManager';
+import { treeItemDecorationProvider } from './treeview/TreeItemDecorationProvider';
 import { BOOK_SOURCE_PATH, ensureFile } from './dataManager';
 import { WebView } from './webview';
 
@@ -20,6 +21,7 @@ class App {
 
     const registerCommand = vscode.commands.registerCommand;
     [
+      vscode.window.registerFileDecorationProvider(treeItemDecorationProvider),
       registerCommand(COMMANDS.editBookSource, this.editBookSource, this),
       registerCommand(COMMANDS.searchBook, this.searchBook, this),
       registerCommand(COMMANDS.getContent, this.getContent, this),

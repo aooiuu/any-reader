@@ -13,6 +13,18 @@ export enum ContentType {
   GAME = 101,
 }
 
+export const CONTENT_TYPE_TEXT: {
+  [k: number]: string
+} = {
+  0: '漫画',
+  1: '小说',
+  2: '视频',
+  3: '音频',
+  4: 'RSS',
+  5: '图文',
+  101: '游戏',
+}
+
 export interface Rule {
   searchUrl: string // 搜索地址
   host: string // 根域名
@@ -129,9 +141,11 @@ export class RuleManager {
       }
     }
 
-    const body = await http(params).then((e) => {
-      return typeof e.data === 'object' ? JSON.stringify(e.data) : e.data
-    }).catch(() => { })
+    const body = await http(params)
+      .then((e) => {
+        return typeof e.data === 'object' ? JSON.stringify(e.data) : e.data
+      })
+      .catch(() => {})
 
     return {
       params,
@@ -163,10 +177,12 @@ export class RuleManager {
 
   async getChapter(result: string): Promise<ChapterItem[]> {
     if (this.rule.chapterUrl === '正文') {
-      return [{
-        url: result,
-        name: this.rule.chapterUrl,
-      }]
+      return [
+        {
+          url: result,
+          name: this.rule.chapterUrl,
+        },
+      ]
     }
     const chapterUrl = this.rule.chapterUrl || result
     const { body } = await this.fetch(chapterUrl, '', result)
