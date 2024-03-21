@@ -7,54 +7,14 @@
 [![satr][satr-src]][satr-href]
 [![issues][issues-src]][issues-href]
 
-## 特性
+多站点自定义规则聚合阅读工具, 支持小说、漫画。包含 [JS 解析库](https://aooiuu.github.io/any-reader/core/) 和 [VSCode 插件](https://aooiuu.github.io/any-reader/vsc/)
 
-- 多站点自定义规则聚合阅读
-- 支持小说、漫画、游戏、~~视频、RSS.~~
-- 规则解析库分离, 可独立使用。
-
-## 文档
-
-- [core](./packages/core/README.md)
-- [any-reader-vscode](./packages/vscode/README.md)
-- [any-reader-web](./packages/web/README.md)
+> 软件不提供内容, 也不提供任何规则, 但你可以通过编写 [规则](https://aooiuu.github.io/any-reader/rule/), 控制呈现内容, [查看文档](https://aooiuu.github.io/any-reader/)
 
 ## 预览
 
 ![1](https://github.com/aooiuu/any-reader-vscode/assets/28108111/fff2e255-5e09-4bff-b45c-78070dce8afc)
 ![2](https://github.com/aooiuu/any-reader/assets/28108111/ed5544d6-ec4f-4b52-a75a-a1f618b8383d)
-
-## 目录结构
-
-```
-├── docs
-├── packages
-|  ├── core         规则解析库
-|  ├── vscode       vscode 扩展
-|  └── web          目前用于 vscode 扩展的 Web 相关页面
-├── README.md
-└── scripts
-```
-
-## 参与开发
-
-```sh
-# 克隆项目
-git clone git@github.com:aooiuu/any-reader.git
-
-# 进入项目根目录
-cd any-reader
-
-# 安装依赖
-pnpm i
-
-# 编译 core
-pnpm run build:core
-# 实时编译 web 模板 到 vscode
-pnpm run build:web-w
-```
-
-如果需要调试 `VSCode` 插件, 用 `VSCode` 打开 `/packages/vscode` 目录, `F5` 即可运行调试插件!
 
 <!-- Badges -->
 
