@@ -12,6 +12,9 @@
     },
     {
       "path": "./packages/web"
+    },
+    {
+      "path": "./docs"
     }
   ]
 }
