@@ -45,7 +45,7 @@ enum ContentType {
 }
 ```
 
-## 规则字段工作流程
+## 解析流程
 
 ### 搜索小说
 
@@ -64,9 +64,9 @@ enum ContentType {
 ### 获取内容
 
 1. 通过 `host`、`contentItems`、`chapterResult` 字段获取请求地址、方式、参数等
-1. 通过 `contentType` 按类型解析内容
+2. 通过 `contentType` 按类型解析内容
 
-## 规则说明
+## 规则类型
 
 ### URL 规则
 
@@ -108,3 +108,50 @@ enum ContentType {
 | `\|\|`     |    ❌    |                                  |                                         |
 
 规则可以省略开头的,**@css**、**@xpath**、**@json**, 因为解析器会尝试自动识别。
+
+## 规则表达式
+
+### CSS
+
+例子: `@css:.box1 .box2@text`
+
+该类规则分为 2 部分，以 `@` 符号分割.
+
+> 前部分与 CSS 标准一致，可省略（表示取根节点）.
+> 后部分则是 APP 自定义行为, 包括 text、html、innerHtml、outerHtml 取文本，src、href、data-original、bid 等取属性。
+
+### XPath
+
+例子: `@xpath://*[@class="box3"]/text()`
+
+[XPath 文档](https://developer.mozilla.org/zh-CN/docs/Web/XPath)
+
+[XPath 测试工具](https://extendsclass.com/xpath-tester.html)
+
+### JSONPath
+
+例子: `@json:$.list[:1].title`
+
+[文档](https://github.com/JSONPath-Plus/JSONPath)
+
+[JSONPath 测试工具](https://jsonpath-plus.github.io/JSONPath/demo/)
+
+### JavaScript
+
+### 正则
+
+例子: `rule##match##replacement##replaceFirstFlag`
+
+其中 `replacement` 和 `replaceFirstFlag` 均可以省略。
+
+### 拼接
+
+例子: `aa{‍​‍{rule1}}bb{‍​‍{rule2}}cc`
+
+使用 `{‍​‍{}}` 对结果进行拼接。
+
+### 级联
+
+例子: `$.html@css:html`
+
+`@` 分割规则后，第一个部分为 `JSONPath`, 使用 `JSONPath` 解析后继续用第二部分的 `css` 规则解析拿到最终结果
