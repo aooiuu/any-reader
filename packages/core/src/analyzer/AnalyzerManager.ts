@@ -69,6 +69,7 @@ export class AnalyzerManager {
       let analyzer: Analyzer = new AnalyzerHtml()
       const start = m.index as number
       let r = rule.substring(start, end)
+      const rLowerCase = r.toLowerCase()
       end = start as number
 
       switch (r[0]) {
@@ -76,50 +77,50 @@ export class AnalyzerManager {
           analyzer = new AnalyzerJSONPath()
           break
         case '@': {
-          if (r.startsWith('@js:')) {
+          if (rLowerCase.startsWith('@js:')) {
             r = r.substring(4)
             analyzer = new AnalyzerJS()
           }
-          // else if (r.startsWith("@hetu:")) {
+          // else if (rLowerCase.startsWith("@hetu:")) {
           //   r = r.substring(6);
           //   analyzer = new AnalyzerHetu();
           // }
-          else if (r.startsWith('@css:')) {
+          else if (rLowerCase.startsWith('@css:')) {
             r = r.substring(5)
             analyzer = new AnalyzerHtml()
           }
-          else if (r.startsWith('@json:')) {
+          else if (rLowerCase.startsWith('@json:')) {
             r = r.substring(6)
             analyzer = new AnalyzerJSONPath()
           }
-          else if (r.startsWith('@xpath:')) {
+          else if (rLowerCase.startsWith('@xpath:')) {
             r = r.substring(7)
             analyzer = new AnalyzerXPath()
           }
-          // else if (r.startsWith("@match:")) {
+          // else if (rLowerCase.startsWith("@match:")) {
           //   r = r.substring(7);
           //   analyzer = new AnalyzerMatch();
           // }
-          else if (r.startsWith('@regex:')) {
+          else if (rLowerCase.startsWith('@regex:')) {
             r = r.substring(7)
             analyzer = new AnalyzerRegExp()
           }
-          else if (r.startsWith('@regexp:')) {
+          else if (rLowerCase.startsWith('@regexp:')) {
             r = r.substring(8)
             analyzer = new AnalyzerRegExp()
           }
-          else if (r.startsWith('@filter:')) {
+          else if (rLowerCase.startsWith('@filter:')) {
             r = r.substring(8)
             analyzer = new AnalyzerFilter()
           }
-          else if (r.startsWith('@replace:')) {
+          else if (rLowerCase.startsWith('@replace:')) {
             r = r.substring(9)
             analyzer = new AnalyzerReplace()
           }
-          // else if (r.startsWith("@webview:")) {
+          // else if (rLowerCase.startsWith("@webview:")) {
           //   r = r.substring(9);
           //   analyzer = new AnalyzerWebview();
-          // } else if (r.startsWith("@web:")) {
+          // } else if (rLowerCase.startsWith("@web:")) {
           //   r = r.substring(5);
           //   analyzer = new AnalyzerWebview();
           // }

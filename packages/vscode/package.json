@@ -3,24 +3,24 @@
   "displayName": "any-reader",
   "description": "any-reader for vscode",
   "icon": "resources/icon.png",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "preview": true,
   "publisher": "aooiu",
-  "qna": "https://github.com/aooiuu/any-reader-vscode/issues",
+  "qna": "https://github.com/aooiuu/any-reader/issues",
   "bugs": {
-    "url": "https://github.com/aooiuu/any-reader-vscode/issues",
+    "url": "https://github.com/aooiuu/any-reader/issues",
     "email": "aooiu@qq.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/aooiuu/any-reader-vscode"
+    "url": "https://github.com/aooiuu/any-reader"
   },
   "keywords": [
     "阅读",
-    "书源",
-    "摸鱼",
     "小说",
     "漫画",
+    "摸鱼",
+    "reader",
     "eso"
   ],
   "engines": {
