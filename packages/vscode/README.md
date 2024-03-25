@@ -36,7 +36,18 @@
 
 ## 预览
 
+### 小说
+
 ![1](https://github.com/aooiuu/any-reader-vscode/assets/28108111/fff2e255-5e09-4bff-b45c-78070dce8afc)
+
+### 游戏
+
 ![2](https://github.com/aooiuu/any-reader/assets/28108111/ed5544d6-ec4f-4b52-a75a-a1f618b8383d)
+
+### 聚合搜索
+
+> 图片仅供参考, 内容来源自网络, 本软件不提供任何内容
+
+![image](https://github.com/aooiuu/any-reader/assets/28108111/3c93fb87-e74d-410e-ad97-3d4a665f1c08)
 
 点个 `star` 可以关注插件更新动态, 也欢迎大家提交 `PR`.

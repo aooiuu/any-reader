@@ -34,3 +34,5 @@ export class BookProvider implements vscode.TreeDataProvider<TreeNode> {
     }
   }
 }
+
+export const bookProvider = new BookProvider();

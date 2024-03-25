@@ -2,8 +2,8 @@ import * as vscode from 'vscode';
 import { ContentType, Rule } from '@any-reader/core';
 import { COMMANDS } from './constants';
 import { config } from './config';
-import { BookProvider } from './treeview/book';
-import { SourceProvider } from './treeview/source';
+import { bookProvider } from './treeview/book';
+import { sourceProvider } from './treeview/source';
 import bookManager, { TreeNode } from './treeview/bookManager';
 import sourceManager from './treeview/sourceManager';
 import { treeItemDecorationProvider } from './treeview/TreeItemDecorationProvider';
@@ -11,8 +11,6 @@ import { BOOK_SOURCE_PATH, ensureFile } from './dataManager';
 import { WebView } from './webview';
 
 class App {
-  private bookProvider: BookProvider = new BookProvider();
-  private sourceProvider: SourceProvider = new SourceProvider();
   private webView!: WebView;
 
   activate(context: vscode.ExtensionContext) {
@@ -24,13 +22,14 @@ class App {
       vscode.window.registerFileDecorationProvider(treeItemDecorationProvider),
       registerCommand(COMMANDS.editBookSource, this.editBookSource, this),
       registerCommand(COMMANDS.searchBook, this.searchBook, this),
+      registerCommand(COMMANDS.searchBookByRule, this.searchBookByRule, this),
       registerCommand(COMMANDS.getContent, this.getContent, this),
       registerCommand(COMMANDS.home, () => this.webView.navigateTo('/'), this.webView),
       registerCommand(COMMANDS.getBookSource, this.getBookSource, this),
       registerCommand(COMMANDS.gamePlay, (node: any) => this.webView.navigateTo('/iframe?url=' + node.host, node.name), this.webView)
     ].forEach((command) => context.subscriptions.push(command));
-    vscode.window.createTreeView('any-reader-book', { treeDataProvider: this.bookProvider });
-    vscode.window.createTreeView('any-reader-source', { treeDataProvider: this.sourceProvider });
+    vscode.window.createTreeView('any-reader-book', { treeDataProvider: bookProvider });
+    vscode.window.createTreeView('any-reader-source', { treeDataProvider: sourceProvider });
     vscode.commands.executeCommand(COMMANDS.getBookSource);
   }
 
@@ -42,9 +41,13 @@ class App {
   }
 
   // 搜索
-  async searchBook(rule?: Rule) {
+  async searchBook() {
+    this.webView.navigateTo('/search');
+  }
+
+  async searchBookByRule(rule: Rule) {
     await bookManager.searchBook(rule);
-    this.bookProvider.refresh();
+    bookProvider.refresh();
   }
 
   // 获取文章详情
@@ -82,7 +85,7 @@ class App {
   // 获取本地书源列表
   public async getBookSource() {
     sourceManager.getBookSource();
-    this.sourceProvider.refresh();
+    sourceProvider.refresh();
   }
 }
 

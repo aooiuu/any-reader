@@ -9,7 +9,7 @@ export interface TreeNode {
 }
 
 class BookManager implements vscode.Disposable {
-  private list: TreeNode[] = [];
+  public list: TreeNode[] = [];
 
   dispose(): void {
     this.list = [];

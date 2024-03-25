@@ -1,8 +1,15 @@
 <template>
   <a-spin class="w-full h-full" :loading="loading">
     <div class="px-10 py-10 h-full flex flex-col overflow-hidden">
-      <div class="flex-1 overflow-auto">
-        <AForm :model="formData" :auto-label-width="true">
+      <div class="flex-1 overflow-hidden flex flex-col">
+        <div class="mb-10">
+          <a-radio-group v-model="formType" type="button">
+            <a-radio value="Form">Form</a-radio>
+            <a-radio value="JSON">JSON</a-radio>
+          </a-radio-group>
+        </div>
+
+        <AForm v-if="formType === 'Form'" :model="formData" :auto-label-width="true" class="flex-1 overflow-auto">
           <template v-for="item in formItems" :key="item.prop">
             <AFormItem v-if="!item.show || item.show(formData)" :label="item.label">
               <template v-if="item.type === 'select'">
@@ -11,11 +18,12 @@
                 </a-select>
               </template>
               <template v-else>
-                <AInput v-model="formData[item.prop]" />
+                <AInput v-model="formData[item.prop]" :placeholder="item.prop" />
               </template>
             </AFormItem>
           </template>
         </AForm>
+        <pre v-else class="flex-1 overflow-auto">{{ JSON.stringify(formData, null, 4) }}</pre>
       </div>
 
       <div class="flex mt-10 justify-end gap-5">
@@ -35,6 +43,8 @@ const loading = ref(false);
 
 const router = useRouter();
 const route = useRoute();
+
+const formType = ref('Form');
 
 const formItems = [
   { prop: 'id', label: 'uuid', show: () => false },
@@ -81,7 +91,7 @@ const formData = reactive({
   name: '',
   host: '',
   group: '',
-  contentType: CONTENT_TYPE.GAME,
+  contentType: CONTENT_TYPE.NOVEL,
   sort: '',
   useCryptoJS: '',
   loadJs: '',

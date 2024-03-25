@@ -3,7 +3,7 @@
   "displayName": "any-reader",
   "description": "any-reader for vscode",
   "icon": "resources/icon.png",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "preview": true,
   "publisher": "aooiu",
   "qna": "https://github.com/aooiuu/any-reader/issues",
@@ -61,6 +61,12 @@
       },
       {
         "command": "any-reader.searchBook",
+        "title": "搜索",
+        "icon": "$(search)",
+        "category": "any-reader"
+      },
+      {
+        "command": "any-reader.searchBookByRule",
         "title": "搜索",
         "icon": "$(search)",
         "category": "any-reader"
@@ -124,7 +130,7 @@
       ],
       "view/item/context": [
         {
-          "command": "any-reader.searchBook",
+          "command": "any-reader.searchBookByRule",
           "when": "view == any-reader-source && viewItem != GAME",
           "group": "inline"
         },

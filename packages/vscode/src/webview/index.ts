@@ -4,7 +4,8 @@ import { v4 as uuidV4 } from 'uuid';
 import * as vscode from 'vscode';
 import { RuleManager } from '@any-reader/core';
 import { getBookSource, setBookSource } from '../dataManager';
-import { TreeNode } from '../treeview/bookManager';
+import bookManager, { TreeNode } from '../treeview/bookManager';
+import { bookProvider } from '../treeview/book';
 
 export class WebView {
   private mSearchToken: any;
@@ -45,6 +46,7 @@ export class WebView {
 
     this.webviewPanel.webview.onDidReceiveMessage(async (message: any) => {
       const { type, data } = message;
+      console.log('[onDidReceiveMessage]', { type, data });
 
       switch (type) {
         case 'getRule':
@@ -91,29 +93,55 @@ export class WebView {
           break;
         case 'search':
           {
-            const { uuid, keyword } = data;
+            const { uuid, keyword, contentTypes } = data;
             this.mSearchToken = uuid;
-            const rules = await getBookSource();
+            const rules = (await getBookSource()).filter((e) => contentTypes.includes(e.contentType) && e.enableSearch);
+            const count = rules.length;
+            let runCount = 0;
+            if (count === 0) {
+              this.webviewPanel!.webview.postMessage({
+                type,
+                data: {
+                  runCount,
+                  count,
+                  uuid
+                }
+              });
+            }
             for (const rule of rules) {
               if (this.mSearchToken !== uuid) {
                 return;
               }
               const analyzer = new RuleManager(rule);
               const searchItems = await analyzer.search(keyword).catch(() => []);
-              if (searchItems.length) {
-                this.webviewPanel!.webview.postMessage({
-                  type,
-                  data: {
-                    uuid,
-                    rule,
-                    list: searchItems
-                  }
-                });
-              }
+              runCount++;
+              this.webviewPanel!.webview.postMessage({
+                type,
+                data: {
+                  runCount,
+                  count,
+                  uuid,
+                  rule,
+                  list: searchItems
+                }
+              });
             }
           }
           break;
+        case 'getChapter':
+          {
+            const { rule, data: searchItem } = data;
+            const ruleManager = new RuleManager(rule);
+            const chapterItems = await ruleManager.getChapter(searchItem.url);
 
+            bookManager.list = chapterItems.map((chapterItem: any) => ({
+              rule,
+              type: 2,
+              data: chapterItem
+            }));
+            bookProvider.refresh();
+          }
+          break;
         default:
           break;
       }

@@ -9,7 +9,7 @@ if (!isDev && !window.vscode) {
 export function postMessage(type: string, data: any) {
   window.vscode.postMessage({
     type,
-    data
+    data: JSON.parse(JSON.stringify(data))
   });
 }
 

@@ -31,3 +31,5 @@ export class SourceProvider implements vscode.TreeDataProvider<Rule> {
     return [];
   }
 }
+
+export const sourceProvider = new SourceProvider();
