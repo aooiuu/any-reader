@@ -41,6 +41,19 @@
 
 ![1](https://github.com/aooiuu/any-reader/assets/28108111/01eabe01-84eb-4113-a10e-fdfd9a82f169)
 
+## 声明
+
+- 请大家支持正版, 所有资源来自网上, 该软件不参与任何制作, 上传, 储存等内容, 禁止传播违法资源
+- 该软件仅供学习交流使用, 禁止个人用于非法商业用途, 请于安装后 24 小时内删除
+- 该软件为空壳软件, 不带源, 自行研究
+- 软件文档所有图片仅做为演示, 如有侵权可以提交 [issues](https://github.com/aooiuu/any-reader/issues), 我看到后会删除
+- 以上部分文案来自 [ZyPlayer](https://github.com/Hiram-Wong/ZyPlayer/blob/main/README.md) 如侵权, 提 [issues](https://github.com/aooiuu/any-reader/issues), 我看到后会删除
+
+## 感谢
+
+- [eso](https://github.com/mabDc/eso)
+
+
 <!-- Badges -->
 
 [vsc-src]: https://img.shields.io/visual-studio-marketplace/v/aooiu.any-reader
