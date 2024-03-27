@@ -22,14 +22,15 @@ class App {
       vscode.window.registerFileDecorationProvider(treeItemDecorationProvider),
       registerCommand(COMMANDS.editBookSource, this.editBookSource, this),
       registerCommand(COMMANDS.searchBook, this.searchBook, this),
+      registerCommand(COMMANDS.discover, this.discover, this),
       registerCommand(COMMANDS.searchBookByRule, this.searchBookByRule, this),
       registerCommand(COMMANDS.getContent, this.getContent, this),
       registerCommand(COMMANDS.home, () => this.webView.navigateTo('/'), this.webView),
       registerCommand(COMMANDS.getBookSource, this.getBookSource, this),
       registerCommand(COMMANDS.gamePlay, (node: any) => this.webView.navigateTo('/iframe?url=' + node.host, node.name), this.webView)
     ].forEach((command) => context.subscriptions.push(command));
-    vscode.window.createTreeView('any-reader-book', { treeDataProvider: bookProvider });
     vscode.window.createTreeView('any-reader-source', { treeDataProvider: sourceProvider });
+    vscode.window.createTreeView('any-reader-book', { treeDataProvider: bookProvider });
     vscode.commands.executeCommand(COMMANDS.getBookSource);
   }
 
@@ -43,6 +44,11 @@ class App {
   // 搜索
   async searchBook() {
     this.webView.navigateTo('/search');
+  }
+
+  // 发现页
+  discover() {
+    this.webView.navigateTo('/discover');
   }
 
   async searchBookByRule(rule: Rule) {

@@ -56,4 +56,12 @@
 
 ![2](https://github.com/aooiuu/any-reader/assets/28108111/ed5544d6-ec4f-4b52-a75a-a1f618b8383d)
 
+### 发现页
+
+![1](https://github.com/aooiuu/any-reader/assets/28108111/23d81ce8-4de7-4e1b-b668-df5dd384c907)
+
+![1](https://github.com/aooiuu/any-reader/assets/28108111/8f85e896-3001-44cd-8c14-28e7140d10a1)
+
+![1](https://github.com/aooiuu/any-reader/assets/28108111/01eabe01-84eb-4113-a10e-fdfd9a82f169)
+
 点个 `star` 可以关注插件更新动态, 也欢迎大家提交 `PR`.

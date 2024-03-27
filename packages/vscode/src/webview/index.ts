@@ -142,13 +142,43 @@ export class WebView {
             bookProvider.refresh();
           }
           break;
+
+        case 'discover':
+          {
+            const { rule, data: params } = data;
+            const ruleManager = new RuleManager(rule);
+            const res = await ruleManager.discover(params.value);
+            this.webviewPanel!.webview.postMessage({
+              type,
+              data: {
+                rule,
+                data: res
+              }
+            });
+          }
+          break;
+        case 'discoverMap':
+          {
+            const { rule } = data;
+            const ruleManager = new RuleManager(rule);
+            const res = await ruleManager.discoverMap();
+            this.webviewPanel!.webview.postMessage({
+              type,
+              data: {
+                rule,
+                data: res
+              }
+            });
+          }
+          break;
+
         default:
           break;
       }
     });
   }
 
-  async navigateTo(routePath = '', title = 'Home') {
+  async navigateTo(routePath = '', title = 'AnyReader') {
     this.initWebviewPanel(title);
     if (!this.isVue) {
       this.webviewPanel!.webview.html = this.getWebViewContent(path.join('template-dist', 'index.html'));

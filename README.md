@@ -7,7 +7,7 @@
 [![satr][satr-src]][satr-href]
 [![issues][issues-src]][issues-href]
 
-多站点自定义规则聚合阅读工具, 支持小说、漫画。包含 [JS 解析库](https://aooiuu.github.io/any-reader/core/) 和 [VSCode 插件](https://aooiuu.github.io/any-reader/vsc/)
+多站点自定义规则聚合阅读工具, 支持小说、漫画、视频。包含 [JS 解析库](https://aooiuu.github.io/any-reader/core/) 和 [VSCode 插件](https://aooiuu.github.io/any-reader/vsc/)
 
 > 软件不提供内容, 也不提供任何规则, 但你可以通过编写 [规则](https://aooiuu.github.io/any-reader/rule/), 控制呈现内容, [查看文档](https://aooiuu.github.io/any-reader/)
 
@@ -32,6 +32,14 @@
 ### 游戏
 
 ![2](https://github.com/aooiuu/any-reader/assets/28108111/ed5544d6-ec4f-4b52-a75a-a1f618b8383d)
+
+### 发现页
+
+![1](https://github.com/aooiuu/any-reader/assets/28108111/23d81ce8-4de7-4e1b-b668-df5dd384c907)
+
+![1](https://github.com/aooiuu/any-reader/assets/28108111/8f85e896-3001-44cd-8c14-28e7140d10a1)
+
+![1](https://github.com/aooiuu/any-reader/assets/28108111/01eabe01-84eb-4113-a10e-fdfd9a82f169)
 
 <!-- Badges -->
 

@@ -87,9 +87,11 @@ const http = axios.create()
 
 export class RuleManager {
   rule: Rule
+  _nextUrl: Map<string, string>
 
   constructor(rule: Rule) {
     this.rule = rule
+    this._nextUrl = new Map()
   }
 
   /**
@@ -249,6 +251,7 @@ export class RuleManager {
     return list
   }
 
+  // 获取获取分类
   async discoverMap() {
     const map = []
     const table = new Map()
@@ -319,6 +322,77 @@ export class RuleManager {
     }
 
     return map
+  }
+
+  // 获取分类下内容
+  async discover(url: string, page = 1) {
+    const hasNextUrlRule = this.rule.discoverNextUrl !== undefined && this.rule.discoverNextUrl.length > 0
+    let discoverRule
+
+    if (page === 1) {
+      discoverRule = url
+    }
+    else if (hasNextUrlRule && page > 1) {
+      const next = this._nextUrl.get(url)
+      if (next !== undefined && next.length > 0)
+        discoverRule = next
+    }
+    else if (/(\$page)|((^|[^a-zA-Z'"_/-])page([^a-zA-Z0-9'"]|$))/.test(url)) {
+      discoverRule = url
+    }
+
+    if (!discoverRule)
+      return []
+
+    const discoverUrl = ''
+    let body = ''
+
+    if (discoverRule !== 'null') {
+      const { body: res } = await this.fetch(discoverRule)
+      body = res
+    }
+
+    JSEngine.setEnvironment({
+      page,
+      rule: this.rule,
+      result: discoverUrl,
+      baseUrl: this.rule.host,
+      keyword: '',
+      lastResult: '',
+    })
+
+    const bodyAnalyzer = new AnalyzerManager(body)
+    if (hasNextUrlRule)
+      this._nextUrl.set(url, await bodyAnalyzer.getString(this.rule.discoverNextUrl as string))
+    else
+      this._nextUrl.delete(url)
+
+    const list = await bodyAnalyzer.getElements(this.rule.discoverList)
+    const result = []
+
+    for (const item of list) {
+      const analyzer = new AnalyzerManager(item)
+      const tag = await analyzer.getString(this.rule.discoverTags)
+
+      let tags: string[] = []
+      if (tag !== undefined && tag.trim() !== '') {
+        tags = tag.split(' ')
+          .filter(tag => tag !== '')
+      }
+
+      result.push({
+        searchUrl: discoverUrl,
+        cover: await analyzer.getString(this.rule.discoverCover),
+        name: await analyzer.getString(this.rule.discoverName),
+        author: await analyzer.getString(this.rule.discoverAuthor),
+        chapter: await analyzer.getString(this.rule.discoverChapter),
+        description: await analyzer.getString(this.rule.discoverDescription),
+        url: await analyzer.getString(this.rule.discoverResult),
+        tags,
+      })
+    }
+
+    return result
   }
 }
 

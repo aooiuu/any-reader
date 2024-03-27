@@ -3,6 +3,7 @@ export enum COMMANDS {
   searchBook = 'any-reader.searchBook',
   searchBookByRule = 'any-reader.searchBookByRule',
   getContent = 'any-reader.getContent',
+  discover = 'any-reader.discover',
 
   // 读取所有书源
   getBookSource = 'any-reader.getBookSource',

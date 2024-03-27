@@ -21,9 +21,13 @@ export class AnalyzerJSONPath implements Analyzer {
   }
 
   async getElements(rule: string) {
-    return JSONPath({
+    const rows = JSONPath({
       path: rule,
       json: this._content,
     })
+    if (Array.isArray(rows) && rows.length === 1)
+      return rows[0]
+
+    return rows
   }
 }
