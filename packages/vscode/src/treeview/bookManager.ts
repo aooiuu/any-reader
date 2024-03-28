@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { getBookSource } from '../dataManager';
+import * as ruleFileManager from '../utils/ruleFileManager';
 import { RuleManager, Rule, SearchItem, ChapterItem } from '@any-reader/core';
 
 export interface TreeNode {
@@ -25,7 +25,7 @@ class BookManager implements vscode.Disposable {
     }
 
     if (!rule) {
-      const bs = await getBookSource();
+      const bs = ruleFileManager.list();
       if (bs.length === 0) {
         return;
       }

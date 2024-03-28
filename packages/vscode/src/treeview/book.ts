@@ -13,7 +13,7 @@ export class BookProvider implements vscode.TreeDataProvider<TreeNode> {
   getTreeItem(treeNode: TreeNode): vscode.TreeItem {
     return {
       label: treeNode.data.name,
-      tooltip: treeNode.data.name,
+      tooltip: treeNode.rule.name,
       collapsibleState: treeNode.type === 1 ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None,
       command:
         treeNode.type === 1
@@ -35,4 +35,4 @@ export class BookProvider implements vscode.TreeDataProvider<TreeNode> {
   }
 }
 
-export const bookProvider = new BookProvider();
+export default new BookProvider();

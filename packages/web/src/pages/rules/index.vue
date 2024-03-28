@@ -40,11 +40,8 @@ const router = useRouter();
 const searchText = ref('');
 const contentTypes = ref(CONTENT_TYPES.map((e) => e.value).flat());
 
-function setRule(row, newRow) {
-  postMessage('setRule', {
-    row: toRaw(row),
-    newRow: toRaw(newRow)
-  });
+function updateRule(row) {
+  postMessage('updateRule', row);
 }
 
 function editRule(row) {
@@ -78,7 +75,8 @@ const tableColumns = ref([
       <a-switch
         model-value={record.enableSearch}
         onUpdate:model-value={(v) =>
-          setRule(record, {
+          updateRule({
+            ...record,
             enableSearch: v
           })
         }

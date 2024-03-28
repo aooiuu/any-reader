@@ -1,12 +1,10 @@
 import * as path from 'path';
 import * as fs from 'fs';
-import { v4 as uuidV4 } from 'uuid';
 import * as vscode from 'vscode';
 import { RuleManager } from '@any-reader/core';
 import { COMMANDS } from '../constants';
-import { getBookSource, setBookSource } from '../dataManager';
-import bookManager, { TreeNode } from '../treeview/bookManager';
-import { bookProvider } from '../treeview/book';
+import * as ruleFileManager from '../utils/ruleFileManager';
+import { TreeNode } from '../treeview/bookManager';
 
 export class WebView {
   private mSearchToken: any;
@@ -52,7 +50,7 @@ export class WebView {
       switch (type) {
         case 'getRule':
           {
-            const rules = await getBookSource();
+            const rules = ruleFileManager.list();
             this.webviewPanel!.webview.postMessage({
               type: 'getRule',
               data: rules.find((e) => e.id === data.id)
@@ -60,43 +58,28 @@ export class WebView {
           }
           break;
         case 'addRule':
-          {
-            let rules = await getBookSource();
-            if (!data.id) {
-              data.id = uuidV4();
-              rules.push(data);
-            } else {
-              rules = rules.filter((r) => r.id !== data.id);
-              rules.push(data);
-            }
-            setBookSource(rules);
-          }
+          await ruleFileManager.update(data);
           break;
-        case 'setRule':
+        case 'updateRule':
           {
-            const rules = await getBookSource();
-            const row = rules.find((e) => e.id === data.row.id);
-            if (row) {
-              Object.assign(row, data.newRow);
-            }
-            await setBookSource(rules);
+            await ruleFileManager.update(data);
             this.webviewPanel!.webview.postMessage({
               type: 'getBookSource',
-              data: await getBookSource()
+              data: ruleFileManager.list()
             });
           }
           break;
         case 'getBookSource':
           this.webviewPanel!.webview.postMessage({
             type,
-            data: await getBookSource()
+            data: ruleFileManager.list()
           });
           break;
         case 'search':
           {
             const { uuid, keyword, contentTypes } = data;
             this.mSearchToken = uuid;
-            const rules = (await getBookSource()).filter((e) => contentTypes.includes(e.contentType) && e.enableSearch);
+            const rules = ruleFileManager.list().filter((e) => contentTypes.includes(e.contentType) && e.enableSearch);
             const count = rules.length;
             let runCount = 0;
             if (count === 0) {
@@ -129,18 +112,20 @@ export class WebView {
             }
           }
           break;
+        // 获取章节
         case 'getChapter':
           {
             const { rule, data: searchItem } = data;
-            const ruleManager = new RuleManager(rule);
-            const chapterItems = await ruleManager.getChapter(searchItem.url);
-
-            bookManager.list = chapterItems.map((chapterItem: any) => ({
-              rule,
-              type: 2,
-              data: chapterItem
-            }));
-            bookProvider.refresh();
+            vscode.commands.executeCommand(
+              COMMANDS.getChapter,
+              {
+                ...searchItem,
+                ruleId: rule.id
+              },
+              {
+                saveHistory: searchItem
+              }
+            );
           }
           break;
 

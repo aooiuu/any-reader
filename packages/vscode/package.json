@@ -3,7 +3,7 @@
   "displayName": "any-reader",
   "description": "any-reader for vscode",
   "icon": "resources/icon.png",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "preview": true,
   "publisher": "aooiu",
   "qna": "https://github.com/aooiuu/any-reader/issues",
@@ -97,11 +97,15 @@
       "any-reader": [
         {
           "id": "any-reader-book",
-          "name": "Book"
+          "name": "阅读"
         },
         {
           "id": "any-reader-source",
-          "name": "Source"
+          "name": "规则"
+        },
+        {
+          "id": "any-reader-history",
+          "name": "历史"
         }
       ]
     },
