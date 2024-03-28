@@ -86,6 +86,21 @@ const tableColumns = ref([
     )
   },
   {
+    title: '启用发现',
+    width: 100,
+    align: 'center',
+    render: ({ record }) => (
+      <a-switch
+        model-value={record.enableDiscover}
+        onUpdate:model-value={(v) =>
+          setRule(record, {
+            enableDiscover: v
+          })
+        }
+      />
+    )
+  },
+  {
     title: '操作',
     width: 100,
     align: 'center',

@@ -1,6 +1,6 @@
 {
   "name": "any-reader-web",
-  "version": "0.0.0",
+  "version": "0.4.1",
   "private": true,
   "type": "module",
   "scripts": {
