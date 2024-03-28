@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import { v4 as uuidV4 } from 'uuid';
 import * as vscode from 'vscode';
 import { RuleManager } from '@any-reader/core';
+import { COMMANDS } from '../constants';
 import { getBookSource, setBookSource } from '../dataManager';
 import bookManager, { TreeNode } from '../treeview/bookManager';
 import { bookProvider } from '../treeview/book';
@@ -171,7 +172,8 @@ export class WebView {
             });
           }
           break;
-
+        case 'editBookSource':
+          vscode.commands.executeCommand(COMMANDS.editBookSource);
         default:
           break;
       }

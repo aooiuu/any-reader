@@ -9,6 +9,7 @@
           </a-checkbox>
         </a-checkbox-group>
       </div>
+      <a-button @click="editBookSource">打开规则文件</a-button>
       <a-button type="primary" @click="addRule">
         <template #icon>
           <icon-plus />
@@ -112,4 +113,8 @@ useMessage('getBookSource', (data) => {
 });
 
 postMessage('getBookSource', {});
+
+function editBookSource() {
+  postMessage('editBookSource', {});
+}
 </script>
