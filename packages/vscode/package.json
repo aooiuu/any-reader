@@ -82,6 +82,28 @@
         "title": "Game Play",
         "icon": "$(game)",
         "category": "any-reader"
+      },
+      {
+        "command": "any-reader.star",
+        "title": "star",
+        "icon": "$(star)"
+      },
+      {
+        "command": "any-reader.unstar",
+        "title": "unstar",
+        "icon": "$(star-full)"
+      },
+      {
+        "command": "any-reader.historyRefresh",
+        "title": "refresh",
+        "icon": "$(refresh)",
+        "category": "any-reader"
+      },
+      {
+        "command": "any-reader.favoritesRefresh",
+        "title": "refresh",
+        "icon": "$(refresh)",
+        "category": "any-reader"
       }
     ],
     "viewsContainers": {
@@ -106,6 +128,10 @@
         {
           "id": "any-reader-history",
           "name": "历史"
+        },
+        {
+          "id": "any-reader-favorites",
+          "name": "收藏"
         }
       ]
     },
@@ -130,9 +156,29 @@
           "command": "any-reader.home",
           "when": "view == any-reader-source",
           "group": "navigation"
+        },
+        {
+          "command": "any-reader.historyRefresh",
+          "when": "view == any-reader-history",
+          "group": "navigation"
+        },
+        {
+          "command": "any-reader.favoritesRefresh",
+          "when": "view == any-reader-favorites",
+          "group": "navigation"
         }
       ],
       "view/item/context": [
+        {
+          "command": "any-reader.star",
+          "when": "view == any-reader-book && viewItem == star",
+          "group": "inline"
+        },
+        {
+          "command": "any-reader.unstar",
+          "when": "view == any-reader-book && viewItem == unstar",
+          "group": "inline"
+        },
         {
           "command": "any-reader.searchBookByRule",
           "when": "view == any-reader-source && viewItem != GAME",

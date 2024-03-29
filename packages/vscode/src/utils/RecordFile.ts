@@ -6,12 +6,11 @@ export interface RecordFileRow extends SearchItem {
   createTime: number;
 }
 
-let history: RecordFileRow[] = [];
-
 const MAX_LENGTH = 100;
 
 export class RecordFile {
   filePath: string;
+  history: RecordFileRow[] = [];
 
   constructor(filePath: string) {
     this.filePath = filePath;
@@ -20,23 +19,23 @@ export class RecordFile {
   // 初始化
   async init() {
     await fs.ensureFile(this.filePath);
-    history = await fs.readJson(this.filePath);
+    this.history = await fs.readJson(this.filePath);
   }
 
   // 获取所有记录
   async list() {
-    return history;
+    return this.history;
   }
 
   // 保存配置文件
   async writeFile() {
     await fs.ensureFile(this.filePath);
-    return fs.writeJson(this.filePath, history, { spaces: 2 });
+    return fs.writeJson(this.filePath, this.history, { spaces: 2 });
   }
 
   // 删除记录
   async del(item: SearchItem, rule: Rule, saveFile = true) {
-    history = history.filter((e) => e.ruleId !== rule.id || e.url !== item.url);
+    this.history = this.history.filter((e) => e.ruleId !== rule.id || e.url !== item.url);
     if (saveFile) {
       await this.writeFile();
     }
@@ -44,15 +43,20 @@ export class RecordFile {
 
   // 添加记录
   async add(item: SearchItem, rule: Rule) {
-    if (history.length > MAX_LENGTH) {
-      history.splice(MAX_LENGTH);
+    if (this.history.length > MAX_LENGTH) {
+      this.history.splice(MAX_LENGTH);
     }
     this.del(item, rule, false);
-    history.unshift({
+    this.history.unshift({
       ...item,
       ruleId: rule.id,
       createTime: Date.now()
     });
     await this.writeFile();
+  }
+
+  // 是否存在
+  has(rule: Rule, url: string) {
+    return this.history.find((e) => e.ruleId === rule.id && e.url === url);
   }
 }

@@ -5,10 +5,12 @@ import { config } from './config';
 import bookProvider from './treeview/book';
 import historyProvider from './treeview/history';
 import sourceProvider from './treeview/source';
+import favoritesProvider from './treeview/favorites';
 import bookManager, { TreeNode } from './treeview/bookManager';
 import { treeItemDecorationProvider } from './treeview/TreeItemDecorationProvider';
 import * as ruleFileManager from './utils/ruleFileManager';
 import historyManager from './utils/historyManager';
+import favoritesManager from './utils/favoritesManager';
 import { RecordFileRow } from './utils/RecordFile';
 import { WebView } from './webview';
 
@@ -17,7 +19,9 @@ class App {
 
   async activate(context: vscode.ExtensionContext) {
     this.webView = new WebView(context);
-    await Promise.all([ruleFileManager.init(), historyManager.init()]);
+
+    // 初始化配置文件
+    await Promise.all([ruleFileManager.init(), historyManager.init(), favoritesManager.init()]);
 
     const registerCommand = vscode.commands.registerCommand;
     [
@@ -28,8 +32,24 @@ class App {
       registerCommand(COMMANDS.discover, this.discover, this),
       registerCommand(COMMANDS.searchBookByRule, this.searchBookByRule, this),
       registerCommand(COMMANDS.getContent, this.getContent, this),
+      registerCommand(COMMANDS.star, this.star, this),
+      registerCommand(COMMANDS.unstar, this.unstar, this),
       registerCommand(COMMANDS.home, () => this.webView.navigateTo('/'), this.webView),
       registerCommand(COMMANDS.getBookSource, this.getBookSource, this),
+      registerCommand(
+        COMMANDS.historyRefresh,
+        () => {
+          historyProvider.refresh();
+        },
+        this
+      ),
+      registerCommand(
+        COMMANDS.favoritesRefresh,
+        () => {
+          favoritesProvider.refresh();
+        },
+        this
+      ),
       registerCommand(COMMANDS.gamePlay, (node: any) => this.webView.navigateTo('/iframe?url=' + node.host, node.name), this.webView)
     ].forEach((command) => context.subscriptions.push(command));
     // 侧边栏 - 规则
@@ -38,6 +58,8 @@ class App {
     vscode.window.createTreeView('any-reader-book', { treeDataProvider: bookProvider });
     // 侧边栏 - 历史
     vscode.window.createTreeView('any-reader-history', { treeDataProvider: historyProvider });
+    // 侧边栏 - 收藏
+    vscode.window.createTreeView('any-reader-favorites', { treeDataProvider: favoritesProvider });
     vscode.commands.executeCommand(COMMANDS.getBookSource);
   }
 
@@ -125,8 +147,22 @@ class App {
   }
 
   // 获取本地书源列表
-  public async getBookSource() {
+  async getBookSource() {
     sourceProvider.refresh();
+  }
+
+  // 收藏
+  star(arg: any) {
+    favoritesManager.add(arg.data, arg.rule);
+    bookProvider.refresh();
+    favoritesProvider.refresh();
+  }
+
+  // 取消收藏
+  unstar(arg: any) {
+    favoritesManager.del(arg.data, arg.rule);
+    bookProvider.refresh();
+    favoritesProvider.refresh();
   }
 }
 

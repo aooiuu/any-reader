@@ -1,14 +1,14 @@
 import * as vscode from 'vscode';
 import { COMMANDS } from '../constants';
 import { RecordFileRow } from '../utils/RecordFile';
-import historyManager from '../utils/historyManager';
+import dataManager from '../utils/favoritesManager';
 
 class TreeDataProvider implements vscode.TreeDataProvider<RecordFileRow> {
   readonly _onDidChangeTreeData = new vscode.EventEmitter<RecordFileRow | undefined>();
   readonly onDidChangeTreeData = this._onDidChangeTreeData.event;
 
   async refresh(): Promise<void> {
-    await historyManager.init();
+    await dataManager.init();
     this._onDidChangeTreeData.fire(undefined);
   }
 
@@ -27,7 +27,7 @@ class TreeDataProvider implements vscode.TreeDataProvider<RecordFileRow> {
 
   getChildren(element?: RecordFileRow): Promise<RecordFileRow[]> {
     if (!element) {
-      return historyManager.list();
+      return dataManager.list();
     } else {
       return Promise.resolve([]);
     }

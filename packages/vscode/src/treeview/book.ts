@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { COMMANDS } from '../constants';
 import bookManager, { TreeNode } from './bookManager';
+import favoritesManager from '../utils/favoritesManager';
 
 export class BookProvider implements vscode.TreeDataProvider<TreeNode> {
   readonly _onDidChangeTreeData = new vscode.EventEmitter<TreeNode | undefined>();
@@ -15,6 +16,7 @@ export class BookProvider implements vscode.TreeDataProvider<TreeNode> {
       label: treeNode.data.name,
       tooltip: treeNode.rule.name,
       collapsibleState: treeNode.type === 1 ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None,
+      contextValue: treeNode.type === 1 ? (favoritesManager.has(treeNode.rule, treeNode.data.url) ? 'unstar' : 'star') : undefined,
       command:
         treeNode.type === 1
           ? undefined
