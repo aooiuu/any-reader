@@ -61,6 +61,6 @@ export async function update(rule: Rule) {
 }
 
 export async function fundById(id: string): Promise<Rule> {
-  const list: Rule[] = await fs.readJson(BOOK_SOURCE_PATH);
+  const list: Rule[] = await readRuleList();
   return list.find((e) => e.id === id) as Rule;
 }
