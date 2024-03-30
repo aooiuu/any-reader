@@ -2,7 +2,6 @@
 
 [![vsc version][vsc-src]][vsc-href]
 [![npm version][npm-version-src]][npm-version-href]
-[![bundle][bundle-src]][bundle-href]
 [![JSDocs][jsdocs-src]][jsdocs-href]
 [![satr][satr-src]][satr-href]
 [![issues][issues-src]][issues-href]
@@ -57,11 +56,9 @@
 <!-- Badges -->
 
 [vsc-src]: https://img.shields.io/visual-studio-marketplace/v/aooiu.any-reader
-[vsc-href]: https://github.com/aooiuu/any-reader
+[vsc-href]: https://marketplace.visualstudio.com/items?itemName=aooiu.any-reader
 [npm-version-src]: https://img.shields.io/npm/v/@any-reader/core?style=flat&colorA=18181B&colorB=F0DB4F
 [npm-version-href]: https://npmjs.com/package/@any-reader/core
-[bundle-src]: https://img.shields.io/bundlephobia/minzip/@any-reader/core?style=flat&colorA=18181B&colorB=F0DB4F
-[bundle-href]: https://bundlephobia.com/result?p=@any-reader/core
 [jsdocs-src]: https://img.shields.io/badge/jsDocs.io-reference-18181B?style=flat&colorA=18181B&colorB=F0DB4F
 [jsdocs-href]: https://www.jsdocs.io/package/@any-reader/core
 [satr-src]: https://img.shields.io/github/stars/aooiuu/any-reader
