@@ -6,7 +6,8 @@ export class SourceProvider implements vscode.TreeDataProvider<Rule> {
   readonly _onDidChangeTreeData = new vscode.EventEmitter<Rule | undefined>();
   readonly onDidChangeTreeData = this._onDidChangeTreeData.event;
 
-  refresh(): void {
+  async refresh(): Promise<void> {
+    await ruleFileManager.init();
     this._onDidChangeTreeData.fire(undefined);
   }
 
