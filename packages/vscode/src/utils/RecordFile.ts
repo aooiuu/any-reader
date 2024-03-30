@@ -19,7 +19,7 @@ export class RecordFile {
   // 初始化
   async init() {
     await fs.ensureFile(this.filePath);
-    this.history = await fs.readJson(this.filePath);
+    this.history = await fs.readJson(this.filePath).catch(() => []);
   }
 
   // 获取所有记录
