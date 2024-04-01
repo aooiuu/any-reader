@@ -3,7 +3,7 @@
   "displayName": "any-reader",
   "description": "any-reader for vscode",
   "icon": "resources/icon.png",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "preview": true,
   "publisher": "aooiu",
   "qna": "https://github.com/aooiuu/any-reader/issues",
@@ -190,7 +190,25 @@
           "group": "inline"
         }
       ]
-    }
+    },
+    "viewsWelcome": [
+      {
+        "view": "any-reader-source",
+        "contents": "[如何添加规则](https://aooiuu.github.io/any-reader/vsc/#%E9%85%8D%E7%BD%AE%E8%A7%84%E5%88%99)\n[提建议 | 提BUG](https://github.com/aooiuu/any-reader/issues)"
+      },
+      {
+        "view": "any-reader-book",
+        "contents": "搜索或者查看章节列表后数据会出现在这里 \n[使用文档](https://aooiuu.github.io/any-reader/vsc/)\n[提建议 | 提BUG](https://github.com/aooiuu/any-reader/issues)"
+      },
+      {
+        "view": "any-reader-history",
+        "contents": "阅读历史记录, 查看章节后会书籍会出现在这里"
+      },
+      {
+        "view": "any-reader-favorites",
+        "contents": "收藏列表, 您还没有收藏书籍"
+      }
+    ]
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
