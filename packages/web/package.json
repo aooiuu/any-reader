@@ -21,6 +21,7 @@
     "dplayer": "^1.27.1",
     "easy-post-message": "^0.1.0",
     "hls.js": "^1.5.3",
+    "pinia": "^2.1.7",
     "uuid": "^9.0.1",
     "vue": "^3.4.15",
     "vue-router": "^4.1.6"

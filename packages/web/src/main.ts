@@ -11,10 +11,13 @@ import ArcoVue from '@arco-design/web-vue';
 import Icon from '@arco-design/web-vue/es/icon';
 import '@arco-design/web-vue/dist/arco.css';
 
+import { createPinia } from 'pinia';
+
 const app = createApp(App);
 
 app.use(router);
 app.use(ArcoVue);
 app.use(Icon);
+app.use(createPinia());
 
 app.mount('#app');

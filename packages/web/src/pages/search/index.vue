@@ -26,12 +26,22 @@
               <div
                 v-for="(row, idx) in item.list"
                 :key="idx"
-                class="flex flex-col flex-shrink-0 w-102 cursor-pointer hover:op-70"
+                class="node relative flex flex-col flex-shrink-0 w-102 cursor-pointer hover:op-70"
                 @click="getChapter(row, item.rule)"
               >
-                <a-image :src="row.cover" :preview="false" alt="" srcset="" class="w-102 h-136 mb-5 rounded-5" />
+                <div class="w-102 h-136 mb-5 rounded-5 overflow-hidden">
+                  <a-image :src="row.cover" :preview="false" alt="" srcset="" class="cover w-102 h-136" width="100%" height="100%" fit="cover" />
+                </div>
                 <div class="overflow-hidden whitespace-nowrap text-ellipsis mb-2">{{ row.name }}</div>
                 <div class="overflow-hidden whitespace-nowrap text-ellipsis text-12 op-70">{{ row.author }}</div>
+
+                <div
+                  class="star invisible absolute top-5 right-5 px-2 py-2 rounded-10 bg-[#000000cc] flex items-center justify-center"
+                  @click="favoritesStore.star(row, item.rule.id)"
+                >
+                  <icon-star-fill v-if="favoritesStore.starred(row, item.rule.id)" :size="14" />
+                  <icon-star v-else :size="14" />
+                </div>
               </div>
             </div>
           </div>
@@ -45,6 +55,11 @@
 import { v4 as uuidV4 } from 'uuid';
 import { CONTENT_TYPES } from '@/constants';
 import { postMessage, useMessage } from '@/utils/postMessage';
+import { useFavoritesStore } from '@/stores/favorites';
+
+const favoritesStore = useFavoritesStore();
+
+favoritesStore.sync();
 
 let uuid: string = '';
 const searchText = ref('');
@@ -97,3 +112,22 @@ function getChapter(row: any, rule: any) {
   });
 }
 </script>
+
+<style scoped lang="scss">
+.node .cover {
+  transition: all ease 0.3s;
+}
+.node:hover {
+  .star {
+    visibility: visible;
+
+    &:hover {
+      background: rgba(0, 0, 0, 1);
+    }
+  }
+
+  .cover {
+    transform: scale(1.2);
+  }
+}
+</style>

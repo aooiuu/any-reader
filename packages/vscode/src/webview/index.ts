@@ -7,6 +7,8 @@ import { COMMANDS } from '../constants';
 import * as ruleFileManager from '../utils/ruleFileManager';
 import { createAdapter } from '../utils/easyPostMessage';
 import { TreeNode } from '../treeview/bookManager';
+import favoritesProvider from '../treeview/favorites';
+import favoritesManager from '../utils/favoritesManager';
 
 export class WebView {
   private mSearchToken: any;
@@ -153,6 +155,23 @@ export class WebView {
     vscode.commands.executeCommand(COMMANDS.editBookSource);
   }
 
+  // 获取收藏列表
+  async onGetFavoritesList() {
+    return await favoritesManager.list();
+  }
+
+  async onStar({ data, ruleId }: any) {
+    await favoritesManager.add(data, await ruleFileManager.findById(ruleId));
+    favoritesProvider.refresh();
+    return true;
+  }
+
+  async onUnstar({ data, ruleId }: any) {
+    await favoritesManager.del(data, await ruleFileManager.findById(ruleId));
+    favoritesProvider.refresh();
+    return true;
+  }
+
   initWebviewPanel(title: string) {
     if (!this.webviewPanel) {
       this.webviewPanel = vscode.window.createWebviewPanel('any-reader', title, vscode.ViewColumn.One, {
@@ -182,6 +201,9 @@ export class WebView {
       // 同步
       this.pm.answer('discoverMap', this.onDiscoverMap.bind(this));
       this.pm.answer('discover', this.onDiscover.bind(this));
+      this.pm.answer('getFavoritesList', this.onGetFavoritesList.bind(this));
+      this.pm.answer('star', this.onStar.bind(this));
+      this.pm.answer('unstar', this.onUnstar.bind(this));
     } else {
       this.webviewPanel.title = title;
     }

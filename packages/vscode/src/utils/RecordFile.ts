@@ -35,7 +35,7 @@ export class RecordFile {
 
   // 删除记录
   async del(item: SearchItem, rule: Rule, saveFile = true) {
-    this.history = this.history.filter((e) => e.ruleId !== rule.id || e.url !== item.url);
+    this.history = this.history.filter((e) => !(e.ruleId === rule.id && e.url === item.url));
     if (saveFile) {
       await this.writeFile();
     }
