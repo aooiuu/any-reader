@@ -60,7 +60,7 @@ export async function update(rule: Rule) {
   await writeFile();
 }
 
-export async function fundById(id: string): Promise<Rule> {
+export async function findById(id: string): Promise<Rule> {
   const list: Rule[] = await readRuleList();
   return list.find((e) => e.id === id) as Rule;
 }

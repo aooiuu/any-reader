@@ -35,7 +35,7 @@
 
 <script setup>
 import { CONTENT_TYPES, CONTENT_TYPE } from '@/constants';
-import { postMessage, useMessage } from '@/utils/postMessage';
+import { postMessage, useMessage, sendMessage } from '@/utils/postMessage';
 import Category from './Category.vue';
 
 const list = ref([]);
@@ -48,36 +48,29 @@ const categoryList = ref([]);
 const loading = ref(false);
 
 // 分类被修改
-function changeCategory(row) {
+async function changeCategory(row) {
+  loading.value = true;
   list.value = [];
   loading.value = true;
-  postMessage('discover', {
+  list.value = await sendMessage('discover', {
     data: row,
     rule: rule.value
-  });
+  }).then((e) => e.data);
+  loading.value = false;
 }
 
 // 规则被修改
-function changeRule(row) {
+async function changeRule(row) {
+  loading.value = true;
   ruleId.value = row.id;
   rule.value = row;
   list.value = [];
   categoryList.value = [];
-  postMessage('discoverMap', {
+  categoryList.value = await sendMessage('discoverMap', {
     rule: row
-  });
-}
-
-// 获取分类
-useMessage('discoverMap', (data) => {
-  categoryList.value = data.data;
-});
-
-// 获取分类下内容
-useMessage('discover', (data) => {
-  list.value = data.data;
+  }).then((e) => e.data);
   loading.value = false;
-});
+}
 
 // 获取规则列表
 useMessage('getBookSource', (data) => {

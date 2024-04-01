@@ -214,6 +214,8 @@
   },
   "dependencies": {
     "@any-reader/core": "workspace:*",
+    "any-reader-web": "workspace:^",
+    "easy-post-message": "^0.1.0",
     "fs-extra": "^11.1.1",
     "uuid": "^9.0.1"
   }

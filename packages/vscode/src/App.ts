@@ -95,7 +95,7 @@ class App {
         cancellable: false
       },
       async () => {
-        const rule = await ruleFileManager.fundById(history.ruleId);
+        const rule = await ruleFileManager.findById(history.ruleId);
         const ruleManager = new RuleManager(rule);
         const chapterItems = await ruleManager.getChapter(history.url);
 

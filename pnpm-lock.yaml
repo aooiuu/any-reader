@@ -114,6 +114,12 @@ importers:
       '@any-reader/core':
         specifier: workspace:*
         version: link:../core
+      any-reader-web:
+        specifier: workspace:^
+        version: link:../web
+      easy-post-message:
+        specifier: ^0.1.0
+        version: 0.1.0
       fs-extra:
         specifier: ^11.1.1
         version: 11.1.1
@@ -190,6 +196,9 @@ importers:
       dplayer:
         specifier: ^1.27.1
         version: 1.27.1
+      easy-post-message:
+        specifier: ^0.1.0
+        version: 0.1.0
       hls.js:
         specifier: ^1.5.3
         version: 1.5.3
@@ -5185,6 +5194,12 @@ packages:
   /duplexer@0.1.2:
     resolution: {integrity: sha512-jtD6YG370ZCIi/9GTaJKQxWTZD045+4R4hTk/x1UyoqadyJ9x9CgSi1RlVDQF8U2sxLLSnFkCaMihqljHIWgMg==}
     dev: true
+
+  /easy-post-message@0.1.0:
+    resolution: {integrity: sha512-6if64nGERA22fzfhXBLe4oPLCy0PzJen3nhN/X1PnZDMdc3KRyWtLZbgsN9GBjA485HQKmDfiwUC0JJ8/UIPZQ==}
+    dependencies:
+      mitt: 3.0.1
+    dev: false
 
   /ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}

@@ -91,7 +91,8 @@ const tableColumns = ref([
       <a-switch
         model-value={record.enableDiscover}
         onUpdate:model-value={(v) =>
-          setRule(record, {
+          updateRule({
+            ...record,
             enableDiscover: v
           })
         }
