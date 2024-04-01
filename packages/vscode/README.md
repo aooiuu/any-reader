@@ -36,6 +36,10 @@
 
 ## 预览
 
+### 操作界面
+
+![image](https://github.com/aooiuu/any-reader/assets/28108111/cadd2121-2f34-4ddf-845e-5a30fded0cb0)
+
 ### 聚合搜索
 
 > 图片仅供参考, 内容来源自网络, 本软件不提供任何内容
