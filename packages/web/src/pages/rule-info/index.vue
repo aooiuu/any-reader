@@ -4,26 +4,32 @@
       <div class="flex-1 overflow-hidden flex flex-col">
         <div class="mb-10">
           <a-radio-group v-model="formType" type="button">
+            <a-radio value="All">双栏</a-radio>
             <a-radio value="Form">Form</a-radio>
             <a-radio value="JSON">JSON</a-radio>
           </a-radio-group>
         </div>
 
-        <AForm v-if="formType === 'Form'" :model="formData" :auto-label-width="true" class="flex-1 overflow-auto">
-          <template v-for="item in formItems" :key="item.prop">
-            <AFormItem v-if="!item.show || item.show(formData)" :label="item.label">
-              <template v-if="item.type === 'select'">
-                <a-select v-model="formData[item.prop]">
-                  <a-option v-for="o in item.options" :key="o.value" :value="o.value">{{ o.label }}</a-option>
-                </a-select>
-              </template>
-              <template v-else>
-                <AInput v-model="formData[item.prop]" :placeholder="item.prop" />
-              </template>
-            </AFormItem>
-          </template>
-        </AForm>
-        <pre v-else class="flex-1 overflow-auto">{{ JSON.stringify(formData, null, 4) }}</pre>
+        <div class="flex-1 flex">
+          <AForm v-if="formType === 'All' || formType === 'Form'" :model="formData" :auto-label-width="true" class="flex-1 overflow-auto">
+            <template v-for="item in formItems" :key="item.prop">
+              <AFormItem v-if="!item.show || item.show(formData)" :label="item.label">
+                <template v-if="item.type === 'select'">
+                  <a-select v-model="formData[item.prop]">
+                    <a-option v-for="o in item.options" :key="o.value" :value="o.value">{{ o.label }}</a-option>
+                  </a-select>
+                </template>
+                <template v-else>
+                  <AInput v-model="formData[item.prop]" :placeholder="item.prop" />
+                </template>
+              </AFormItem>
+            </template>
+          </AForm>
+
+          <div v-if="formType === 'All' || formType === 'JSON'" class="flex-1 overflow-auto">
+            <MonacoEditor :model-value="formDataText" @update:model-value="setFormData" />
+          </div>
+        </div>
       </div>
 
       <div class="flex mt-10 justify-end gap-5">
@@ -38,13 +44,14 @@
 import { v4 as uuidV4 } from 'uuid';
 import { CONTENT_TYPES, CONTENT_TYPE } from '@/constants';
 import { postMessage, useMessage } from '@/utils/postMessage';
+import MonacoEditor from './MonacoEditor.vue';
 
 const loading = ref(false);
 
 const router = useRouter();
 const route = useRoute();
 
-const formType = ref('Form');
+const formType = ref('All');
 
 const formItems = [
   { prop: 'id', label: 'uuid', show: () => false },
@@ -139,6 +146,17 @@ const formData = reactive({
   cookies: '',
   viewStyle: ''
 });
+
+// 规则字符串
+const formDataText = computed(() => JSON.stringify(formData, null, 4));
+
+// 更新规则
+function setFormData(v) {
+  const json = JSON.parse(v);
+  Object.keys(formData).forEach((k) => {
+    formData[k] = json[k];
+  });
+}
 
 function submit() {
   postMessage('addRule', {

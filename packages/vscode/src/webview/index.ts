@@ -54,7 +54,7 @@ export class WebView {
     this.pm.emit('getBookSource', ruleFileManager.list(), source);
   }
 
-  // 获取单个谷子额
+  // 获取单个规则
   onGetRule({ source, data }: { source: WebView; data: Rule }) {
     const rules = ruleFileManager.list();
     this.pm.emit(

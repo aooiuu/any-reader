@@ -13,6 +13,8 @@ import '@arco-design/web-vue/dist/arco.css';
 
 import { createPinia } from 'pinia';
 
+import '@/utils/monaco';
+
 const app = createApp(App);
 
 app.use(router);
