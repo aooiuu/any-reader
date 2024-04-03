@@ -1,0 +1,28 @@
+{
+  "name": "@any-reader/server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "esno watch src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "GPL3",
+  "dependencies": {
+    "@any-reader/core": "workspace:^",
+    "@any-reader/shared": "workspace:^",
+    "@koa/bodyparser": "^5.1.0",
+    "@koa/cors": "^5.0.0",
+    "koa": "^2.15.2",
+    "koa-bodyparser": "2",
+    "koa-router": "^12.0.1",
+    "koa-static": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/koa__cors": "^5.0.0",
+    "esno": "^0.16.3"
+  }
+}

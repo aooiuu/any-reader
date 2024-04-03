@@ -25,7 +25,7 @@
               v-for="(row, idx) in list"
               :key="idx"
               class="node relative flex flex-col flex-shrink-0 w-102 cursor-pointer hover:op-70"
-              @click="getChapter(row)"
+              @click="getChapter(ruleId, row)"
             >
               <div class="w-102 h-136 mb-5 rounded-5 overflow-hidden">
                 <a-image :src="row.cover" :preview="false" alt="" srcset="" class="cover w-102 h-136" width="100%" height="100%" fit="cover" />
@@ -50,18 +50,20 @@
 
 <script setup>
 import { CONTENT_TYPES, CONTENT_TYPE } from '@/constants';
-import { postMessage, useMessage, sendMessage } from '@/utils/postMessage';
+import { discover, discoverMap } from '@/api';
+import { getChapter } from '@/api/vsc';
 import { useFavoritesStore } from '@/stores/favorites';
+import { useRulesStore } from '@/stores/rules';
 import Category from './Category.vue';
 
 const favoritesStore = useFavoritesStore();
+const rulesStore = useRulesStore();
 
 favoritesStore.sync();
 
 const list = ref([]);
 const contentType = ref(CONTENT_TYPE.NOVEL);
-const ruleList = ref([]);
-const ruleListDisplay = computed(() => ruleList.value.filter((e) => e.enableDiscover && e.contentType === contentType.value));
+const ruleListDisplay = computed(() => rulesStore.list.filter((e) => e.enableDiscover && e.contentType === contentType.value));
 const ruleId = ref('');
 const rule = ref({});
 const categoryList = ref([]);
@@ -72,10 +74,11 @@ async function changeCategory(row) {
   loading.value = true;
   list.value = [];
   loading.value = true;
-  list.value = await sendMessage('discover', {
-    data: row,
-    rule: rule.value
-  }).then((e) => e.data);
+  const res = await discover({
+    data: JSON.parse(JSON.stringify(row)),
+    ruleId: ruleId.value
+  });
+  list.value = res?.data || [];
   loading.value = false;
 }
 
@@ -86,28 +89,24 @@ async function changeRule(row) {
   rule.value = row;
   list.value = [];
   categoryList.value = [];
-  categoryList.value = await sendMessage('discoverMap', {
-    rule: row
-  }).then((e) => e.data);
+  const res = await discoverMap(ruleId.value);
+  categoryList.value = res?.data || [];
   loading.value = false;
 }
 
-// 获取规则列表
-useMessage('getBookSource', (data) => {
-  ruleList.value = data;
-  if (data.length > 0) {
-    changeRule(data[0]);
+rulesStore.sync();
+
+watch(
+  () => rulesStore.list,
+  (data) => {
+    if (data.length > 0) {
+      changeRule(data[0]);
+    }
+  },
+  {
+    immediate: true
   }
-});
-
-postMessage('getBookSource', {});
-
-function getChapter(row) {
-  postMessage('getChapter', {
-    rule: rule.value,
-    data: row
-  });
-}
+);
 </script>
 
 <style scoped lang="scss">

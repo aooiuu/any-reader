@@ -1,26 +1,12 @@
-import axios from 'axios';
+import { PLATFORM } from '@/constants';
+import axios from './axios';
+import { pm } from './postMessage';
 
-const service = axios.create({
-  withCredentials: true,
-  baseURL: import.meta.env.VITE_API_BASE_URL,
-  timeout: 15000
-});
-
-service.interceptors.request.use(
-  (config) => {
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
+export async function request(config: any) {
+  if (PLATFORM === 'browser') {
+    return await axios(config);
+  } else {
+    const method = config.method ?? 'get';
+    return await pm.send(`${method}@${config.url}`, config.params || config.data, window.acquireVsCodeApi());
   }
-);
-
-service.interceptors.response.use(
-  (response) => {
-    return response.data;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
-export default service;
+}

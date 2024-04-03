@@ -27,7 +27,7 @@
                 v-for="(row, idx) in item.list"
                 :key="idx"
                 class="node relative flex flex-col flex-shrink-0 w-102 cursor-pointer hover:op-70"
-                @click="getChapter(row, item.rule)"
+                @click="getChapter(item.rule.id, row)"
               >
                 <div class="w-102 h-136 mb-5 rounded-5 overflow-hidden">
                   <a-image :src="row.cover" :preview="false" alt="" srcset="" class="cover w-102 h-136" width="100%" height="100%" fit="cover" />
@@ -54,10 +54,13 @@
 <script setup lang="tsx">
 import { v4 as uuidV4 } from 'uuid';
 import { CONTENT_TYPES } from '@/constants';
-import { postMessage, useMessage } from '@/utils/postMessage';
+import { searchByRuleId } from '@/api';
+import { getChapter } from '@/api/vsc';
 import { useFavoritesStore } from '@/stores/favorites';
+import { useRulesStore } from '@/stores/rules';
 
 const favoritesStore = useFavoritesStore();
+const rulesStore = useRulesStore();
 
 favoritesStore.sync();
 
@@ -71,45 +74,36 @@ const runCount = ref(0);
 const list = ref<any[]>([]);
 
 function onSearch() {
-  uuid = uuidV4();
+  const lastUuid = uuidV4();
+  uuid = lastUuid;
   list.value = [];
-  postMessage('search', {
-    keyword: searchText.value,
-    contentTypes: contentTypes.value,
-    uuid
-  });
   total.value = 0;
   runCount.value = 0;
   loading.value = true;
+
+  rulesStore.sync().then(async () => {
+    const rules = rulesStore.list.filter((e) => contentTypes.value.includes(e.contentType) && e.enableSearch);
+    total.value = rules.length;
+    for (const rule of rules) {
+      if (lastUuid !== uuid) return;
+      runCount.value++;
+      const res = await searchByRuleId({ ruleId: rule.id, keyword: searchText.value });
+      if (res.code === 0) {
+        const rows = res.data;
+        if (!rows.length) continue;
+        list.value.push({
+          rule: rule,
+          list: rows
+        });
+      }
+    }
+    loading.value = false;
+  });
 }
 
 function cancelSearch() {
   uuid = uuidV4();
   loading.value = false;
-}
-
-useMessage('search', (data: any) => {
-  console.log('[search]', data);
-  if (!data || data.uuid !== uuid) return;
-  if (data.count > 0) {
-    list.value.push({
-      rule: data.rule,
-      list: data.list
-    });
-  }
-  total.value = data.count;
-  runCount.value = data.runCount;
-  if (data.count === data.runCount) {
-    loading.value = false;
-  }
-});
-
-// 获取章节
-function getChapter(row: any, rule: any) {
-  postMessage('getChapter', {
-    rule,
-    data: row
-  });
 }
 </script>
 

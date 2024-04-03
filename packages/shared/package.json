@@ -1,0 +1,45 @@
+{
+  "name": "@any-reader/shared",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c --watch",
+    "lint": "eslint .",
+    "prepublishOnly": "npm run build",
+    "start": "esno src/start.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [],
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "author": "",
+  "license": "GPL3",
+  "dependencies": {
+    "@any-reader/core": "workspace:^",
+    "fs-extra": "^11.1.1",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^0.39.6",
+    "@rollup/plugin-alias": "^5.0.0",
+    "@rollup/plugin-commonjs": "^25.0.2",
+    "@rollup/plugin-json": "^6.0.0",
+    "@rollup/plugin-node-resolve": "^15.1.0",
+    "@types/koa-router": "^7.4.8",
+    "@types/koa-static": "^4.0.4",
+    "esno": "^0.16.3",
+    "rollup": "^3.26.0",
+    "rollup-plugin-dts": "^5.3.0",
+    "rollup-plugin-esbuild": "^5.0.0",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.1.6"
+  }
+}

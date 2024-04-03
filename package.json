@@ -26,11 +26,15 @@
   "scripts": {
     "run:core": "npm -C packages/core run start",
     "build:core": "npm -C packages/core run build",
+    "build:shared": "npm -C packages/shared run build",
     "run:web": "npm -C packages/web run dev",
     "build:web-w": "npm -C packages/web run build:w",
     "run:vsc": "npm-run-all build:core build:web-w",
     "docs": "npm -C docs run docs:dev",
     "build:docs": "npm -C docs run docs:build",
+    "server": "npm -C packages/server run dev",
+    "build": "npm-run-all build:core build:shared",
+    "run:server": "run-p server run:web",
     "test": "jest",
     "coveralls": "jest --coverage",
     "prepare": "husky install"

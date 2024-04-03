@@ -1,5 +1,9 @@
 import EasyPostMessage, { type IAdapter, type IMessage } from 'easy-post-message';
 
+if (typeof window.acquireVsCodeApi !== 'function') {
+  window.acquireVsCodeApi = () => {};
+}
+
 if (typeof window.acquireVsCodeApi === 'function' && !window._acquireVsCodeApi) {
   window._acquireVsCodeApi = window.acquireVsCodeApi();
   window.acquireVsCodeApi = () => window._acquireVsCodeApi;
@@ -15,7 +19,7 @@ const VSCAdapter: IAdapter = () => {
      */
     postMessage: (target, data) => {
       console.log('[postMessage]', { target, data });
-      window.acquireVsCodeApi().postMessage(data);
+      window.acquireVsCodeApi().postMessage(JSON.parse(JSON.stringify(data)));
     },
 
     /**
@@ -39,15 +43,7 @@ const VSCAdapter: IAdapter = () => {
   };
 };
 
-const pm = new EasyPostMessage(VSCAdapter);
-
-export function postMessage(type: string, data: any) {
-  pm.emit(type, JSON.parse(JSON.stringify(data)), window.acquireVsCodeApi());
-}
-
-export function sendMessage(type: string, data: any) {
-  return pm.send(type, JSON.parse(JSON.stringify(data)), window.acquireVsCodeApi());
-}
+export const pm = new EasyPostMessage(VSCAdapter);
 
 export function useMessage(type: string, cb: any) {
   const fn = (arg: any) => {

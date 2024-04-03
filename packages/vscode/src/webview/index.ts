@@ -10,6 +10,14 @@ import { TreeNode } from '../treeview/bookManager';
 import favoritesProvider from '../treeview/favorites';
 import favoritesManager from '../utils/favoritesManager';
 
+function success(data: any, msg = '') {
+  return {
+    code: 0,
+    data,
+    msg
+  };
+}
+
 export class WebView {
   private mSearchToken: any;
   private webviewPanel?: vscode.WebviewPanel;
@@ -50,73 +58,38 @@ export class WebView {
   }
 
   // 获取所有规则
-  onBookSource({ source }: { source: WebView }) {
-    this.pm.emit('getBookSource', ruleFileManager.list(), source);
+  onBookSource() {
+    return success(ruleFileManager.list());
   }
 
   // 获取单个规则
-  onGetRule({ source, data }: { source: WebView; data: Rule }) {
+  onGetRule(data: Rule) {
     const rules = ruleFileManager.list();
-    this.pm.emit(
-      'getRule',
-      rules.find((e) => e.id === data.id),
-      source
-    );
+    return success(rules.find((e) => e.id === data.id));
   }
 
   // 添加规则
-  onAddRule({ data }: { data: Rule }) {
+  onAddRule(data: Rule) {
     ruleFileManager.update(data);
   }
 
   // 更新规则
-  async onUpdateRule({ source, data }: { source: WebView; data: Rule }) {
+  async onUpdateRule(data: Rule) {
     await ruleFileManager.update(data);
-    this.pm.emit('getBookSource', ruleFileManager.list(), source);
+    return success(data);
   }
 
   // 搜索
-  async onSearch({ source, data }: { source: WebView; data: any }) {
-    const { uuid, keyword, contentTypes } = data;
-    this.mSearchToken = uuid;
-    const rules = ruleFileManager.list().filter((e) => contentTypes.includes(e.contentType) && e.enableSearch);
-    const count = rules.length;
-    let runCount = 0;
-    if (count === 0) {
-      this.pm.emit(
-        'search',
-        {
-          runCount,
-          count,
-          uuid
-        },
-        source
-      );
-    }
-    for (const rule of rules) {
-      if (this.mSearchToken !== uuid) {
-        return;
-      }
-      const analyzer = new RuleManager(rule);
-      const searchItems = await analyzer.search(keyword).catch(() => []);
-      runCount++;
-      this.pm.emit(
-        'search',
-        {
-          runCount,
-          count,
-          uuid,
-          rule,
-          list: searchItems
-        },
-        source
-      );
-    }
+  async onSearchByRuleId({ ruleId, keyword }: { ruleId: string; keyword: string }) {
+    const rule = await ruleFileManager.findById(ruleId);
+    const analyzer = new RuleManager(rule);
+    return success(await analyzer.search(keyword).catch(() => []));
   }
 
   // 获取章节
-  async onGetChapter({ data }: { data: any }) {
-    const { rule, data: searchItem } = data;
+  async onGetChapter(data: any) {
+    const { ruleId, data: searchItem } = data;
+    const rule = await ruleFileManager.findById(ruleId);
     vscode.commands.executeCommand(
       COMMANDS.getChapter,
       {
@@ -131,23 +104,16 @@ export class WebView {
 
   // 获取分类
   async onDiscoverMap(data: any) {
-    const { rule } = data;
+    const rule = await ruleFileManager.findById(data.ruleId);
     const ruleManager = new RuleManager(rule);
-    const res = await ruleManager.discoverMap();
-    return {
-      rule,
-      data: res
-    };
+    return success(await ruleManager.discoverMap());
   }
 
   // 获取分类下内容
   async onDiscover(data: any) {
-    const { rule, data: params } = data;
+    const rule = await ruleFileManager.findById(data.ruleId);
     const ruleManager = new RuleManager(rule);
-    return {
-      rule,
-      data: await ruleManager.discover(params.value)
-    };
+    return success(await ruleManager.discover(data.data.value));
   }
 
   // 编辑规则
@@ -157,19 +123,19 @@ export class WebView {
 
   // 获取收藏列表
   async onGetFavoritesList() {
-    return await favoritesManager.list();
+    return success(await favoritesManager.list());
   }
 
   async onStar({ data, ruleId }: any) {
     await favoritesManager.add(data, await ruleFileManager.findById(ruleId));
     favoritesProvider.refresh();
-    return true;
+    return success(true);
   }
 
   async onUnstar({ data, ruleId }: any) {
     await favoritesManager.del(data, await ruleFileManager.findById(ruleId));
     favoritesProvider.refresh();
-    return true;
+    return success(true);
   }
 
   initWebviewPanel(title: string) {
@@ -189,21 +155,22 @@ export class WebView {
       // @ts-ignore
       this.pm = new EasyPostMessage(createAdapter(this.webviewPanel.webview));
 
-      // 异步
-      this.pm.on('getBookSource', this.onBookSource.bind(this));
-      this.pm.on('getRule', this.onGetRule.bind(this));
-      this.pm.on('addRule', this.onAddRule.bind(this));
-      this.pm.on('updateRule', this.onUpdateRule.bind(this));
-      this.pm.on('search', this.onSearch.bind(this));
-      this.pm.on('getChapter', this.onGetChapter.bind(this));
-      this.pm.on('editBookSource', this.onEditBookSource.bind(this));
+      // vsc
+      this.pm.answer('post@vscode/getChapter', this.onGetChapter.bind(this));
+      this.pm.answer('get@vscode/editBookSource', this.onEditBookSource.bind(this));
 
-      // 同步
-      this.pm.answer('discoverMap', this.onDiscoverMap.bind(this));
-      this.pm.answer('discover', this.onDiscover.bind(this));
-      this.pm.answer('getFavoritesList', this.onGetFavoritesList.bind(this));
-      this.pm.answer('star', this.onStar.bind(this));
-      this.pm.answer('unstar', this.onUnstar.bind(this));
+      this.pm.answer('get@discoverMap', this.onDiscoverMap.bind(this));
+      this.pm.answer('get@getFavorites', this.onGetFavoritesList.bind(this));
+      this.pm.answer('post@discover', this.onDiscover.bind(this));
+      this.pm.answer('post@star', this.onStar.bind(this));
+      this.pm.answer('post@unstar', this.onUnstar.bind(this));
+
+      this.pm.answer('get@rules', this.onBookSource.bind(this));
+      this.pm.answer('get@getRuleById', this.onGetRule.bind(this));
+      this.pm.answer('post@createRule', this.onAddRule.bind(this));
+      this.pm.answer('post@updateRule', this.onUpdateRule.bind(this));
+
+      this.pm.answer('post@searchByRuleId', this.onSearchByRuleId.bind(this));
     } else {
       this.webviewPanel.title = title;
     }

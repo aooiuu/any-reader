@@ -1,10 +1,10 @@
 {
   "name": "any-reader-web",
-  "version": "0.5.5",
+  "version": "0.5.7",
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "cross-env VITE_APP_PLATFORM=browser vite",
     "build:w": "vite build --watch",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
@@ -38,6 +38,7 @@
     "@vue/eslint-config-typescript": "^12.0.0",
     "@vue/tsconfig": "^0.5.1",
     "chalk": "^5.2.0",
+    "cross-env": "^7.0.3",
     "eslint": "^8.49.0",
     "eslint-plugin-vue": "^9.17.0",
     "mockjs": "^1.1.0",

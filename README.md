@@ -56,7 +56,6 @@
 
 - [eso](https://github.com/mabDc/eso)
 
-
 <!-- Badges -->
 
 [vsc-src]: https://img.shields.io/visual-studio-marketplace/v/aooiu.any-reader

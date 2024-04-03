@@ -1,4 +1,4 @@
-import { sendMessage } from '@/utils/postMessage';
+import { getFavorites, star as _star, unstar } from '@/api';
 
 interface FavoriteRow {
   ruleId: string;
@@ -19,15 +19,27 @@ export const useFavoritesStore = defineStore('favorites', () => {
 
   // 同步收藏列表
   async function sync() {
-    list.value = await sendMessage('getFavoritesList', {});
+    const res = await getFavorites();
+    if (res?.code === 0) {
+      list.value = res.data;
+    } else {
+      list.value = [];
+    }
   }
 
   // 收藏 | 取消收藏
   async function star(row: any, ruleId: string) {
-    await sendMessage(starred(row, ruleId) ? 'unstar' : 'star', {
-      ruleId,
-      data: row
-    });
+    if (starred(row, ruleId)) {
+      await unstar({
+        ruleId,
+        data: row
+      });
+    } else {
+      await _star({
+        ruleId,
+        data: row
+      });
+    }
     sync();
   }
 

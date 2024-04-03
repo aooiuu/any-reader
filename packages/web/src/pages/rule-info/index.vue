@@ -10,7 +10,7 @@
           </a-radio-group>
         </div>
 
-        <div class="flex-1 flex">
+        <div class="flex-1 flex overflow-hidden">
           <AForm v-if="formType === 'All' || formType === 'Form'" :model="formData" :auto-label-width="true" class="flex-1 overflow-auto">
             <template v-for="item in formItems" :key="item.prop">
               <AFormItem v-if="!item.show || item.show(formData)" :label="item.label">
@@ -43,7 +43,7 @@
 <script setup>
 import { v4 as uuidV4 } from 'uuid';
 import { CONTENT_TYPES, CONTENT_TYPE } from '@/constants';
-import { postMessage, useMessage } from '@/utils/postMessage';
+import { getRuleById, createRule } from '@/api';
 import MonacoEditor from './MonacoEditor.vue';
 
 const loading = ref(false);
@@ -158,26 +158,22 @@ function setFormData(v) {
   });
 }
 
-function submit() {
-  postMessage('addRule', {
+async function submit() {
+  await createRule({
     ...formData,
     uuid: uuidV4()
   });
-
   router.push('/rules');
 }
 
-useMessage('getRule', (data) => {
-  loading.value = false;
-  Object.assign(formData, data);
-});
-
-onMounted(() => {
+onMounted(async () => {
   if (route.query.id) {
     loading.value = true;
-    postMessage('getRule', {
-      id: route.query.id
-    });
+    const res = await getRuleById(route.query.id);
+    if (res.code === 0) {
+      Object.assign(formData, res.data);
+    }
+    loading.value = false;
   }
 });
 </script>

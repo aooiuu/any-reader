@@ -33,16 +33,15 @@
 
 <script setup lang="jsx">
 import { CONTENT_TYPES } from '@/constants';
-import { postMessage, useMessage } from '@/utils/postMessage';
+import { useRulesStore } from '@/stores/rules';
+import { updateRule } from '@/api';
+import { editBookSource } from '@/api/vsc';
 
 const router = useRouter();
+const rulesStore = useRulesStore();
 
 const searchText = ref('');
 const contentTypes = ref(CONTENT_TYPES.map((e) => e.value).flat());
-
-function updateRule(row) {
-  postMessage('updateRule', row);
-}
 
 function editRule(row) {
   router.push({
@@ -52,7 +51,6 @@ function editRule(row) {
     }
   });
 }
-const rules = ref([]);
 
 const tableColumns = ref([
   {
@@ -78,6 +76,8 @@ const tableColumns = ref([
           updateRule({
             ...record,
             enableSearch: v
+          }).then(() => {
+            record.enableSearch = v;
           })
         }
       />
@@ -94,6 +94,8 @@ const tableColumns = ref([
           updateRule({
             ...record,
             enableDiscover: v
+          }).then(() => {
+            record.enableDiscover = v;
           })
         }
       />
@@ -113,8 +115,8 @@ const tableColumns = ref([
 ]);
 
 const tableData = computed(() => {
-  if (!searchText.value) return rules.value.filter((e) => contentTypes.value.includes(e.contentType));
-  return rules.value.filter((e) => e.name?.includes(searchText.value) && contentTypes.value.includes(e.contentType));
+  if (!searchText.value) return rulesStore.list.filter((e) => contentTypes.value.includes(e.contentType));
+  return rulesStore.list.filter((e) => e.name?.includes(searchText.value) && contentTypes.value.includes(e.contentType));
 });
 
 // 添加规则
@@ -122,13 +124,5 @@ function addRule() {
   router.push('/rule-info');
 }
 
-useMessage('getBookSource', (data) => {
-  rules.value = data;
-});
-
-postMessage('getBookSource', {});
-
-function editBookSource() {
-  postMessage('editBookSource', {});
-}
+rulesStore.sync();
 </script>
