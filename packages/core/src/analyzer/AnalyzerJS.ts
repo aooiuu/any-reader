@@ -23,6 +23,6 @@ export class AnalyzerJS implements Analyzer {
   async getElements(rule: string) {
     return JSEngine.evaluate(rule, {
       result: this._content,
-    })
+    }).catch(() => [])
   }
 }

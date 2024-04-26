@@ -53,14 +53,16 @@
 
 <script setup lang="tsx">
 import { v4 as uuidV4 } from 'uuid';
+import pLimit from 'p-limit';
 import { CONTENT_TYPES } from '@/constants';
 import { searchByRuleId } from '@/api';
 import { getChapter } from '@/api/vsc';
 import { useFavoritesStore } from '@/stores/favorites';
 import { useRulesStore } from '@/stores/rules';
-
 const favoritesStore = useFavoritesStore();
 const rulesStore = useRulesStore();
+
+const runPromise = pLimit(5);
 
 favoritesStore.sync();
 
@@ -84,19 +86,23 @@ function onSearch() {
   rulesStore.sync().then(async () => {
     const rules = rulesStore.list.filter((e) => contentTypes.value.includes(e.contentType) && e.enableSearch);
     total.value = rules.length;
-    for (const rule of rules) {
-      if (lastUuid !== uuid) return;
-      runCount.value++;
-      const res = await searchByRuleId({ ruleId: rule.id, keyword: searchText.value });
-      if (res.code === 0) {
-        const rows = res.data;
-        if (!rows.length) continue;
-        list.value.push({
-          rule: rule,
-          list: rows
-        });
-      }
-    }
+
+    const tasks = rules.map((rule) =>
+      runPromise(async () => {
+        if (lastUuid !== uuid) return;
+        runCount.value++;
+        const res = await searchByRuleId({ ruleId: rule.id, keyword: searchText.value });
+        if (res.code === 0) {
+          const rows = res.data;
+          if (!rows.length) return;
+          list.value.push({
+            rule: rule,
+            list: rows
+          });
+        }
+      })
+    );
+    await Promise.all(tasks).catch(() => {});
     loading.value = false;
   });
 }

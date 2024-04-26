@@ -126,7 +126,7 @@ export class RuleManager {
       params = JSEngine.evaluate(url.substring(4), {
         ...vars,
         keyword,
-      })
+      }).catch(() => ({}))
     }
     else {
       params.url = params.url.replace(
@@ -268,7 +268,7 @@ export class RuleManager {
           keyword: '',
           lastResult: '',
         })
-        discoverUrl = await JSEngine.evaluate(`${discoverUrl.substring(4)};`)
+        discoverUrl = await JSEngine.evaluate(`${discoverUrl.substring(4)};`).catch(() => '')
       }
 
       const discovers = Array.isArray(discoverUrl)

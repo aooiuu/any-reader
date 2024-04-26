@@ -34,7 +34,7 @@ export class JSEngine {
   }
 
   static async evaluate(command: string, context: any = {}) {
-    return vm.runInContext(command, vm.createContext({
+    return vm.runInNewContext(command, vm.createContext({
       ...JSEngine.environment,
       ...context,
     }))
