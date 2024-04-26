@@ -43,6 +43,7 @@
     "*.{vue,js,ts}": "eslint --fix"
   },
   "devDependencies": {
+    "@types/mime": "3.0.4",
     "@types/uuid": "^9.0.8",
     "husky": "^8.0.0"
   }

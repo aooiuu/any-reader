@@ -3,7 +3,7 @@
   "displayName": "any-reader",
   "description": "any-reader for vscode",
   "icon": "resources/icon.png",
-  "version": "0.5.7",
+  "version": "0.6.0",
   "preview": true,
   "publisher": "aooiu",
   "qna": "https://github.com/aooiuu/any-reader/issues",
@@ -104,6 +104,18 @@
         "title": "refresh",
         "icon": "$(refresh)",
         "category": "any-reader"
+      },
+      {
+        "command": "any-reader.openLocalBookDir",
+        "title": "open local book dir",
+        "icon": "$(folder-opened)",
+        "category": "any-reader"
+      },
+      {
+        "command": "any-reader.refreshLocalBooks",
+        "title": "refresh",
+        "icon": "$(refresh)",
+        "category": "any-reader"
       }
     ],
     "viewsContainers": {
@@ -132,6 +144,10 @@
         {
           "id": "any-reader-favorites",
           "name": "收藏"
+        },
+        {
+          "id": "any-reader-local",
+          "name": "本地"
         }
       ]
     },
@@ -165,6 +181,16 @@
         {
           "command": "any-reader.favoritesRefresh",
           "when": "view == any-reader-favorites",
+          "group": "navigation"
+        },
+        {
+          "command": "any-reader.openLocalBookDir",
+          "when": "view == any-reader-local",
+          "group": "navigation"
+        },
+        {
+          "command": "any-reader.refreshLocalBooks",
+          "when": "view == any-reader-local",
           "group": "navigation"
         }
       ],
@@ -232,8 +258,9 @@
   },
   "dependencies": {
     "@any-reader/core": "workspace:*",
-    "any-reader-web": "workspace:^",
+    "@any-reader/shared": "workspace:*",
     "easy-post-message": "^0.1.0",
+    "explorer-opener": "^1.0.1",
     "fs-extra": "^11.1.1",
     "uuid": "^9.0.1"
   }

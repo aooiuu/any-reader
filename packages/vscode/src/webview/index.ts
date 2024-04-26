@@ -49,9 +49,8 @@ export class WebView {
   }
 
   // 打开阅读面板
-  async openWebviewPanel(article: TreeNode, content: string) {
+  async openWebviewPanel(title: string, content: string) {
     this.isVue = false;
-    const title: string = article.data.name;
     this.initWebviewPanel(title);
     this.webviewPanel!.webview.html = content;
     this.webviewPanel!.reveal();

@@ -18,13 +18,20 @@
       "types": "./index.d.ts",
       "require": "./dist/index.cjs",
       "import": "./dist/index.mjs"
+    },
+    "./localBookManager": {
+      "types": "./localBookManager.d.ts",
+      "require": "./dist/localBookManager.cjs",
+      "import": "./dist/localBookManager.mjs"
     }
   },
   "author": "",
   "license": "GPL3",
   "dependencies": {
     "@any-reader/core": "workspace:^",
+    "encoding-japanese": "^2.1.0",
     "fs-extra": "^11.1.1",
+    "iconv-lite": "^0.6.3",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
@@ -33,6 +40,7 @@
     "@rollup/plugin-commonjs": "^25.0.2",
     "@rollup/plugin-json": "^6.0.0",
     "@rollup/plugin-node-resolve": "^15.1.0",
+    "@types/encoding-japanese": "^2.0.5",
     "@types/koa-router": "^7.4.8",
     "@types/koa-static": "^4.0.4",
     "esno": "^0.16.3",

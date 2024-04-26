@@ -9,3 +9,5 @@ export const BOOK_SOURCE_PATH = path.join(ROOT_PATH, 'book-source.json')
 export const HISTORY_PATH = path.join(ROOT_PATH, 'history.json')
 // 收藏配置路径
 export const FAVORITES_PATH = path.join(ROOT_PATH, 'favorites.json')
+// 本地文件目录
+export const LOCAL_BOOK_DIR = path.join(ROOT_PATH, 'local-book')

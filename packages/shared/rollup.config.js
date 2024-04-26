@@ -10,6 +10,17 @@ const entries = [
     path: 'src/index.ts',
     format: ['esm', 'cjs'],
   },
+  {
+    path: 'src/localBookManager.ts',
+    format: ['esm', 'cjs'],
+  },
+]
+
+const external = [
+  '@any-reader/core',
+  'fs-extra',
+  'encoding-japanese',
+  'iconv-lite',
 ]
 
 const plugins = [
@@ -49,9 +60,7 @@ export default [
         name,
       },
     ].filter(o => format.includes(o.format)),
-    external: [
-      '@any-reader/core',
-    ],
+    external,
     plugins,
   })),
   ...entries.map(({ path: input }) => ({
@@ -60,9 +69,7 @@ export default [
       file: input.replace('src/', '').replace('.ts', '.d.ts'),
       format: 'esm',
     },
-    external: [
-      '@any-reader/core',
-    ],
+    external,
     plugins: [
       dts({
         respectExternal: true,
