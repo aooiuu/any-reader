@@ -159,7 +159,7 @@ class App {
         cancellable: false
       },
       async () => {
-        const content = getContent(item);
+        const content = await getContent(item).catch(() => '');
         this.openWebviewPanel(item.name, content);
       }
     );

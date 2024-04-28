@@ -12,10 +12,10 @@ class TreeDataProvider implements vscode.TreeDataProvider<TreeNode> {
 
   // 节点展示
   getTreeItem(item: TreeNode): vscode.TreeItem {
-    if ((<BookFile>item).path) {
-      return this.getTreeItemBookFile(item as BookFile);
-    } else {
+    if ((<BookChapter>item).file) {
       return this.getTreeItemBookChapter(item as BookChapter);
+    } else {
+      return this.getTreeItemBookFile(item as BookFile);
     }
   }
 
@@ -43,9 +43,9 @@ class TreeDataProvider implements vscode.TreeDataProvider<TreeNode> {
   }
 
   // 获取目录
-  async getChildren(item?: TreeNode): Promise<TreeNode[]> {
+  getChildren(item?: TreeNode): Promise<TreeNode[]> {
     if (!item) {
-      return await getBookList();
+      return getBookList();
     } else {
       return getChapter(item as BookFile);
     }

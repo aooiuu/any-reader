@@ -1,5 +1,4 @@
 export * from './favoritesManager'
 export * from './historyManager'
 export * as ruleFileManager from './ruleFileManager'
-export * as localBookManager from './localBookManager'
 export * as CONSTANTS from './constants'
