@@ -5,31 +5,31 @@
 > 软件不提供内容, 也不提供任何规则, 但你可以通过编写 [规则](https://aooiuu.github.io/any-reader/rule/), 控制呈现内容, [查看文档](https://aooiuu.github.io/any-reader/)
 
 <p align="center">
-  <a href="https://github.com/aooiuu/any-reader-vscode">
+  <a href="https://github.com/aooiuu/any-reader">
     <img
       src="https://img.shields.io/visual-studio-marketplace/v/aooiu.any-reader"
       alt=""
     />
   </a>
-  <a href="https://github.com/aooiuu/any-reader-vscode">
+  <a href="https://github.com/aooiuu/any-reader">
     <img
       src="https://img.shields.io/visual-studio-marketplace/d/aooiu.any-reader"
       alt=""
     />
   </a>
-    <a href="https://github.com/aooiuu/any-reader-vscode">
+    <a href="https://github.com/aooiuu/any-reader">
     <img
       src="https://img.shields.io/visual-studio-marketplace/i/aooiu.any-reader"
       alt=""
     />
   </a>
-  <a href="https://github.com/aooiuu/any-reader-vscode">
+  <a href="https://github.com/aooiuu/any-reader">
     <img src="https://img.shields.io/github/stars/aooiuu/any-reader" alt="" />
   </a>
-  <a href="https://github.com/aooiuu/any-reader-vscode">
+  <a href="https://github.com/aooiuu/any-reader">
     <img src="https://img.shields.io/github/forks/aooiuu/any-reader" alt="" />
   </a>
-  <a href="https://github.com/aooiuu/any-reader-vscode">
+  <a href="https://github.com/aooiuu/any-reader">
     <img src="https://img.shields.io/github/issues/aooiuu/any-reader" alt="" />
   </a>
 </p>
