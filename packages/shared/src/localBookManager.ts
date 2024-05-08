@@ -1,11 +1,11 @@
 import * as path from 'node:path'
-import * as fs from 'fs-extra'
+import * as fs from 'node:fs'
 import EPub from 'epub'
 import Encoding from 'encoding-japanese'
 import * as iconv from 'iconv-lite'
 import { LOCAL_BOOK_DIR } from './constants'
 
-enum BOOK_TYPE {
+export enum BOOK_TYPE {
   TXT = 1,
   EPUB = 2,
 }
@@ -30,9 +30,17 @@ export function checkDir() {
     fs.mkdirSync(LOCAL_BOOK_DIR)
 }
 
+export function path2bookFile(filePath: string): BookFile {
+  return {
+    type: getBookType(filePath),
+    name: path.basename(filePath, path.extname(filePath)),
+    path: filePath,
+  }
+}
+
 // 获取书籍类型
-function getBookType(extname: string) {
-  return extname === '.txt' ? BOOK_TYPE.TXT : BOOK_TYPE.EPUB
+export function getBookType(filePath: string) {
+  return path.extname(filePath) === '.txt' ? BOOK_TYPE.TXT : BOOK_TYPE.EPUB
 }
 
 // 获取所有书籍
@@ -43,18 +51,15 @@ export async function getBookList(): Promise<BookFile[]> {
   const files = fs.readdirSync(dir)
 
   return files
-    .filter(f => ['.txt', '.epub'].includes(path.extname(f)))
-    .map((f) => {
-      return {
-        type: getBookType(path.extname(f)),
-        name: path.basename(f, path.extname(f)),
-        path: path.join(dir, f),
-      }
+    .filter(filePath => ['.txt', '.epub'].includes(path.extname(filePath)))
+    .map((filePath) => {
+      return path2bookFile(path.join(dir, filePath))
     })
 }
 
 // 获取章节
-export async function getChapter(bookFile: BookFile): Promise<BookChapter[]> {
+export async function getChapter(filePath: string): Promise<BookChapter[]> {
+  const bookFile = path2bookFile(filePath)
   if (bookFile.type === BOOK_TYPE.TXT) {
     return [
       {

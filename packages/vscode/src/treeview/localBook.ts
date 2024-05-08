@@ -5,6 +5,7 @@ import { COMMANDS } from '../constants';
 class TreeDataProvider implements vscode.TreeDataProvider<TreeNode> {
   readonly _onDidChangeTreeData = new vscode.EventEmitter<TreeNode | undefined>();
   readonly onDidChangeTreeData = this._onDidChangeTreeData.event;
+  readonly cache = new Map();
 
   async refresh(): Promise<void> {
     this._onDidChangeTreeData.fire(undefined);
@@ -42,12 +43,20 @@ class TreeDataProvider implements vscode.TreeDataProvider<TreeNode> {
     };
   }
 
+  // 获取缓存列表
+  getChildrenCache(path: string) {
+    return this.cache.get(path) || [];
+  }
+
   // 获取目录
-  getChildren(item?: TreeNode): Promise<TreeNode[]> {
+  async getChildren(item?: TreeNode): Promise<TreeNode[]> {
     if (!item) {
+      this.cache.clear();
       return getBookList();
     } else {
-      return getChapter(item as BookFile);
+      const chapters = await getChapter(item.path).catch(() => []);
+      this.cache.set(item.path, chapters);
+      return chapters;
     }
   }
 }

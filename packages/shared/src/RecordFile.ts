@@ -1,4 +1,5 @@
-import * as fs from 'fs-extra'
+// @ts-expect-error
+import { ensureFile, readJson, writeJson } from 'fs-extra/esm'
 import type { Rule, SearchItem } from '@any-reader/core'
 
 export interface RecordFileRow extends SearchItem {
@@ -18,8 +19,8 @@ export class RecordFile {
 
   // 初始化
   async init() {
-    await fs.ensureFile(this.filePath)
-    this.history = await fs.readJson(this.filePath).catch(() => this.history)
+    await ensureFile(this.filePath)
+    this.history = await readJson(this.filePath).catch(() => this.history)
   }
 
   // 获取所有记录
@@ -29,8 +30,8 @@ export class RecordFile {
 
   // 保存配置文件
   async writeFile() {
-    await fs.ensureFile(this.filePath)
-    await fs.writeJson(this.filePath, this.history, { spaces: 2 })
+    await ensureFile(this.filePath)
+    await writeJson(this.filePath, this.history, { spaces: 2 })
   }
 
   // 删除记录

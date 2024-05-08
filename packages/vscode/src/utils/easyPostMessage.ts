@@ -1,3 +1,7 @@
+/**
+ * 消息通信, 处理 webview 和 vscode
+ */
+
 import { Webview } from 'vscode';
 import { IAdapter, IMessage } from 'easy-post-message';
 

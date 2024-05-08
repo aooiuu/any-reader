@@ -1,3 +1,7 @@
+/**
+ * 侧边栏 - 收藏
+ */
+
 import * as vscode from 'vscode';
 import { COMMANDS } from '../constants';
 import { RecordFileRow } from '../utils/RecordFile';

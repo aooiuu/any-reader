@@ -6,6 +6,7 @@ export interface TreeNode {
   rule: Rule;
   type: number; // 1=SearchItem 2=ChapterItem
   data: SearchItem | ChapterItem;
+  url: string;
 }
 
 class BookManager implements vscode.Disposable {
@@ -35,11 +36,12 @@ class BookManager implements vscode.Disposable {
 
     const rm = new RuleManager(rule);
     const list = await rm.search(keyword);
-    this.list = list.map((searchItem: unknown) => {
+    this.list = list.map((searchItem: SearchItem) => {
       return {
         rule,
         type: 1,
-        data: searchItem
+        data: searchItem,
+        url: searchItem.url
       } as TreeNode;
     });
   }
@@ -55,6 +57,7 @@ class BookManager implements vscode.Disposable {
       list.map((e: any) => ({
         type: 2,
         rule: tn.rule,
+        url: tn.data.url,
         data: e
       }))
     );

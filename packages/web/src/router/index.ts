@@ -30,6 +30,11 @@ const router = createRouter({
     {
       path: '/discover',
       component: () => import('@/pages/discover/index.vue')
+    },
+    {
+      path: '/content',
+      name: 'content',
+      component: () => import('@/pages/content/index.vue')
     }
   ]
 });

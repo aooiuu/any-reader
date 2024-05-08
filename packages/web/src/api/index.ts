@@ -89,3 +89,24 @@ export function searchByRuleId(data: { ruleId: string; keyword: string }) {
     data
   });
 }
+
+// 获取内容
+export function getContent(data: any) {
+  return request({
+    method: 'post',
+    url: 'content',
+    data
+  });
+}
+
+// 获取章节
+export function getChapter(filePath: string, ruleId?: string) {
+  return request({
+    method: 'post',
+    url: 'getChapter',
+    data: {
+      filePath,
+      ruleId
+    }
+  });
+}

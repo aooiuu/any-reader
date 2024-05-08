@@ -1,3 +1,7 @@
+/**
+ * 侧边栏 - 规则
+ */
+
 import * as vscode from 'vscode';
 import { Rule, ContentType } from '@any-reader/core';
 import * as ruleFileManager from '../utils/ruleFileManager';

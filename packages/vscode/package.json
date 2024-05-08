@@ -1,9 +1,9 @@
 {
   "name": "any-reader",
   "displayName": "any-reader",
-  "description": "any-reader for vscode",
+  "description": "自定义规则多站点聚合搜索阅读小说、漫画。包含JS规则解析库和VSCode插件。支持本地小说 TXT、EPUB",
   "icon": "resources/icon.png",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "preview": true,
   "publisher": "aooiu",
   "qna": "https://github.com/aooiuu/any-reader/issues",
@@ -262,6 +262,7 @@
     "easy-post-message": "^0.1.0",
     "explorer-opener": "^1.0.1",
     "fs-extra": "^11.1.1",
+    "qs": "^6.12.1",
     "uuid": "^9.0.1"
   }
 }

@@ -1,3 +1,7 @@
+/**
+ * [侧边栏 - 规则] 右侧规则类型显示
+ */
+
 import { FileDecoration, FileDecorationProvider, ProviderResult, Uri } from 'vscode';
 import { CONTENT_TYPE_TEXT } from '@any-reader/core';
 

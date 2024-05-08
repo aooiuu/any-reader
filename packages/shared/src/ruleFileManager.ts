@@ -1,4 +1,5 @@
-import * as fs from 'fs-extra'
+// @ts-expect-error
+import { ensureFile, readJson, writeJson } from 'fs-extra/esm'
 import { v4 as uuidV4 } from 'uuid'
 import type { Rule } from '@any-reader/core'
 import { decodeRule } from '@any-reader/core'
@@ -8,7 +9,7 @@ let ruleList: Rule[] = []
 
 async function readRuleList(): Promise<Rule[]> {
   try {
-    const list = await fs.readJson(BOOK_SOURCE_PATH)
+    const list = await readJson(BOOK_SOURCE_PATH)
     for (let i = 0; i < list.length; i++) {
       const rule = list[i]
       if (typeof rule === 'string' && rule.includes('eso://'))
@@ -23,14 +24,14 @@ async function readRuleList(): Promise<Rule[]> {
 
 // 初始化
 export async function init() {
-  await fs.ensureFile(BOOK_SOURCE_PATH)
+  await ensureFile(BOOK_SOURCE_PATH)
   ruleList = await readRuleList()
 }
 
 // 保存配置文件
 async function writeFile() {
-  await fs.ensureFile(BOOK_SOURCE_PATH)
-  return fs.writeJson(BOOK_SOURCE_PATH, ruleList, { spaces: 2 })
+  await ensureFile(BOOK_SOURCE_PATH)
+  return writeJson(BOOK_SOURCE_PATH, ruleList, { spaces: 2 })
 }
 
 export function list(): Rule[] {

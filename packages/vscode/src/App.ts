@@ -1,16 +1,15 @@
 import * as vscode from 'vscode';
 import { openExplorer } from 'explorer-opener';
-import { ContentType, Rule, RuleManager, SearchItem } from '@any-reader/core';
+import { Rule, RuleManager, SearchItem } from '@any-reader/core';
 import { CONSTANTS } from '@any-reader/shared';
-import { BookChapter, getContent, checkDir } from '@any-reader/shared/localBookManager';
+import { checkDir } from '@any-reader/shared/localBookManager';
 import { COMMANDS, BOOK_SOURCE_PATH } from './constants';
-import { config } from './config';
 import bookProvider from './treeview/book';
 import historyProvider from './treeview/history';
 import sourceProvider from './treeview/source';
 import favoritesProvider from './treeview/favorites';
 import localProvider from './treeview/localBook';
-import bookManager, { TreeNode } from './treeview/bookManager';
+import bookManager from './treeview/bookManager';
 import { treeItemDecorationProvider } from './treeview/TreeItemDecorationProvider';
 import * as ruleFileManager from './utils/ruleFileManager';
 import historyManager from './utils/historyManager';
@@ -27,6 +26,7 @@ class App {
     // 初始化配置文件
     await Promise.all([ruleFileManager.init(), historyManager.init(), favoritesManager.init()]);
 
+    // 注册命令
     const registerCommand = vscode.commands.registerCommand;
     [
       vscode.window.registerFileDecorationProvider(treeItemDecorationProvider),
@@ -35,10 +35,10 @@ class App {
       registerCommand(COMMANDS.getChapter, this.getChapter, this),
       registerCommand(COMMANDS.discover, this.discover, this),
       registerCommand(COMMANDS.searchBookByRule, this.searchBookByRule, this),
-      registerCommand(COMMANDS.getContent, this.getContent, this),
+      registerCommand(COMMANDS.getContent, this.webView.getContent, this.webView),
       registerCommand(COMMANDS.openLocalBookDir, this.openLocalBookDir, this),
       registerCommand(COMMANDS.refreshLocalBooks, this.refreshLocalBooks, this),
-      registerCommand(COMMANDS.getContentLocalBook, this.getContentLocalBook, this),
+      registerCommand(COMMANDS.getContentLocalBook, this.webView.getContentLocalBook, this.webView),
       registerCommand(COMMANDS.star, this.star, this),
       registerCommand(COMMANDS.unstar, this.unstar, this),
       registerCommand(COMMANDS.home, () => this.webView.navigateTo('/'), this.webView),
@@ -95,7 +95,9 @@ class App {
     bookProvider.refresh();
   }
 
-  // 获取章节
+  /**
+   * 获取章节
+   */
   async getChapter(history: RecordFileRow, config: { saveHistory: SearchItem }) {
     await vscode.window.withProgress(
       {
@@ -107,60 +109,12 @@ class App {
         const rule = await ruleFileManager.findById(history.ruleId);
         const ruleManager = new RuleManager(rule);
         const chapterItems = await ruleManager.getChapter(history.url);
-
-        bookManager.list = chapterItems.map((chapterItem: any) => ({
-          rule,
-          type: 2,
-          data: chapterItem
-        }));
-        bookProvider.refresh();
+        bookProvider.setChapters(chapterItems, rule, history.url);
 
         if (config?.saveHistory) {
           historyManager.add(config.saveHistory, rule);
           historyProvider.refresh();
         }
-      }
-    );
-  }
-
-  // 获取文章详情
-  async getContent(article: TreeNode) {
-    await vscode.window.withProgress(
-      {
-        location: vscode.ProgressLocation.Window,
-        title: 'loading...',
-        cancellable: false
-      },
-      async () => {
-        const textArr = await bookManager.getContent(article);
-        if (!textArr?.length) {
-          vscode.window.showWarningMessage('empty content');
-        } else {
-          let content = '';
-          if (article.rule.contentType === ContentType.VIDEO) {
-            this.webView.navigateTo('/player?url=' + textArr[0]);
-          } else if (article.rule.contentType === ContentType.MANGA) {
-            content = textArr.map((src) => `<img src="${src}"/>`).join('');
-          } else {
-            content = textArr.join('');
-          }
-          this.openWebviewPanel(article.data.name, content);
-        }
-      }
-    );
-  }
-
-  // 阅读本地书籍
-  async getContentLocalBook(item: BookChapter) {
-    await vscode.window.withProgress(
-      {
-        location: vscode.ProgressLocation.Window,
-        title: 'loading...',
-        cancellable: false
-      },
-      async () => {
-        const content = await getContent(item).catch(() => '');
-        this.openWebviewPanel(item.name, content);
       }
     );
   }
@@ -174,37 +128,6 @@ class App {
   // 刷新本地目录
   refreshLocalBooks() {
     localProvider.refresh();
-  }
-
-  openWebviewPanel(title: string, content: string) {
-    if (!content) {
-      return;
-    }
-    if (config.app.get('hideImage', false)) {
-      content = content.replace(/<img .*?>/gim, '');
-    }
-    const injectedHtml = config.app.get('injectedHtml', '');
-    const css = `
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      width: 100%;
-    }
-    body {
-      font-size: 1em;
-    }
-    p {
-      margin: 0;
-      padding: 0;
-    }
-    `;
-    this.webView.openWebviewPanel(
-      title,
-      `${injectedHtml}<style>${css}</style><div style="white-space: pre-wrap; height: 100%; width: 100%; padding: 10px
-      ; box-sizing: border-box;">${content}</div>`
-    );
   }
 
   // 获取本地书源列表
