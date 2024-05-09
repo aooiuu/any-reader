@@ -76,8 +76,3 @@ decodeRule("eso://") // 可以解码 eso 书源, 得到原始 json
 | `\|\|`     |    ❌    |                                  |                                         |
 
 规则可以省略开头的,**@css**、**@xpath**、**@json**, 因为解析器会尝试自动识别。
-
-## 开发和调试
-
-1. 修改 `src\start.ts` 文件, 把 `rule` 变量修改为真实的书源
-2. vscode 打开调试终端, 输入 `npm run start`

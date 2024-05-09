@@ -1,6 +1,6 @@
 <template>
   <div class="px-10 py-10 h-full flex overflow-hidden">
-    <div class="flex flex-col h-full w-120 overflow-hidden">
+    <div class="flex flex-col h-full w-120 overflow-hidden bg-[--sideBar-background]">
       <a-select v-model="contentType" class="mb-10">
         <a-option v-for="o in CONTENT_TYPES" :key="o.value" :value="o.value">{{ o.label }}</a-option>
       </a-select>
@@ -8,7 +8,7 @@
         <div
           v-for="r in ruleListDisplay"
           :key="r.id"
-          :class="['h-40 lh-40 mb-2 px-12 cursor-pointer hover:op-70', ruleId === r.id ? 'bg-[#ffffff0a]' : '']"
+          :class="['h-40 lh-40 mb-2 px-12 cursor-pointer hover:op-70', ruleId === r.id ? 'color-[--textLink-foreground]' : '']"
           @click="changeRule(r)"
         >
           {{ r.name }}

@@ -10,6 +10,8 @@ outline: deep
 
 ## 参与开发
 
+### VSCode
+
 ```sh
 # 克隆项目
 git clone git@github.com:aooiuu/any-reader.git
@@ -20,14 +22,31 @@ cd any-reader
 # 安装依赖
 pnpm i
 
-# 编译 core
-pnpm run build:core
-# 实时编译 web 模板 到 vscode
-pnpm run build:web-w
+# 编译 解析库、工具库、前端模板
+pnpm run build
 ```
 
-如果需要调试 `VSCode` 插件, 用 `VSCode` 打开 `/packages/vscode` 目录, `F5` 即可运行调试插件!
-如果需要调试 `Core` , 参考 [开发和调试](/core/#开发和调试)
+用 `VSCode` 打开 `/packages/vscode` 目录, `F5` 即可运行调试插件!
+
+### Core
+
+
+调试：
+
+1. 修改 `src\start.ts` 文件, 把 `rule` 变量修改为真实的书源
+2. 进入目录 `cd packages\core`
+3. vscode 打开调试终端, 输入 `pnpm run start`
+
+
+### 前端模板
+
+```sh
+# 进入目录
+cd packages\web
+
+# 实时编译到 VSCode 目录
+pnpm run build:w
+```
 
 ### 源码目录结构
 

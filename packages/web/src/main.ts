@@ -5,7 +5,7 @@ import router from './router';
 import '@unocss/reset/sanitize/sanitize.css';
 import '@unocss/reset/sanitize/assets.css';
 import 'uno.css';
-import './assets/main.css';
+import './assets/main.scss';
 
 import ArcoVue from '@arco-design/web-vue';
 import Icon from '@arco-design/web-vue/es/icon';
