@@ -62,6 +62,12 @@
 
 - [eso](https://github.com/mabDc/eso)
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=aooiuu/any-reader&type=Date)](https://star-history.com/#aoouuu/any-reade&aooiuu/any-reader&Date)
+
+点个 `star` 可以关注更新动态, 也欢迎大家提交 `PR`.
+
 <!-- Badges -->
 
 [vsc-src]: https://img.shields.io/visual-studio-marketplace/v/aooiu.any-reader

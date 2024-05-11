@@ -74,4 +74,8 @@
 
 ![image](https://github.com/aooiuu/any-reader/assets/28108111/d4c1eb85-e90a-45e6-98b8-420992a216e5)
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=aooiuu/any-reader&type=Date)](https://star-history.com/#aoouuu/any-reade&aooiuu/any-reader&Date)
+
 点个 `star` 可以关注插件更新动态, 也欢迎大家提交 `PR`.
