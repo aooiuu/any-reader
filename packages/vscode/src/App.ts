@@ -45,7 +45,7 @@ class App {
       registerCommand(COMMANDS.getContentLocalBook, this.getContentLocalBook, this),
       registerCommand(COMMANDS.star, this.star, this),
       registerCommand(COMMANDS.unstar, this.unstar, this),
-      registerCommand(COMMANDS.home, () => this.webView.navigateTo('/'), this.webView),
+      registerCommand(COMMANDS.home, () => this.webView.navigateTo('/rules'), this.webView),
       registerCommand(COMMANDS.getBookSource, this.getBookSource, this),
       registerCommand(
         COMMANDS.historyRefresh,
