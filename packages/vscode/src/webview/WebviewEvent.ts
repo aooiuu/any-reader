@@ -10,7 +10,7 @@ import * as localBookManager from '@any-reader/shared/localBookManager';
 import { COMMANDS } from '../constants';
 import * as ruleFileManager from '../utils/ruleFileManager';
 import { createAdapter } from '../utils/easyPostMessage';
-import favoritesProvider from '../treeview/favorites';
+import favoritesProvider from '../sidebar/favorites';
 import favoritesManager from '../utils/favoritesManager';
 
 function success(data: any, msg = '') {

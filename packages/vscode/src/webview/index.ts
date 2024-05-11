@@ -9,7 +9,7 @@ import { ContentType } from '@any-reader/core';
 import type { BookChapter } from '@any-reader/shared/localBookManager';
 import * as localBookManager from '@any-reader/shared/localBookManager';
 import { sleep } from '../utils/sleep';
-import bookManager, { TreeNode } from '../treeview/bookManager';
+import bookManager, { TreeNode } from '../sidebar/bookManager';
 import { WebviewEvent } from './WebviewEvent';
 import { getWebViewContent } from '../utils/webview';
 
