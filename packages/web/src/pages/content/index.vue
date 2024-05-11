@@ -3,8 +3,8 @@
     <div v-if="showToolbar" class="flex gap-4 px-10 pb-2 justify-end">
       <div :class="['vsc-toolbar-btn codicon ', pinned ? 'codicon-pinned' : 'codicon-pin']" @click="pinned = !pinned"></div>
       <div class="flex-1"></div>
-      <div class="vsc-toolbar-btn codicon codicon-chevron-left" @click="onMenuClick('lastChapter')"></div>
-      <div class="vsc-toolbar-btn codicon codicon-chevron-right" @click="onMenuClick('nextChapter')"></div>
+      <div v-if="lastChapter" class="vsc-toolbar-btn codicon codicon-chevron-left" @click="onMenuClick('lastChapter')"></div>
+      <div v-if="nextChapter" class="vsc-toolbar-btn codicon codicon-chevron-right" @click="onMenuClick('nextChapter')"></div>
       <div class="vsc-toolbar-btn codicon codicon-chevron-up" @click="pageUp()"></div>
       <div class="vsc-toolbar-btn codicon codicon-chevron-down" @click="pageDown()"></div>
     </div>
@@ -82,7 +82,6 @@ async function init() {
   chapterPath.value = route.query.chapterPath;
 
   chaptersStore.getChapters(route.query.filePath, route.query.ruleId);
-  console.log({ res });
   if (res?.code === 0) {
     content.value = res?.data?.content || '';
   }

@@ -12,6 +12,8 @@ import { sleep } from '../utils/sleep';
 import bookManager, { TreeNode } from '../sidebar/bookManager';
 import { WebviewEvent } from './WebviewEvent';
 import { getWebViewContent } from '../utils/webview';
+import { Config } from '../config';
+import { webviewProvider } from '../sidebar/webviewProvider';
 
 export class WebView {
   private webviewPanel?: vscode.WebviewPanel;
@@ -95,15 +97,26 @@ export class WebView {
         // TODO: 漫画模板待优化
         // 小说
         if ([ContentType.MANGA, ContentType.NOVEL, ContentType.NOVELMORE].includes(contentType)) {
-          this.navigateTo(
-            '/content?' +
-              stringify({
-                ruleId: article.rule.id,
-                filePath: article.url,
-                chapterPath: article.data.url
-              })
-            // article.data.name
-          );
+          if (Config.readPageMode === 'Sidebar') {
+            webviewProvider.navigateTo(
+              '/content?' +
+                stringify({
+                  ruleId: article.rule.id,
+                  filePath: article.url,
+                  chapterPath: article.data.url
+                })
+            );
+          } else {
+            this.navigateTo(
+              '/content?' +
+                stringify({
+                  ruleId: article.rule.id,
+                  filePath: article.url,
+                  chapterPath: article.data.url
+                })
+              // article.data.name
+            );
+          }
         }
       }
     );
