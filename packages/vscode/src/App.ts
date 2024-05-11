@@ -1,8 +1,10 @@
 import * as vscode from 'vscode';
+import { stringify } from 'qs';
 import { openExplorer } from 'explorer-opener';
 import { Rule, RuleManager, SearchItem } from '@any-reader/core';
 import { CONSTANTS } from '@any-reader/shared';
-import { checkDir } from '@any-reader/shared/localBookManager';
+import { BookChapter, checkDir } from '@any-reader/shared/localBookManager';
+import * as localBookManager from '@any-reader/shared/localBookManager';
 import { COMMANDS, BOOK_SOURCE_PATH } from './constants';
 import bookProvider from './treeview/book';
 import historyProvider from './treeview/history';
@@ -11,11 +13,13 @@ import favoritesProvider from './treeview/favorites';
 import localProvider from './treeview/localBook';
 import bookManager from './treeview/bookManager';
 import { treeItemDecorationProvider } from './treeview/TreeItemDecorationProvider';
+import { webviewProvider } from './treeview/webviewProvider';
 import * as ruleFileManager from './utils/ruleFileManager';
 import historyManager from './utils/historyManager';
 import favoritesManager from './utils/favoritesManager';
 import { RecordFileRow } from './utils/RecordFile';
 import { WebView } from './webview';
+import { Config } from './config';
 
 class App {
   private webView!: WebView;
@@ -38,7 +42,7 @@ class App {
       registerCommand(COMMANDS.getContent, this.webView.getContent, this.webView),
       registerCommand(COMMANDS.openLocalBookDir, this.openLocalBookDir, this),
       registerCommand(COMMANDS.refreshLocalBooks, this.refreshLocalBooks, this),
-      registerCommand(COMMANDS.getContentLocalBook, this.webView.getContentLocalBook, this.webView),
+      registerCommand(COMMANDS.getContentLocalBook, this.getContentLocalBook, this),
       registerCommand(COMMANDS.star, this.star, this),
       registerCommand(COMMANDS.unstar, this.unstar, this),
       registerCommand(COMMANDS.home, () => this.webView.navigateTo('/'), this.webView),
@@ -69,6 +73,10 @@ class App {
     vscode.window.createTreeView('any-reader-favorites', { treeDataProvider: favoritesProvider });
     // 侧边栏 - 本地
     vscode.window.createTreeView('any-reader-local', { treeDataProvider: localProvider });
+    // 侧边栏 - webview
+    webviewProvider.setExtensionPath(context.extensionPath);
+    vscode.window.registerWebviewViewProvider('any-reader-webview', webviewProvider);
+
     vscode.commands.executeCommand(COMMANDS.getBookSource);
   }
 
@@ -147,6 +155,45 @@ class App {
     favoritesManager.del(arg.data, arg.rule);
     bookProvider.refresh();
     favoritesProvider.refresh();
+  }
+
+  // 阅读本地
+  async getContentLocalBook(item: BookChapter) {
+    await vscode.window.withProgress(
+      {
+        location: vscode.ProgressLocation.Window,
+        title: 'loading...',
+        cancellable: false
+      },
+      async () => {
+        if (item.file.type === localBookManager.BOOK_TYPE.EPUB) {
+          if (Config.readPageMode === 'Sidebar') {
+            // 侧栏
+            webviewProvider.navigateTo(
+              '/content?' +
+                stringify({
+                  filePath: item.file.path,
+                  chapterPath: item.path
+                })
+            );
+          } else {
+            // 编辑器
+            this.webView.navigateTo(
+              '/content?' +
+                stringify({
+                  filePath: item.file.path,
+                  chapterPath: item.path
+                })
+            );
+          }
+        } else {
+          // TODO: TXT 数据太大, 分章处理?
+          const openPath = vscode.Uri.file(item.file.path);
+          // vscode.window.showTextDocument(openPath);
+          vscode.commands.executeCommand('vscode.open', openPath);
+        }
+      }
+    );
   }
 }
 

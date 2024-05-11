@@ -145,3 +145,29 @@ outline: deep
 ### 图形界面配置
 
 点击插件侧边栏小房子图标， 或者 `F1` 输入 `>any-reader: Home`
+
+## 阅读页模式
+
+VSCode 界面区域：
+
+![VSCode 界面区域](https://code.visualstudio.com/assets/api/ux-guidelines/examples/architecture-containers.png)
+
+### 编辑器页阅读模式
+
+默认模式, 打开阅读页后会在 `Editor` 区域新打开一个页面。
+
+设置： `"any-reader.read-page-mode": "Editor"`
+
+### 侧边栏阅读模式
+
+默认模式, 打开阅读页后会在 `Sidebar` 区域新打开一个页面。
+
+设置：`"any-reader.read-page-mode": "Sidebar"`
+
+## 常见问题
+
+### 侧边栏阅读问题
+
+进入阅读页面之前必须先激活阅读侧边栏设视图
+
+关闭或隐藏侧边栏视图后再次打开,之前的状态不可恢复

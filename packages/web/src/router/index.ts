@@ -5,7 +5,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/rules'
+      component: () => import('@/pages/home/index.vue')
     },
     {
       path: '/player',

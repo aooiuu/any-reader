@@ -3,7 +3,7 @@
   "displayName": "any-reader",
   "description": "自定义规则多站点聚合搜索阅读小说、漫画。包含JS规则解析库和VSCode插件。支持本地小说 TXT、EPUB",
   "icon": "resources/icon.png",
-  "version": "0.6.3",
+  "version": "0.7.0",
   "preview": true,
   "publisher": "aooiu",
   "qna": "https://github.com/aooiuu/any-reader/issues",
@@ -148,6 +148,11 @@
         {
           "id": "any-reader-local",
           "name": "本地"
+        },
+        {
+          "id": "any-reader-webview",
+          "name": "view",
+          "type": "webview"
         }
       ]
     },
@@ -234,7 +239,22 @@
         "view": "any-reader-favorites",
         "contents": "收藏列表, 您还没有收藏书籍"
       }
-    ]
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "AnyReader",
+      "properties": {
+        "any-reader.read-page-mode": {
+          "type": "string",
+          "default": "Editor",
+          "enum": [
+            "Editor",
+            "Sidebar"
+          ],
+          "description": "阅读页模式： Editor=编辑器面板 Sideba=侧边栏"
+        }
+      }
+    }
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
