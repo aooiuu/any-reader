@@ -17,6 +17,7 @@ export default defineConfig({
 
   // 映射组合
   shortcuts: {
+    'vsc-toolbar-btn': 'hover:bg-[--toolbar-hoverBackground] hover:op-70 cursor-pointer',
     'wh-full': 'w-full h-full',
     'flex-center': 'flex justify-center items-center'
   }

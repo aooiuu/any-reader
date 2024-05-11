@@ -151,6 +151,7 @@ outline: deep
 VSCode 界面区域：
 
 ![VSCode 界面区域](https://code.visualstudio.com/assets/api/ux-guidelines/examples/architecture-containers.png)
+![image](https://github.com/aooiuu/any-reader/assets/28108111/9c6b4a46-22ff-44b4-9ad2-f9665532be3e)
 
 ### 编辑器页阅读模式
 
@@ -164,10 +165,14 @@ VSCode 界面区域：
 
 设置：`"any-reader.read-page-mode": "Sidebar"`
 
+![image](https://github.com/aooiuu/any-reader/assets/28108111/c0744239-9260-4696-8555-bf864ed7aebf)
+
+![image](https://github.com/aooiuu/any-reader/assets/28108111/d4c1eb85-e90a-45e6-98b8-420992a216e5)
+
 ## 常见问题
 
 ### 侧边栏阅读问题
 
-进入阅读页面之前必须先激活阅读侧边栏设视图
+进入阅读页面之前必须先激活阅读侧边栏
 
-关闭或隐藏侧边栏视图后再次打开,之前的状态不可恢复
+关闭或隐藏侧边栏后再次打开,之前的状态不可恢复

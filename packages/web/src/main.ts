@@ -2,6 +2,9 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
 
+// vscode icon
+import '@vscode/codicons/dist/codicon.css';
+
 import '@unocss/reset/sanitize/sanitize.css';
 import '@unocss/reset/sanitize/assets.css';
 import 'uno.css';

@@ -1,21 +1,34 @@
 <template>
-  <div
-    ref="contentRef"
-    class="h-full w-full p-10 whitespace-pre-wrap overflow-auto lh-1.5em"
-    @contextmenu.stop="contextmenu($event)"
-    @click="nemuShow = false"
-    v-html="content"
-  />
-  <ul v-if="nemuShow" ref="nemuRef" class="z-9999 fixed p-0 list-none bg-[#fff]" style="border: 1px solid #282c34" :style="nemuPos">
-    <li v-for="item in menuOptions" :key="item.label">
-      <a class="text-[#282c34] decoration-none block cursor-pointer w-full text-center p-10" @click="onMenuClick(item.cmd)">{{ item.label }}</a>
-    </li>
-  </ul>
+  <div class="w-full h-full flex flex-col overflow-hidden">
+    <div v-if="showToolbar" class="flex gap-4 px-10 pb-2 justify-end">
+      <div :class="['vsc-toolbar-btn codicon ', pinned ? 'codicon-pinned' : 'codicon-pin']" @click="pinned = !pinned"></div>
+      <div class="flex-1"></div>
+      <div class="vsc-toolbar-btn codicon codicon-chevron-left" @click="onMenuClick('lastChapter')"></div>
+      <div class="vsc-toolbar-btn codicon codicon-chevron-right" @click="onMenuClick('nextChapter')"></div>
+      <div class="vsc-toolbar-btn codicon codicon-chevron-up" @click="pageUp()"></div>
+      <div class="vsc-toolbar-btn codicon codicon-chevron-down" @click="pageDown()"></div>
+    </div>
+    <div
+      ref="contentRef"
+      class="flex-1 p-10 whitespace-pre-wrap overflow-auto lh-1.5em"
+      @contextmenu.stop="contextmenu($event)"
+      @click="nemuShow = false"
+      v-html="content"
+    />
+    <ul v-if="nemuShow" ref="nemuRef" class="z-9999 fixed p-0 list-none bg-[#fff]" style="border: 1px solid #282c34" :style="nemuPos">
+      <li v-for="item in menuOptions" :key="item.label">
+        <a class="text-[#282c34] decoration-none block cursor-pointer w-full text-center p-10" @click="onMenuClick(item.cmd)">{{ item.label }}</a>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script setup>
+import { useMouse } from '@vueuse/core';
 import { getContent } from '@/api';
 import { useChaptersStore } from '@/stores/chapters';
+
+const { y } = useMouse();
 
 const route = useRoute();
 const router = useRouter();
@@ -113,6 +126,24 @@ function onMenuClick(cmd) {
   }
   nemuShow.value = false;
 }
+
+// 上一页
+function pageUp() {
+  contentRef.value.scrollTop = contentRef.value.scrollTop - contentRef.value.offsetHeight + 5;
+}
+
+// 下一页
+function pageDown() {
+  contentRef.value.scrollTop = contentRef.value.scrollTop + contentRef.value.offsetHeight - 5;
+}
+
+// 置顶
+const pinned = ref(true);
+
+const showToolbar = computed(() => {
+  if (pinned.value) return true;
+  return y.value <= 20;
+});
 </script>
 
 <style scoped>

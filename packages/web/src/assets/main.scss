@@ -10,6 +10,7 @@ body,
 #app {
   --textLink-foreground: var(--vscode-textLink-foreground);
   --sideBar-background: var(--vscode-sideBar-background);
+  --toolbar-hoverBackground: var(--vscode-toolbar-hoverBackground);
 }
 
 // 让 arco-design 色彩适应 VSCode 主题
