@@ -68,4 +68,10 @@
 
 ![1](https://github.com/aooiuu/any-reader/assets/28108111/01eabe01-84eb-4113-a10e-fdfd9a82f169)
 
+### 侧栏底部栏阅读
+
+![image](https://github.com/aooiuu/any-reader/assets/28108111/c0744239-9260-4696-8555-bf864ed7aebf)
+
+![image](https://github.com/aooiuu/any-reader/assets/28108111/d4c1eb85-e90a-45e6-98b8-420992a216e5)
+
 点个 `star` 可以关注插件更新动态, 也欢迎大家提交 `PR`.

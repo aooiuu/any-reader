@@ -44,6 +44,12 @@
 
 ![1](https://github.com/aooiuu/any-reader/assets/28108111/01eabe01-84eb-4113-a10e-fdfd9a82f169)
 
+### 侧栏底部栏阅读
+
+![image](https://github.com/aooiuu/any-reader/assets/28108111/c0744239-9260-4696-8555-bf864ed7aebf)
+
+![image](https://github.com/aooiuu/any-reader/assets/28108111/d4c1eb85-e90a-45e6-98b8-420992a216e5)
+
 ## 声明
 
 - 请大家支持正版, 所有资源来自网上, 该软件不参与任何制作, 上传, 储存等内容, 禁止传播违法资源
