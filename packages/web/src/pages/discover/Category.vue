@@ -19,11 +19,16 @@ const value = ref<string>('');
 const nextList = ref([]);
 
 function onInput(v: any) {
+  if (!v) return;
   value.value = v;
   const row = props.list.find((e) => e.name === value.value);
   nextList.value = row.pairs || [];
   if (nextList.value.length === 0) {
+    // 没有子项目时, 加载本身
     emit('change', row);
+  } else if (nextList.value.length === 1) {
+    // 只有一个子项目的时候加载子项目
+    emit('change', nextList.value[0]);
   }
 }
 
