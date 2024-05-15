@@ -24,3 +24,10 @@ export function github() {
     url: 'vscode/github'
   });
 }
+
+export function openLocalBookDir() {
+  return request({
+    method: 'get',
+    url: 'vscode/openLocalBookDir'
+  });
+}

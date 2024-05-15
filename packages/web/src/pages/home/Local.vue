@@ -1,13 +1,23 @@
 <template>
-  <div class="w-full">
-    <TreeItem v-for="item in list" :key="item.path" @click="showChapter(item)">
-      {{ item.name }}
-    </TreeItem>
+  <div class="w-full h-full flex flex-col">
+    <div class="flex-1 overflow-auto">
+      <TreeItem v-for="item in list" :key="item.path" @click="showChapter(item)">
+        {{ item.name }}
+      </TreeItem>
+    </div>
+
+    <vscode-divider />
+    <div class="my-4 mx-8 flex items-center" @click="openLocalBookDir">
+      <i class="codicon codicon-folder-opened mr-2"></i>
+      打开本地目录
+    </div>
+    <vscode-divider />
   </div>
 </template>
 
 <script setup>
 import { getLocalBooks } from '@/api';
+import { openLocalBookDir } from '@/api/vsc';
 import TreeItem from '@/components/vsc/TreeItem.vue';
 
 const router = useRouter();

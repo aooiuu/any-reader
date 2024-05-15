@@ -10,7 +10,8 @@ import {
   vsCodeTextField,
   vsCodeDropdown,
   vsCodeOption,
-  vsCodeProgressRing
+  vsCodeProgressRing,
+  vsCodeDivider
 } from '@vscode/webview-ui-toolkit';
 
 provideVSCodeDesignSystem().register(
@@ -21,5 +22,6 @@ provideVSCodeDesignSystem().register(
   vsCodeTextField(),
   vsCodeDropdown(),
   vsCodeOption(),
-  vsCodeProgressRing()
+  vsCodeProgressRing(),
+  vsCodeDivider()
 );

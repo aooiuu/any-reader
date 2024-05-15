@@ -5,6 +5,8 @@
 import * as vscode from 'vscode';
 import * as EasyPostMessage from 'easy-post-message';
 import { ContentType, Rule, RuleManager } from '@any-reader/core';
+import { CONSTANTS } from '@any-reader/shared';
+import * as localBookManager from '@any-reader/shared/localBookManager';
 import type { BookChapter } from '@any-reader/shared/localBookManager';
 import { COMMANDS } from '../constants';
 import * as ruleFileManager from '../utils/ruleFileManager';
@@ -12,7 +14,7 @@ import { createAdapter } from '../utils/easyPostMessage';
 import favoritesProvider from '../sidebar/favorites';
 import favoritesManager from '../utils/favoritesManager';
 import historyManager from '../utils/historyManager';
-import * as localBookManager from '@any-reader/shared/localBookManager';
+import openExplorer from 'explorer-opener';
 
 function success(data: any, msg = '') {
   return {
@@ -57,6 +59,7 @@ export class WebviewEvent {
     this._pm.answer('post@vscode/getChapter', this._vscGetChapter.bind(this));
     this._pm.answer('get@vscode/editBookSource', this._vscEditBookSource.bind(this));
     this._pm.answer('get@vscode/github', this._vscGithub.bind(this));
+    this._pm.answer('get@vscode/openLocalBookDir', this._vscOpenLocalBookDir.bind(this));
 
     this._pm.answer('get@discoverMap', this._discoverMap.bind(this));
     this._pm.answer('get@getFavorites', this._getFavorites.bind(this));
@@ -72,6 +75,12 @@ export class WebviewEvent {
     this._pm.answer('post@searchByRuleId', this._searchByRuleId.bind(this));
     this._pm.answer('post@content', this._content.bind(this));
     this._pm.answer('post@getChapter', this._getChapter.bind(this));
+  }
+
+  // 打开本地书籍目录
+  _vscOpenLocalBookDir() {
+    localBookManager.checkDir();
+    openExplorer(CONSTANTS.LOCAL_BOOK_DIR);
   }
 
   // github
