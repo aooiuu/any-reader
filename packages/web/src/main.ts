@@ -2,13 +2,15 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
 
-// vscode icon
-import '@vscode/codicons/dist/codicon.css';
-
+import 'nprogress/nprogress.css';
 import '@unocss/reset/sanitize/sanitize.css';
 import '@unocss/reset/sanitize/assets.css';
 import 'uno.css';
+import './assets/vscode.css';
 import './assets/main.scss';
+
+// vscode ui
+import './plugins/vsc-ui';
 
 import ArcoVue from '@arco-design/web-vue';
 import Icon from '@arco-design/web-vue/es/icon';

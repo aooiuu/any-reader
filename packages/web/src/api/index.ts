@@ -63,6 +63,22 @@ export function getFavorites() {
   });
 }
 
+// 获取历史
+export function getHistory() {
+  return request({
+    method: 'get',
+    url: 'getHistory'
+  });
+}
+
+// 获取本地
+export function getLocalBooks() {
+  return request({
+    method: 'get',
+    url: 'getLocalBooks'
+  });
+}
+
 // 收藏
 export function star(data: any) {
   return request({

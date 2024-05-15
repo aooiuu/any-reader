@@ -67,12 +67,6 @@ class App {
     vscode.window.createTreeView('any-reader-source', { treeDataProvider: sourceProvider });
     // 侧边栏 - 阅读
     vscode.window.createTreeView('any-reader-book', { treeDataProvider: bookProvider });
-    // 侧边栏 - 历史
-    vscode.window.createTreeView('any-reader-history', { treeDataProvider: historyProvider });
-    // 侧边栏 - 收藏
-    vscode.window.createTreeView('any-reader-favorites', { treeDataProvider: favoritesProvider });
-    // 侧边栏 - 本地
-    vscode.window.createTreeView('any-reader-local', { treeDataProvider: localProvider });
     // 侧边栏 - webview
     webviewProvider.setExtensionPath(context.extensionPath);
     vscode.window.registerWebviewViewProvider('any-reader-webview', webviewProvider);

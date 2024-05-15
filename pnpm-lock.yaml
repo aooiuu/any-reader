@@ -300,6 +300,9 @@ importers:
       '@vscode/codicons':
         specifier: ^0.0.36
         version: 0.0.36
+      '@vscode/webview-ui-toolkit':
+        specifier: ^1.4.0
+        version: 1.4.0(react@18.3.1)
       '@vueuse/core':
         specifier: ^10.9.0
         version: 10.9.0(vue@3.4.15)
@@ -318,6 +321,9 @@ importers:
       monaco-editor:
         specifier: 0.47.0
         version: 0.47.0
+      nprogress:
+        specifier: ^0.2.0
+        version: 0.2.0
       p-limit:
         specifier: ^5.0.0
         version: 5.0.0
@@ -346,6 +352,9 @@ importers:
       '@types/node':
         specifier: ^20.11.16
         version: 20.11.16
+      '@types/nprogress':
+        specifier: ^0.2.3
+        version: 0.2.3
       '@vitejs/plugin-vue':
         specifier: ^5.0.3
         version: 5.0.3(vite@5.0.11)(vue@3.4.15)
@@ -2469,6 +2478,35 @@ packages:
       vary: 1.1.2
     dev: false
 
+  /@microsoft/fast-element@1.13.0:
+    resolution: {integrity: sha512-iFhzKbbD0cFRo9cEzLS3Tdo9BYuatdxmCEKCpZs1Cro/93zNMpZ/Y9/Z7SknmW6fhDZbpBvtO8lLh9TFEcNVAQ==}
+    dev: false
+
+  /@microsoft/fast-foundation@2.49.6:
+    resolution: {integrity: sha512-DZVr+J/NIoskFC1Y6xnAowrMkdbf2d5o7UyWK6gW5AiQ6S386Ql8dw4KcC4kHaeE1yL2CKvweE79cj6ZhJhTvA==}
+    dependencies:
+      '@microsoft/fast-element': 1.13.0
+      '@microsoft/fast-web-utilities': 5.4.1
+      tabbable: 5.3.3
+      tslib: 1.14.1
+    dev: false
+
+  /@microsoft/fast-react-wrapper@0.3.24(react@18.3.1):
+    resolution: {integrity: sha512-sRnSBIKaO42p4mYoYR60spWVkg89wFxFAgQETIMazAm2TxtlsnsGszJnTwVhXq2Uz+XNiD8eKBkfzK5c/i6/Kw==}
+    peerDependencies:
+      react: '>=16.9.0'
+    dependencies:
+      '@microsoft/fast-element': 1.13.0
+      '@microsoft/fast-foundation': 2.49.6
+      react: 18.3.1
+    dev: false
+
+  /@microsoft/fast-web-utilities@5.4.1:
+    resolution: {integrity: sha512-ReWYncndjV3c8D8iq9tp7NcFNc1vbVHvcBFPME2nNFKNbS1XCesYZGlIlf3ot5EmuOXPlrzUHOWzQ2vFpIkqDg==}
+    dependencies:
+      exenv-es6: 1.1.1
+    dev: false
+
   /@nodelib/fs.scandir@2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
     engines: {node: '>= 8'}
@@ -3049,6 +3087,10 @@ packages:
 
   /@types/normalize-package-data@2.4.0:
     resolution: {integrity: sha512-f5j5b/Gf71L+dbqxIpQ4Z2WlmI/mPJ0fOkGGmFgtb6sAu97EPczzbS3/tJKxmcYDj55OX6ssqwDAWOHIYDRDGA==}
+    dev: true
+
+  /@types/nprogress@0.2.3:
+    resolution: {integrity: sha512-k7kRA033QNtC+gLc4VPlfnue58CM1iQLgn1IMAU8VPHGOj7oIHPp9UlhedEnD/Gl8evoCjwkZjlBORtZ3JByUA==}
     dev: true
 
   /@types/qs@6.9.14:
@@ -3944,6 +3986,18 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /@vscode/webview-ui-toolkit@1.4.0(react@18.3.1):
+    resolution: {integrity: sha512-modXVHQkZLsxgmd5yoP3ptRC/G8NBDD+ob+ngPiWNQdlrH6H1xR/qgOBD85bfU3BhOB5sZzFWBwwhp9/SfoHww==}
+    peerDependencies:
+      react: '>=16.9.0'
+    dependencies:
+      '@microsoft/fast-element': 1.13.0
+      '@microsoft/fast-foundation': 2.49.6
+      '@microsoft/fast-react-wrapper': 0.3.24(react@18.3.1)
+      react: 18.3.1
+      tslib: 2.6.2
+    dev: false
 
   /@vue/babel-helper-vue-transform-on@1.2.1:
     resolution: {integrity: sha512-jtEXim+pfyHWwvheYwUwSXm43KwQo8nhOBDyjrUITV6X2tB7lJm6n/+4sqR8137UVZZul5hBzWHdZ2uStYpyRQ==}
@@ -7016,6 +7070,10 @@ packages:
       strip-final-newline: 2.0.0
     dev: true
 
+  /exenv-es6@1.1.1:
+    resolution: {integrity: sha512-vlVu3N8d6yEMpMsEm+7sUBAI81aqYYuEvfK0jNqmdb/OPXzzH7QWDDnVjMvDSY47JdHEqx/dfC/q8WkfoTmpGQ==}
+    dev: false
+
   /exit@0.1.2:
     resolution: {integrity: sha512-Zk/eNKV2zbjpKzrsQ+n1G6poVbErQxJ0LBOJXaKZ1EViLzH+hrLu9cdXI4zw9dBQJslwBEpbQ2P1oS7nDxs6jQ==}
     engines: {node: '>= 0.8.0'}
@@ -8814,6 +8872,13 @@ packages:
       is-unicode-supported: 0.1.0
     dev: true
 
+  /loose-envify@1.4.0:
+    resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
+    hasBin: true
+    dependencies:
+      js-tokens: 4.0.0
+    dev: false
+
   /loupe@2.3.6:
     resolution: {integrity: sha512-RaPMZKiMy8/JruncMU5Bt6na1eftNoo++R4Y+N2FrxkDVTrGvcyzFTsaGif4QTeKESheMGegbhw6iUAq+5A8zA==}
     dependencies:
@@ -9296,6 +9361,10 @@ packages:
       set-blocking: 2.0.0
     dev: false
     optional: true
+
+  /nprogress@0.2.0:
+    resolution: {integrity: sha512-I19aIingLgR1fmhftnbWWO3dXc0hSxqHQHQb3H8m+K3TnEn/iSeTZZOyvKXWqQESMwuUVnatlCnZdLBZZt2VSA==}
+    dev: false
 
   /nth-check@2.1.1:
     resolution: {integrity: sha512-lqjrjmaOoAnWfMmBPL+XNnynZh2+swxiX3WUE0s4yEHI6m+AwrK2UZOimIRl3X/4QctVqS8AiZjFqyOGrMXb/w==}
@@ -9888,6 +9957,13 @@ packages:
   /react-is@18.2.0:
     resolution: {integrity: sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==}
     dev: true
+
+  /react@18.3.1:
+    resolution: {integrity: sha512-wS+hAgJShR0KhEvPJArfuPVN1+Hz1t0Y6n5jLrGQbkb4urgPE/0Rve+1kMB1v/oWgHgm4WIcV+i7F2pTVj+2iQ==}
+    engines: {node: '>=0.10.0'}
+    dependencies:
+      loose-envify: 1.4.0
+    dev: false
 
   /read-pkg-up@7.0.1:
     resolution: {integrity: sha512-zK0TB7Xd6JpCLmlLmufqykGE+/TlOePD6qKClNW7hHDKFh/J7/7gCWGR7joEQEW1bKq3a3yUZSObOoWLFQ4ohg==}
@@ -10657,6 +10733,10 @@ packages:
       tslib: 2.6.2
     dev: true
 
+  /tabbable@5.3.3:
+    resolution: {integrity: sha512-QD9qKY3StfbZqWOPLp0++pOrAVb/HbUi5xCc8cUo4XjP19808oaMiDzn0leBY5mCespIBM0CIZePzZjgzR83kA==}
+    dev: false
+
   /tabbable@6.2.0:
     resolution: {integrity: sha512-Cat63mxsVJlzYvN51JmVXIgNoUokrIaT2zLclCXjRd8boZ0004U4KCs/sToJ75C6sdlByWxpYnb5Boif1VSFew==}
     dev: true
@@ -10939,7 +11019,6 @@ packages:
 
   /tslib@1.14.1:
     resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}
-    dev: true
 
   /tslib@2.6.2:
     resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}

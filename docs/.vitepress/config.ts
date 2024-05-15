@@ -19,6 +19,7 @@ export default defineConfig({
     logo: "/logo.svg",
     nav: [
       { text: "VsCode 插件", link: "/vsc/" },
+      { text: "网页端", link: "/browser/" },
       { text: "Core", link: "/core/" },
       { text: "规则", link: "/rule/" }
     ],

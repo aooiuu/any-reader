@@ -3,7 +3,7 @@
   "displayName": "any-reader",
   "description": "自定义规则多站点聚合搜索阅读小说、漫画。包含JS规则解析库和VSCode插件。支持本地小说 TXT、EPUB",
   "icon": "resources/icon.png",
-  "version": "0.8.0",
+  "version": "1.0.0",
   "publisher": "aooiu",
   "qna": "https://github.com/aooiuu/any-reader/issues",
   "bugs": {
@@ -137,18 +137,6 @@
           "name": "规则"
         },
         {
-          "id": "any-reader-history",
-          "name": "历史"
-        },
-        {
-          "id": "any-reader-favorites",
-          "name": "收藏"
-        },
-        {
-          "id": "any-reader-local",
-          "name": "本地"
-        },
-        {
           "id": "any-reader-webview",
           "name": "view",
           "type": "webview"
@@ -175,26 +163,6 @@
         {
           "command": "any-reader.home",
           "when": "view == any-reader-source",
-          "group": "navigation"
-        },
-        {
-          "command": "any-reader.historyRefresh",
-          "when": "view == any-reader-history",
-          "group": "navigation"
-        },
-        {
-          "command": "any-reader.favoritesRefresh",
-          "when": "view == any-reader-favorites",
-          "group": "navigation"
-        },
-        {
-          "command": "any-reader.openLocalBookDir",
-          "when": "view == any-reader-local",
-          "group": "navigation"
-        },
-        {
-          "command": "any-reader.refreshLocalBooks",
-          "when": "view == any-reader-local",
           "group": "navigation"
         }
       ],
@@ -229,14 +197,6 @@
       {
         "view": "any-reader-book",
         "contents": "搜索或者查看章节列表后数据会出现在这里 \n[使用文档](https://aooiuu.github.io/any-reader/vsc/)\n[提建议 | 提BUG](https://github.com/aooiuu/any-reader/issues)"
-      },
-      {
-        "view": "any-reader-history",
-        "contents": "阅读历史记录, 查看章节后会书籍会出现在这里"
-      },
-      {
-        "view": "any-reader-favorites",
-        "contents": "收藏列表, 您还没有收藏书籍"
       }
     ],
     "configuration": {

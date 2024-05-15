@@ -6,7 +6,15 @@ import autoImport from './autoImport';
 import mock from './mock';
 
 export default function createPlugins() {
-  const vitePlugins: PluginOption[] = [vue()];
+  const vitePlugins: PluginOption[] = [
+    vue({
+      template: {
+        compilerOptions: {
+          isCustomElement: (tag) => tag.startsWith('vscode-')
+        }
+      }
+    })
+  ];
   vitePlugins.push(jsx());
   vitePlugins.push(UnoCSS());
   vitePlugins.push(mock());

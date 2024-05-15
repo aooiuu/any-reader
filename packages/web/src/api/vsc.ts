@@ -17,3 +17,10 @@ export function editBookSource() {
     url: 'vscode/editBookSource'
   });
 }
+
+export function github() {
+  return request({
+    method: 'get',
+    url: 'vscode/github'
+  });
+}

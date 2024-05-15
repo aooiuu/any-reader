@@ -1,3 +1,4 @@
+import NProgress from 'nprogress';
 import { createRouter, createWebHashHistory } from 'vue-router';
 
 const router = createRouter({
@@ -25,7 +26,21 @@ const router = createRouter({
     },
     {
       path: '/search',
-      component: () => import('@/pages/search/index.vue')
+      component: () => import('@/pages/search/index.vue'),
+      meta: {
+        keepAlive: true
+      }
+    },
+    {
+      path: '/vsc/search',
+      component: () => import('@/pages/search/index.vsc.vue'),
+      meta: {
+        keepAlive: true
+      }
+    },
+    {
+      path: '/vsc/rules',
+      component: () => import('@/pages/rules/index.vsc.vue')
     },
     {
       path: '/discover',
@@ -35,8 +50,19 @@ const router = createRouter({
       path: '/content',
       name: 'content',
       component: () => import('@/pages/content/index.vue')
+    },
+    {
+      path: '/chapter',
+      component: () => import('@/pages/chapter/index.vue'),
+      meta: {
+        keepAlive: true
+      }
     }
   ]
+});
+
+router.afterEach(() => {
+  NProgress.done();
 });
 
 export default router;
