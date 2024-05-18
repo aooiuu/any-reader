@@ -24,7 +24,7 @@ export function createAPI() {
   pm.answer('get@getRuleById', ({ id = '' } = {}) => success(api.getRuleById(id)));
   pm.answer('post@createRule', async (data: any) => success(await api.createRule(data)));
   pm.answer('post@updateRule', async (data: any) => success(await api.updateRule(data)));
-  pm.answer('post@searchByRuleId', async (data: any) => success(await api.searchByRuleId(data)));
+  pm.answer('post@searchByRuleId', async (data: any) => success(await api.searchByRuleId(data).catch(() => [])));
   pm.answer('post@content', async (data: any) => success(await api.content(data)));
   pm.answer('post@getChapter', async (data: any) => success(await api.getChapter(data)));
 }

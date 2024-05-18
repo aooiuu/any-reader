@@ -14,9 +14,13 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/",
     "electron:dev": "cross-env VITE_APP_PLATFORM=electron vite",
-    "vscode:dev": "cross-env VITE_APP_PLATFORM=vscode vite"
+    "electron:build-tpl": "cross-env VITE_APP_PLATFORM=electron run-p type-check \"build-only {@}\" --",
+    "electron:build-app": "electron-builder",
+    "electron:build": "npm-run-all electron:build-tpl electron:build-app",
+    "vscode:dev": "cross-env VITE_APP_PLATFORM=vscode vite",
+    "postinstall": "electron-builder install-app-deps"
   },
-  "main": "dist-electron/main.js",
+  "main": "dist/electron-js/main.js",
   "dependencies": {
     "@any-reader/core": "workspace:^",
     "@any-reader/shared": "workspace:^",
@@ -52,6 +56,7 @@
     "chalk": "^5.2.0",
     "cross-env": "^7.0.3",
     "electron": "^30.0.6",
+    "electron-builder": "^24.13.3",
     "eslint": "^8.49.0",
     "eslint-plugin-vue": "^9.17.0",
     "mockjs": "^1.1.0",

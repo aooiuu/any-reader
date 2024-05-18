@@ -30,6 +30,10 @@ const router = createRouter({
           component: () => import('@/pages/pc/rules/index.vue')
         },
         {
+          path: 'player',
+          component: () => import('@/pages/pc/player/index.vue')
+        },
+        {
           path: 'chapter',
           component: () => import('@/pages/pc/chapter/index.vue')
         },

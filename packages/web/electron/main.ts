@@ -20,7 +20,7 @@ app.whenReady().then(async () => {
     win.webContents.openDevTools();
   } else {
     // Load your file
-    win.loadFile('dist/index.html');
+    win.loadFile('dist/electron-template/index.html');
   }
   Menu.setApplicationMenu(null);
 });

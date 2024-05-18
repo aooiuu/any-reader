@@ -1,0 +1,37 @@
+/**
+ * @see https://www.electron.build/configuration/configuration
+ */
+ {
+  "appId": "any-reader",
+  "productName": "AnyReader",
+  "artifactName": "AnyReader_${version}.${ext}",
+  "asar": false,
+  "directories": {
+    "output": "dist/electron/${version}"
+  },
+  "files": [
+    "dist"
+  ],
+  "mac": {
+    "target": [
+      "dmg"
+    ]
+  },
+  "win": {
+    // "icon": "public/icon.png",
+    "target": [
+      {
+        "target": "nsis",
+        "arch": [
+          "x64"
+        ]
+      }
+    ]
+  },
+  "nsis": {
+    "oneClick": false,
+    "perMachine": false,
+    "allowToChangeInstallationDirectory": true,
+    "deleteAppDataOnUninstall": false
+  }
+}

@@ -5,10 +5,10 @@ export default () =>
     entry: 'electron/main.ts',
     vite: {
       build: {
-        outDir: 'dist-electron'
-        // rollupOptions: {
-        //   external: ['sqlite3']
-        // }
+        outDir: 'dist/electron-js',
+        rollupOptions: {
+          external: []
+        }
       }
     }
   });

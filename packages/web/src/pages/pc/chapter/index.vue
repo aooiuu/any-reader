@@ -12,12 +12,15 @@
 </template>
 
 <script setup>
-import { getChapter } from '@/api';
+import { getChapter, getContent } from '@/api';
+import { useRulesStore } from '@/stores/rules';
 
 const route = useRoute();
 const router = useRouter();
+const rulesStore = useRulesStore();
 
 const list = ref([]);
+rulesStore.sync();
 
 async function init() {
   list.value = [];
@@ -31,8 +34,27 @@ async function init() {
 
 init();
 
-function showContent(item) {
+async function showContent(item) {
   const { filePath, ruleId } = route.query;
+  const rule = rulesStore.list.find((e) => e.id === ruleId);
+  if (rule?.contentType === 2) {
+    const res = await getContent({
+      filePath,
+      ruleId,
+      chapterPath: item.url || item.path
+    }).catch(() => {});
+    console.log('getContent', res);
+    if (res?.code === 0) {
+      router.push({
+        path: '/pc/player',
+        query: {
+          url: res?.data?.content || ''
+        }
+      });
+      return;
+    }
+  }
+
   router.push({
     path: '/pc/content',
     query: {

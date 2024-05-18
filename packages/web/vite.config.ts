@@ -5,6 +5,14 @@ import createPlugins from './vite/plugins';
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
+  let outDir = 'dist/web';
+  if (env.VITE_APP_PLATFORM === 'browser') {
+    outDir = '../server/public';
+  } else if (env.VITE_APP_PLATFORM === 'vscode') {
+    outDir = '../vscode/template-dist';
+  } else if (env.VITE_APP_PLATFORM === 'electron') {
+    outDir = 'dist/electron-template';
+  }
 
   return {
     plugins: createPlugins(env),
@@ -13,7 +21,7 @@ export default defineConfig(({ mode }) => {
       port: 8899
     },
     build: {
-      outDir: env.VITE_APP_PLATFORM === 'browser' ? '../server/public' : '../vscode/template-dist'
+      outDir
     },
     resolve: {
       alias: {
