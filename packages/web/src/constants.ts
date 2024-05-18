@@ -19,6 +19,6 @@ export const CONTENT_TYPES = [
   { value: 101, label: 'GAME' }
 ];
 
-export const PLATFORM: 'browser' | 'vscode' | undefined = import.meta.env.VITE_APP_PLATFORM;
+export const PLATFORM: 'browser' | 'vscode' | 'electron' = import.meta.env.VITE_APP_PLATFORM;
 
 export const BASE_URL = 'http://localhost:8898';

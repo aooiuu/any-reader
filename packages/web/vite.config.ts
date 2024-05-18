@@ -7,7 +7,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
 
   return {
-    plugins: createPlugins(),
+    plugins: createPlugins(env),
     base: './',
     server: {
       port: 8899

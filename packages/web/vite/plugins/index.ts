@@ -6,7 +6,7 @@ import autoImport from './autoImport';
 import mock from './mock';
 import electron from './electron';
 
-export default function createPlugins() {
+export default function createPlugins(env: Record<string, string>) {
   const vitePlugins: PluginOption[] = [
     vue({
       template: {
@@ -20,6 +20,9 @@ export default function createPlugins() {
   vitePlugins.push(UnoCSS());
   vitePlugins.push(mock());
   vitePlugins.push(autoImport());
-  vitePlugins.push(electron() as PluginOption);
+
+  if (env.VITE_APP_PLATFORM === 'electron') {
+    vitePlugins.push(electron() as PluginOption);
+  }
   return vitePlugins;
 }

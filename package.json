@@ -40,7 +40,9 @@
     "prepare": "husky install",
     "web:server": "npm -C packages/web run dev",
     "web:build-b": "npm -C packages/web run build:b",
-    "web:dev": "npm-run-all build:core build:shared --parallel web:server server"
+    "web:dev": "npm-run-all build:core build:shared --parallel web:server server",
+    "electron:server": "npm -C packages/web run electron:dev",
+    "vscode:server": "npm -C packages/web run vscode:dev"
   },
   "lint-staged": {
     "*.{vue,js,ts}": "eslint --fix"
