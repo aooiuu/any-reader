@@ -20,6 +20,7 @@ export default defineConfig({
     nav: [
       { text: "VsCode 插件", link: "/vsc/" },
       { text: "网页端", link: "/browser/" },
+      { text: "桌面端", link: "/desktop/" },
       { text: "Core", link: "/core/" },
       { text: "规则", link: "/rule/" }
     ],

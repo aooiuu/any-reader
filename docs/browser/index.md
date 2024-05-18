@@ -4,7 +4,7 @@ outline: deep
 
 # 网页端
 
-🚧 开发中
+🚧 熬夜开发中
 
 ## 运行
 
@@ -20,3 +20,5 @@ pnpm i
 
 pnpm run web:dev
 ```
+
+![image](https://github.com/aooiuu/any-reader/assets/28108111/6166cc3e-f5e5-42ca-a616-5e30157f6c89)
