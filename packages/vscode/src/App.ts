@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { stringify } from 'qs';
 import { openExplorer } from 'explorer-opener';
 import { Rule, RuleManager, SearchItem } from '@any-reader/core';
-import { CONSTANTS } from '@any-reader/shared';
+import { CONSTANTS, api } from '@any-reader/shared';
 import { BookChapter, checkDir } from '@any-reader/shared/localBookManager';
 import * as localBookManager from '@any-reader/shared/localBookManager';
 import { COMMANDS, BOOK_SOURCE_PATH } from './constants';
@@ -28,7 +28,7 @@ class App {
     this.webView = new WebView(context);
 
     // 初始化配置文件
-    await Promise.all([ruleFileManager.init(), historyManager.init(), favoritesManager.init()]);
+    await Promise.all([api.init(), ruleFileManager.init(), historyManager.init(), favoritesManager.init()]);
 
     // 注册命令
     const registerCommand = vscode.commands.registerCommand;

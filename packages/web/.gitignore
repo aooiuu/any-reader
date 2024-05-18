@@ -29,3 +29,5 @@ coverage
 
 /auto-imports.d.ts
 /.eslintrc-auto-import.json
+
+/dist-electron

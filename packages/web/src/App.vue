@@ -9,7 +9,7 @@
       </RouterView>
     </div>
 
-    <div class="flex py-4 px-8 gap-4">
+    <div v-if="PLATFORM === 'vscode'" class="flex py-4 px-8 gap-4">
       <div class="vsc-toolbar-btn codicon codicon-arrow-left" @click="router.back()"></div>
       <div class="flex-1"></div>
       <div class="vsc-toolbar-btn codicon codicon-github-alt" title="github" @click="github()"></div>
@@ -27,7 +27,8 @@
 
 <script setup lang="ts">
 import { RouterView } from 'vue-router';
-import { useMessage } from './utils/postMessage';
+import { PLATFORM } from '@/constants';
+import { useMessage } from '@/utils/postMessage';
 import { editBookSource, github } from '@/api/vsc';
 
 const router = useRouter();

@@ -4,6 +4,7 @@ import UnoCSS from 'unocss/vite';
 import type { PluginOption } from 'vite';
 import autoImport from './autoImport';
 import mock from './mock';
+import electron from './electron';
 
 export default function createPlugins() {
   const vitePlugins: PluginOption[] = [
@@ -19,5 +20,6 @@ export default function createPlugins() {
   vitePlugins.push(UnoCSS());
   vitePlugins.push(mock());
   vitePlugins.push(autoImport());
+  vitePlugins.push(electron() as PluginOption);
   return vitePlugins;
 }

@@ -7,7 +7,7 @@ body,
   margin: 0;
 }
 
-#app {
+:root {
   --foreground: var(--vscode-foreground);
   --textLink-foreground: var(--vscode-textLink-foreground);
   --sideBar-background: var(--vscode-sideBar-background);
@@ -17,7 +17,7 @@ body,
 
 // 让 arco-design 色彩适应 VSCode 主题
 // VSCode Theme Color: https://code.visualstudio.com/api/references/theme-color
-#app {
+:root {
   --color-bg-1: var(--vscode-editor-background);
   --color-bg-2: var(--vscode-editor-background);
   --color-bg-3: var(--vscode-editor-background);
