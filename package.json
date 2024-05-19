@@ -42,6 +42,7 @@
     "web:build-b": "npm -C packages/web run build:b",
     "web:dev": "npm-run-all build:core build:shared --parallel web:server server",
     "electron:server": "npm -C packages/web run electron:dev",
+    "electron:build": "npm -C packages/web run electron:build",
     "vscode:server": "npm -C packages/web run vscode:dev"
   },
   "lint-staged": {
