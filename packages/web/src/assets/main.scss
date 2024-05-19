@@ -26,20 +26,20 @@ body,
   --color-text-2: var(--vscode-editor-foreground);
   --color-text-3: var(--vscode-editor-foreground);
 
-  .arco-table-td {
-    color: var(--color-text-2);
-  }
+  // .arco-table-td {
+  //   color: var(--color-text-2);
+  // }
 
-  .arco-switch {
-    background-color: var(--vscode-disabledForeground);
-  }
+  // .arco-switch {
+  //   background-color: var(--vscode-disabledForeground);
+  // }
 
-  .arco-switch-checked {
-    // background-color: var(--vscode-button-background);
-    background-color: rgb(var(--primary-6));
-  }
+  // .arco-switch-checked {
+  //   // background-color: var(--vscode-button-background);
+  //   background-color: rgb(var(--primary-6));
+  // }
 
-  .arco-input-wrapper {
-    border-color: var(--vscode-button-background);
-  }
+  // .arco-input-wrapper {
+  //   border-color: var(--vscode-button-background);
+  // }
 }

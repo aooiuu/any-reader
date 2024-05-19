@@ -1,15 +1,28 @@
 <template>
   <div class="w-full h-full flex flex-col overflow-hidden">
-    <div ref="contentRef" class="flex-1 p-10 whitespace-pre-wrap overflow-auto lh-1.5em text-[#b3b3b3]" v-html="content" />
+    <div
+      ref="contentRef"
+      :style="{
+        fontSize: settingStore.data.readStyle.fontSize + 'px',
+        lineHeight: settingStore.data.readStyle.lineHeight,
+        letterSpacing: settingStore.data.readStyle.letterSpacing + 'px',
+        color: settingStore.data.readStyle.textColor,
+        backgroundColor: settingStore.data.readStyle.backgroundColor
+      }"
+      class="flex-1 p-10 whitespace-pre-wrap overflow-auto lh-1.5em text-[#b3b3b3]"
+      v-html="content"
+    />
   </div>
 </template>
 
 <script setup>
 import { getContent } from '@/api';
 import { useChaptersStore } from '@/stores/chapters';
+import { useSettingStore } from '@/stores/setting';
 
 const route = useRoute();
 const chaptersStore = useChaptersStore();
+const settingStore = useSettingStore();
 
 const content = ref('');
 const contentRef = ref();

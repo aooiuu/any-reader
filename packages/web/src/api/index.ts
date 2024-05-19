@@ -126,3 +126,20 @@ export function getChapter(filePath: string, ruleId?: string) {
     }
   });
 }
+
+// 获取配置
+export function readConfig() {
+  return request({
+    method: 'get',
+    url: 'readConfig'
+  });
+}
+
+// 更新配置
+export function updateConfig(data: any) {
+  return request({
+    method: 'post',
+    url: 'updateConfig',
+    data
+  });
+}

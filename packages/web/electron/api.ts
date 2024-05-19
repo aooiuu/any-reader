@@ -1,6 +1,6 @@
-import { api } from '@any-reader/shared';
 import EasyPostMessage from 'easy-post-message';
 import Adapter from 'easy-post-message/electron-adapter';
+import { readConfig, updateConfig } from './config';
 
 function success(data: any, msg = '') {
   return {
@@ -12,6 +12,7 @@ function success(data: any, msg = '') {
 
 export function createAPI() {
   const pm = new EasyPostMessage(Adapter);
+  const { api } = require('@any-reader/shared');
 
   pm.answer('get@discoverMap', async ({ ruleId = '' } = {}) => success(await api.discoverMap(ruleId)));
   pm.answer('get@getFavorites', async () => success(await api.getFavorites()));
@@ -27,4 +28,7 @@ export function createAPI() {
   pm.answer('post@searchByRuleId', async (data: any) => success(await api.searchByRuleId(data).catch(() => [])));
   pm.answer('post@content', async (data: any) => success(await api.content(data)));
   pm.answer('post@getChapter', async (data: any) => success(await api.getChapter(data)));
+
+  pm.answer('get@readConfig', async () => success(await readConfig()));
+  pm.answer('post@updateConfig', async (data: any) => success(updateConfig(data)));
 }

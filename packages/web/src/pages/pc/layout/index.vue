@@ -6,8 +6,8 @@
     >
       <div class="w-20%" />
       <div class="flex gap-4 items-center justify-center flex-1 w-60% text-[--titleBar-inactiveForeground]">
-        <span class="w-22 codicon codicon-arrow-left cursor-pointer hover:op-70 app-region-none"></span>
-        <span class="w-22 codicon codicon-arrow-right cursor-pointer hover:op-70 app-region-none"></span>
+        <span class="w-22 codicon codicon-arrow-left cursor-pointer hover:op-70 app-region-none" @click="router.back"></span>
+        <span class="w-22 codicon codicon-arrow-right cursor-pointer hover:op-70 app-region-none" @click="router.forward"></span>
         <div
           class="box-content flex items-center justify-center ml-6 w-38vw max-w-600 bg-[--commandCenter-background] border-1 border-solid rounded-6 h-22 border-[--commandCenter-inactiveBorder] cursor-pointer hover:bg-[--commandCenter-activeBackground] app-region-none"
         >
@@ -45,12 +45,7 @@
         </div>
         <div class="flex-1"></div>
 
-        <div
-          :class="[
-            'w-42 h-42 flex items-center justify-center hover:text-[--activityBar-foreground] cursor-pointer',
-            activeNav === '/setting' ? 'text-[--activityBar-foreground]' : ''
-          ]"
-        >
+        <div :class="['w-42 h-42 flex items-center justify-center hover:text-[--activityBar-foreground] cursor-pointer']" @click="openSetting">
           <span :class="['codicon !text-24px codicon-settings-gear']"></span>
         </div>
       </div>
@@ -66,7 +61,10 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="jsx">
+import { Modal } from '@arco-design/web-vue';
+import Setting from '@/components/Setting/index.vue';
+
 const route = useRoute();
 const router = useRouter();
 
@@ -76,10 +74,20 @@ const navs = [
   { icon: 'codicon-flame', path: '/pc/category', title: '分类' },
   { icon: 'codicon-surround-with', path: '/pc/rules', title: '规则' }
 ];
-const activeNav = ref('/pc/books');
+
+function openSetting() {
+  Modal.open({
+    draggable: true,
+    width: 600,
+    footer: false,
+    title: '设置',
+    bodyClass: '!p-0',
+    content: <Setting />
+  });
+}
 </script>
 
-<style>
+<style lang="scss">
 body {
   --titleBar-inactiveBackground: rgb(31, 31, 31);
   --titleBar-inactiveForeground: rgba(204, 204, 204, 0.6);
@@ -97,6 +105,12 @@ body {
   --editor-background: #1f1f1f;
 
   scrollbar-color: var(--scrollbarSlider-background) var(--editor-background);
+
+  --color-bg-3: rgb(24, 24, 24);
+
+  &[arco-theme='dark'] {
+    --color-bg-3: rgb(24, 24, 24);
+  }
 }
 
 .app-region-none {

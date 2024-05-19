@@ -52,7 +52,7 @@
                 <icon-star v-else :size="14" />
               </div>
             </div>
-            <div v-for="i in 4" :key="i" class="w-102 invisible" />
+            <div v-for="i in 10" :key="i" class="w-102 invisible" />
           </div>
         </div>
       </a-spin>

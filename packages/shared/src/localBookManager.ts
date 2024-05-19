@@ -1,8 +1,11 @@
 import * as path from 'node:path'
 import * as fs from 'node:fs'
-import EPub from 'epub'
 import Encoding from 'encoding-japanese'
 import * as iconv from 'iconv-lite'
+import EPub from '@any-reader/epub'
+
+// import { parseEpub } from '@gxl/epub-parser'
+
 import { LOCAL_BOOK_DIR } from './constants'
 
 export enum BOOK_TYPE {
@@ -23,6 +26,110 @@ export interface BookChapter {
 }
 
 export type TreeNode = BookFile | BookChapter
+
+abstract class BookParser {
+  protected _filePath: string
+  /**
+   *
+   * @param {string} filePath 路径
+   */
+  constructor(filePath: string) {
+    this._filePath = filePath
+  }
+
+  public abstract getChapter(): Promise<BookChapter[]>
+  public abstract getContent(item: BookChapter): Promise<string>
+}
+
+class TXTBookParser extends BookParser {
+  getChapter(): Promise<BookChapter[]> {
+    const bookFile = path2bookFile(this._filePath)
+    return Promise.resolve([
+      {
+        name: '正文',
+        path: '',
+        file: bookFile,
+      },
+    ])
+  }
+
+  getContent(item: BookChapter): Promise<string> {
+    const buffer = fs.readFileSync(item.file.path)
+    const encoding = Encoding.detect(buffer)
+    if (encoding === 'UTF8')
+      return Promise.resolve((iconv.decode(buffer, 'utf-8')))
+    else
+      return Promise.resolve(iconv.decode(buffer, 'GB2312'))
+  }
+}
+
+// class EPubBookParser extends BookParser {
+//   async getChapter(): Promise<BookChapter[]> {
+//     const bookFile = path2bookFile(this._filePath)
+//     const book = await parseEpub(this._filePath, {
+//       type: 'path',
+//     })
+//     if (!book.structure)
+//       return []
+//     return book.structure.map((row: { name: any; path: any }) => ({
+//       name: row.name,
+//       path: row.path,
+//       file: bookFile,
+//     }))
+//   }
+
+//   async getContent(item: BookChapter): Promise<string> {
+//     const book = await parseEpub(this._filePath, {
+//       type: 'path',
+//     })
+//     if (!book.structure)
+//       return ''
+
+//     return book.sections?.find(e => `${e.id}.html` === item.path)?.htmlString || ''
+//   }
+// }
+
+class EPubBookParser extends BookParser {
+  public getChapter(): Promise<BookChapter[]> {
+    const bookFile = path2bookFile(this._filePath)
+    return new Promise((resolve) => {
+      const book = new EPub(this._filePath)
+      book.on('end', () => {
+        resolve(
+          book.flow.map((e) => {
+            return {
+              name: e.title || e.id,
+              path: e.id,
+              file: bookFile,
+            }
+          }),
+        )
+      })
+      book.parse()
+    })
+  }
+
+  public getContent(item: BookChapter): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const book = new EPub(item.file.path)
+      book.on('end', () => {
+        book.getChapter(item.path, (error, text) => {
+          if (error)
+            reject(error)
+
+          resolve(text)
+        })
+      })
+      book.parse()
+    })
+  }
+}
+
+function getBookParser(filePath: string): BookParser {
+  if (path.extname(filePath) === '.txt')
+    return new TXTBookParser(filePath)
+  return new EPubBookParser(filePath)
+}
 
 // 检查目录
 export function checkDir() {
@@ -58,56 +165,11 @@ export async function getBookList(): Promise<BookFile[]> {
 }
 
 // 获取章节
-export async function getChapter(filePath: string): Promise<BookChapter[]> {
-  const bookFile = path2bookFile(filePath)
-  if (bookFile.type === BOOK_TYPE.TXT) {
-    return [
-      {
-        name: '正文',
-        path: '',
-        file: bookFile,
-      },
-    ]
-  }
-
-  return new Promise((resolve) => {
-    const book = new EPub(bookFile.path)
-    book.on('end', () => {
-      resolve(
-        book.flow.map((e) => {
-          return {
-            name: e.title || e.id,
-            path: e.id,
-            file: bookFile,
-          }
-        }),
-      )
-    })
-    book.parse()
-  })
+export function getChapter(filePath: string): Promise<BookChapter[]> {
+  return getBookParser(filePath).getChapter()
 }
 
 // 获取内容
 export async function getContent(item: BookChapter): Promise<string> {
-  if (item.file.type === BOOK_TYPE.TXT) {
-    const buffer = fs.readFileSync(item.file.path)
-    const encoding = Encoding.detect(buffer)
-    if (encoding === 'UTF8')
-      return iconv.decode(buffer, 'utf-8')
-    else
-      return iconv.decode(buffer, 'GB2312')
-  }
-
-  return new Promise((resolve, reject) => {
-    const book = new EPub(item.file.path)
-    book.on('end', () => {
-      book.getChapter(item.path, (error, text) => {
-        if (error)
-          reject(error)
-
-        resolve(text)
-      })
-    })
-    book.parse()
-  })
+  return getBookParser(item.file.path).getContent(item)
 }
