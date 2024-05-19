@@ -1,3 +1,4 @@
+import { BrowserWindow, app } from 'electron';
 import EasyPostMessage from 'easy-post-message';
 import Adapter from 'easy-post-message/electron-adapter';
 import { readConfig, updateConfig } from './config';
@@ -10,7 +11,7 @@ function success(data: any, msg = '') {
   };
 }
 
-export function createAPI() {
+export function createAPI(win: BrowserWindow) {
   const pm = new EasyPostMessage(Adapter);
   const { api } = require('@any-reader/shared');
 
@@ -31,4 +32,18 @@ export function createAPI() {
 
   pm.answer('get@readConfig', async () => success(await readConfig()));
   pm.answer('post@updateConfig', async (data: any) => success(updateConfig(data)));
+
+  pm.answer('get@minimize', () => {
+    win.minimize();
+    return success(true);
+  });
+  pm.answer('get@maximize', () => {
+    console.log('[maximize]');
+    win.isMaximized() ? win.unmaximize() : win.maximize();
+    return success(true);
+  });
+  pm.answer('get@exit', () => {
+    app.quit();
+    process.exit(0);
+  });
 }

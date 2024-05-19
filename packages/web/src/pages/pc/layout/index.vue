@@ -15,15 +15,23 @@
         </div>
       </div>
       <div class="w-20% h-full flex gap-4 items-center justify-end text-[--titleBar-inactiveForeground]">
-        <div class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--toolbar-hoverBackground] app-region-none">
-          <span class="codicon codicon-chrome-minimize"></span>
-        </div>
-        <div class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--toolbar-hoverBackground] fullscreen app-region-none">
-          <span class="codicon codicon-chrome-maximize"></span>
-        </div>
-        <div class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--toolbar-hoverBackground] app-region-none">
-          <span class="codicon codicon-chrome-close"></span>
-        </div>
+        <template v-if="PLATFORM === 'electron'">
+          <div
+            class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--toolbar-hoverBackground] app-region-none"
+            @click="minimize"
+          >
+            <span class="codicon codicon-chrome-minimize"></span>
+          </div>
+          <div
+            class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--toolbar-hoverBackground] fullscreen app-region-none"
+            @click="maximize"
+          >
+            <span class="codicon codicon-chrome-maximize"></span>
+          </div>
+          <div class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--toolbar-hoverBackground] app-region-none" @click="exit">
+            <span class="codicon codicon-chrome-close"></span>
+          </div>
+        </template>
       </div>
     </div>
     <div class="flex flex-1 overflow-auto">
@@ -63,6 +71,8 @@
 
 <script setup lang="jsx">
 import { Modal } from '@arco-design/web-vue';
+import { PLATFORM } from '@/constants';
+import { minimize, maximize, exit } from '@/api/electron';
 import Setting from '@/components/Setting/index.vue';
 
 const route = useRoute();
