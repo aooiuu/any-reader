@@ -44,6 +44,7 @@
     "@types/encoding-japanese": "^2.0.5",
     "@types/koa-router": "^7.4.8",
     "@types/koa-static": "^4.0.4",
+    "@types/node": "^18.16.19",
     "esno": "^0.16.3",
     "rollup": "^3.26.0",
     "rollup-plugin-dts": "^5.3.0",

@@ -12,10 +12,10 @@
       <a-input-number v-model="settingStore.data.readStyle.letterSpacing" class="!w-120px" mode="button" />
     </SettingRow>
     <SettingRow title="字体颜色">
-      <a-color-picker v-model="settingStore.data.readStyle.textColor" show-text disabled-alpha />
+      <a-color-picker v-model="settingStore.data.readStyle.textColor" show-text />
     </SettingRow>
     <SettingRow title="背景颜色">
-      <a-color-picker v-model="settingStore.data.readStyle.backgroundColor" show-text disabled-alpha />
+      <a-color-picker v-model="settingStore.data.readStyle.backgroundColor" show-text />
     </SettingRow>
   </div>
 </template>

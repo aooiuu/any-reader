@@ -19,8 +19,10 @@
 import { getContent } from '@/api';
 import { useChaptersStore } from '@/stores/chapters';
 import { useSettingStore } from '@/stores/setting';
+import { useKeyboard } from './keyboard';
 
 const route = useRoute();
+const router = useRouter();
 const chaptersStore = useChaptersStore();
 const settingStore = useSettingStore();
 
@@ -64,6 +66,51 @@ async function init() {
 watch(() => route.query, init, {
   immediate: true,
   deep: true
+});
+
+// 上一章
+function onPrevChapter() {
+  if (!lastChapter.value) return;
+  router.push({
+    name: route.name,
+    query: {
+      ...route.query,
+      chapterPath: lastChapter.value
+    }
+  });
+}
+
+// 下一章
+function onNextChapter() {
+  if (!nextChapter.value) return;
+  router.push({
+    name: route.name,
+    query: {
+      ...route.query,
+      chapterPath: nextChapter.value
+    }
+  });
+}
+
+// 上一页
+function onPageUp() {
+  contentRef.value.scrollTop = contentRef.value.scrollTop - contentRef.value.offsetHeight + 5;
+}
+
+// 下一页
+function onPageDown() {
+  contentRef.value.scrollTop = contentRef.value.scrollTop + contentRef.value.offsetHeight - 5;
+}
+
+// 监听热键
+useKeyboard({}, (cmd) => {
+  const cmdMap = {
+    prevChapter: onPrevChapter,
+    nextChapter: onNextChapter,
+    pageUp: onPageUp,
+    pageDown: onPageDown
+  };
+  cmdMap[cmd] && cmdMap[cmd]();
 });
 </script>
 

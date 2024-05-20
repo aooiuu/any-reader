@@ -14,8 +14,16 @@ export type ReadStyle = {
   backgroundColor: string;
 };
 
+export type KeyboardShortcuts = {
+  prevChapter: string;
+  nextChapter: string;
+  pageUp: string;
+  pageDown: string;
+};
+
 export type Setting = {
   readStyle: ReadStyle;
+  keyboardShortcuts: KeyboardShortcuts;
 };
 
 export const useSettingStore = defineStore('setting', () => {
@@ -25,7 +33,13 @@ export const useSettingStore = defineStore('setting', () => {
       lineHeight: 1.5,
       letterSpacing: 1,
       textColor: '#ffffffb3',
-      backgroundColor: 'transparent'
+      backgroundColor: '#ffffff00'
+    },
+    keyboardShortcuts: {
+      prevChapter: '←',
+      nextChapter: '→',
+      pageUp: '↑',
+      pageDown: '↓'
     }
   });
 
