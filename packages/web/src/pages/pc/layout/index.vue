@@ -19,16 +19,22 @@
           <!-- 布局 -->
           <div class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--toolbar-hoverBackground] app-region-none">
             <span
+              :class="['codicon', settingStore.data.pinned ? 'codicon-pinned-dirty' : 'codicon-pinned']"
+              @click="settingStore.data.pinned = !settingStore.data.pinned"
+            />
+          </div>
+          <div class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--toolbar-hoverBackground] app-region-none">
+            <span
               :class="['codicon', settingStore.data.sidebar === 'hidden' ? 'codicon-layout-sidebar-left-off' : 'codicon-layout-sidebar-left']"
               @click="changeSidebar"
-            ></span>
+            />
           </div>
           <!-- 窗口 -->
           <div
             class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--toolbar-hoverBackground] app-region-none"
             @click="minimize"
           >
-            <span class="codicon codicon-chrome-minimize"></span>
+            <span class="codicon codicon-chrome-minimize" />
           </div>
           <div
             class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--toolbar-hoverBackground] fullscreen app-region-none"

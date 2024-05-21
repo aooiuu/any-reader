@@ -1,5 +1,6 @@
 import { merge } from 'lodash-es';
 import { readConfig, updateConfig } from '@/api';
+import { alwaysOnTop } from '@/api/electron';
 
 export type ReadStyle = {
   // 字体大小
@@ -29,6 +30,7 @@ export type Setting = {
   readStyle: ReadStyle;
   keyboardShortcuts: KeyboardShortcuts;
   sidebar: Sidebar;
+  pinned: boolean;
 };
 
 export const useSettingStore = defineStore('setting', () => {
@@ -46,7 +48,8 @@ export const useSettingStore = defineStore('setting', () => {
       pageUp: '↑',
       pageDown: '↓'
     },
-    sidebar: 'left'
+    sidebar: 'left',
+    pinned: false
   });
 
   // 同步
@@ -57,14 +60,16 @@ export const useSettingStore = defineStore('setting', () => {
     }
   }
 
+  watch(data, (v) => {
+    updateConfig(toRaw(v));
+  });
+
   watch(
-    () => data,
-    (v) => {
-      updateConfig(toRaw(v));
+    () => data.pinned,
+    (value) => {
+      alwaysOnTop(value);
     },
-    {
-      deep: true
-    }
+    { immediate: true }
   );
 
   sync();

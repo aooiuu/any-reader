@@ -46,4 +46,9 @@ export function createAPI(win: BrowserWindow) {
     app.quit();
     process.exit(0);
   });
+
+  pm.answer('post@alwaysOnTop', ({ pinned = true }) => {
+    pinned ? win.setAlwaysOnTop(true, 'screen-saver') : win.setAlwaysOnTop(false);
+    return success(win.isAlwaysOnTop());
+  });
 }

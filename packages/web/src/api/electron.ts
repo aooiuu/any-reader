@@ -23,3 +23,14 @@ export function exit() {
     url: 'exit'
   });
 }
+
+// 置顶
+export function alwaysOnTop(pinned: boolean) {
+  return request({
+    method: 'post',
+    url: 'alwaysOnTop',
+    data: {
+      pinned
+    }
+  });
+}
