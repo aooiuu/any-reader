@@ -30,7 +30,7 @@
   "dependencies": {
     "@any-reader/core": "workspace:^",
     "@any-reader/epub": "workspace:^",
-    "encoding-japanese": "^2.1.0",
+    "chardet": "^2.0.0",
     "fs-extra": "^11.1.1",
     "iconv-lite": "^0.6.3",
     "uuid": "^9.0.1"

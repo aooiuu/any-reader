@@ -1,7 +1,7 @@
 import * as path from 'node:path'
 import * as fs from 'node:fs'
-import Encoding from 'encoding-japanese'
 import * as iconv from 'iconv-lite'
+import chardet from 'chardet'
 import EPub from '@any-reader/epub'
 
 // import { parseEpub } from '@gxl/epub-parser'
@@ -37,13 +37,55 @@ abstract class BookParser {
     this._filePath = filePath
   }
 
+  /**
+   * 获取章节
+   */
   public abstract getChapter(): Promise<BookChapter[]>
+
+  /**
+   * 获取内容
+   * @param item
+   */
   public abstract getContent(item: BookChapter): Promise<string>
 }
 
+// 缓存最后一个文件
+const mCache = new Map<string, string>()
 class TXTBookParser extends BookParser {
+  private chapterPattern = /^第[\d|一|二|三|四|五|六|七|八|九|十|百]*[章|节|集]/
+
+  private _getText(filePath: string): string {
+    if (mCache.has(filePath))
+      return mCache.get(filePath) as string
+    mCache.clear()
+
+    const sourceFile = fs.readFileSync(filePath)
+    const encoding = chardet.detect(sourceFile)
+    const text = iconv.decode(sourceFile, encoding as string)
+    mCache.set(filePath, text)
+    return text
+  }
+
   getChapter(): Promise<BookChapter[]> {
+    const text = this._getText(this._filePath)
+    const lines = text.split(/\r?\n/)
+    const result: BookChapter[] = []
+
     const bookFile = path2bookFile(this._filePath)
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i]
+      if (this.chapterPattern.test(line)) {
+        result.push({
+          name: line,
+          path: i.toString(),
+          file: bookFile,
+        })
+      }
+    }
+
+    if (result.length)
+      return Promise.resolve(result)
+
     return Promise.resolve([
       {
         name: '正文',
@@ -54,12 +96,19 @@ class TXTBookParser extends BookParser {
   }
 
   getContent(item: BookChapter): Promise<string> {
-    const buffer = fs.readFileSync(item.file.path)
-    const encoding = Encoding.detect(buffer)
-    if (encoding === 'UTF8')
-      return Promise.resolve((iconv.decode(buffer, 'utf-8')))
-    else
-      return Promise.resolve(iconv.decode(buffer, 'GB2312'))
+    const text = this._getText(this._filePath)
+    const lines = text.split(/\r?\n/)
+    if (item.path === '')
+      return Promise.resolve(text)
+    let result = ''
+
+    for (let i = +item.path + 1; i < lines.length; i++) {
+      const line = lines[i]
+      if (this.chapterPattern.test(line))
+        break
+      result += `${lines[i]}\n`
+    }
+    return Promise.resolve(result)
   }
 }
 
