@@ -4,18 +4,26 @@
       class="text-12 flex justify-center items-center h-34 lh-34 bg-[--titleBar-inactiveBackground] border-b-1 border-b-solid border-b-[--titleBar-border-bottom] pr-2"
       style="-webkit-app-region: drag"
     >
-      <div class="w-20%" />
-      <div class="flex gap-4 items-center justify-center flex-1 w-60% text-[--titleBar-inactiveForeground]">
+      <div class="topbar__left w-20%" />
+      <div class="w-60% flex gap-4 items-center justify-center flex-1 text-[--titleBar-inactiveForeground]">
         <span class="w-22 codicon codicon-arrow-left cursor-pointer hover:op-70 app-region-none" @click="router.back"></span>
         <span class="w-22 codicon codicon-arrow-right cursor-pointer hover:op-70 app-region-none" @click="router.forward"></span>
         <div
-          class="box-content flex items-center justify-center ml-6 w-38vw max-w-600 bg-[--commandCenter-background] border-1 border-solid rounded-6 h-22 border-[--commandCenter-inactiveBorder] cursor-pointer hover:bg-[--commandCenter-activeBackground] app-region-none"
+          class="topbar__cmd box-content flex items-center justify-center ml-6 w-38vw max-w-600 bg-[--commandCenter-background] border-1 border-solid rounded-6 h-22 border-[--commandCenter-inactiveBorder] cursor-pointer hover:bg-[--commandCenter-activeBackground] app-region-none"
         >
           开发中
         </div>
       </div>
       <div class="w-20% h-full flex gap-4 items-center justify-end text-[--titleBar-inactiveForeground]">
         <template v-if="PLATFORM === 'electron'">
+          <!-- 布局 -->
+          <div class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--toolbar-hoverBackground] app-region-none">
+            <span
+              :class="['codicon', settingStore.data.sidebar === 'hidden' ? 'codicon-layout-sidebar-left-off' : 'codicon-layout-sidebar-left']"
+              @click="changeSidebar"
+            ></span>
+          </div>
+          <!-- 窗口 -->
           <div
             class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--toolbar-hoverBackground] app-region-none"
             @click="minimize"
@@ -37,6 +45,7 @@
     <div class="flex flex-1 overflow-auto">
       <!-- 侧边栏 -->
       <div
+        v-if="settingStore.data.sidebar !== 'hidden'"
         class="w-48 flex flex-col py-10 text-[--foreground] bg-[--activityBar-background] text-24 border-r-1 border-r-solid border-r-[--titleBar-border-bottom]"
       >
         <!-- 收藏 -->
@@ -73,10 +82,16 @@
 import { Modal } from '@arco-design/web-vue';
 import { PLATFORM } from '@/constants';
 import { minimize, maximize, exit } from '@/api/electron';
+import { useSettingStore } from '@/stores/setting';
 import Setting from '@/components/Setting/index.vue';
 
 const route = useRoute();
 const router = useRouter();
+const settingStore = useSettingStore();
+
+function changeSidebar() {
+  settingStore.data.sidebar = settingStore.data.sidebar === 'hidden' ? 'left' : 'hidden';
+}
 
 const navs = [
   { icon: 'codicon-book', path: '/pc/books', title: '书架' },
@@ -128,6 +143,20 @@ body {
 
   * {
     -webkit-app-region: none;
+  }
+}
+</style>
+
+<style scoped lang="scss">
+@media (max-width: 300px) {
+  .topbar__left {
+    display: none;
+  }
+}
+
+@media (max-width: 250px) {
+  .topbar__cmd {
+    display: none;
   }
 }
 </style>

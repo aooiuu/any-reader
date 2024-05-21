@@ -14,6 +14,7 @@ export type ReadStyle = {
   backgroundColor: string;
 };
 
+// 快捷键
 export type KeyboardShortcuts = {
   prevChapter: string;
   nextChapter: string;
@@ -21,9 +22,13 @@ export type KeyboardShortcuts = {
   pageDown: string;
 };
 
+// 侧边栏
+export type Sidebar = 'left' | 'right' | 'hidden' | '';
+
 export type Setting = {
   readStyle: ReadStyle;
   keyboardShortcuts: KeyboardShortcuts;
+  sidebar: Sidebar;
 };
 
 export const useSettingStore = defineStore('setting', () => {
@@ -40,7 +45,8 @@ export const useSettingStore = defineStore('setting', () => {
       nextChapter: '→',
       pageUp: '↑',
       pageDown: '↓'
-    }
+    },
+    sidebar: 'left'
   });
 
   // 同步

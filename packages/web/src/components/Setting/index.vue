@@ -21,10 +21,12 @@
 <script setup>
 import ReadPage from './components/ReadPage/index.vue';
 import KeyboardShortcuts from './components/KeyboardShortcuts/index.vue';
+import App from './components/App/index.vue';
 
 const navs = [
   { title: '阅读页', component: ReadPage },
-  { title: '热键', component: KeyboardShortcuts }
+  { title: '热键', component: KeyboardShortcuts },
+  { title: '应用', component: App }
 ];
 
 const activeNavIdx = ref(0);
