@@ -135,7 +135,7 @@ export async function content({ filePath, chapterPath, ruleId }: any) {
     let text = ''
     if (rule.contentType === ContentType.MANGA)
       text = content.map(src => `<img src="${src}"/>`).join('')
-    if (rule.contentType === ContentType.VIDEO)
+    else if (rule.contentType === ContentType.VIDEO)
       text = content?.[0] || ''
     else
       text = content.join('')
