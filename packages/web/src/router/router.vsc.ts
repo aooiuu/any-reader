@@ -6,54 +6,54 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      component: () => import('@/pages/home/index.vue')
+      component: () => import('@/pages/vscode/home/index.vue')
     },
     {
       path: '/player',
-      component: () => import('@/pages/player/index.vue')
+      component: () => import('@/pages/vscode/player/index.vue')
     },
     {
       path: '/rules',
-      component: () => import('@/pages/rules/index.vue')
+      component: () => import('@/pages/vscode/rules/index.vue')
     },
     {
       path: '/rule-info',
-      component: () => import('@/pages/rule-info/index.vue')
+      component: () => import('@/pages/vscode/rule-info/index.vue')
     },
     {
       path: '/iframe',
-      component: () => import('@/pages/iframe/index.vue')
+      component: () => import('@/pages/vscode/iframe/index.vue')
     },
     {
       path: '/search',
-      component: () => import('@/pages/search/index.vue'),
+      component: () => import('@/pages/vscode/search/index.vue'),
       meta: {
         keepAlive: true
       }
     },
     {
       path: '/vsc/search',
-      component: () => import('@/pages/search/index.vsc.vue'),
+      component: () => import('@/pages/vscode/search/index.vsc.vue'),
       meta: {
         keepAlive: true
       }
     },
     {
       path: '/vsc/rules',
-      component: () => import('@/pages/rules/index.vsc.vue')
+      component: () => import('@/pages/vscode/rules/index.vsc.vue')
     },
     {
       path: '/discover',
-      component: () => import('@/pages/discover/index.vue')
+      component: () => import('@/pages/vscode/discover/index.vue')
     },
     {
       path: '/content',
       name: 'content',
-      component: () => import('@/pages/content/index.vue')
+      component: () => import('@/pages/vscode/content/index.vue')
     },
     {
       path: '/chapter',
-      component: () => import('@/pages/chapter/index.vue'),
+      component: () => import('@/pages/vscode/chapter/index.vue'),
       meta: {
         keepAlive: true
       }
