@@ -7,7 +7,7 @@
   "artifactName": "AnyReader_${version}.${ext}",
   "asar": false,
   "directories": {
-    "output": "dist/electron/${version}"
+    "output": "dist/electron"
   },
   "files": [
     "dist"
