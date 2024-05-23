@@ -118,7 +118,7 @@ export async function updateRule(data: Rule) {
 export async function searchByRuleId({ ruleId, keyword }: { ruleId: string; keyword: string }) {
   const rule = await ruleFileManager.findById(ruleId)
   const analyzer = new RuleManager(rule)
-  return analyzer.search(keyword)
+  return await analyzer.search(keyword).catch(() => [])
 }
 
 /**
@@ -131,7 +131,7 @@ export async function content({ filePath, chapterPath, ruleId }: any) {
   if (ruleId) {
     const rule = await ruleFileManager.findById(ruleId)
     const rm = new RuleManager(rule)
-    const content = await rm.getContent(chapterPath)
+    const content = await rm.getContent(chapterPath).catch(() => [])
     let text = ''
     if (rule.contentType === ContentType.MANGA)
       text = content.map(src => `<img src="${src}"/>`).join('')
@@ -159,7 +159,7 @@ export async function getChapter({ filePath = '', ruleId = undefined } = {}) {
   if (ruleId) {
     const rule = await ruleFileManager.findById(ruleId)
     const rm = new RuleManager(rule)
-    const list = await rm.getChapter(filePath)
+    const list = await rm.getChapter(filePath).catch(() => [])
     return list.map(e => ({
       ...e,
       name: e.name,
