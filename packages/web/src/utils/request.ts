@@ -10,10 +10,7 @@ export async function request(config: any) {
   } else if (PLATFORM === 'electron') {
     const { pm } = await import(`./postMessage.electron`);
     const method = config.method ?? 'get';
-    !NProgress.isStarted() && NProgress.start();
-    const res = await pm.send(`${method}@${config.url}`, config.params || config.data);
-    NProgress.done();
-    return res;
+    return pm.send(`${method}@${config.url}`, config.params || config.data);
   } else {
     const { pm } = await import(`./postMessage`);
     const method = config.method ?? 'get';

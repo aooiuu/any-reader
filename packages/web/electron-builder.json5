@@ -1,37 +1,41 @@
 /**
  * @see https://www.electron.build/configuration/configuration
  */
- {
-  "appId": "any-reader",
-  "productName": "AnyReader",
-  "artifactName": "AnyReader_${version}.${ext}",
-  "asar": false,
-  "directories": {
-    "output": "dist/electron"
+{
+  appId: 'io.github.any-reader',
+  productName: 'AnyReader',
+  artifactName: 'AnyReader_${version}.${ext}',
+  asar: true,
+  directories: {
+    output: 'dist/electron'
   },
-  "files": [
-    "dist"
+  files: [
+    'dist/electron-js',
+    'dist/electron-template',
+    '!**/node_modules/**/*.map',
+    '!**/node_modules/**/*.md',
+    '!**/node_modules/**/*.ts',
+    '!**/node_modules/**/*.scss',
+    '!**/node_modules/.bin',
+    '!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}'
   ],
-  "mac": {
-    "target": [
-      "dmg"
-    ]
+  mac: {
+    target: ['dmg']
   },
-  "win": {
+  win: {
+    artifactName: '${productName}-win32-${arch}-${version}.${ext}',
     // "icon": "public/icon.png",
-    "target": [
+    target: [
       {
-        "target": "nsis",
-        "arch": [
-          "x64"
-        ]
+        target: 'nsis',
+        arch: ['x64', 'ia32']
       }
     ]
   },
-  "nsis": {
-    "oneClick": false,
-    "perMachine": false,
-    "allowToChangeInstallationDirectory": true,
-    "deleteAppDataOnUninstall": false
+  nsis: {
+    oneClick: false,
+    perMachine: false,
+    allowToChangeInstallationDirectory: true,
+    deleteAppDataOnUninstall: false
   }
 }

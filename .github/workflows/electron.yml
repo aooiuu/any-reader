@@ -1,4 +1,4 @@
-name: electron
+name: Electron
 
 on:
   push:

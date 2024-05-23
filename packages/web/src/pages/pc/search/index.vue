@@ -4,7 +4,7 @@
       <div class="flex-1 flex items-center gap-10">
         <a-input-search v-model="searchText" placeholder="输入关键词，回车键搜索" class="!w-80" :disabled="loading" @keyup.enter="onSearch" />
         <a-checkbox-group v-model="contentTypes" :disabled="loading">
-          <a-checkbox v-for="item in CONTENT_TYPES" :key="item.value" :value="item.value">
+          <a-checkbox v-for="item in CONTENT_TYPES.filter((e) => e.value !== CONTENT_TYPE.GAME)" :key="item.value" :value="item.value">
             {{ item.label }}
           </a-checkbox>
         </a-checkbox-group>
@@ -62,7 +62,7 @@
 <script setup lang="tsx">
 import { v4 as uuidV4 } from 'uuid';
 import pLimit from 'p-limit';
-import { CONTENT_TYPES } from '@/constants';
+import { CONTENT_TYPES, CONTENT_TYPE } from '@/constants';
 import { searchByRuleId } from '@/api';
 import { useFavoritesStore } from '@/stores/favorites';
 import { useRulesStore } from '@/stores/rules';

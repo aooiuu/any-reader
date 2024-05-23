@@ -9,14 +9,14 @@ export enum CONTENT_TYPE {
 }
 
 export const CONTENT_TYPES = [
-  { value: 0, label: 'MANGA' },
-  { value: 1, label: 'NOVEL' },
-  { value: 2, label: 'VIDEO' },
+  { value: 0, label: '漫画' },
+  { value: 1, label: '小说' },
+  { value: 2, label: '视频' },
   // { value: 3, label: 'AUDIO' },
   // { value: 4, label: 'RSS' },
   // { value: 5, label: 'NOVELMORE' },
 
-  { value: 101, label: 'GAME' }
+  { value: 101, label: '游戏' }
 ];
 
 export const PLATFORM: 'browser' | 'vscode' | 'electron' = import.meta.env.VITE_APP_PLATFORM;

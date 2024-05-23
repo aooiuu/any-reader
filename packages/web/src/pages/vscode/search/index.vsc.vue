@@ -19,7 +19,7 @@
         <template v-if="expand">
           <!-- 规则类型 -->
           <vscode-dropdown class="w-full" :value="'' + contentType" @input="(event:any) => (contentType = +event.target.value)">
-            <vscode-option v-for="item in CONTENT_TYPES" :key="item.value" :value="item.value">
+            <vscode-option v-for="item in CONTENT_TYPES.filter((e) => e.value !== CONTENT_TYPE.GAME)" :key="item.value" :value="item.value">
               {{ item.label }}
             </vscode-option>
           </vscode-dropdown>
