@@ -163,7 +163,7 @@ async function submit() {
     ...formData,
     uuid: uuidV4()
   });
-  router.push('/rules');
+  router.back();
 }
 
 onMounted(async () => {

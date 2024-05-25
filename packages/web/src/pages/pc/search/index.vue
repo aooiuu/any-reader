@@ -11,12 +11,12 @@
       </div>
     </div>
     <!-- 搜索进度 -->
-    <div v-if="loading" class="flex items-center">
+    <div v-if="loading" class="flex items-center text-[--foreground]">
       <a-button class="mr-5" @click="cancelSearch">取消</a-button>
       <ASpin />
       <div v-if="runCount > 0" class="ml-2">搜索进度: {{ runCount }}/{{ total }} {{ ((runCount / total) * 100).toFixed(0) }}%</div>
     </div>
-    <div class="flex-1 overflow-auto">
+    <div class="flex-1 overflow-auto text-[--foreground]">
       <!-- 规则列表 -->
       <template v-for="item in list" :key="item.id">
         <div v-if="item.list.length" class="pt-20">

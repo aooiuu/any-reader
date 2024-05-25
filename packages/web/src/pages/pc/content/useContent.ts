@@ -2,6 +2,7 @@ import type { Ref } from 'vue';
 import { getContent } from '@/api';
 import { useChaptersStore } from '@/stores/chapters';
 import { useSettingStore } from '@/stores/setting';
+import { useReadStore } from '@/stores/read';
 import { useKeyboardShortcuts } from '@/hooks/useMagicKeys';
 
 export function useContent(contentRef: Ref<HTMLElement>) {
@@ -9,6 +10,7 @@ export function useContent(contentRef: Ref<HTMLElement>) {
   const router = useRouter();
   const chaptersStore = useChaptersStore();
   const settingStore = useSettingStore();
+  const readStore = useReadStore();
 
   const content = ref('');
 
@@ -34,7 +36,11 @@ export function useContent(contentRef: Ref<HTMLElement>) {
     content.value = '';
     const res = await getContent(route.query).catch(() => {});
     chapterPath.value = route.query.chapterPath as string;
-    chaptersStore.getChapters(route.query.filePath as string, route.query.ruleId as string);
+    chaptersStore.getChapters(route.query.filePath as string, route.query.ruleId as string).then(() => {
+      const chapterInfo = chaptersStore.chapters.find((e) => e.chapterPath === route.query.chapterPath);
+      readStore.setPath(chapterInfo?.chapterPath || '');
+      readStore.setTitle(chapterInfo?.name || '');
+    });
     if (res?.code === 0) {
       content.value = res?.data?.content || '';
     }
@@ -47,6 +53,11 @@ export function useContent(contentRef: Ref<HTMLElement>) {
   watch(() => route.query, init, {
     immediate: true,
     deep: true
+  });
+
+  onUnmounted(() => {
+    readStore.setPath('');
+    readStore.setTitle('');
   });
 
   // 上一章

@@ -2,14 +2,13 @@
   <div class="px-10 py-10 h-full flex flex-col">
     <div class="mb-10 flex gap-10">
       <div class="flex-1 flex items-center gap-10">
-        <a-input-search v-model="searchText" placeholder="搜索" class="!w-80" />
+        <a-input-search v-model="searchText" placeholder="搜索" class="!w-140px" />
         <a-checkbox-group v-model="contentTypes">
           <a-checkbox v-for="item in CONTENT_TYPES" :key="item.value" :value="item.value">
             {{ item.label }}
           </a-checkbox>
         </a-checkbox-group>
       </div>
-      <a-button @click="editBookSource">打开规则文件</a-button>
       <a-button type="primary" @click="addRule">
         <template #icon>
           <icon-plus />
@@ -19,9 +18,9 @@
     </div>
     <div class="flex-1 overflow-hidden">
       <a-table
+        :pagination="true"
         :columns="tableColumns"
         :data="tableData"
-        :pagination="false"
         :scrollbar="true"
         :scroll="{
           y: '100%'

@@ -2,16 +2,21 @@
   <div class="w-full h-full flex flex-col overflow-hidden">
     <div
       class="text-12 flex justify-center items-center h-34 lh-34 bg-[--titleBar-inactiveBackground] border-b-1 border-b-solid border-b-[--titleBar-border-bottom] pr-2"
-      style="-webkit-app-region: drag"
+      :style="{
+        '-webkit-app-region': 'drag'
+      }"
     >
       <div class="topbar__left w-20%" />
       <div class="w-60% flex gap-4 items-center justify-center flex-1 text-[--titleBar-inactiveForeground]">
         <span class="w-22 codicon codicon-arrow-left cursor-pointer hover:op-70 app-region-none" @click="router.back"></span>
         <span class="w-22 codicon codicon-arrow-right cursor-pointer hover:op-70 app-region-none" @click="router.forward"></span>
         <div
-          class="topbar__cmd box-content flex items-center justify-center ml-6 w-38vw max-w-600 bg-[--commandCenter-background] border-1 border-solid rounded-6 h-22 border-[--commandCenter-inactiveBorder] cursor-pointer hover:bg-[--commandCenter-activeBackground] app-region-none"
+          class="topbar__cmd app-region-none box-content flex items-center justify-center ml-6 w-38vw max-w-600 bg-[--commandCenter-background] border-1 border-solid rounded-6 h-22 border-[--commandCenter-inactiveBorder] cursor-pointer hover:bg-[--commandCenter-activeBackground] px-6"
         >
-          开发中
+          <div v-if="route.path === '/pc/content'" class="overflow-hidden whitespace-nowrap text-ellipsis" :title="readStore.title">
+            {{ readStore.title }}
+          </div>
+          <div v-else>开发中</div>
         </div>
       </div>
       <div class="w-20% h-full flex gap-4 items-center justify-end text-[--titleBar-inactiveForeground]">
@@ -89,11 +94,13 @@ import { Modal } from '@arco-design/web-vue';
 import { PLATFORM } from '@/constants';
 import { minimize, maximize, exit } from '@/api/electron';
 import { useSettingStore } from '@/stores/setting';
+import { useReadStore } from '@/stores/read';
 import Setting from '@/components/Setting/index.vue';
 
 const route = useRoute();
 const router = useRouter();
 const settingStore = useSettingStore();
+const readStore = useReadStore();
 
 function changeSidebar() {
   settingStore.data.sidebar = settingStore.data.sidebar === 'hidden' ? 'left' : 'hidden';
@@ -109,6 +116,7 @@ const navs = [
 function openSetting() {
   Modal.open({
     draggable: true,
+    mask: false,
     width: 600,
     footer: false,
     title: '设置',
