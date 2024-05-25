@@ -2,14 +2,20 @@
  * webview 消息处理
  */
 
+import * as os from 'node:os';
+import * as path from 'node:path';
 import * as vscode from 'vscode';
+import openExplorer from 'explorer-opener';
 import * as EasyPostMessage from 'easy-post-message';
 import { CONSTANTS, api } from '@any-reader/shared';
-import * as localBookManager from '@any-reader/shared/localBookManager';
+import localBookManager from '@any-reader/shared/localBookManager';
 import { COMMANDS } from '../constants';
 import * as ruleFileManager from '../utils/ruleFileManager';
 import { createAdapter } from '../utils/easyPostMessage';
-import openExplorer from 'explorer-opener';
+import { getConfig } from '../utils/config';
+
+export const ROOT_PATH = path.join(os.homedir(), '.any-reader');
+export const CONFIG_PATH = path.join(ROOT_PATH, 'config.vscode.json');
 
 function success(data: any, msg = '') {
   return {
@@ -41,7 +47,7 @@ export class WebviewEvent {
     this._pm.answer('get@discoverMap', async ({ ruleId = '' } = {}) => success(await api.discoverMap(ruleId)));
     this._pm.answer('get@getFavorites', async () => success(await api.getFavorites()));
     this._pm.answer('get@getHistory', async () => success(await api.getHistory()));
-    this._pm.answer('get@getLocalBooks', async () => success(await api.getLocalBooks()));
+    this._pm.answer('get@getLocalBooks', async () => success(await api.getLocalBooks(getConfig().bookDir)));
     this._pm.answer('post@discover', async (data: any) => success(await api.discover(data)));
     this._pm.answer('post@star', async (data: any) => success(await api.star(data)));
     this._pm.answer('post@unstar', async (data: any) => success(await api.unstar(data)));
@@ -52,12 +58,14 @@ export class WebviewEvent {
     this._pm.answer('post@searchByRuleId', async (data: any) => success(await api.searchByRuleId(data)));
     this._pm.answer('post@content', async (data: any) => success(await api.content(data)));
     this._pm.answer('post@getChapter', async (data: any) => success(await api.getChapter(data)));
+    this._pm.answer('get@readConfig', async () => success(await api.readConfig(CONFIG_PATH)));
+    this._pm.answer('post@updateConfig', async (data: any) => success(await api.updateConfig(CONFIG_PATH, data)));
   }
 
   // 打开本地书籍目录
   _vscOpenLocalBookDir() {
-    localBookManager.checkDir();
-    openExplorer(CONSTANTS.LOCAL_BOOK_DIR);
+    localBookManager.checkDir(getConfig().bookDir || CONSTANTS.LOCAL_BOOK_DIR);
+    openExplorer(getConfig().bookDir || CONSTANTS.LOCAL_BOOK_DIR);
   }
 
   // github

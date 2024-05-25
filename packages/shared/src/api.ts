@@ -1,9 +1,11 @@
+import { ensureFile, readJson, writeJson } from 'fs-extra'
 import type { Rule } from '@any-reader/core'
 import { ContentType, RuleManager } from '@any-reader/core'
 import * as ruleFileManager from './ruleFileManager'
 import { favoritesManager } from './favoritesManager'
 import { historyManager } from './historyManager'
-import * as localBookManager from './localBookManager'
+import type { BookChapter } from './localBookManager'
+import localBookManager from './localBookManager'
 
 // 初始化
 export async function init() {
@@ -41,8 +43,8 @@ export function getHistory() {
  * 本地书籍
  * @returns
  */
-export function getLocalBooks() {
-  return localBookManager.getBookList()
+export function getLocalBooks(dir: string) {
+  return localBookManager.getBookList(dir)
 }
 
 /**
@@ -177,14 +179,20 @@ export async function getChapter({ filePath = '', ruleId = undefined } = {}) {
  * @param chapterPath 章节路径
  * @returns
  */
-function toBookChapter(filePath: string, chapterPath: string): localBookManager.BookChapter {
+function toBookChapter(filePath: string, chapterPath: string): BookChapter {
   return {
-    file: {
-      path: filePath,
-      type: localBookManager.getBookType(filePath),
-      name: '',
-    },
     name: '',
-    path: chapterPath,
+    chapterPath,
+    filePath,
   }
+}
+
+export async function readConfig(filePath: string) {
+  await ensureFile(filePath)
+  return await readJson(filePath).catch(() => ({}))
+}
+
+export async function updateConfig(filePath: string, data: any) {
+  await ensureFile(filePath)
+  writeJson(filePath, data, { spaces: 2 })
 }

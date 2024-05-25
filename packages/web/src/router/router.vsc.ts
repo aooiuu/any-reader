@@ -57,6 +57,13 @@ const router = createRouter({
       meta: {
         keepAlive: true
       }
+    },
+    {
+      path: '/settings',
+      component: () => import('@/pages/vscode/settings/index.vue'),
+      meta: {
+        keepAlive: true
+      }
     }
   ]
 });

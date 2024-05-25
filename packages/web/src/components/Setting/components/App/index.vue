@@ -6,6 +6,10 @@
     <SettingRow title="窗口置顶">
       <a-switch v-model="settingStore.data.pinned" :checked-value="true" :unchecked-value="false" />
     </SettingRow>
+
+    <SettingRow title="本地书籍目录">
+      <a-input v-model="settingStore.data.bookDir" class="!w-200px" />
+    </SettingRow>
   </div>
 </template>
 

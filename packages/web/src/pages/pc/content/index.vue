@@ -32,16 +32,16 @@ const contentRef = ref();
 const chapterPath = ref('');
 const lastChapter = computed(() => {
   if (!chapterPath.value) return '';
-  const idx = chaptersStore.chapters.findIndex((e) => e.path === chapterPath.value);
+  const idx = chaptersStore.chapters.findIndex((e) => e.chapterPath === chapterPath.value);
   const item = idx === 0 ? null : chaptersStore.chapters[idx - 1];
-  return item?.path || '';
+  return item?.chapterPath || '';
 });
 const nextChapter = computed(() => {
   if (!chapterPath.value) return '';
-  const idx = chaptersStore.chapters.findIndex((e) => e.path === chapterPath.value) + 1;
+  const idx = chaptersStore.chapters.findIndex((e) => e.chapterPath === chapterPath.value) + 1;
   if (idx === 0) return '';
   const item = chaptersStore.chapters.length - 1 < idx ? null : chaptersStore.chapters[idx];
-  return item?.path || '';
+  return item?.chapterPath || '';
 });
 
 // 初始化

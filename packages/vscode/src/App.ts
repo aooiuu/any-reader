@@ -3,8 +3,8 @@ import { stringify } from 'qs';
 import { openExplorer } from 'explorer-opener';
 import { Rule, RuleManager, SearchItem } from '@any-reader/core';
 import { CONSTANTS, api } from '@any-reader/shared';
-import { BookChapter, checkDir } from '@any-reader/shared/localBookManager';
-import * as localBookManager from '@any-reader/shared/localBookManager';
+import { BookChapter, BOOK_TYPE, getBookType } from '@any-reader/shared/localBookManager';
+import localBookManager from '@any-reader/shared/localBookManager';
 import { COMMANDS, BOOK_SOURCE_PATH } from './constants';
 import bookProvider from './sidebar/book';
 import historyProvider from './sidebar/history';
@@ -20,6 +20,7 @@ import favoritesManager from './utils/favoritesManager';
 import { RecordFileRow } from './utils/RecordFile';
 import { WebView } from './webview';
 import { Config } from './config';
+import { getConfig } from './utils/config';
 
 class App {
   private webView!: WebView;
@@ -123,8 +124,8 @@ class App {
 
   // 打开本地书籍目录
   openLocalBookDir() {
-    checkDir();
-    openExplorer(CONSTANTS.LOCAL_BOOK_DIR);
+    localBookManager.checkDir(getConfig().bookDir || CONSTANTS.LOCAL_BOOK_DIR);
+    openExplorer(getConfig().bookDir || CONSTANTS.LOCAL_BOOK_DIR);
   }
 
   // 刷新本地目录
@@ -160,14 +161,14 @@ class App {
         cancellable: false
       },
       async () => {
-        if (item.file.type === localBookManager.BOOK_TYPE.EPUB) {
+        if (getBookType(item.filePath) === BOOK_TYPE.EPUB) {
           if (Config.readPageMode === 'Sidebar') {
             // 侧栏
             webviewProvider.navigateTo(
               '/content?' +
                 stringify({
-                  filePath: item.file.path,
-                  chapterPath: item.path
+                  filePath: item.filePath,
+                  chapterPath: item.chapterPath
                 })
             );
           } else {
@@ -175,14 +176,14 @@ class App {
             this.webView.navigateTo(
               '/content?' +
                 stringify({
-                  filePath: item.file.path,
-                  chapterPath: item.path
+                  filePath: item.filePath,
+                  chapterPath: item.chapterPath
                 })
             );
           }
         } else {
           // TODO: TXT 数据太大, 分章处理?
-          const openPath = vscode.Uri.file(item.file.path);
+          const openPath = vscode.Uri.file(item.filePath);
           // vscode.window.showTextDocument(openPath);
           vscode.commands.executeCommand('vscode.open', openPath);
         }

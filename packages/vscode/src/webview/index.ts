@@ -6,8 +6,7 @@ import * as path from 'path';
 import { stringify } from 'qs';
 import * as vscode from 'vscode';
 import { ContentType } from '@any-reader/core';
-import type { BookChapter } from '@any-reader/shared/localBookManager';
-import * as localBookManager from '@any-reader/shared/localBookManager';
+import { BookChapter, BOOK_TYPE, getBookType } from '@any-reader/shared/localBookManager';
 import { sleep } from '../utils/sleep';
 import bookManager, { TreeNode } from '../sidebar/bookManager';
 import { WebviewEvent } from './WebviewEvent';
@@ -131,17 +130,17 @@ export class WebView {
         cancellable: false
       },
       async () => {
-        if (item.file.type === localBookManager.BOOK_TYPE.EPUB) {
+        if (getBookType(item.filePath) === BOOK_TYPE.EPUB) {
           this.navigateTo(
             '/content?' +
               stringify({
-                filePath: item.file.path,
-                chapterPath: item.path
+                filePath: item.filePath,
+                chapterPath: item.chapterPath
               })
           );
         } else {
           // TODO: TXT 数据太大, 分章处理?
-          const openPath = vscode.Uri.file(item.file.path);
+          const openPath = vscode.Uri.file(item.filePath);
           // vscode.window.showTextDocument(openPath);
           vscode.commands.executeCommand('vscode.open', openPath);
         }

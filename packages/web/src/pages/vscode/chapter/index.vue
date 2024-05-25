@@ -34,7 +34,7 @@ function showContent(item) {
     query: {
       filePath,
       ruleId,
-      chapterPath: item.url || item.path
+      chapterPath: item.url || item.chapterPath
     }
   });
 }

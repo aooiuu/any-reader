@@ -21,6 +21,7 @@ const external = [
   'fs-extra',
   'encoding-japanese',
   'iconv-lite',
+  'lowdb',
 ]
 
 const plugins = [

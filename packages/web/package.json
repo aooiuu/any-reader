@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "cross-env VITE_APP_PLATFORM=browser vite",
-    "build:w": "vite build --watch",
+    "build:w": "cross-env VITE_APP_PLATFORM=vscode vite build --watch",
     "build": "cross-env VITE_APP_PLATFORM=vscode run-p type-check \"build-only {@}\" --",
     "build:b": "cross-env VITE_APP_PLATFORM=browser run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",

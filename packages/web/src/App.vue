@@ -13,12 +13,12 @@
       <div class="vsc-toolbar-btn codicon codicon-arrow-left" @click="router.back()"></div>
       <div class="flex-1"></div>
       <div class="vsc-toolbar-btn codicon codicon-github-alt" title="github" @click="github()"></div>
+      <div class="vsc-toolbar-btn codicon codicon-settings-gear" title="设置" @click="router.push('/settings')"></div>
       <!-- 分类 -->
       <!-- <div class="vsc-toolbar-btn codicon codicon-symbol-structure" @click="discover()"></div> -->
       <!-- 规则 -->
       <div class="vsc-toolbar-btn codicon codicon-symbol-namespace" title="规则列表" @click="router.push('/vsc/rules')"></div>
       <div class="vsc-toolbar-btn codicon codicon-surround-with" title="编辑规则" @click="editBookSource()"></div>
-      <!-- 搜索 -->
       <div class="vsc-toolbar-btn codicon codicon-search" title="搜索" @click="router.push('/vsc/search')"></div>
       <div class="vsc-toolbar-btn codicon codicon-home" title="首页" @click="router.push('/')"></div>
     </div>

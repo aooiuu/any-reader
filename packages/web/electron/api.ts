@@ -1,7 +1,12 @@
+import * as os from 'node:os';
+import * as path from 'node:path';
 import { BrowserWindow, app } from 'electron';
 import EasyPostMessage from 'easy-post-message';
 import Adapter from 'easy-post-message/electron-adapter';
-import { readConfig, updateConfig } from './config';
+import { getConfig } from './config';
+
+export const ROOT_PATH = path.join(os.homedir(), '.any-reader');
+export const CONFIG_PATH = path.join(ROOT_PATH, 'config.desktop.json');
 
 function success(data: any, msg = '') {
   return {
@@ -18,7 +23,8 @@ export function createAPI(win: BrowserWindow) {
   pm.answer('get@discoverMap', async ({ ruleId = '' } = {}) => success(await api.discoverMap(ruleId)));
   pm.answer('get@getFavorites', async () => success(await api.getFavorites()));
   pm.answer('get@getHistory', async () => success(await api.getHistory()));
-  pm.answer('get@getLocalBooks', async () => success(await api.getLocalBooks()));
+
+  pm.answer('get@getLocalBooks', async () => success(await api.getLocalBooks(getConfig().bookDir)));
   pm.answer('post@discover', async (data: any) => success(await api.discover(data)));
   pm.answer('post@star', async (data: any) => success(await api.star(data)));
   pm.answer('post@unstar', async (data: any) => success(await api.unstar(data)));
@@ -29,9 +35,8 @@ export function createAPI(win: BrowserWindow) {
   pm.answer('post@searchByRuleId', async (data: any) => success(await api.searchByRuleId(data).catch(() => [])));
   pm.answer('post@content', async (data: any) => success(await api.content(data)));
   pm.answer('post@getChapter', async (data: any) => success(await api.getChapter(data)));
-
-  pm.answer('get@readConfig', async () => success(await readConfig()));
-  pm.answer('post@updateConfig', async (data: any) => success(updateConfig(data)));
+  pm.answer('get@readConfig', async () => success(getConfig()));
+  pm.answer('post@updateConfig', async (data: any) => success(await api.updateConfig(CONFIG_PATH, data)));
 
   pm.answer('get@minimize', () => {
     win.minimize();

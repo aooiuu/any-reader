@@ -5,6 +5,7 @@ import axios from './axios';
 NProgress.configure({ showSpinner: false });
 
 export async function request(config: any) {
+  console.log('[request]', config);
   if (PLATFORM === 'browser') {
     return await axios(config);
   } else if (PLATFORM === 'electron') {

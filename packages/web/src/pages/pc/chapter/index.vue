@@ -41,7 +41,7 @@ async function showContent(item) {
     const res = await getContent({
       filePath,
       ruleId,
-      chapterPath: item.url || item.path
+      chapterPath: item.url || item.chapterPath
     }).catch(() => {});
     console.log('getContent', res);
     if (res?.code === 0) {
@@ -60,7 +60,7 @@ async function showContent(item) {
     query: {
       filePath,
       ruleId,
-      chapterPath: item.url || item.path
+      chapterPath: item.url || item.chapterPath
     }
   });
 }
