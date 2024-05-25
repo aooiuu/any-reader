@@ -16,102 +16,11 @@
 </template>
 
 <script setup>
-import { getContent } from '@/api';
-import { useChaptersStore } from '@/stores/chapters';
-import { useSettingStore } from '@/stores/setting';
-import { useKeyboard } from './keyboard';
+import { useContent } from './useContent';
 
-const route = useRoute();
-const router = useRouter();
-const chaptersStore = useChaptersStore();
-const settingStore = useSettingStore();
-
-const content = ref('');
 const contentRef = ref();
 
-const chapterPath = ref('');
-const lastChapter = computed(() => {
-  if (!chapterPath.value) return '';
-  const idx = chaptersStore.chapters.findIndex((e) => e.chapterPath === chapterPath.value);
-  const item = idx === 0 ? null : chaptersStore.chapters[idx - 1];
-  return item?.chapterPath || '';
-});
-const nextChapter = computed(() => {
-  if (!chapterPath.value) return '';
-  const idx = chaptersStore.chapters.findIndex((e) => e.chapterPath === chapterPath.value) + 1;
-  if (idx === 0) return '';
-  const item = chaptersStore.chapters.length - 1 < idx ? null : chaptersStore.chapters[idx];
-  return item?.chapterPath || '';
-});
-
-// 初始化
-async function init() {
-  content.value = '';
-  lastChapter.value = '';
-  nextChapter.value = '';
-  const res = await getContent(route.query).catch(() => {});
-
-  chapterPath.value = route.query.chapterPath;
-
-  chaptersStore.getChapters(route.query.filePath, route.query.ruleId);
-  if (res?.code === 0) {
-    content.value = res?.data?.content || '';
-  }
-  nextTick(() => {
-    contentRef.value.scrollTop = 0;
-  });
-}
-
-// 路由被改变
-watch(() => route.query, init, {
-  immediate: true,
-  deep: true
-});
-
-// 上一章
-function onPrevChapter() {
-  if (!lastChapter.value) return;
-  router.push({
-    name: route.name,
-    query: {
-      ...route.query,
-      chapterPath: lastChapter.value
-    }
-  });
-}
-
-// 下一章
-function onNextChapter() {
-  if (!nextChapter.value) return;
-  router.push({
-    name: route.name,
-    query: {
-      ...route.query,
-      chapterPath: nextChapter.value
-    }
-  });
-}
-
-// 上一页
-function onPageUp() {
-  contentRef.value.scrollTop = contentRef.value.scrollTop - contentRef.value.offsetHeight + 5;
-}
-
-// 下一页
-function onPageDown() {
-  contentRef.value.scrollTop = contentRef.value.scrollTop + contentRef.value.offsetHeight - 5;
-}
-
-// 监听热键
-useKeyboard({}, (cmd) => {
-  const cmdMap = {
-    prevChapter: onPrevChapter,
-    nextChapter: onNextChapter,
-    pageUp: onPageUp,
-    pageDown: onPageDown
-  };
-  cmdMap[cmd] && cmdMap[cmd]();
-});
+const { settingStore, content } = useContent(contentRef);
 </script>
 
 <style scoped>

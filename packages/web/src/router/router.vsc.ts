@@ -60,10 +60,7 @@ const router = createRouter({
     },
     {
       path: '/settings',
-      component: () => import('@/pages/vscode/settings/index.vue'),
-      meta: {
-        keepAlive: true
-      }
+      component: () => import('@/pages/vscode/settings/index.vue')
     }
   ]
 });

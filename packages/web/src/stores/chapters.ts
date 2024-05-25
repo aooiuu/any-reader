@@ -2,7 +2,7 @@ import { getChapter } from '@/api';
 
 interface Chapters {
   name: string;
-  path: string;
+  chapterPath: string;
 }
 
 export const useChaptersStore = defineStore('chapters', () => {

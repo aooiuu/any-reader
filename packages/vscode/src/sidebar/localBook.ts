@@ -1,7 +1,9 @@
 import * as vscode from 'vscode';
+import { CONSTANTS } from '@any-reader/shared';
 import { TreeNode, BookFile, BookChapter } from '@any-reader/shared/localBookManager';
 import localBookManager from '@any-reader/shared/localBookManager';
 import { COMMANDS } from '../constants';
+import { getConfig } from '../utils/config';
 
 class TreeDataProvider implements vscode.TreeDataProvider<TreeNode> {
   readonly _onDidChangeTreeData = new vscode.EventEmitter<TreeNode | undefined>();
@@ -46,7 +48,7 @@ class TreeDataProvider implements vscode.TreeDataProvider<TreeNode> {
   // 获取目录
   async getChildren(item?: BookFile): Promise<TreeNode[]> {
     if (!item) {
-      return localBookManager.getBookList();
+      return localBookManager.getBookList(getConfig().bookDir || CONSTANTS.LOCAL_BOOK_DIR);
     } else {
       const chapters = await localBookManager.getChapter(item.path).catch(() => []);
       return chapters;

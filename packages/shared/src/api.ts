@@ -165,7 +165,7 @@ export async function getChapter({ filePath = '', ruleId = undefined } = {}) {
     return list.map(e => ({
       ...e,
       name: e.name,
-      path: e.url,
+      chapterPath: e.url,
     }),
     )
   }
