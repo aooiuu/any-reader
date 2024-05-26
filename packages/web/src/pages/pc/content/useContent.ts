@@ -60,28 +60,25 @@ export function useContent(contentRef: Ref<HTMLElement>) {
     readStore.setTitle('');
   });
 
-  // 上一章
-  function onPrevChapter() {
-    if (!lastChapter.value) return;
+  function toChapter(chapterPath: string) {
+    if (!chapterPath) return;
     router.replace({
       name: route.name as string,
       query: {
         ...route.query,
-        chapterPath: lastChapter.value
+        chapterPath
       }
     });
   }
 
+  // 上一章
+  function onPrevChapter() {
+    toChapter(lastChapter.value);
+  }
+
   // 下一章
   function onNextChapter() {
-    if (!nextChapter.value) return;
-    router.replace({
-      name: route.name as string,
-      query: {
-        ...route.query,
-        chapterPath: nextChapter.value
-      }
-    });
+    toChapter(nextChapter.value);
   }
 
   // 上一页
@@ -115,6 +112,7 @@ export function useContent(contentRef: Ref<HTMLElement>) {
 
   return {
     settingStore,
-    content
+    content,
+    toChapter
   };
 }

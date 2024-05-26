@@ -13,8 +13,13 @@
         <div
           class="topbar__cmd app-region-none box-content flex items-center justify-center ml-6 w-38vw max-w-600 bg-[--commandCenter-background] border-1 border-solid rounded-6 h-22 border-[--commandCenter-inactiveBorder] cursor-pointer hover:bg-[--commandCenter-activeBackground] px-6"
         >
-          <div v-if="route.path === '/pc/content'" class="overflow-hidden whitespace-nowrap text-ellipsis" :title="readStore.title">
-            {{ readStore.title }}
+          <div
+            v-if="route.path === '/pc/content'"
+            class="w-full h-full flex items-center justify-center"
+            :title="readStore.title"
+            @click="openChaptersBox.emit"
+          >
+            <span class="overflow-hidden whitespace-nowrap text-ellipsis">{{ readStore.title }}</span>
           </div>
           <div v-else>开发中</div>
         </div>
@@ -93,6 +98,7 @@
 import { Modal } from '@arco-design/web-vue';
 import { PLATFORM } from '@/constants';
 import { minimize, maximize, exit } from '@/api/electron';
+import { useOpenChaptersBox } from '@/utils/bus';
 import { useSettingStore } from '@/stores/setting';
 import { useReadStore } from '@/stores/read';
 import Setting from '@/components/Setting/index.vue';
@@ -101,6 +107,7 @@ const route = useRoute();
 const router = useRouter();
 const settingStore = useSettingStore();
 const readStore = useReadStore();
+const openChaptersBox = useOpenChaptersBox();
 
 function changeSidebar() {
   settingStore.data.sidebar = settingStore.data.sidebar === 'hidden' ? 'left' : 'hidden';

@@ -47,7 +47,8 @@ const colors = [
   { label: '青草绿', color: '#E3EDCD' },
   { label: '海天蓝', color: '#DCE2F1' },
   { label: '葛巾紫', color: '#E9EBFE' },
-  { label: '极光灰', color: '#EAEAEF' }
+  { label: '极光灰', color: '#EAEAEF' },
+  { label: '默认黑', color: '#1f1f1f' }
 ];
 
 // 设置颜色
