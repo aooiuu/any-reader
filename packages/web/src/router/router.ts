@@ -19,7 +19,11 @@ const router = createRouter({
         },
         {
           path: 'search',
-          component: () => import('@/pages/pc/search/index.vue')
+          name: 'search',
+          component: () => import('@/pages/pc/search/index.vue'),
+          meta: {
+            keepAlive: true
+          }
         },
         {
           path: 'category',

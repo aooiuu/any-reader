@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{ name: string; cover: string; author: string; filePath?: string; ruleId?: string }>();
+const props = defineProps<{ name: string; cover?: string; author?: string; filePath?: string; ruleId?: string }>();
 
 const router = useRouter();
 

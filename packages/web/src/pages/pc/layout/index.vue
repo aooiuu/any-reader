@@ -8,6 +8,11 @@
     >
       <div class="topbar__left w-20%" />
       <div class="w-60% flex gap-4 items-center justify-center flex-1 text-[--titleBar-inactiveForeground]">
+        <span
+          v-if="route.path !== '/pc/books'"
+          class="w-22 codicon codicon-home cursor-pointer hover:op-70 app-region-none"
+          @click="router.push('/pc/books')"
+        ></span>
         <span class="w-22 codicon codicon-arrow-left cursor-pointer hover:op-70 app-region-none" @click="router.back"></span>
         <span class="w-22 codicon codicon-arrow-right cursor-pointer hover:op-70 app-region-none" @click="router.forward"></span>
         <div
@@ -17,11 +22,14 @@
             v-if="route.path === '/pc/content'"
             class="w-full h-full flex items-center justify-center"
             :title="readStore.title"
-            @click="openChaptersBox.emit"
+            @click.stop="openChaptersBox.emit"
           >
             <span class="overflow-hidden whitespace-nowrap text-ellipsis">{{ readStore.title }}</span>
           </div>
-          <div v-else>开发中</div>
+          <div v-else class="w-full h-full flex items-center justify-center" @click.stop="searchBox.emit">
+            <span class="codicon codicon-search mr-10"></span>
+            <span class="overflow-hidden whitespace-nowrap text-ellipsis">搜索</span>
+          </div>
         </div>
       </div>
       <div class="w-20% h-full flex gap-4 items-center justify-end text-[--titleBar-inactiveForeground]">
@@ -85,29 +93,32 @@
       <div class="flex-1 overflow-hidden bg-[--main-background]">
         <RouterView v-slot="{ Component, route: _route }">
           <KeepAlive>
-            <component :is="Component" v-if="_route.meta.keepAlive" :key="_route.fullPath" />
+            <component :is="Component" v-if="_route.meta.keepAlive" :key="_route.path" />
           </KeepAlive>
-          <component :is="Component" v-if="!_route.meta.keepAlive" :key="_route.fullPath" />
+          <component :is="Component" v-if="!_route.meta.keepAlive" :key="_route.path" />
         </RouterView>
       </div>
     </div>
   </div>
+  <Search />
 </template>
 
 <script setup lang="jsx">
 import { Modal } from '@arco-design/web-vue';
 import { PLATFORM } from '@/constants';
 import { minimize, maximize, exit } from '@/api/electron';
-import { useOpenChaptersBox } from '@/utils/bus';
+import { useOpenChaptersBox, useSearchBox } from '@/utils/bus';
 import { useSettingStore } from '@/stores/setting';
 import { useReadStore } from '@/stores/read';
 import Setting from '@/components/Setting/index.vue';
+import Search from '@/components/Search/index.vue';
 
 const route = useRoute();
 const router = useRouter();
 const settingStore = useSettingStore();
 const readStore = useReadStore();
 const openChaptersBox = useOpenChaptersBox();
+const searchBox = useSearchBox();
 
 function changeSidebar() {
   settingStore.data.sidebar = settingStore.data.sidebar === 'hidden' ? 'left' : 'hidden';

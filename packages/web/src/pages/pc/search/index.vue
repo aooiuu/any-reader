@@ -66,11 +66,13 @@ import { CONTENT_TYPES, CONTENT_TYPE } from '@/constants';
 import { searchByRuleId } from '@/api';
 import { useFavoritesStore } from '@/stores/favorites';
 import { useRulesStore } from '@/stores/rules';
+
 const favoritesStore = useFavoritesStore();
 const rulesStore = useRulesStore();
 
 const router = useRouter();
-const runPromise = pLimit(5);
+const route = useRoute();
+const runPromise = pLimit(10);
 
 favoritesStore.sync();
 
@@ -83,14 +85,13 @@ const runCount = ref(0);
 
 const list = ref<any[]>([]);
 
-function onSearch() {
-  const lastUuid = uuidV4();
+function onSearch(uid: string) {
+  const lastUuid = uid || uuidV4();
   uuid = lastUuid;
   list.value = [];
   total.value = 0;
   runCount.value = 0;
   loading.value = true;
-
   rulesStore.sync().then(async () => {
     const rules = rulesStore.list.filter((e) => contentTypes.value.includes(e.contentType) && e.enableSearch);
     total.value = rules.length;
@@ -119,6 +120,18 @@ function cancelSearch() {
   uuid = uuidV4();
   loading.value = false;
 }
+
+function init() {
+  const { keyword, _uuid } = route.query;
+  if (searchText.value === keyword && uuid === _uuid) return;
+  if (keyword) {
+    searchText.value = keyword as string;
+    onSearch(_uuid as string);
+  }
+}
+
+onActivated(init);
+onMounted(init);
 </script>
 
 <style scoped lang="scss">
