@@ -150,7 +150,29 @@ export class AnalyzerManager {
   }
 
   async _getElements(r: SingleRule, rule?: string) {
-    return r.analyzer.getElements(rule || r.rule)
+    if (!rule)
+      rule = r.rule
+
+    if (r.analyzer instanceof AnalyzerJS)
+      return r.analyzer.getElements(rule)
+
+    if (rule.includes('&&')) {
+      const result = []
+      for (const rSimple in rule.split('&&')) {
+        const temp: any = await this._getElements(r, rSimple)
+        if (temp)
+          result.push(temp)
+      }
+      return result
+    }
+    else if (rule.includes('||')) {
+      for (const rSimple in rule.split('||')) {
+        const temp: any = await this._getElements(r, rSimple)
+        if (temp)
+          return temp
+      }
+    }
+    return r.analyzer.getElements(rule)
   }
 
   async getElements(rule: string): Promise<any[]> {
