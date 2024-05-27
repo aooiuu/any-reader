@@ -1,8 +1,10 @@
 import vm from 'node:vm'
+import { AnalyzerXPath } from '../analyzer/AnalyzerXPath'
 import type { Rule } from '../index'
+import { __http__ } from './AnalyzerUrl'
 
 export class JSEngine {
-  static environment = {}
+  static environment: any = {}
 
   static setEnvironment(env: {
     page: number
@@ -37,6 +39,19 @@ export class JSEngine {
     return vm.runInNewContext(command, vm.createContext({
       ...JSEngine.environment,
       ...context,
+
+      // 处理 eso 规则中的注入JS
+      __http__: (url: string) => {
+        return __http__(url, JSEngine.environment.rule as Rule)
+      },
+      http: (url: string) => {
+        return __http__(url, JSEngine.environment.rule as Rule)
+      },
+      xpath: async (html: string, xpath: string): Promise<string[]> => {
+        const analyzer = new AnalyzerXPath()
+        analyzer.parse(html)
+        return await analyzer.getStringList(xpath).catch(() => [])
+      },
     }))
   }
 }

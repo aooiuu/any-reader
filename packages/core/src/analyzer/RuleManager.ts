@@ -1,6 +1,6 @@
-import axios from 'axios'
 import { JSEngine } from './JSEngine'
 import { AnalyzerManager } from './AnalyzerManager'
+import { fetch } from './AnalyzerUrl'
 
 export enum ContentType {
   MANGA = 0,
@@ -83,8 +83,6 @@ export interface ChapterItem {
   time?: string
 }
 
-const http = axios.create()
-
 export class RuleManager {
   rule: Rule
   _nextUrl: Map<string, string>
@@ -94,83 +92,8 @@ export class RuleManager {
     this._nextUrl = new Map()
   }
 
-  /**
-   *
-   * @param url
-   * @param keyword
-   * @param result
-   * @returns
-   */
-  async fetch(url: string, keyword = '', result = '') {
-    const vars: any = {
-      $keyword: keyword,
-      searchKey: keyword,
-      $host: this.rule.host,
-      $result: result,
-      searchPage: 1,
-      $page: 1,
-      $pageSize: 20,
-    }
-
-    let params: any = {
-      method: 'get',
-      headers: {
-        'user-agent':
-          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.80 Safari/537.36 Edg/98.0.1108.50',
-      },
-      url,
-    }
-
-    // TODO: 编码 encoding
-    if (params.url.startsWith('@js:')) {
-      params = JSEngine.evaluate(url.substring(4), {
-        ...vars,
-        keyword,
-      }).catch(() => ({}))
-    }
-    else {
-      params.url = params.url.replace(
-        /\$keyword|\$page|\$host|\$result|\$pageSize|searchKey|searchPage/g,
-        (m: string | number) => vars[m] || '',
-      )
-      if (params.url.startsWith('{'))
-        Object.assign(params, JSON.parse(params.url))
-
-      const host = this.rule.host.trim()
-      if (params.url.startsWith('//')) {
-        if (host.startsWith('https'))
-          params.url = `https:${params.url}`
-        else params.url = `http:${params.url}`
-      }
-      else if (
-        !params.url.startsWith('http')
-        && !params.url.startsWith('ftp')
-      ) {
-        params.url = host + params.url
-      }
-
-      if (params.method === 'post' && typeof params.body === 'object') {
-        Object.assign(params, {
-          body: undefined,
-          data: params.body,
-        })
-      }
-    }
-
-    const body = await http(params)
-      .then((e) => {
-        return typeof e.data === 'object' ? JSON.stringify(e.data) : e.data
-      })
-      .catch(() => {})
-
-    return {
-      params,
-      body,
-    }
-  }
-
   async search(keyword: string) {
-    const { body } = await this.fetch(this.rule.searchUrl, keyword)
+    const { body } = await fetch(this.rule.searchUrl, keyword, '', this.rule)
     const bodyAnalyzer = new AnalyzerManager(body)
     const list = await bodyAnalyzer.getElements(this.rule.searchList)
 
@@ -201,7 +124,7 @@ export class RuleManager {
       ]
     }
     const chapterUrl = this.rule.chapterUrl || result
-    const { body } = await this.fetch(chapterUrl, '', result)
+    const { body } = await fetch(chapterUrl, '', result, this.rule)
 
     JSEngine.setEnvironment({
       page: 1,
@@ -237,7 +160,7 @@ export class RuleManager {
         lastResult,
       })
     }
-    const { body, params } = await this.fetch(result)
+    const { body, params } = await fetch(result, '', '', this.rule)
     JSEngine.setEnvironment({
       page: 1,
       rule: this.rule,
@@ -268,7 +191,10 @@ export class RuleManager {
           keyword: '',
           lastResult: '',
         })
-        discoverUrl = await JSEngine.evaluate(`${discoverUrl.substring(4)};`).catch(() => '')
+        discoverUrl = await JSEngine.evaluate(`${discoverUrl.substring(4)};`).catch((e) => {
+          console.warn('[JSEngine.evaluate]', e)
+          return ''
+        })
       }
 
       const discovers = Array.isArray(discoverUrl)
@@ -348,7 +274,7 @@ export class RuleManager {
     let body = ''
 
     if (discoverRule !== 'null') {
-      const { body: res } = await this.fetch(discoverRule)
+      const { body: res } = await fetch(discoverRule, '', '', this.rule)
       body = res
     }
 
