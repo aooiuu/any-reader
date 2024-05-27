@@ -26,8 +26,16 @@ export const CONTENT_TYPE_TEXT: {
 }
 
 export interface Rule {
+  host: string // 域名
+  id: string // uuid
+  name: string // 书源名称
+  sort: number // 书源排序
+  contentType: ContentType // 书源类型
+  cookies?: string
+
+  // 搜索
+  enableSearch?: boolean // 启用搜索
   searchUrl: string // 搜索地址
-  host: string // 根域名
   searchList: string // 搜索列表
   searchCover: string // 封面
   searchName: string // 标题
@@ -35,6 +43,8 @@ export interface Rule {
   searchChapter: string // 章节
   searchDescription: string // 描述
   searchResult: string // 搜索结果
+
+  // 章节列表
   chapterUrl: string // 章节地址
   chapterName: string // 标题
   chapterList: string // 列表
@@ -43,27 +53,23 @@ export interface Rule {
   chapterResult: string // 结果
   contentItems: string // 内容
 
-  id: string // uuid
-  name: string // 书源名称
-  sort: number // 书源排序
-  contentType: ContentType // 书源类型
-
-  cookies?: string
-  enableSearch?: boolean // 启用搜索
-
   // 发现
-  'enableDiscover': boolean
-  'discoverUrl': string
-  'discoverNextUrl'?: string
-  'discoverItems': string
-  'discoverList': string
-  'discoverTags': string
-  'discoverName': string
-  'discoverCover': string
-  'discoverAuthor': string
-  'discoverChapter': string
-  'discoverDescription': string
-  'discoverResult': string
+  enableDiscover: boolean // 启用发现
+  discoverUrl: string
+  discoverNextUrl?: string
+  discoverItems: string
+  discoverList: string
+  discoverTags: string
+  discoverName: string
+  discoverCover: string
+  discoverAuthor: string
+  discoverChapter: string
+  discoverDescription: string
+  discoverResult: string
+
+  // 线路
+  enableMultiRoads: boolean // 启用多线路
+  chapterRoads: string // 线路列表
 }
 
 export interface SearchItem {
@@ -135,7 +141,20 @@ export class RuleManager {
       lastResult: result,
     })
     const bodyAnalyzer = new AnalyzerManager(body)
-    const list = await bodyAnalyzer.getElements(this.rule.chapterList)
+
+    let list = []
+    if (this.rule.enableMultiRoads) {
+      // TODO: 多线路
+      const roads = await bodyAnalyzer.getElements(this.rule.chapterRoads)
+      // for (const road of roads) {
+      const road = roads[0]
+      const roadAnalyzer = new AnalyzerManager(road)
+      list = await roadAnalyzer.getElements(this.rule.chapterList)
+      // }
+    }
+    else {
+      list = await bodyAnalyzer.getElements(this.rule.chapterList)
+    }
     const chapterItems: ChapterItem[] = []
     for (const row of list) {
       const analyzer = new AnalyzerManager(row)
@@ -183,7 +202,7 @@ export class RuleManager {
 
     try {
       if (discoverUrl.startsWith('@js:')) {
-        await JSEngine.setEnvironment({
+        JSEngine.setEnvironment({
           page: 1,
           rule: this.rule,
           result: '',
@@ -191,7 +210,9 @@ export class RuleManager {
           keyword: '',
           lastResult: '',
         })
-        discoverUrl = await JSEngine.evaluate(`${discoverUrl.substring(4)};`).catch((e) => {
+        discoverUrl = await JSEngine.evaluate(
+          `${discoverUrl.substring(4)};`,
+        ).catch((e) => {
           console.warn('[JSEngine.evaluate]', e)
           return ''
         })
@@ -223,12 +244,14 @@ export class RuleManager {
 
         if (!table.has(tab)) {
           table.set(tab, map.length)
-          map.push(new DiscoverMap(tab, [
-            new DiscoverPair(className, ruleValue),
-          ]))
+          map.push(
+            new DiscoverMap(tab, [new DiscoverPair(className, ruleValue)]),
+          )
         }
         else {
-          map[table.get(tab)].pairs.push(new DiscoverPair(className, ruleValue))
+          map[table.get(tab)].pairs.push(
+            new DiscoverPair(className, ruleValue),
+          )
         }
       }
     }
@@ -236,14 +259,16 @@ export class RuleManager {
 
     if (map.length === 0) {
       if (this.rule.host.startsWith('http')) {
-        map.push(new DiscoverMap('全部', [
-          new DiscoverPair('全部', this.rule.host),
-        ]))
+        map.push(
+          new DiscoverMap('全部', [new DiscoverPair('全部', this.rule.host)]),
+        )
       }
       else {
-        map.push(new DiscoverMap('example', [
-          new DiscoverPair('example', 'http://example.com/'),
-        ]))
+        map.push(
+          new DiscoverMap('example', [
+            new DiscoverPair('example', 'http://example.com/'),
+          ]),
+        )
       }
     }
 
@@ -252,7 +277,9 @@ export class RuleManager {
 
   // 获取分类下内容
   async discover(url: string, page = 1) {
-    const hasNextUrlRule = this.rule.discoverNextUrl !== undefined && this.rule.discoverNextUrl.length > 0
+    const hasNextUrlRule
+      = this.rule.discoverNextUrl !== undefined
+      && this.rule.discoverNextUrl.length > 0
     let discoverRule
 
     if (page === 1) {
@@ -263,7 +290,9 @@ export class RuleManager {
       if (next !== undefined && next.length > 0)
         discoverRule = next
     }
-    else if (/(\$page)|((^|[^a-zA-Z'"_/-])page([^a-zA-Z0-9'"]|$))/.test(url)) {
+    else if (
+      /(\$page)|((^|[^a-zA-Z'"_/-])page([^a-zA-Z0-9'"]|$))/.test(url)
+    ) {
       discoverRule = url
     }
 
@@ -288,10 +317,13 @@ export class RuleManager {
     })
 
     const bodyAnalyzer = new AnalyzerManager(body)
-    if (hasNextUrlRule)
-      this._nextUrl.set(url, await bodyAnalyzer.getString(this.rule.discoverNextUrl as string))
-    else
-      this._nextUrl.delete(url)
+    if (hasNextUrlRule) {
+      this._nextUrl.set(
+        url,
+        await bodyAnalyzer.getString(this.rule.discoverNextUrl as string),
+      )
+    }
+    else { this._nextUrl.delete(url) }
 
     const list = await bodyAnalyzer.getElements(this.rule.discoverList)
     const result = []
@@ -301,10 +333,8 @@ export class RuleManager {
       const tag = await analyzer.getString(this.rule.discoverTags)
 
       let tags: string[] = []
-      if (tag !== undefined && tag.trim() !== '') {
-        tags = tag.split(' ')
-          .filter(tag => tag !== '')
-      }
+      if (tag !== undefined && tag.trim() !== '')
+        tags = tag.split(' ').filter(tag => tag !== '')
 
       result.push({
         searchUrl: discoverUrl,
