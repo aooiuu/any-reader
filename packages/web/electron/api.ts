@@ -56,4 +56,20 @@ export function createAPI(win: BrowserWindow) {
     pinned ? win.setAlwaysOnTop(true, 'screen-saver') : win.setAlwaysOnTop(false);
     return success(win.isAlwaysOnTop());
   });
+
+  pm.answer('post@openWindow', (data) => {
+    const window = new BrowserWindow({
+      title: 'AnyReader',
+      // titleBarStyle: 'hidden',
+      webPreferences: { nodeIntegration: true, contextIsolation: false }
+    });
+
+    if (process.env.VITE_DEV_SERVER_URL) {
+      window.loadURL(process.env.VITE_DEV_SERVER_URL + '/#' + data.url);
+    } else {
+      window.loadFile('dist/electron-template/index.html', {
+        hash: data.url
+      });
+    }
+  });
 }

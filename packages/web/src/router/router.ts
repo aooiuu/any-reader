@@ -8,6 +8,11 @@ const router = createRouter({
       path: '/',
       redirect: '/pc/books'
     },
+    {
+      path: '/player',
+      name: '/player',
+      component: () => import('@/pages/pc/player/index.vue')
+    },
     // pc
     {
       path: '/pc',
@@ -32,10 +37,6 @@ const router = createRouter({
         {
           path: 'rules',
           component: () => import('@/pages/pc/rules/index.vue')
-        },
-        {
-          path: 'player',
-          component: () => import('@/pages/pc/player/index.vue')
         },
         {
           path: 'chapter',

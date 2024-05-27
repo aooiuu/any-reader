@@ -12,7 +12,9 @@
 </template>
 
 <script setup>
+import { stringify } from 'qs';
 import { getChapter, getContent } from '@/api';
+import { openWindow } from '@/api/electron';
 import { useRulesStore } from '@/stores/rules';
 
 const route = useRoute();
@@ -45,11 +47,12 @@ async function showContent(item) {
     }).catch(() => {});
     console.log('getContent', res);
     if (res?.code === 0) {
-      router.push({
-        path: '/pc/player',
-        query: {
-          url: res?.data?.content || ''
-        }
+      openWindow({
+        url:
+          '/player?' +
+          stringify({
+            url: res?.data?.content || ''
+          })
       });
       return;
     }

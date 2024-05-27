@@ -34,3 +34,12 @@ export function alwaysOnTop(pinned: boolean) {
     }
   });
 }
+
+// 打开新窗口
+export function openWindow(data: any) {
+  return request({
+    method: 'post',
+    url: 'openWindow',
+    data
+  });
+}
