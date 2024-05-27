@@ -12,27 +12,50 @@ outline: deep
 
 ```typescript
 export interface Rule {
-  host: string; // 根域名
-  searchUrl: string; // 搜索地址
-  searchList: string; // 搜索列表
-  searchCover: string; // 封面
-  searchName: string; // 标题
-  searchAuthor: string; // 作者
-  searchChapter: string; // 章节
-  searchDescription: string; // 描述
-  searchResult: string; // 搜索结果
-  chapterUrl: string; // 章节地址
-  chapterName: string; // 标题
-  chapterList: string; // 列表
-  chapterCover: string; // 封面
-  chapterTime: string; // 时间
-  chapterResult: string; // 结果
-  contentItems: string; // 内容
+  host: string; // 域名
   id: string; // uuid
   name: string; // 书源名称
   sort: number; // 书源排序
   contentType: ContentType; // 书源类型
-  cookies: string;
+  cookies?: string;
+
+  // 搜索
+  enableSearch?: boolean; // 搜索 - 启用
+  searchUrl: string; // 搜索 - 地址
+  searchList: string; // 搜索 - 列表
+  searchCover: string; // 搜索 - 封面
+  searchName: string; // 搜索 - 标题
+  searchAuthor: string; // 搜索 - 作者
+  searchChapter: string; // 搜索 - 章节
+  searchDescription: string; // 搜索 - 描述
+  searchResult: string; // 搜索 - 结果
+
+  // 章节列表
+  chapterUrl: string; // 章节列表 - 请求地址
+  chapterName: string; // 章节列表 - 标题
+  chapterList: string; // 章节列表 - 列表
+  chapterCover: string; // 章节列表 - 封面
+  chapterTime: string; // 章节列表 - 时间
+  contentItems: string; // 章节列表 - 内容
+  chapterResult: string; // 章节列表 - 结果
+
+  // 发现
+  enableDiscover: boolean; // 发现页 - 是否启用
+  discoverUrl: string; // 发现页 - 请求地址
+  discoverList: string; // 发现页 - 列表
+  discoverName: string; // 发现页 - 标题
+  discoverCover: string; // 发现页 - 封面
+  discoverAuthor: string; // 发现页 - 作者
+  discoverDescription: string; // 发现页 - 描述
+  discoverResult: string; // 发现页 - 结果
+  discoverItems: string;
+  discoverTags: string;
+  discoverChapter: string;
+  discoverNextUrl?: string;
+
+  // 线路
+  enableMultiRoads: boolean; // 启用多线路
+  chapterRoads: string; // 线路列表
 }
 
 enum ContentType {
@@ -67,6 +90,12 @@ enum ContentType {
 2. 通过 `contentType` 按类型解析内容
 
 ## 规则类型
+
+## 规则支持情况
+
+- ✅ 理论支持
+- ⚠️ 支持部分
+- ❌ 暂不支持
 
 ### URL 规则
 
@@ -105,7 +134,8 @@ enum ContentType {
 | `##`       |    ⚠️    | 正则替换                         | `@css:.c2 a@href##\\d+\\.html`          |
 | `{‍​‍{}}`  |    ⚠️    | 拼接                             | `http://www.aaa.com/{‍{$.id}}`          |
 | 嵌套组合   |    ⚠️    |                                  | `$.info.body@css:.box1 .box2@text`      |
-| `\|\|`     |    ❌    |                                  |                                         |
+| `\|\|`     |    ⚠️    |                                  |                                         |
+| `&&`       |    ⚠️    |                                  |                                         |
 
 规则可以省略开头的,**@css**、**@xpath**、**@json**, 因为解析器会尝试自动识别。
 

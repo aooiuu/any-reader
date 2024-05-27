@@ -2,7 +2,7 @@
 outline: deep
 ---
 
-# any-reader-vscode
+# VSCode 插件
 
 一个可以自定义 [规则](/rule/) 的看书插件, 同时也支持配置游戏规则
 

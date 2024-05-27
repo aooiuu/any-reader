@@ -18,10 +18,10 @@ export default defineConfig({
   themeConfig: {
     logo: "/logo.svg",
     nav: [
-      { text: "VsCode 插件", link: "/vsc/" },
-      { text: "网页端", link: "/browser/" },
+      { text: "VSCode 插件", link: "/vsc/" },
       { text: "桌面端", link: "/desktop/" },
-      { text: "Core", link: "/core/" },
+      { text: "网页端", link: "/browser/" },
+      { text: "规则解析库", link: "/core/" },
       { text: "规则", link: "/rule/" }
     ],
     search: {
