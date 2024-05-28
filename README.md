@@ -12,19 +12,19 @@
 ## VSCode 插件
 
 <p align="left">
-  <a href="https://github.com/aooiuu/any-reader">
+  <a href="https://marketplace.visualstudio.com/items?itemName=aooiu.any-reader">
     <img
       src="https://img.shields.io/visual-studio-marketplace/v/aooiu.any-reader"
       alt=""
     />
   </a>
-  <a href="https://github.com/aooiuu/any-reader">
+  <a href="https://marketplace.visualstudio.com/items?itemName=aooiu.any-reader">
     <img
       src="https://img.shields.io/visual-studio-marketplace/d/aooiu.any-reader"
       alt=""
     />
   </a>
-    <a href="https://github.com/aooiuu/any-reader">
+    <a href="https://marketplace.visualstudio.com/items?itemName=aooiu.any-reader">
     <img
       src="https://img.shields.io/visual-studio-marketplace/i/aooiu.any-reader"
       alt=""
