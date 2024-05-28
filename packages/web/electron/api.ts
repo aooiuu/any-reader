@@ -37,6 +37,8 @@ export function createAPI(win: BrowserWindow) {
   pm.answer('post@getChapter', async (data: any) => success(await api.getChapter(data)));
   pm.answer('get@readConfig', async () => success(getConfig()));
   pm.answer('post@updateConfig', async (data: any) => success(await api.updateConfig(CONFIG_PATH, data)));
+  pm.answer('get@getRuleExtras', async () => success(await api.getRuleExtras()));
+  pm.answer('post@ping', async (data: any) => success(await api.ping(data)));
 
   pm.answer('get@minimize', () => {
     win.minimize();

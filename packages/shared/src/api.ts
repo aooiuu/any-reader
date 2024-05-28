@@ -6,6 +6,7 @@ import { favoritesManager } from './favoritesManager'
 import { historyManager } from './historyManager'
 import type { BookChapter } from './localBookManager'
 import localBookManager from './localBookManager'
+import * as ruleExtraManager from './ruleExtraManager'
 
 // 初始化
 export async function init() {
@@ -195,4 +196,12 @@ export async function readConfig(filePath: string) {
 export async function updateConfig(filePath: string, data: any) {
   await ensureFile(filePath)
   writeJson(filePath, data, { spaces: 2 })
+}
+
+export function getRuleExtras() {
+  return ruleExtraManager.getRuleExtras()
+}
+
+export function ping(data: { id: string; host: string }) {
+  return ruleExtraManager.ping(data.id, data.host)
 }

@@ -143,3 +143,19 @@ export function updateConfig(data: any) {
     data
   });
 }
+
+// 获取扩展数据
+export function getRuleExtras() {
+  return request({
+    method: 'get',
+    url: 'getRuleExtras'
+  });
+}
+
+export function ping(data: any) {
+  return request({
+    method: 'post',
+    url: 'ping',
+    data
+  });
+}
