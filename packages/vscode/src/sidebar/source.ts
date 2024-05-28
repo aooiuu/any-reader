@@ -4,7 +4,7 @@
 
 import * as vscode from 'vscode';
 import { Rule, ContentType } from '@any-reader/core';
-import * as ruleFileManager from '../utils/ruleFileManager';
+import { ruleFileManager } from '@any-reader/shared';
 
 export class SourceProvider implements vscode.TreeDataProvider<Rule> {
   readonly _onDidChangeTreeData = new vscode.EventEmitter<Rule | undefined>();
@@ -31,7 +31,7 @@ export class SourceProvider implements vscode.TreeDataProvider<Rule> {
 
   async getChildren(element?: Rule): Promise<Rule[]> {
     if (!element) {
-      const rules = ruleFileManager.list();
+      const rules = await ruleFileManager.list();
       return rules.filter(
         (e: Rule) =>
           (e.enableSearch || e.contentType === ContentType.GAME) &&

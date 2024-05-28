@@ -1,6 +1,5 @@
 # any-reader
 
-[![vsc version][vsc-src]][vsc-href]
 [![npm version][npm-version-src]][npm-version-href]
 [![JSDocs][jsdocs-src]][jsdocs-href]
 [![satr][satr-src]][satr-href]
@@ -12,13 +11,64 @@
 
 ## VSCode 插件
 
+<p align="left">
+  <a href="https://github.com/aooiuu/any-reader">
+    <img
+      src="https://img.shields.io/visual-studio-marketplace/v/aooiu.any-reader"
+      alt=""
+    />
+  </a>
+  <a href="https://github.com/aooiuu/any-reader">
+    <img
+      src="https://img.shields.io/visual-studio-marketplace/d/aooiu.any-reader"
+      alt=""
+    />
+  </a>
+    <a href="https://github.com/aooiuu/any-reader">
+    <img
+      src="https://img.shields.io/visual-studio-marketplace/i/aooiu.any-reader"
+      alt=""
+    />
+  </a>
+</p>
+
 [文档](https://aooiuu.github.io/any-reader/vsc/)
+
+### 功能
+
+- [x] 本地小说阅读
+  - [x] txt格式
+  - [x] epub格式
+  - [x] 小说章节识别
+- [x] 在线小说阅读
+- [x] 自定义书源规则
+- [x] 自定义热键
+- [x] 漫画
+- [x] 聚合搜索
+- [x] 发现页分类排行榜
+- [x] 侧边栏阅读(可拖动到底部栏)
+- [x] 收藏
+- [x] 历史记录
 
 ## 桌面端
 
 [文档](https://aooiuu.github.io/any-reader/desktop/)
 
-🚧 开发中
+### 功能
+
+- [x] 本地小说阅读
+  - [x] txt格式
+  - [x] epub格式
+  - [x] 小说章节识别
+- [x] 在线小说阅读
+- [x] 自定义书源规则
+- [x] 自定义热键
+- [x] 漫画
+- [x] 视频
+- [x] 聚合搜索
+- [x] 发现页分类排行榜
+- [x] 收藏
+- [x] 历史记录
 
  <img src="https://github.com/aooiuu/any-reader/assets/28108111/d4629d6f-b0c0-48cd-830f-f4b1ea4e4a2c" width="600"/>
 

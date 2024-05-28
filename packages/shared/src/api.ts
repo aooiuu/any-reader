@@ -1,4 +1,5 @@
-import { ensureFile, readJson, writeJson } from 'fs-extra'
+// @ts-expect-error
+import { ensureFile, readJson, writeJson } from 'fs-extra/esm'
 import type { Rule } from '@any-reader/core'
 import { ContentType, RuleManager } from '@any-reader/core'
 import * as ruleFileManager from './ruleFileManager'
@@ -85,13 +86,17 @@ export function rules() {
   return ruleFileManager.list()
 }
 
+export function batchUpdateRules(data: { ids: string[]; rule: Rule }) {
+  return ruleFileManager.batchUpdate(data)
+}
+
 /**
  * 根据规则ID获取规则
  * @param ruleId
  * @returns
  */
-export function getRuleById(ruleId: string) {
-  const rules = ruleFileManager.list()
+export async function getRuleById(ruleId: string) {
+  const rules = await ruleFileManager.list()
   return rules.find(e => e.id === ruleId)
 }
 
@@ -134,7 +139,7 @@ export async function content({ filePath, chapterPath, ruleId }: any) {
   if (ruleId) {
     const rule = await ruleFileManager.findById(ruleId)
     const rm = new RuleManager(rule)
-    const content = await rm.getContent(chapterPath).catch(() => [])
+    const content: string[] = await rm.getContent(chapterPath).catch(() => [])
     let text = ''
     if (rule.contentType === ContentType.MANGA)
       text = content.map(src => `<img src="${src}"/>`).join('')
@@ -204,4 +209,35 @@ export function getRuleExtras() {
 
 export function ping(data: { id: string; host: string }) {
   return ruleExtraManager.ping(data.id, data.host)
+}
+
+function success(data: any, msg = '') {
+  return {
+    code: 0,
+    data,
+    msg,
+  }
+}
+
+// vscode 、electron、服务端通用注册接口
+export function useApi(register: any, { CONFIG_PATH, bookDir }: any) {
+  register('get@discoverMap', async ({ ruleId = '' } = {}) => success(await discoverMap(ruleId)))
+  register('get@getFavorites', async () => success(await getFavorites()))
+  register('get@getHistory', async () => success(await getHistory()))
+  register('get@getLocalBooks', async () => success(await getLocalBooks(bookDir)))
+  register('post@discover', async (data: any) => success(await discover(data)))
+  register('post@star', async (data: any) => success(await star(data)))
+  register('post@unstar', async (data: any) => success(await unstar(data)))
+  register('get@rules', async () => success(await rules()))
+  register('get@getRuleById', async ({ id = '' } = {}) => success(await getRuleById(id)))
+  register('post@createRule', async (data: any) => success(await createRule(data)))
+  register('post@updateRule', async (data: any) => success(await updateRule(data)))
+  register('post@searchByRuleId', async (data: any) => success(await searchByRuleId(data)))
+  register('post@content', async (data: any) => success(await content(data)))
+  register('post@getChapter', async (data: any) => success(await getChapter(data)))
+  register('get@readConfig', async () => success(await readConfig(CONFIG_PATH)))
+  register('post@updateConfig', async (data: any) => success(await updateConfig(CONFIG_PATH, data)))
+  register('get@getRuleExtras', async () => success(await getRuleExtras()))
+  register('post@ping', async (data: any) => success(await ping(data)))
+  register('post@batchUpdateRules', async (data: any) => success(await batchUpdateRules(data)))
 }

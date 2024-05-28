@@ -9,16 +9,36 @@
           </a-checkbox>
         </a-checkbox-group>
       </div>
-      <a-button type="primary" @click="pingAll">测速</a-button>
+    </div>
+    <div class="mb-10 flex gap-10">
       <a-button type="primary" @click="addRule">
         <template #icon>
           <icon-plus />
         </template>
+        添加规则
       </a-button>
+      <div class="flex-1" />
+      <a-button type="primary" @click="pingAll">测速</a-button>
+      <a-dropdown position="bottom">
+        <a-button>批量操作<icon-down /></a-button>
+        <template #content>
+          <a-doption @click="batchUpdate({ enableSearch: true })">批量启用搜索</a-doption>
+          <a-doption @click="batchUpdate({ enableSearch: false })">批量禁用搜索</a-doption>
+          <a-doption @click="batchUpdate({ enableDiscover: true })">批量启用发现</a-doption>
+          <a-doption @click="batchUpdate({ enableDiscover: false })">批量禁用发现</a-doption>
+        </template>
+      </a-dropdown>
     </div>
     <div class="flex-1 overflow-hidden">
       <a-table
+        v-model:selectedKeys="selectedKeys"
+        row-key="id"
         :pagination="true"
+        :row-selection="{
+          type: 'checkbox',
+          showCheckedAll: true,
+          onlyCurrent: true
+        }"
         :columns="tableColumns"
         :data="tableData"
         :scrollbar="true"
@@ -34,7 +54,7 @@
 import _ from 'lodash';
 import { CONTENT_TYPES } from '@/constants';
 import { useRulesStore } from '@/stores/rules';
-import { updateRule, ping } from '@/api';
+import { ping, batchUpdateRules } from '@/api';
 import { timeoutWith } from '@/utils/promise';
 import { useRuleExtra } from './hooks/useRuleExtra';
 
@@ -42,6 +62,7 @@ const router = useRouter();
 const rulesStore = useRulesStore();
 const ruleExtra = useRuleExtra();
 const pingIds = ref([]);
+const selectedKeys = ref([]);
 
 rulesStore.sync();
 ruleExtra.sync();
@@ -51,7 +72,7 @@ const contentTypes = ref(CONTENT_TYPES.map((e) => e.value).flat());
 
 function editRule(row) {
   router.push({
-    path: '/pc/rule-info',
+    name: 'ruleInfo',
     query: {
       id: row.id
     }
@@ -129,11 +150,8 @@ const tableColumns = ref([
       <a-switch
         model-value={record.enableSearch}
         onUpdate:model-value={(v) =>
-          updateRule({
-            ...record,
+          rulesStore.updateRuleById(record.id, {
             enableSearch: v
-          }).then(() => {
-            record.enableSearch = v;
           })
         }
       />
@@ -150,11 +168,8 @@ const tableColumns = ref([
       <a-switch
         model-value={record.enableDiscover}
         onUpdate:model-value={(v) =>
-          updateRule({
-            ...record,
+          rulesStore.updateRuleById(record.id, {
             enableDiscover: v
-          }).then(() => {
-            record.enableDiscover = v;
           })
         }
       />
@@ -190,7 +205,9 @@ const tableData = computed(() => {
 
 // 添加规则
 function addRule() {
-  router.push('/pc/rule-info');
+  router.push({
+    name: 'ruleInfo'
+  });
 }
 
 async function pingAll() {
@@ -201,5 +218,13 @@ async function pingAll() {
     pingIds.value = [];
     await ruleExtra.sync();
   }
+}
+
+async function batchUpdate(rule) {
+  await batchUpdateRules({
+    ids: [...selectedKeys.value],
+    rule
+  });
+  rulesStore.sync();
 }
 </script>

@@ -1,6 +1,6 @@
 // @ts-expect-error
 import { readJson } from 'fs-extra/esm'
-import debounce from 'lodash-es/debounce'
+import _ from 'lodash-es'
 import { JSONFilePreset } from 'lowdb/node'
 import type { Low } from 'lowdb/lib'
 import { RULE_EXTRA_PATH } from './constants'
@@ -24,10 +24,10 @@ async function getDb() {
   return mDb
 }
 
-const writeDB = debounce(async () => {
+const writeDB = _.throttle(async () => {
   const db = await getDb()
   db.write()
-}, 500)
+}, 1000)
 
 export async function ping(id: string, host: string) {
   const db = await getDb()

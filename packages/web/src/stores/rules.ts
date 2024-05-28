@@ -1,4 +1,4 @@
-import { getRules } from '@/api';
+import { getRules, updateRule } from '@/api';
 
 /**
  * 收藏数据
@@ -17,8 +17,18 @@ export const useRulesStore = defineStore('rules', () => {
     }
   }
 
+  function updateRuleById(id: string, data: any) {
+    updateRule({ id, ...data }).then(() => {
+      const row = list.value.find((e) => e.id === id);
+      if (row) {
+        Object.assign(row, data);
+      }
+    });
+  }
+
   return {
     list,
-    sync
+    sync,
+    updateRuleById
   };
 });

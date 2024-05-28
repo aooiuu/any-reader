@@ -159,3 +159,11 @@ export function ping(data: any) {
     data
   });
 }
+
+export function batchUpdateRules(data: any) {
+  return request({
+    method: 'post',
+    url: 'batchUpdateRules',
+    data
+  });
+}

@@ -4,8 +4,8 @@ import Koa from 'koa'
 import { bodyParser } from '@koa/bodyparser'
 import cors from '@koa/cors'
 import serve from 'koa-static'
-import { favoritesManager, historyManager, ruleFileManager } from '@any-reader/shared'
-import { router } from './router'
+import { api } from '@any-reader/shared'
+import { router } from './routes'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.resolve(path.dirname(__filename), '..')
@@ -13,11 +13,7 @@ const __dirname = path.resolve(path.dirname(__filename), '..')
 const app = new Koa()
 
 async function start() {
-  await Promise.all([
-    ruleFileManager.init(),
-    favoritesManager.init(),
-    historyManager.init(),
-  ])
+  await api.init()
   app
     .use(bodyParser())
     .use(cors())

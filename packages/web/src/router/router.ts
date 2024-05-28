@@ -48,6 +48,7 @@ const router = createRouter({
         },
         {
           path: 'rule-info',
+          name: 'ruleInfo',
           component: () => import('@/pages/pc/rule-info/index.vue')
         }
       ]

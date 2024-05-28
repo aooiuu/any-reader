@@ -1,65 +1,68 @@
 // @ts-expect-error
-import { ensureFile, readJson, writeJson } from 'fs-extra/esm'
+import { readJson } from 'fs-extra/esm'
 import { v4 as uuidV4 } from 'uuid'
+import _ from 'lodash-es'
+import type { Low } from 'lowdb/lib'
+import { JSONFilePreset } from 'lowdb/node'
 import type { Rule } from '@any-reader/core'
-import { decodeRule } from '@any-reader/core'
 import { BOOK_SOURCE_PATH } from './constants'
 
-let ruleList: Rule[] = []
+let mDb: Low<Rule[]>
 
-async function readRuleList(): Promise<Rule[]> {
-  try {
-    const list = await readJson(BOOK_SOURCE_PATH)
-    for (let i = 0; i < list.length; i++) {
-      const rule = list[i]
-      if (typeof rule === 'string' && rule.includes('eso://'))
-        list[i] = decodeRule(rule)
-    }
-    return list
-  }
-  catch (e) {
-    return []
-  }
+async function getDb() {
+  if (mDb)
+    return mDb
+  const data = await readJson(BOOK_SOURCE_PATH).catch(() => ([]))
+  mDb = await JSONFilePreset<Rule[]>(BOOK_SOURCE_PATH, data)
+  return mDb
 }
+
+const writeDB = _.throttle(async () => {
+  const db = await getDb()
+  db.write()
+}, 1000)
 
 // 初始化
-export async function init() {
-  await ensureFile(BOOK_SOURCE_PATH)
-  ruleList = await readRuleList()
-}
+export async function init() {}
 
-// 保存配置文件
-async function writeFile() {
-  await ensureFile(BOOK_SOURCE_PATH)
-  return writeJson(BOOK_SOURCE_PATH, ruleList, { spaces: 2 })
-}
-
-export function list(): Rule[] {
-  return ruleList
+export async function list(): Promise<Rule[]> {
+  const db = await getDb()
+  return db.data
 }
 
 // 删除记录
 export async function del(id: string, saveFile = true) {
-  ruleList = ruleList.filter(e => e.id !== id)
+  const db = await getDb()
+  db.data = db.data.filter(e => e.id !== id)
   if (saveFile)
-    await writeFile()
+    await writeDB()
 }
 
 // 更新记录
 export async function update(rule: Rule) {
   if (!rule.id)
     rule.id = uuidV4()
-
-  const findIdx = ruleList.findIndex(e => e.id === rule.id)
-  if (findIdx === -1)
-    ruleList.push(rule)
+  const db = await getDb()
+  const row = db.data.find(e => e.id === rule.id)
+  if (!row)
+    db.data.push(rule)
   else
-    ruleList[findIdx] = rule
+    Object.assign(row, rule)
 
-  await writeFile()
+  writeDB()
+}
+
+export async function batchUpdate({ ids, rule }: { ids: string[];rule: Rule }) {
+  const db = await getDb()
+  for (let i = 0; i < db.data.length; i++) {
+    const row = db.data[i]
+    if (ids.includes(row.id))
+      Object.assign(row, rule)
+  }
+  writeDB()
 }
 
 export async function findById(id: string): Promise<Rule> {
-  const list: Rule[] = await readRuleList()
-  return list.find(e => e.id === id) as Rule
+  const db = await getDb()
+  return db.data.find(e => e.id === id) as Rule
 }

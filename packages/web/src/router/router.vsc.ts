@@ -14,10 +14,11 @@ const router = createRouter({
     },
     {
       path: '/rules',
-      component: () => import('@/pages/vscode/rules/index.vue')
+      component: () => import('@/pages/pc/rules/index.vue')
     },
     {
       path: '/rule-info',
+      name: 'ruleInfo',
       component: () => import('@/pages/vscode/rule-info/index.vue')
     },
     {
