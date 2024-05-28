@@ -31,9 +31,10 @@ export async function list(): Promise<Rule[]> {
 }
 
 // 删除记录
-export async function del(id: string, saveFile = true) {
+export async function del(id: string | string[], saveFile = true) {
   const db = await getDb()
-  db.data = db.data.filter(e => e.id !== id)
+  const ids = Array.isArray(id) ? id : [id]
+  db.data = db.data.filter(e => !ids.includes(e.id))
   if (saveFile)
     await writeDB()
 }

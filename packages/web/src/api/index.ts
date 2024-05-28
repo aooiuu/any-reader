@@ -152,6 +152,7 @@ export function getRuleExtras() {
   });
 }
 
+// 测速
 export function ping(data: any) {
   return request({
     method: 'post',
@@ -160,10 +161,20 @@ export function ping(data: any) {
   });
 }
 
+// 批量更新规则
 export function batchUpdateRules(data: any) {
   return request({
     method: 'post',
     url: 'batchUpdateRules',
+    data
+  });
+}
+
+// 删除规则
+export function delRules(data: any) {
+  return request({
+    method: 'post',
+    url: 'delRules',
     data
   });
 }

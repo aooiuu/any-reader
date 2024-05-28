@@ -3,11 +3,11 @@ import { ensureFile, readJson, writeJson } from 'fs-extra/esm'
 import type { Rule } from '@any-reader/core'
 import { ContentType, RuleManager } from '@any-reader/core'
 import * as ruleFileManager from './ruleFileManager'
+import * as ruleExtraManager from './ruleExtraManager'
 import { favoritesManager } from './favoritesManager'
 import { historyManager } from './historyManager'
 import type { BookChapter } from './localBookManager'
 import localBookManager from './localBookManager'
-import * as ruleExtraManager from './ruleExtraManager'
 
 // 初始化
 export async function init() {
@@ -211,6 +211,11 @@ export function ping(data: { id: string; host: string }) {
   return ruleExtraManager.ping(data.id, data.host)
 }
 
+// 删除规则
+export async function delRules(data: { id: string[] }) {
+  await ruleFileManager.del(data.id, true)
+}
+
 function success(data: any, msg = '') {
   return {
     code: 0,
@@ -240,4 +245,5 @@ export function useApi(register: any, { CONFIG_PATH, bookDir }: any) {
   register('get@getRuleExtras', async () => success(await getRuleExtras()))
   register('post@ping', async (data: any) => success(await ping(data)))
   register('post@batchUpdateRules', async (data: any) => success(await batchUpdateRules(data)))
+  register('post@delRules', async (data: any) => success(await delRules(data)))
 }

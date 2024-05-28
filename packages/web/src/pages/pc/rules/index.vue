@@ -26,6 +26,7 @@
           <a-doption @click="batchUpdate({ enableSearch: false })">批量禁用搜索</a-doption>
           <a-doption @click="batchUpdate({ enableDiscover: true })">批量启用发现</a-doption>
           <a-doption @click="batchUpdate({ enableDiscover: false })">批量禁用发现</a-doption>
+          <a-doption @click="delTimeoutRules">批量删除超时规则</a-doption>
         </template>
       </a-dropdown>
     </div>
@@ -51,10 +52,11 @@
 </template>
 
 <script setup lang="jsx">
+import { Modal } from '@arco-design/web-vue';
 import _ from 'lodash';
 import { CONTENT_TYPES } from '@/constants';
 import { useRulesStore } from '@/stores/rules';
-import { ping, batchUpdateRules } from '@/api';
+import { ping, batchUpdateRules, delRules } from '@/api';
 import { timeoutWith } from '@/utils/promise';
 import { useRuleExtra } from './hooks/useRuleExtra';
 
@@ -226,5 +228,25 @@ async function batchUpdate(rule) {
     rule
   });
   rulesStore.sync();
+}
+
+function delTimeoutRules() {
+  Modal.confirm({
+    title: '提示',
+    content: '规则删除后不可恢复',
+    closable: true,
+    onOk: async () => {
+      const ids = rulesStore.list
+        .filter((rule) => {
+          const extra = ruleExtra.data.value[rule.id];
+          if (!extra) return false;
+          if (extra.ping === -1) return true;
+          return false;
+        })
+        .map((e) => e.id);
+      await delRules({ id: ids });
+      rulesStore.sync();
+    }
+  });
 }
 </script>

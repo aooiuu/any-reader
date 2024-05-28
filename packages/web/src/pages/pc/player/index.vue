@@ -13,6 +13,7 @@ const contentRef = ref();
 onMounted(async () => {
   new DPlayer({
     container: contentRef.value,
+    autoplay: true,
     video: {
       url: route.query.url,
       type: 'customHls',
