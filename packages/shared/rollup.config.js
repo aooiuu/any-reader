@@ -18,10 +18,13 @@ const entries = [
 
 const external = [
   '@any-reader/core',
+  // '@any-reader/epub',
+  'chardet',
   'fs-extra',
-  'encoding-japanese',
   'iconv-lite',
+  // 'lodash-es',
   'lowdb',
+  'uuid',
 ]
 
 const plugins = [

@@ -41,7 +41,6 @@
 </template>
 
 <script setup>
-import { v4 as uuidV4 } from 'uuid';
 import { CONTENT_TYPES, CONTENT_TYPE } from '@/constants';
 import { getRuleById, createRule } from '@/api';
 import MonacoEditor from './MonacoEditor.vue';
@@ -160,8 +159,7 @@ function setFormData(v) {
 
 async function submit() {
   await createRule({
-    ...formData,
-    uuid: uuidV4()
+    ...formData
   });
   router.back();
 }
