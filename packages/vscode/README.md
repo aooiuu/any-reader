@@ -1,6 +1,6 @@
-# any-reader-vscode
+# any-reader
 
-多站点自定义规则聚合阅读工具, 支持小说、漫画。包含 [JS 解析库](https://aooiuu.github.io/any-reader/core/)、[VSCode 插件](https://aooiuu.github.io/any-reader/vsc/)、[网页端](https://aooiuu.github.io/any-reader/browser/)
+多站点自定义规则聚合阅读工具, 支持小说、漫画、视频。包含 [JS 解析库](https://aooiuu.github.io/any-reader/core/)、[VSCode 插件](https://aooiuu.github.io/any-reader/vsc/)、[桌面端](https://aooiuu.github.io/any-reader/desktop/)、[网页端](https://aooiuu.github.io/any-reader/browser/)、[Docker](https://aooiuu.github.io/any-reader/docker/)
 
 > 软件不提供内容, 也不提供任何规则, 但你可以通过编写 [规则](https://aooiuu.github.io/any-reader/rule/), 控制呈现内容, [查看文档](https://aooiuu.github.io/any-reader/)
 

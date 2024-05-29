@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 importers:
 
   .:
@@ -13,6 +17,9 @@ importers:
       husky:
         specifier: ^8.0.0
         version: 8.0.0
+      npm-run-all:
+        specifier: ^4.1.5
+        version: 4.1.5
 
   docs:
     devDependencies:
@@ -184,6 +191,9 @@ importers:
       iconv-lite:
         specifier: ^0.6.3
         version: 0.6.3
+      lodash-es:
+        specifier: ^4.17.21
+        version: 4.17.21
       lowdb:
         specifier: ^7.0.1
         version: 7.0.1
@@ -215,6 +225,9 @@ importers:
       '@types/koa-static':
         specifier: ^4.0.4
         version: 4.0.4
+      '@types/lodash-es':
+        specifier: ^4.17.12
+        version: 4.17.12
       '@types/node':
         specifier: ^18.16.19
         version: 18.16.19
@@ -232,7 +245,7 @@ importers:
         version: 5.0.0(esbuild@0.21.3)(rollup@3.26.0)
       ts-jest:
         specifier: ^29.1.1
-        version: 29.1.1(@babel/core@7.24.5)(esbuild@0.21.3)(jest@29.7.0)(typescript@5.1.6)
+        version: 29.1.1(esbuild@0.21.3)(jest@29.7.0)(typescript@5.3.3)
       typescript:
         specifier: ^5.1.6
         version: 5.3.3
@@ -366,6 +379,9 @@ importers:
       pinia:
         specifier: ^2.1.7
         version: 2.1.7(typescript@5.3.3)(vue@3.4.15)
+      qs:
+        specifier: ^6.12.1
+        version: 6.12.1
       uuid:
         specifier: ^9.0.1
         version: 9.0.1
@@ -6245,7 +6261,7 @@ packages:
     resolution: {integrity: sha512-sX/LQ7LqUhgyaxzbe7IqwPeTr2yfpfUIQ/dgpKo6ZI4y4lpQA0YxAomWIY+7I7rHWcG02PG+OuPREzMW/5tszQ==}
     dependencies:
       inflation: 2.1.0
-      qs: 6.12.0
+      qs: 6.12.1
       raw-body: 2.5.2
       type-is: 1.6.18
     dev: false
@@ -6254,7 +6270,7 @@ packages:
     resolution: {integrity: sha512-m7pOT6CdLN7FuXUcpuz/8lfQ/L77x8SchHCF4G0RBTJO20Wzmhn5Sp4/5WsKy8OSpifBSUrmg83qEqaDHdyFuQ==}
     dependencies:
       inflation: 2.1.0
-      qs: 6.12.0
+      qs: 6.12.1
       raw-body: 2.5.2
       type-is: 1.6.18
     dev: false
@@ -11445,13 +11461,6 @@ packages:
     resolution: {integrity: sha512-LA0Y9kxMYv47GIPJy6MI84fqTd2HmYZI83W/kM/SkKfDlajnZYfmXFTxkbY+xSBPkLJxltMa9hIkmdc29eguMA==}
     dev: true
 
-  /qs@6.12.0:
-    resolution: {integrity: sha512-trVZiI6RMOkO476zLGaBIzszOdFPnCCXHPG9kn0yuS1uz6xdVxPfZdB3vUig9pxPFDM9BRAgz/YUIVQ1/vuiUg==}
-    engines: {node: '>=0.6'}
-    dependencies:
-      side-channel: 1.0.6
-    dev: false
-
   /qs@6.12.1:
     resolution: {integrity: sha512-zWmv4RSuB9r2mYQw3zxQuHWeU+42aKi1wWig/j4ele4ygELZ7PEO6MM7rim9oAQH2A5MWfsAVf/jPvTPgCbvUQ==}
     engines: {node: '>=0.6'}
@@ -12500,6 +12509,30 @@ packages:
       webpack: 5.91.0(esbuild@0.21.3)
     dev: true
 
+  /terser-webpack-plugin@5.3.10(webpack@5.73.0):
+    resolution: {integrity: sha512-BKFPWlPDndPs+NGGCr1U59t0XScL5317Y0UReNrHaw9/FwhPENlq6bfgs+4yPfyP51vqC1bQ4rp1EfXW5ZSH9w==}
+    engines: {node: '>= 10.13.0'}
+    peerDependencies:
+      '@swc/core': '*'
+      esbuild: '*'
+      uglify-js: '*'
+      webpack: ^5.1.0
+    peerDependenciesMeta:
+      '@swc/core':
+        optional: true
+      esbuild:
+        optional: true
+      uglify-js:
+        optional: true
+    dependencies:
+      '@jridgewell/trace-mapping': 0.3.20
+      jest-worker: 27.5.1
+      schema-utils: 3.3.0
+      serialize-javascript: 6.0.2
+      terser: 5.27.0
+      webpack: 5.73.0(webpack-cli@4.10.0)
+    dev: true
+
   /terser@5.27.0:
     resolution: {integrity: sha512-bi1HRwVRskAjheeYl291n3JC4GgO/Ty4z1nVs5AAsmonJulGxpSektecnNedrwK9C7vpvVtcX3cw00VSLt7U2A==}
     engines: {node: '>=10'}
@@ -12642,6 +12675,40 @@ packages:
       make-error: 1.3.6
       semver: 7.5.4
       typescript: 5.1.6
+      yargs-parser: 21.1.1
+    dev: true
+
+  /ts-jest@29.1.1(esbuild@0.21.3)(jest@29.7.0)(typescript@5.3.3):
+    resolution: {integrity: sha512-D6xjnnbP17cC85nliwGiL+tpoKN0StpgE0TeOjXQTU6MVCfsB4v7aW05CgQ/1OywGb0x/oy9hHFnN+sczTiRaA==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+    hasBin: true
+    peerDependencies:
+      '@babel/core': '>=7.0.0-beta.0 <8'
+      '@jest/types': ^29.0.0
+      babel-jest: ^29.0.0
+      esbuild: '*'
+      jest: ^29.0.0
+      typescript: '>=4.3 <6'
+    peerDependenciesMeta:
+      '@babel/core':
+        optional: true
+      '@jest/types':
+        optional: true
+      babel-jest:
+        optional: true
+      esbuild:
+        optional: true
+    dependencies:
+      bs-logger: 0.2.6
+      esbuild: 0.21.3
+      fast-json-stable-stringify: 2.1.0
+      jest: 29.7.0(@types/node@18.16.19)
+      jest-util: 29.7.0
+      json5: 2.2.3
+      lodash.memoize: 4.1.2
+      make-error: 1.3.6
+      semver: 7.5.4
+      typescript: 5.3.3
       yargs-parser: 21.1.1
     dev: true
 
@@ -13597,7 +13664,7 @@ packages:
       neo-async: 2.6.2
       schema-utils: 3.3.0
       tapable: 2.2.1
-      terser-webpack-plugin: 5.3.10(esbuild@0.21.3)(webpack@5.91.0)
+      terser-webpack-plugin: 5.3.10(webpack@5.73.0)
       watchpack: 2.4.0
       webpack-cli: 4.10.0(webpack@5.73.0)
       webpack-sources: 3.2.3
@@ -13901,7 +13968,3 @@ packages:
       compress-commons: 4.1.2
       readable-stream: 3.6.2
     dev: true
-
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false

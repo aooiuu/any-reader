@@ -21,6 +21,7 @@ export default defineConfig({
       { text: "VSCode 插件", link: "/vsc/" },
       { text: "桌面端", link: "/desktop/" },
       { text: "网页端", link: "/browser/" },
+      { text: "Docker", link: "/docker/" },
       { text: "规则解析库", link: "/core/" },
       { text: "规则", link: "/rule/" }
     ],

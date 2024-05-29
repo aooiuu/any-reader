@@ -18,7 +18,14 @@ export default defineConfig(({ mode }) => {
     plugins: createPlugins(env),
     base: './',
     server: {
-      port: 8899
+      host: '0.0.0.0',
+      port: 8899,
+      proxy: {
+        '^/api': {
+          target: 'http://127.0.0.1:8898',
+          rewrite: (path) => path.replace(/^\/api/, '')
+        }
+      }
     },
     build: {
       outDir

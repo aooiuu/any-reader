@@ -53,7 +53,7 @@
 
 <script setup lang="jsx">
 import { Modal } from '@arco-design/web-vue';
-import _ from 'lodash';
+import _ from 'lodash-es';
 import { CONTENT_TYPES } from '@/constants';
 import { useRulesStore } from '@/stores/rules';
 import { ping, batchUpdateRules, delRules } from '@/api';
