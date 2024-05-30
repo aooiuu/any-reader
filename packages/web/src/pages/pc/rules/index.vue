@@ -36,6 +36,8 @@
     <div class="flex-1 overflow-hidden">
       <a-table
         v-model:selectedKeys="selectedKeys"
+        :loading="loading"
+        :draggable="{ type: 'handle', width: 40 }"
         row-key="id"
         :pagination="true"
         :row-selection="{
@@ -49,6 +51,7 @@
         :scroll="{
           y: '100%'
         }"
+        @change="handleChange"
       />
     </div>
   </div>
@@ -59,7 +62,7 @@ import { Modal } from '@arco-design/web-vue';
 import _ from 'lodash-es';
 import { CONTENT_TYPES } from '@/constants';
 import { useRulesStore } from '@/stores/rules';
-import { ping, batchUpdateRules, delRules } from '@/api';
+import { ping, batchUpdateRules, delRules, updateRuleSort } from '@/api';
 import { timeoutWith } from '@/utils/promise';
 import { useRuleExtra } from './hooks/useRuleExtra';
 
@@ -68,6 +71,7 @@ const rulesStore = useRulesStore();
 const ruleExtra = useRuleExtra();
 const pingIds = ref([]);
 const selectedKeys = ref([]);
+const loading = ref(false);
 
 rulesStore.sync();
 ruleExtra.sync();
@@ -299,5 +303,16 @@ function delTimeoutRules() {
       })
       .map((e) => e.id)
   );
+}
+
+// 表格数据发生变化时触发
+async function handleChange(data, extra, currentData) {
+  const { type } = extra;
+  if (type !== 'drag') return;
+  loading.value = true;
+  const ids = currentData.map((e) => e.raw.id);
+  await updateRuleSort({ id: ids }).catch(() => {});
+  await rulesStore.sync();
+  loading.value = false;
 }
 </script>

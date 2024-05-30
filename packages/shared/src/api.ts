@@ -216,6 +216,11 @@ export async function delRules(data: { id: string[] }) {
   await ruleFileManager.del(data.id, true)
 }
 
+// 更新排序
+export async function updateRuleSort({ id }: { id: string[] }) {
+  ruleFileManager.updateRuleSort(id)
+}
+
 function success(data: any, msg = '') {
   return {
     code: 0,
@@ -246,4 +251,5 @@ export function useApi(register: any, { CONFIG_PATH, bookDir }: any) {
   register('post@ping', async (data: any) => success(await ping(data)))
   register('post@batchUpdateRules', async (data: any) => success(await batchUpdateRules(data)))
   register('post@delRules', async (data: any) => success(await delRules(data)))
+  register('post@updateRuleSort', async (data: any) => success(await ruleFileManager.updateRuleSort(data && data.id)))
 }

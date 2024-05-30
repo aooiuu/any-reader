@@ -1,6 +1,7 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
+import { useComponent } from './components';
 
 import 'nprogress/nprogress.css';
 import '@unocss/reset/sanitize/sanitize.css';
@@ -28,5 +29,6 @@ app.use(router);
 app.use(ArcoVue);
 app.use(Icon);
 app.use(createPinia());
+useComponent(app);
 
 app.mount('#app');

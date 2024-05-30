@@ -178,3 +178,12 @@ export function delRules(data: any) {
     data
   });
 }
+
+// 更新排序
+export function updateRuleSort(data: any) {
+  return request({
+    method: 'post',
+    url: 'updateRuleSort',
+    data
+  });
+}

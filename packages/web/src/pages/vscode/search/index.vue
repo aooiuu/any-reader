@@ -2,7 +2,7 @@
   <div class="px-10 py-10 h-full flex flex-col">
     <div class="mb-10 flex gap-10">
       <div class="flex-1 flex items-center gap-10">
-        <a-input-search v-model="searchText" placeholder="输入关键词，回车键搜索" class="!w-80" :disabled="loading" @keyup.enter="onSearch" />
+        <a-input-search v-model="searchText" placeholder="输入关键词，回车键搜索" class="!w-120px" :disabled="loading" @keyup.enter="onSearch" />
         <a-checkbox-group v-model="contentTypes" :disabled="loading">
           <a-checkbox v-for="item in CONTENT_TYPES.filter((e) => e.value !== CONTENT_TYPE.GAME)" :key="item.value" :value="item.value">
             {{ item.label }}

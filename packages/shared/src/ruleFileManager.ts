@@ -53,6 +53,7 @@ export async function update(rule: Rule) {
   writeDB()
 }
 
+// 批量更新
 export async function batchUpdate({ ids, rule }: { ids: string[];rule: Rule }) {
   const db = await getDb()
   for (let i = 0; i < db.data.length; i++) {
@@ -66,4 +67,19 @@ export async function batchUpdate({ ids, rule }: { ids: string[];rule: Rule }) {
 export async function findById(id: string): Promise<Rule> {
   const db = await getDb()
   return db.data.find(e => e.id === id) as Rule
+}
+
+// 更新排序
+export async function updateRuleSort(ids: string[]) {
+  if (!Array.isArray(ids))
+    return
+  const db = await getDb()
+  let sort = 1
+  for (let i = ids.length - 1; i >= 0; i--) {
+    const row = db.data.find(e => e.id === ids[i])
+    if (row)
+      row.sort = sort
+    sort++
+  }
+  writeDB()
 }

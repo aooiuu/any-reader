@@ -2,7 +2,7 @@
   <div class="px-10 py-10 h-full flex flex-col">
     <div class="mb-10 flex gap-10">
       <div class="flex-1 flex items-center gap-10">
-        <a-input-search v-model="searchText" placeholder="输入关键词，回车键搜索" class="!w-80" :disabled="loading" @keyup.enter="onSearch" />
+        <a-input-search v-model="searchText" placeholder="输入关键词，回车键搜索" class="!w-120px" :disabled="loading" @keyup.enter="onSearch" />
         <a-checkbox-group v-model="contentTypes" :disabled="loading">
           <a-checkbox v-for="item in CONTENT_TYPES.filter((e) => e.value !== CONTENT_TYPE.GAME)" :key="item.value" :value="item.value">
             {{ item.label }}
@@ -38,7 +38,17 @@
                 "
               >
                 <div class="w-102 h-136 mb-5 rounded-5 overflow-hidden">
-                  <a-image :src="row.cover" :preview="false" alt="" srcset="" class="cover w-102 h-136" width="100%" height="100%" fit="cover" />
+                  <a-image
+                    :src="row.cover"
+                    error-icon="icon-book"
+                    :preview="false"
+                    alt=""
+                    srcset=""
+                    class="cover w-102 h-136"
+                    width="100%"
+                    height="100%"
+                    fit="cover"
+                  />
                 </div>
                 <div class="overflow-hidden whitespace-nowrap text-ellipsis mb-2">{{ row.name }}</div>
                 <div class="overflow-hidden whitespace-nowrap text-ellipsis text-12 op-70">{{ row.author }}</div>

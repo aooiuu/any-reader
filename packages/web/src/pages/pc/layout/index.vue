@@ -127,8 +127,8 @@ function changeSidebar() {
 const navs = [
   { icon: 'codicon-book', path: '/pc/books', title: '书架' },
   { icon: 'codicon-search', path: '/pc/search', title: '搜索' },
-  { icon: 'codicon-flame', path: '/pc/category', title: '分类' },
-  { icon: 'codicon-surround-with', path: '/pc/rules', title: '规则' }
+  { icon: 'codicon-globe', path: '/pc/category', title: '分类' },
+  { icon: 'codicon-extensions', path: '/pc/rules', title: '规则' }
 ];
 
 function openSetting() {
