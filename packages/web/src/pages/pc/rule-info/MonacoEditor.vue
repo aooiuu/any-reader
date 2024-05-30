@@ -16,6 +16,7 @@ onMounted(() => {
     value: modelValue.value,
     language: 'json',
     theme: 'vs-dark',
+    automaticLayout: true,
     minimap: {
       enabled: false
     }

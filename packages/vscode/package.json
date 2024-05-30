@@ -29,7 +29,8 @@
     "Other"
   ],
   "activationEvents": [
-    "*"
+    "onView:any-reader",
+    "onWebviewPanel:any-reader"
   ],
   "main": "./dist/extension.js",
   "scripts": {
@@ -93,27 +94,9 @@
         "icon": "$(star-full)"
       },
       {
-        "command": "any-reader.historyRefresh",
-        "title": "refresh",
-        "icon": "$(refresh)",
-        "category": "any-reader"
-      },
-      {
-        "command": "any-reader.favoritesRefresh",
-        "title": "refresh",
-        "icon": "$(refresh)",
-        "category": "any-reader"
-      },
-      {
         "command": "any-reader.openLocalBookDir",
         "title": "open local book dir",
         "icon": "$(folder-opened)",
-        "category": "any-reader"
-      },
-      {
-        "command": "any-reader.refreshLocalBooks",
-        "title": "refresh",
-        "icon": "$(refresh)",
         "category": "any-reader"
       }
     ],

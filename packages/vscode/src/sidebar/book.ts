@@ -5,7 +5,7 @@
 import * as vscode from 'vscode';
 import { COMMANDS } from '../constants';
 import bookManager, { TreeNode } from './bookManager';
-import favoritesManager from '../utils/favoritesManager';
+import { favoritesManager } from '@any-reader/shared';
 import { ChapterItem, Rule } from '@any-reader/core';
 
 export class BookProvider implements vscode.TreeDataProvider<TreeNode> {

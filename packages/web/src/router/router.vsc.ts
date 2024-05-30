@@ -19,7 +19,7 @@ const router = createRouter({
     {
       path: '/rule-info',
       name: 'ruleInfo',
-      component: () => import('@/pages/vscode/rule-info/index.vue')
+      component: () => import('@/pages/pc/rule-info/index.vue')
     },
     {
       path: '/iframe',

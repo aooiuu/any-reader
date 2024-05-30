@@ -10,13 +10,7 @@ export enum COMMANDS {
   discover = 'any-reader.discover',
   star = 'any-reader.star',
   unstar = 'any-reader.unstar',
-  historyRefresh = 'any-reader.historyRefresh',
-  favoritesRefresh = 'any-reader.favoritesRefresh',
-  // 本地书籍
-  getContentLocalBook = 'any-reader.getContentLocalBook',
   openLocalBookDir = 'any-reader.openLocalBookDir',
-  refreshLocalBooks = 'any-reader.refreshLocalBooks',
-  // 读取所有书源
   getBookSource = 'any-reader.getBookSource',
   home = 'any-reader.home',
   gamePlay = 'any-reader.gamePlay'
