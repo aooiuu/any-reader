@@ -9,7 +9,17 @@
 
 > 软件不提供内容, 也不提供任何规则, 但你可以通过编写 [规则](https://aooiuu.github.io/any-reader/rule/), 控制呈现内容, [查看文档](https://aooiuu.github.io/any-reader/)
 
-## VSCode 插件
+QQ群: 50057637
+
+## 快速体验
+
+```sh
+npx any-reader
+```
+
+## 多端支持
+
+### VSCode 插件
 
 <p align="left">
   <a href="https://marketplace.visualstudio.com/items?itemName=aooiu.any-reader">
@@ -34,8 +44,6 @@
 
 [文档](https://aooiuu.github.io/any-reader/vsc/)
 
-### 功能
-
 - [x] 本地小说阅读
   - [x] txt格式
   - [x] epub格式
@@ -50,37 +58,28 @@
 - [x] 收藏
 - [x] 历史记录
 
-## 桌面端
+### 桌面端
 
 [文档](https://aooiuu.github.io/any-reader/desktop/)
 
-### 功能
+|                                                  -                                                  |                                                  -                                                  |
+| :-------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------: |
+| ![image](https://github.com/aooiuu/any-reader/assets/28108111/bf5b9edf-8b1e-4db5-adfb-1b1300f57a4a) | ![image](https://github.com/aooiuu/any-reader/assets/28108111/3d001367-ff2d-4339-a617-0700b492f601) |
+| ![image](https://github.com/aooiuu/any-reader/assets/28108111/1e8fcb4e-2ca5-49a9-ba7e-d5c7ac19856b) | ![image](https://github.com/aooiuu/any-reader/assets/28108111/a732f2ce-452e-4525-8059-7e1938fcbe01) |
 
-- [x] 本地小说阅读
-  - [x] txt格式
-  - [x] epub格式
-  - [x] 小说章节识别
-- [x] 在线小说阅读
-- [x] 自定义书源规则
-- [x] 自定义热键
-- [x] 漫画
-- [x] 视频
-- [x] 聚合搜索
-- [x] 发现页分类排行榜
-- [x] 收藏
-- [x] 历史记录
-
- <img src="https://github.com/aooiuu/any-reader/assets/28108111/d4629d6f-b0c0-48cd-830f-f4b1ea4e4a2c" width="600"/>
-
-## 网页端
-
-🚧 开发中
+### 网页端
 
 [文档](https://aooiuu.github.io/any-reader/browser/)
 
  <img src="https://github.com/aooiuu/any-reader/assets/28108111/6166cc3e-f5e5-42ca-a616-5e30157f6c89" width="600"/>
 
-## Docker
+快速体验:
+
+```sh
+npx any-reader
+```
+
+### Docker
 
 快速体验：
 
@@ -90,6 +89,10 @@ docker run -d --name any-reader -p 8899:8899 any-reader
 
 # 浏览器访问 http://localhost:8899/
 ```
+
+### 移动端
+
+https://github.com/mabDc/eso
 
 ## 声明
 
