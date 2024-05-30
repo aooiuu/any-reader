@@ -153,6 +153,19 @@ const tableColumns = ref([
     title: '启用搜索',
     width: 120,
     align: 'center',
+    filterable: {
+      filters: [
+        {
+          text: '启用',
+          value: true
+        },
+        {
+          text: '禁用',
+          value: false
+        }
+      ],
+      filter: (value, record) => value.includes(record.enableSearch)
+    },
     render: ({ record }) => (
       <a-switch
         model-value={record.enableSearch}
@@ -171,6 +184,20 @@ const tableColumns = ref([
     title: '启用发现',
     width: 120,
     align: 'center',
+    filterable: {
+      filters: [
+        {
+          text: '启用',
+          value: true
+        },
+        {
+          text: '禁用',
+          value: false
+        }
+      ],
+      filter: (value, record) => value.includes(record.enableDiscover),
+      multiple: false
+    },
     render: ({ record }) => (
       <a-switch
         model-value={record.enableDiscover}
