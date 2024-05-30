@@ -44,7 +44,10 @@
     "electron:server": "npm -C packages/web run electron:dev",
     "electron:build": "npm -C packages/web run electron:build",
     "vscode:server": "npm -C packages/web run vscode:dev",
-    "vscode:dev": "npm-run-all build:core build:shared --parallel vscode:server server"
+    "vscode:dev": "npm-run-all build:core build:shared --parallel vscode:server server",
+    "cli:build-tpl": "npm -C packages/web run cli:build",
+    "cli:build-js": "npm -C packages/cli run build",
+    "cli:build": "npm-run-all cli:build-tpl cli:build-js"
   },
   "lint-staged": {
     "*.{vue,js,ts}": "eslint --fix"

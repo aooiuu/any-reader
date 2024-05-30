@@ -12,15 +12,13 @@ const __dirname = path.resolve(path.dirname(__filename), '..')
 
 const app = new Koa()
 
-async function start() {
+export async function start(port = 8898, root = resolve(__dirname, 'public')) {
   await api.init()
   app
     .use(bodyParser())
     .use(cors())
     .use(router.routes())
     .use(router.allowedMethods())
-    .use(serve(resolve(__dirname, 'public')))
-    .listen(8898)
+    .use(serve(root))
+    .listen(port)
 }
-
-start()

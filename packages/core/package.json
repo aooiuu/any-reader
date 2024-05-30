@@ -1,6 +1,6 @@
 {
   "name": "@any-reader/core",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "type": "module",
   "main": "index.js",
@@ -20,7 +20,7 @@
       "import": "./dist/index.mjs"
     }
   },
-  "files": ["dist"],
+  "files": ["dist", "index.d.ts"],
   "dependencies": {
     "axios": "^1.5.1",
     "base64-js": "^1.5.1",

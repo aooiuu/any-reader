@@ -21,4 +21,4 @@ export const CONTENT_TYPES = [
 
 export const PLATFORM: 'browser' | 'vscode' | 'electron' = import.meta.env.VITE_APP_PLATFORM;
 
-export const BASE_URL = '/api';
+export const BASE_URL = import.meta.env.VITE_APP_BASE_URL || '/api';

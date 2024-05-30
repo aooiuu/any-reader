@@ -1,0 +1,32 @@
+{
+  "name": "@any-reader/cli",
+  "version": "1.0.0",
+  "description": "",
+  "type": "commonjs",
+  "files": [
+    "dist",
+    "public"
+  ],
+  "bin": {
+    "any-reader": "./dist/index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup -c",
+    "dev": "esno watch src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "GPL3",
+  "dependencies": {
+    "@any-reader/server": "workspace:^",
+    "open": "^10.1.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-alias": "^5.0.0",
+    "@rollup/plugin-commonjs": "^25.0.2",
+    "@rollup/plugin-json": "^6.0.0",
+    "@rollup/plugin-node-resolve": "^15.1.0",
+    "rollup-plugin-esbuild": "^5.0.0"
+  }
+}
