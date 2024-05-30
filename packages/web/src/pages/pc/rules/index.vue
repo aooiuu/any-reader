@@ -33,7 +33,7 @@
         </template>
       </a-dropdown>
     </div>
-    <div class="flex-1 overflow-hidden">
+    <div class="flex-1 overflow-hidden" @drop="drop" @dragover.prevent @dragenter.prevent>
       <a-table
         v-model:selectedKeys="selectedKeys"
         :loading="loading"
@@ -52,17 +52,21 @@
           y: '100%'
         }"
         @change="handleChange"
-      />
+      >
+        <template #empty>
+          <div class="h-80 flex items-center justify-center">没有规则, 你可以拖拽规则 JSON 文件到这里导入</div>
+        </template>
+      </a-table>
     </div>
   </div>
 </template>
 
 <script setup lang="jsx">
-import { Modal } from '@arco-design/web-vue';
+import { Modal, Message } from '@arco-design/web-vue';
 import _ from 'lodash-es';
 import { CONTENT_TYPES } from '@/constants';
 import { useRulesStore } from '@/stores/rules';
-import { ping, batchUpdateRules, delRules, updateRuleSort } from '@/api';
+import { ping, batchUpdateRules, delRules, updateRuleSort, createRule } from '@/api';
 import { timeoutWith } from '@/utils/promise';
 import { useRuleExtra } from './hooks/useRuleExtra';
 
@@ -307,6 +311,7 @@ function delTimeoutRules() {
 
 // 表格数据发生变化时触发
 async function handleChange(data, extra, currentData) {
+  console.log('[handleChange]', { data, extra, currentData });
   const { type } = extra;
   if (type !== 'drag') return;
   loading.value = true;
@@ -314,5 +319,48 @@ async function handleChange(data, extra, currentData) {
   await updateRuleSort({ id: ids }).catch(() => {});
   await rulesStore.sync();
   loading.value = false;
+}
+
+async function drop(event) {
+  const files = event.dataTransfer.files;
+  for (const file of files) {
+    await dropFile(file);
+  }
+}
+
+function readFile(file) {
+  if (file.type !== 'application/json') return;
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.readAsText(file, 'UTF-8');
+    reader.onload = function (e) {
+      let data;
+      try {
+        data = JSON.parse(e.target.result);
+      } catch (error) {
+        console.warn(error);
+      }
+      resolve(data);
+    };
+  });
+}
+
+const isRule = (data) => data.id && data.host && data.contentType;
+
+async function dropFile(file) {
+  let count = 0;
+  const rules = await readFile(file);
+  for (const rule of rules) {
+    if (isRule(rule)) {
+      await createRule(rule);
+      count++;
+    }
+  }
+  rulesStore.sync();
+  Message.success({
+    content: `导入${count}条数据`,
+    closable: true,
+    resetOnHover: true
+  });
 }
 </script>
