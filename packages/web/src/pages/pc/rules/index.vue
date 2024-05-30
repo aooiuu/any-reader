@@ -19,14 +19,17 @@
       </a-button>
       <div class="flex-1" />
       <a-button type="primary" @click="pingAll">测速</a-button>
+      <a-button type="primary" status="danger" @click="delTimeoutRules">一键删除超时规则</a-button>
       <a-dropdown position="bottom">
         <a-button>批量操作<icon-down /></a-button>
         <template #content>
-          <a-doption @click="batchUpdate({ enableSearch: true })">批量启用搜索</a-doption>
-          <a-doption @click="batchUpdate({ enableSearch: false })">批量禁用搜索</a-doption>
-          <a-doption @click="batchUpdate({ enableDiscover: true })">批量启用发现</a-doption>
-          <a-doption @click="batchUpdate({ enableDiscover: false })">批量禁用发现</a-doption>
-          <a-doption @click="delTimeoutRules">批量删除超时规则</a-doption>
+          <a-doption @click="batchUpdate({ enableSearch: false })">禁用选中搜索</a-doption>
+          <a-doption @click="batchUpdate({ enableDiscover: false })">禁用选中发现</a-doption>
+          <div class="h-1 bg-[#ffffff33]"></div>
+          <a-doption @click="batchUpdate({ enableSearch: true })">启用选中搜索</a-doption>
+          <a-doption @click="batchUpdate({ enableDiscover: true })">启用选中发现</a-doption>
+          <div class="h-1 bg-[#ffffff33]"></div>
+          <a-doption @click="delSelected">删除选中</a-doption>
         </template>
       </a-dropdown>
     </div>
@@ -91,6 +94,8 @@ const tableColumns = ref([
     dataIndex: 'name',
     align: 'center',
     width: 100,
+    ellipsis: true,
+    tooltip: true,
     sortable: {
       sortDirections: ['ascend', 'descend']
     }
@@ -105,7 +110,7 @@ const tableColumns = ref([
     }
   },
   {
-    title: 'Ping',
+    title: '延迟',
     dataIndex: 'extra.ping',
     width: 100,
     align: 'center',
@@ -186,9 +191,14 @@ const tableColumns = ref([
     align: 'center',
     fixed: 'right',
     render: ({ record }) => (
-      <a-button type="primary" shape="circle" onClick={() => editRule(record)}>
-        <icon-edit />
-      </a-button>
+      <div class="flex gap-5">
+        <a-button type="primary" shape="circle" onClick={() => editRule(record)}>
+          <icon-edit />
+        </a-button>
+        <a-button type="primary" status="danger" shape="circle" onClick={() => delRule(record.id)}>
+          <icon-delete />
+        </a-button>
+      </div>
     )
   }
 ]);
@@ -230,23 +240,37 @@ async function batchUpdate(rule) {
   rulesStore.sync();
 }
 
-function delTimeoutRules() {
+// 删除规则
+function delRule(id) {
   Modal.confirm({
     title: '提示',
     content: '规则删除后不可恢复',
     closable: true,
     onOk: async () => {
-      const ids = rulesStore.list
-        .filter((rule) => {
-          const extra = ruleExtra.data.value[rule.id];
-          if (!extra) return false;
-          if (extra.ping === -1) return true;
-          return false;
-        })
-        .map((e) => e.id);
-      await delRules({ id: ids });
+      await delRules({
+        id
+      });
       rulesStore.sync();
     }
   });
+}
+
+// 删除选中
+function delSelected() {
+  delRule([...selectedKeys.value]);
+}
+
+// 删除超时
+function delTimeoutRules() {
+  delRule(
+    rulesStore.list
+      .filter((rule) => {
+        const extra = ruleExtra.data.value[rule.id];
+        if (!extra) return false;
+        if (extra.ping === -1) return true;
+        return false;
+      })
+      .map((e) => e.id)
+  );
 }
 </script>
