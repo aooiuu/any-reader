@@ -187,3 +187,12 @@ export function updateRuleSort(data: any) {
     data
   });
 }
+
+// 导入规则
+export function importRules(data: any) {
+  return request({
+    method: 'post',
+    url: 'importRules',
+    data
+  });
+}

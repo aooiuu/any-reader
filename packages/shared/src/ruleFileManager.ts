@@ -4,6 +4,7 @@ import { v4 as uuidV4 } from 'uuid'
 import _ from 'lodash-es'
 import type { Low } from 'lowdb/lib'
 import { JSONFilePreset } from 'lowdb/node'
+import axios from 'axios'
 import type { Rule } from '@any-reader/core'
 import { BOOK_SOURCE_PATH } from './constants'
 
@@ -82,4 +83,34 @@ export async function updateRuleSort(ids: string[]) {
     sort++
   }
   writeDB()
+}
+
+/**
+ *
+ * @param rule
+ * @returns {boolean}
+ */
+export function isRule(rule: any): boolean {
+  if (typeof rule === 'string')
+    return rule.startsWith('eso://:')
+
+  if (typeof rule !== 'object')
+    return false
+
+  return rule.id && rule.host && rule.contentType
+}
+
+export async function importRules(url: string) {
+  const res = await axios.create().get(url).catch((e) => {
+    console.warn(e)
+  })
+  if (!res || Array.isArray(res?.data))
+    return
+
+  for (const rule of res.data) {
+    if (isRule(rule))
+      await update(rule).catch(() => {})
+  }
+
+  return res.data.length
 }

@@ -6,7 +6,11 @@ app.whenReady().then(async () => {
   const win = new BrowserWindow({
     title: 'AnyReader',
     titleBarStyle: 'hidden',
-    webPreferences: { nodeIntegration: true, contextIsolation: false }
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+      webSecurity: false
+    }
   });
 
   api.init();

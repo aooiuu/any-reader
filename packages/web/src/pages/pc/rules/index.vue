@@ -10,13 +10,17 @@
         </a-checkbox-group>
       </div>
     </div>
+    <input ref="fileInputRef" type="file" class="hidden" @change="changeFile" />
     <div class="mb-10 flex gap-10">
-      <a-button type="primary" @click="addRule">
-        <template #icon>
-          <icon-plus />
+      <a-dropdown position="bottom">
+        <a-button type="primary">添加规则<icon-down /></a-button>
+        <template #content>
+          <a-doption @click="addRule">单个添加</a-doption>
+          <a-doption @click="addRuleFile">从文件导入</a-doption>
+          <a-doption @click="addRuleUrl">从URL导入</a-doption>
         </template>
-        添加规则
-      </a-button>
+      </a-dropdown>
+
       <div class="flex-1" />
       <a-button type="primary" @click="pingAll">测速</a-button>
       <a-button type="primary" status="danger" @click="delTimeoutRules">一键删除超时规则</a-button>
@@ -39,7 +43,12 @@
         :loading="loading"
         :draggable="{ type: 'handle', width: 40 }"
         row-key="id"
-        :pagination="true"
+        :pagination="{
+          showTotal: true,
+          showJumper: true,
+          showPageSize: true,
+          pageSizeOptions: [10, 20, 50, 100, 500]
+        }"
         :row-selection="{
           type: 'checkbox',
           showCheckedAll: true,
@@ -68,7 +77,9 @@ import { CONTENT_TYPES } from '@/constants';
 import { useRulesStore } from '@/stores/rules';
 import { ping, batchUpdateRules, delRules, updateRuleSort, createRule } from '@/api';
 import { timeoutWith } from '@/utils/promise';
+import { isRule } from '@/utils/rule';
 import { useRuleExtra } from './hooks/useRuleExtra';
+import ImportRules from './ImportRules.vue';
 
 const router = useRouter();
 const rulesStore = useRulesStore();
@@ -76,6 +87,7 @@ const ruleExtra = useRuleExtra();
 const pingIds = ref([]);
 const selectedKeys = ref([]);
 const loading = ref(false);
+const fileInputRef = ref();
 
 rulesStore.sync();
 ruleExtra.sync();
@@ -115,12 +127,22 @@ const tableColumns = ref([
     tooltip: true,
     sortable: {
       sortDirections: ['ascend', 'descend']
+    },
+    render: ({ record }) => {
+      return (
+        <a-link
+          onClick={() => {
+            window.open(record.host);
+          }}>
+          {record.host}
+        </a-link>
+      );
     }
   },
   {
     title: '延迟',
     dataIndex: 'extra.ping',
-    width: 100,
+    width: 90,
     align: 'center',
     render: ({ record }) => {
       const extra = record.extra;
@@ -159,7 +181,7 @@ const tableColumns = ref([
   },
   {
     title: '启用搜索',
-    width: 120,
+    width: 100,
     align: 'center',
     filterable: {
       filters: [
@@ -183,14 +205,11 @@ const tableColumns = ref([
           })
         }
       />
-    ),
-    sortable: {
-      sortDirections: ['ascend', 'descend']
-    }
+    )
   },
   {
     title: '启用发现',
-    width: 120,
+    width: 100,
     align: 'center',
     filterable: {
       filters: [
@@ -215,10 +234,7 @@ const tableColumns = ref([
           })
         }
       />
-    ),
-    sortable: {
-      sortDirections: ['ascend', 'descend']
-    }
+    )
   },
   {
     title: '操作',
@@ -254,6 +270,33 @@ const tableData = computed(() => {
 function addRule() {
   router.push({
     name: 'ruleInfo'
+  });
+}
+
+function addRuleFile() {
+  fileInputRef.value.click();
+}
+
+function addRuleUrl() {
+  const modal = Modal.open({
+    draggable: true,
+    mask: true,
+    width: 400,
+    footer: false,
+    title: '导入规则',
+    content: (
+      <ImportRules
+        onDone={(count = 0) => {
+          rulesStore.sync();
+          Message.success({
+            content: `导入${count}条数据`,
+            closable: true,
+            resetOnHover: true
+          });
+          modal.close();
+        }}
+      />
+    )
   });
 }
 
@@ -322,6 +365,7 @@ async function handleChange(data, extra, currentData) {
 }
 
 async function drop(event) {
+  event.preventdefault();
   const files = event.dataTransfer.files;
   for (const file of files) {
     await dropFile(file);
@@ -345,8 +389,6 @@ function readFile(file) {
   });
 }
 
-const isRule = (data) => data.id && data.host && data.contentType;
-
 async function dropFile(file) {
   let count = 0;
   const rules = await readFile(file);
@@ -362,5 +404,12 @@ async function dropFile(file) {
     closable: true,
     resetOnHover: true
   });
+}
+
+async function changeFile(e) {
+  const files = e.target.files;
+  for (const file of files) {
+    await dropFile(file);
+  }
 }
 </script>

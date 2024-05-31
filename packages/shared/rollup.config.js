@@ -25,6 +25,7 @@ const external = [
   // 'lodash-es',
   'lowdb',
   'uuid',
+  'axios',
 ]
 
 const plugins = [

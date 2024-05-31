@@ -252,4 +252,5 @@ export function useApi(register: any, { CONFIG_PATH, bookDir }: any) {
   register('post@batchUpdateRules', async (data: any) => success(await batchUpdateRules(data)))
   register('post@delRules', async (data: any) => success(await delRules(data)))
   register('post@updateRuleSort', async (data: any) => success(await ruleFileManager.updateRuleSort(data && data.id)))
+  register('post@importRules', async (data: any) => success(await ruleFileManager.importRules(data && data.url)))
 }
