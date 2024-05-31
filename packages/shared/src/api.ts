@@ -26,6 +26,16 @@ export async function discoverMap(ruleId: string) {
 }
 
 /**
+ * 发现页列表
+ * @returns
+ */
+export async function discover({ ruleId, data }: any) {
+  const rule = await ruleFileManager.findById(ruleId)
+  const ruleManager = new RuleManager(rule)
+  return ruleManager.discover(data.value)
+}
+
+/**
  * 收藏列表
  * @returns
  */
@@ -47,16 +57,6 @@ export function getHistory() {
  */
 export function getLocalBooks(dir: string) {
   return localBookManager.getBookList(dir)
-}
-
-/**
- * 发现页列表
- * @returns
- */
-export async function discover({ ruleId, data }: any) {
-  const rule = await ruleFileManager.findById(ruleId)
-  const ruleManager = new RuleManager(rule)
-  return ruleManager.discover(data.value)
 }
 
 /**
@@ -231,26 +231,51 @@ function success(data: any, msg = '') {
 
 // vscode 、electron、服务端通用注册接口
 export function useApi(register: any, { CONFIG_PATH, bookDir }: any) {
-  register('get@discoverMap', async ({ ruleId = '' } = {}) => success(await discoverMap(ruleId)))
-  register('get@getFavorites', async () => success(await getFavorites()))
-  register('get@getHistory', async () => success(await getHistory()))
-  register('get@getLocalBooks', async () => success(await getLocalBooks(bookDir)))
-  register('post@discover', async (data: any) => success(await discover(data)))
-  register('post@star', async (data: any) => success(await star(data)))
-  register('post@unstar', async (data: any) => success(await unstar(data)))
-  register('get@rules', async () => success(await rules()))
-  register('get@getRuleById', async ({ id = '' } = {}) => success(await getRuleById(id)))
-  register('post@createRule', async (data: any) => success(await createRule(data)))
-  register('post@updateRule', async (data: any) => success(await updateRule(data)))
-  register('post@searchByRuleId', async (data: any) => success(await searchByRuleId(data)))
-  register('post@content', async (data: any) => success(await content(data)))
-  register('post@getChapter', async (data: any) => success(await getChapter(data)))
-  register('get@readConfig', async () => success(await readConfig(CONFIG_PATH)))
-  register('post@updateConfig', async (data: any) => success(await updateConfig(CONFIG_PATH, data)))
-  register('get@getRuleExtras', async () => success(await getRuleExtras()))
-  register('post@ping', async (data: any) => success(await ping(data)))
-  register('post@batchUpdateRules', async (data: any) => success(await batchUpdateRules(data)))
-  register('post@delRules', async (data: any) => success(await delRules(data)))
-  register('post@updateRuleSort', async (data: any) => success(await ruleFileManager.updateRuleSort(data && data.id)))
-  register('post@importRules', async (data: any) => success(await ruleFileManager.importRules(data && data.url)))
+  const registerApi = async (apiPath: string, handle: Function, log?: {
+    ruleId: (...arg: any) => string
+    check: (arg: any) => boolean
+  }) => {
+    register(apiPath, async (...arg: any) => {
+      // 原始返回值
+      const result = await handle(...arg).catch(() => {})
+
+      // 记录接口调用情况
+      if (typeof log === 'object' && log.ruleId && log.check) {
+        const isOk = log.check(result)
+        ruleExtraManager.updateApiStatus(log.ruleId(...arg), isOk ? `${apiPath}.ok` : `${apiPath}.fail`)
+      }
+
+      // 返回数据
+      return success(result)
+    })
+  }
+
+  const discoverLog = {
+    ruleId: (data: any) => data.ruleId,
+    check: (v: any[]) => Array.isArray(v) && v.length > 0,
+  }
+
+  // 注册接口
+  registerApi('get@discoverMap', async ({ ruleId = '' } = {}) => await discoverMap(ruleId), discoverLog)
+  registerApi('post@discover', async (data: any) => await discover(data), discoverLog)
+  registerApi('get@getFavorites', async () => await getFavorites())
+  registerApi('get@getHistory', async () => await getHistory())
+  registerApi('get@getLocalBooks', async () => await getLocalBooks(bookDir))
+  registerApi('post@star', async (data: any) => await star(data))
+  registerApi('post@unstar', async (data: any) => await unstar(data))
+  registerApi('get@rules', async () => await rules())
+  registerApi('get@getRuleById', async ({ id = '' } = {}) => await getRuleById(id))
+  registerApi('post@createRule', async (data: any) => await createRule(data))
+  registerApi('post@updateRule', async (data: any) => await updateRule(data))
+  registerApi('post@searchByRuleId', async (data: any) => await searchByRuleId(data), discoverLog)
+  registerApi('post@content', async (data: any) => await content(data))
+  registerApi('post@getChapter', async (data: any) => await getChapter(data))
+  registerApi('get@readConfig', async () => await readConfig(CONFIG_PATH))
+  registerApi('post@updateConfig', async (data: any) => await updateConfig(CONFIG_PATH, data))
+  registerApi('get@getRuleExtras', async () => await getRuleExtras())
+  registerApi('post@ping', async (data: any) => await ping(data))
+  registerApi('post@batchUpdateRules', async (data: any) => await batchUpdateRules(data))
+  registerApi('post@delRules', async (data: any) => await delRules(data))
+  registerApi('post@updateRuleSort', async (data: any) => await ruleFileManager.updateRuleSort(data && data.id))
+  registerApi('post@importRules', async (data: any) => await ruleFileManager.importRules(data && data.url))
 }

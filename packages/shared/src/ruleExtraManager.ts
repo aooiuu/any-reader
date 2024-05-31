@@ -7,7 +7,7 @@ import { RULE_EXTRA_PATH } from './constants'
 import _ping from './ping'
 
 export interface SourceExtraRow {
-  ping?: number
+  [_: string]: number
 }
 
 export interface SourceExtra {
@@ -46,4 +46,12 @@ export async function getExtraInfoById(id: string): Promise<SourceExtraRow> {
 export async function getRuleExtras(): Promise<SourceExtra> {
   const db = await getDb()
   return db.data
+}
+
+export async function updateApiStatus(id: string, field: string) {
+  const db = await getDb()
+  if (!db.data[id])
+    db.data[id] = {}
+  _.set(db.data[id], field, _.get(db.data[id], field, 0) + 1)
+  writeDB()
 }

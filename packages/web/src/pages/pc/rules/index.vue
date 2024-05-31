@@ -237,6 +237,65 @@ const tableColumns = ref([
     )
   },
   {
+    title: '接口调用',
+    width: 120,
+    align: 'center',
+    filterable: {
+      filters: [
+        {
+          text: '搜索失败>3且成功=0',
+          value: 1
+        },
+        {
+          text: '发现分类失败>3且成功=0',
+          value: 2
+        },
+        {
+          text: '发现列表失败>3且成功=0',
+          value: 3
+        }
+      ],
+      filter: (value, record) => {
+        if (value.includes(1)) {
+          const ok = _.get(record, 'extra.post@searchByRuleId.ok', 0);
+          const fail = _.get(record, 'extra.post@searchByRuleId.fail', 0);
+          return ok === 0 && fail > 3;
+        }
+        if (value.includes(2)) {
+          const ok = _.get(record, 'extra.get@discoverMap.ok', 0);
+          const fail = _.get(record, 'extra.get@discoverMap.fail', 0);
+          return ok === 0 && fail > 3;
+        }
+        if (value.includes(2)) {
+          const ok = _.get(record, 'extra.post@discover.ok', 0);
+          const fail = _.get(record, 'extra.post@discover.fail', 0);
+          return ok === 0 && fail > 3;
+        }
+        return true;
+      },
+      multiple: false
+    },
+    render: ({ record }) => (
+      <div>
+        <div class="flex items-center">
+          <span class="text-10 mr-4">搜索</span>
+          <span class="color-green">{_.get(record, 'extra.post@searchByRuleId.ok', 0)}</span>/
+          <span class="color-red">{_.get(record, 'extra.post@searchByRuleId.fail', 0)}</span>
+        </div>
+        <div class="flex items-center">
+          <span class="text-10 mr-4">发现分类</span>
+          <span class="color-green">{_.get(record, 'extra.get@discoverMap.ok', 0)}</span>/
+          <span class="color-red">{_.get(record, 'extra.get@discoverMap.fail', 0)}</span>
+        </div>
+        <div class="flex items-center">
+          <span class="text-10 mr-4">发现列表</span>
+          <span class="color-green">{_.get(record, 'extra.post@discover.ok', 0)}</span>/
+          <span class="color-red">{_.get(record, 'extra.post@discover.fail', 0)}</span>
+        </div>
+      </div>
+    )
+  },
+  {
     title: '操作',
     width: 120,
     align: 'center',
@@ -365,7 +424,8 @@ async function handleChange(data, extra, currentData) {
 }
 
 async function drop(event) {
-  event.preventdefault();
+  // vscode
+  if (typeof event.preventdefault === 'function') event.preventdefault();
   const files = event.dataTransfer.files;
   for (const file of files) {
     await dropFile(file);

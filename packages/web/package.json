@@ -1,6 +1,6 @@
 {
   "name": "any-reader-web",
-  "version": "1.0.0-dev.6",
+  "version": "1.0.0-dev.8",
   "private": true,
   "scripts": {
     "dev": "cross-env VITE_APP_PLATFORM=browser vite",

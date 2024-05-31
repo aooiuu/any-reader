@@ -1,6 +1,6 @@
 {
   "name": "@any-reader/cli",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "type": "commonjs",
   "files": [
@@ -18,11 +18,9 @@
   "keywords": [],
   "author": "",
   "license": "GPL3",
-  "dependencies": {
-    "@any-reader/server": "workspace:^",
-    "open": "^10.1.0"
-  },
   "devDependencies": {
+    "@any-reader/server": "workspace:^",
+    "open": "^10.1.0",
     "@rollup/plugin-alias": "^5.0.0",
     "@rollup/plugin-commonjs": "^25.0.2",
     "@rollup/plugin-json": "^6.0.0",

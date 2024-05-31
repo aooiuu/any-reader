@@ -97,7 +97,7 @@ export function isRule(rule: any): boolean {
   if (typeof rule !== 'object')
     return false
 
-  return rule.id && rule.host && rule.contentType
+  return rule.id && rule.host && typeof rule.contentType !== 'undefined'
 }
 
 export async function importRules(url: string) {

@@ -45,6 +45,7 @@
     "electron:build": "npm -C packages/web run electron:build",
     "vscode:server": "npm -C packages/web run vscode:dev",
     "vscode:dev": "npm-run-all build:core build:shared --parallel vscode:server server",
+    "vscode:build": "npm -C packages/vscode run build",
     "server:build": "npm -C packages/server run build",
     "cli:build-tpl": "npm -C packages/web run cli:build",
     "cli:build-js": "npm -C packages/cli run build",
