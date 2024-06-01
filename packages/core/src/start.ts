@@ -21,9 +21,23 @@ const rule = {
 }
 
 const analyzer = new RuleManager(rule as unknown as Rule)
-const list = await analyzer.search('1')
-const chapters = await analyzer.getChapter(list[0].url)
-const content = await analyzer.getContent(chapters[0].url)
 
-// eslint-disable-next-line no-console
-console.log(content)
+async function search() {
+  const list = await analyzer.search('1')
+  const chapters = await analyzer.getChapter(list[0].url)
+  const content = await analyzer.getContent(chapters[0].url)
+  // eslint-disable-next-line no-console
+  console.log(content)
+}
+
+async function discover() {
+  const discoverMap = await analyzer.discoverMap()
+  const discover = await analyzer.discover(discoverMap[0].pairs[0].value)
+  const chapters = await analyzer.getChapter(discover[0].url)
+  const content = await analyzer.getContent(chapters[0].url)
+  // eslint-disable-next-line no-console
+  console.log(content)
+}
+
+search()
+discover()

@@ -32,6 +32,7 @@ export interface Rule {
   sort: number // 书源排序
   contentType: ContentType // 书源类型
   cookies?: string
+  loadJs: string // 全局JS脚本
 
   // 搜索
   enableSearch?: boolean // 启用搜索

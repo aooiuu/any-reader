@@ -36,6 +36,10 @@ export class JSEngine {
   }
 
   static async evaluate(command: string, context: any = {}) {
+    const { rule } = JSEngine.environment
+    if (rule?.loadJs)
+      command = `${rule.loadJs};${command}`
+
     return vm.runInNewContext(command, vm.createContext({
       ...JSEngine.environment,
       ...context,
