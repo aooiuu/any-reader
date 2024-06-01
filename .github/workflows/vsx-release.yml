@@ -1,0 +1,48 @@
+name: VSX Release
+
+on:
+  push:
+    branches:
+      - "vscode/**"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out git repository
+        uses: actions/checkout@v4.1.1
+
+      - uses: pnpm/action-setup@v3
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: pnpm install
+        run: pnpm install
+
+      - name: build core
+        run: pnpm run core:build
+
+      - name: build shared
+        run: pnpm run shared:build
+
+      - name: build vscode template
+        run: pnpm run vscode:build-tpl
+
+      - name: rename vscode vsx
+        working-directory: ./packages/vscode
+        run: pnpm run build:rename
+
+      # https://github.com/HaaLeo/publish-vscode-extension
+      - name: build vscode vsx
+        uses: HaaLeo/publish-vscode-extension@v1
+        id: publishVSX
+        with:
+          packagePath: ./packages/vscode
+          pat: ${{ secrets.VSCODE_TOKEN }}
+          skipDuplicate: true
+          registryUrl: https://marketplace.visualstudio.com
+          yarn: false

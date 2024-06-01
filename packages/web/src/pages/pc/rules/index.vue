@@ -108,6 +108,14 @@ function sortableValue(obj, path) {
   return _.get(obj, path) || Number.MAX_SAFE_INTEGER;
 }
 
+const LOG_CONFIG = [
+  { url: 'post@searchByRuleId', title: '搜索' },
+  { url: 'get@discoverMap', title: '发现分类' },
+  { url: 'post@discover', title: '发现列表' },
+  { url: 'post@getChapter', title: '章节列表' },
+  { url: 'post@content', title: '内容' }
+];
+
 const tableColumns = ref([
   {
     title: '名称',
@@ -241,57 +249,29 @@ const tableColumns = ref([
     width: 120,
     align: 'center',
     filterable: {
-      filters: [
-        {
-          text: '搜索失败>3且成功=0',
-          value: 1
-        },
-        {
-          text: '发现分类失败>3且成功=0',
-          value: 2
-        },
-        {
-          text: '发现列表失败>3且成功=0',
-          value: 3
-        }
-      ],
+      filters: LOG_CONFIG.map((log) => ({
+        text: log.title + '失败>3且成功=0',
+        value: log.url
+      })),
       filter: (value, record) => {
-        if (value.includes(1)) {
-          const ok = _.get(record, 'extra.post@searchByRuleId.ok', 0);
-          const fail = _.get(record, 'extra.post@searchByRuleId.fail', 0);
-          return ok === 0 && fail > 3;
-        }
-        if (value.includes(2)) {
-          const ok = _.get(record, 'extra.get@discoverMap.ok', 0);
-          const fail = _.get(record, 'extra.get@discoverMap.fail', 0);
-          return ok === 0 && fail > 3;
-        }
-        if (value.includes(2)) {
-          const ok = _.get(record, 'extra.post@discover.ok', 0);
-          const fail = _.get(record, 'extra.post@discover.fail', 0);
-          return ok === 0 && fail > 3;
-        }
-        return true;
+        if (value.length !== 1) return true;
+        const url = value[0];
+
+        const ok = _.get(record, `extra.${url}.ok`, 0);
+        const fail = _.get(record, `extra.${url}.fail`, 0);
+        return ok === 0 && fail > 3;
       },
       multiple: false
     },
     render: ({ record }) => (
       <div>
-        <div class="flex items-center">
-          <span class="text-10 mr-4">搜索</span>
-          <span class="color-green">{_.get(record, 'extra.post@searchByRuleId.ok', 0)}</span>/
-          <span class="color-red">{_.get(record, 'extra.post@searchByRuleId.fail', 0)}</span>
-        </div>
-        <div class="flex items-center">
-          <span class="text-10 mr-4">发现分类</span>
-          <span class="color-green">{_.get(record, 'extra.get@discoverMap.ok', 0)}</span>/
-          <span class="color-red">{_.get(record, 'extra.get@discoverMap.fail', 0)}</span>
-        </div>
-        <div class="flex items-center">
-          <span class="text-10 mr-4">发现列表</span>
-          <span class="color-green">{_.get(record, 'extra.post@discover.ok', 0)}</span>/
-          <span class="color-red">{_.get(record, 'extra.post@discover.fail', 0)}</span>
-        </div>
+        {LOG_CONFIG.map((log) => (
+          <div class="flex items-center">
+            <span class="text-10 mr-4">{log.title}</span>
+            <span class="color-green">{_.get(record, `extra.${log.url}.ok`, 0)}</span>/
+            <span class="color-red">{_.get(record, `extra.${log.url}.fail`, 0)}</span>
+          </div>
+        ))}
       </div>
     )
   },

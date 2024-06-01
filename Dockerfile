@@ -20,7 +20,7 @@ COPY --parents packages/*/package.json /app/
 RUN pnpm install
 
 COPY . /app
-RUN pnpm build:core && pnpm build:shared
+RUN pnpm core:build && pnpm shared:build
 
 EXPOSE 8899
 CMD ["pnpm", "web:dev"]

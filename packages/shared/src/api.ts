@@ -241,8 +241,13 @@ export function useApi(register: any, { CONFIG_PATH, bookDir }: any) {
 
       // 记录接口调用情况
       if (typeof log === 'object' && log.ruleId && log.check) {
-        const isOk = log.check(result)
-        ruleExtraManager.updateApiStatus(log.ruleId(...arg), isOk ? `${apiPath}.ok` : `${apiPath}.fail`)
+        const ruleId = log.ruleId(...arg)
+
+        // 不记录没有规则ID的接口
+        if (ruleId) {
+          const isOk = log.check(result)
+          ruleExtraManager.updateApiStatus(ruleId, isOk ? `${apiPath}.ok` : `${apiPath}.fail`)
+        }
       }
 
       // 返回数据
@@ -253,6 +258,11 @@ export function useApi(register: any, { CONFIG_PATH, bookDir }: any) {
   const discoverLog = {
     ruleId: (data: any) => data.ruleId,
     check: (v: any[]) => Array.isArray(v) && v.length > 0,
+  }
+
+  const contentLog = {
+    ruleId: (data: any) => data.ruleId,
+    check: (v: any) => v?.content?.length > 0,
   }
 
   // 注册接口
@@ -268,8 +278,8 @@ export function useApi(register: any, { CONFIG_PATH, bookDir }: any) {
   registerApi('post@createRule', async (data: any) => await createRule(data))
   registerApi('post@updateRule', async (data: any) => await updateRule(data))
   registerApi('post@searchByRuleId', async (data: any) => await searchByRuleId(data), discoverLog)
-  registerApi('post@content', async (data: any) => await content(data))
-  registerApi('post@getChapter', async (data: any) => await getChapter(data))
+  registerApi('post@content', async (data: any) => await content(data), contentLog)
+  registerApi('post@getChapter', async (data: any) => await getChapter(data), discoverLog)
   registerApi('get@readConfig', async () => await readConfig(CONFIG_PATH))
   registerApi('post@updateConfig', async (data: any) => await updateConfig(CONFIG_PATH, data))
   registerApi('get@getRuleExtras', async () => await getRuleExtras())

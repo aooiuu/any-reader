@@ -1,0 +1,95 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  release:
+    name: release
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest]
+        # os: [windows-latest, macos-latest, ubuntu-latest]
+
+    steps:
+      - name: Check out git repository
+        uses: actions/checkout@v4.1.1
+
+      - uses: pnpm/action-setup@v3
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: pnpm install
+        run: pnpm install
+
+      - name: build core
+        run: pnpm run core:build
+
+      - name: build shared
+        run: pnpm run shared:build
+
+      - name: build vscode template
+        run: pnpm run vscode:build-tpl
+
+      - name: rename vscode vsx
+        # working-directory 用于指定在哪个目录下执行命令
+        working-directory: ./packages/vscode
+        run: pnpm run build:rename
+
+      # https://github.com/HaaLeo/publish-vscode-extension
+      - name: build vscode vsx
+        uses: HaaLeo/publish-vscode-extension@v1
+        id: publishVSX
+        with:
+          packagePath: ./packages/vscode
+          pat: ${{ secrets.VSCODE_TOKEN }}
+          # 不发布
+          dryRun: true
+          skipDuplicate: true
+          registryUrl: https://marketplace.visualstudio.com
+          yarn: false
+
+      - name: Build Electron App
+        run: pnpm electron:build
+        # env:
+        #   GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
+      - name: Cleanup Artifacts for Windows
+        if: matrix.os == 'windows-latest'
+        run: |
+          npx rimraf "packages/web/dist/electron/!(*.exe)"
+
+      # - name: Cleanup Artifacts for MacOS
+      #   if: matrix.os == 'macos-latest'
+      #   run: |
+      #     npx rimraf "packages/web/dist/electron/!(*.dmg)"
+
+      # https://github.com/actions/upload-artifact
+      - name: upload artifacts
+        uses: actions/upload-artifact@v3.0.0
+        with:
+          name: ${{ matrix.os }}
+          path: |
+            ${{ steps.publishVSX.outputs.vsixPath }}
+            packages/web/dist/electron
+
+      # https://github.com/softprops/action-gh-release
+      - name: release
+        uses: softprops/action-gh-release@v2.0.4
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          # draft: true
+          files: |
+            packages/web/dist/electron/**
+            packages/vscode/*.vsix
+          # prerelease: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
