@@ -1,6 +1,15 @@
 import { load } from 'cheerio'
 import type { Analyzer } from './Analyzer'
 
+/**
+ * 去除 html 标签
+ * @param {string} html
+ * @returns {string}
+ */
+function getHtmlString(html: string) {
+  return html.replaceAll(/<\/?(?:div|p|br|hr|h\d|article|b|dd|dl)[^>]*>/g, '\n')
+}
+
 export class AnalyzerHtml implements Analyzer {
   _content!: string
 
@@ -28,7 +37,7 @@ export class AnalyzerHtml implements Analyzer {
       case 'innerHtml':
         return $.root().map((_, el) => $(el).html()).get().join('\n').trim() || ''
       case 'html':
-        return $.html() || ''
+        return getHtmlString($.html()) || ''
     }
     if (lastRule)
       return $(html || this._content).attr(lastRule)?.trim() || ''

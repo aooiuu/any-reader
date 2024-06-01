@@ -283,7 +283,7 @@ export class AnalyzerManager {
       if (position < rule.length)
         rs.push(rule.substring(position))
 
-      return rs
+      return rs.filter(e => e)
     }
 
     let temp: string | string[] = this._content

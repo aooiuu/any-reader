@@ -24,6 +24,7 @@
     "*.d.ts"
   ],
   "scripts": {
+    "clean": "rimraf packages/*/node_modules --glob",
     "run:core": "npm -C packages/core run start",
     "core:build": "npm -C packages/core run build",
     "shared:build": "npm -C packages/shared run build",
