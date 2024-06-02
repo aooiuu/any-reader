@@ -18,6 +18,7 @@
           <a-doption @click="addRule">单个添加</a-doption>
           <a-doption @click="addRuleFile">从文件导入</a-doption>
           <a-doption @click="addRuleUrl">从URL导入</a-doption>
+          <a-doption @click="addRuleUrl">从文本导入</a-doption>
         </template>
       </a-dropdown>
 

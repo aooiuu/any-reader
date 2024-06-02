@@ -6,6 +6,7 @@ import type { Low } from 'lowdb/lib'
 import { JSONFilePreset } from 'lowdb/node'
 import axios from 'axios'
 import type { Rule } from '@any-reader/core'
+import { decodeRule } from '@any-reader/core'
 import { BOOK_SOURCE_PATH } from './constants'
 
 let mDb: Low<Rule[]>
@@ -22,6 +23,15 @@ const writeDB = _.throttle(async () => {
   const db = await getDb()
   db.write()
 }, 1000)
+
+/**
+ *
+ * @param {string} str
+ * @returns {boolean}
+ */
+function isESO(str: string): boolean {
+  return str.startsWith('eso://:')
+}
 
 // 初始化
 export async function init() {}
@@ -92,7 +102,7 @@ export async function updateRuleSort(ids: string[]) {
  */
 export function isRule(rule: any): boolean {
   if (typeof rule === 'string')
-    return rule.startsWith('eso://:')
+    return isESO(rule)
 
   if (typeof rule !== 'object')
     return false
@@ -101,16 +111,43 @@ export function isRule(rule: any): boolean {
 }
 
 export async function importRules(url: string) {
-  const res = await axios.create().get(url).catch((e) => {
-    console.warn(e)
-  })
-  if (!res || Array.isArray(res?.data))
+  if (typeof url !== 'string')
     return
-
-  for (const rule of res.data) {
-    if (isRule(rule))
-      await update(rule).catch(() => {})
+  // 单个压缩规则
+  if (isESO(url)) {
+    await update(decodeRule(url.trim())).catch(() => {})
+    return 1
   }
+  // 网络地址
+  if (/https?:\/\/.{3,}/.test(url)) {
+    const res = await axios.create().get(url).catch((e) => {
+      console.warn(e)
+    })
+    if (!res || Array.isArray(res?.data))
+      return
 
-  return res.data.length
+    for (const rule of res.data) {
+      if (isRule(rule))
+        await update(rule).catch(() => {})
+    }
+    return res.data.length
+  }
+  // json 字符串
+  let json
+  try {
+    json = JSON.parse(url)
+  }
+  catch (error) {
+    console.warn('导入格式不支持')
+  }
+  if (typeof json !== 'object')
+    return 0
+  const jsons = Array.isArray(json) ? json : [json]
+  for (let json of jsons) {
+    if (typeof json === 'string' && isESO(json))
+      json = decodeRule(json)
+    if (isRule(json))
+      await update(json).catch(() => {})
+  }
+  return jsons.length
 }
