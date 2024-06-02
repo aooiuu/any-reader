@@ -6,17 +6,21 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/pc/books'
+      redirect: '/pc/books',
+      component: () => import('@/pages/pc/layout/window.vue'),
+      children: [
+        {
+          path: '/player',
+          name: '/player',
+          component: () => import('@/pages/pc/player/index.vue')
+        },
+        {
+          path: '/iframe',
+          component: () => import('@/pages/vscode/iframe/index.vue')
+        }
+      ]
     },
-    {
-      path: '/player',
-      name: '/player',
-      component: () => import('@/pages/pc/player/index.vue')
-    },
-    {
-      path: '/iframe',
-      component: () => import('@/pages/vscode/iframe/index.vue')
-    },
+
     // pc
     {
       path: '/pc',

@@ -14,7 +14,7 @@ app.whenReady().then(async () => {
   });
 
   api.init();
-  createAPI(win);
+  createAPI();
 
   // You can use `process.env.VITE_DEV_SERVER_URL` when the vite command is called `serve`
   if (process.env.VITE_DEV_SERVER_URL) {

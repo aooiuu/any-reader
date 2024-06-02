@@ -16,7 +16,7 @@ function success(data: any, msg = '') {
   };
 }
 
-export function createAPI(win: BrowserWindow) {
+export function createAPI() {
   const pm = new EasyPostMessage(Adapter);
   const { api } = require('@any-reader/shared');
 
@@ -26,29 +26,41 @@ export function createAPI(win: BrowserWindow) {
   });
 
   pm.answer('get@minimize', () => {
-    win.minimize();
+    BrowserWindow.getFocusedWindow()?.minimize();
     return success(true);
   });
+
   pm.answer('get@maximize', () => {
-    console.log('[maximize]');
-    win.isMaximized() ? win.unmaximize() : win.maximize();
+    const w = BrowserWindow.getFocusedWindow();
+    w?.isMaximized() ? w?.unmaximize() : w?.maximize();
     return success(true);
   });
+
   pm.answer('get@exit', () => {
-    app.quit();
-    process.exit(0);
+    const w = BrowserWindow.getFocusedWindow();
+    w?.close();
+
+    if (BrowserWindow.getAllWindows().length === 0) {
+      app.quit();
+      process.exit(0);
+    }
   });
 
   pm.answer('post@alwaysOnTop', ({ pinned = true }) => {
-    pinned ? win.setAlwaysOnTop(true, 'screen-saver') : win.setAlwaysOnTop(false);
-    return success(win.isAlwaysOnTop());
+    const w = BrowserWindow.getFocusedWindow();
+    pinned ? w?.setAlwaysOnTop(true, 'screen-saver') : w?.setAlwaysOnTop(false);
+    return success(w?.isAlwaysOnTop());
   });
 
   pm.answer('post@openWindow', (data) => {
     const window = new BrowserWindow({
       title: 'AnyReader',
-      // titleBarStyle: 'hidden',
-      webPreferences: { nodeIntegration: true, contextIsolation: false }
+      titleBarStyle: 'hidden',
+      webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: false,
+        webSecurity: false
+      }
     });
 
     if (process.env.VITE_DEV_SERVER_URL) {
