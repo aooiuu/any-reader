@@ -18,6 +18,7 @@ export interface Rule {
   sort: number; // 书源排序
   contentType: ContentType; // 书源类型
   cookies?: string;
+  loadJs: string; // 全局JS脚本
 
   // 搜索
   enableSearch?: boolean; // 搜索 - 启用
@@ -36,8 +37,9 @@ export interface Rule {
   chapterList: string; // 章节列表 - 列表
   chapterCover: string; // 章节列表 - 封面
   chapterTime: string; // 章节列表 - 时间
-  contentItems: string; // 章节列表 - 内容
   chapterResult: string; // 章节列表 - 结果
+
+  contentItems: string; // 章节列表 - 内容
 
   // 发现
   enableDiscover: boolean; // 发现页 - 是否启用
@@ -102,8 +104,8 @@ enum ContentType {
 | 特性 | 支持情况 | 示例                                                                                                       |
 | ---- | :------: | ---------------------------------------------------------------------------------------------------------- |
 | URL  |    ✅    | `https://xxx.com/search?q=$keyword&pageSize=10`                                                            |
-| JSON |    ⚠️    | `{"url":"https://xxx.com/search","method":"post","headers":{"token":"111"},"body":{"keyword":"$keyword"}}` |
-| @js  |    ⚠️    | `@js:(() => { return {url, method, body, encoding, headers}; })();`                                        |
+| JSON |    ✅    | `{"url":"https://xxx.com/search","method":"post","headers":{"token":"111"},"body":{"keyword":"$keyword"}}` |
+| @js  |    ✅    | `@js:(() => { return {url, method, body, encoding, headers}; })();`                                        |
 | 编码 |    ❌    |                                                                                                            |
 
 #### 变量
@@ -129,13 +131,13 @@ enum ContentType {
 | `@json`    |    ✅    |                                  | `@json:$.list[:1].title`                |
 | `@xpath`   |    ✅    |                                  | `@xpath://*[@class="box3"]/text()`      |
 | `@js`      |    ⚠️    |                                  |                                         |
-| `@filter`  |    ⚠️    | 模拟浏览器加载地址后匹配指定链接 | `@filter:(?:m3u8\|mp4)(?:$\|/\|\\?\|&)` |
-| `@replace` |    ⚠️    |                                  | `@replace:.*?url=\|.*?v=`               |
-| `##`       |    ⚠️    | 正则替换                         | `@css:.c2 a@href##\\d+\\.html`          |
-| `{‍​‍{}}`  |    ⚠️    | 拼接                             | `http://www.aaa.com/{‍{$.id}}`          |
-| 嵌套组合   |    ⚠️    |                                  | `$.info.body@css:.box1 .box2@text`      |
-| `\|\|`     |    ⚠️    |                                  |                                         |
-| `&&`       |    ⚠️    |                                  |                                         |
+| `@filter`  |    ✅    | 模拟浏览器加载地址后匹配指定链接 | `@filter:(?:m3u8\|mp4)(?:$\|/\|\\?\|&)` |
+| `@replace` |    ✅    |                                  | `@replace:.*?url=\|.*?v=`               |
+| `##`       |    ✅    | 正则替换                         | `@css:.c2 a@href##\\d+\\.html`          |
+| `{‍​‍{}}`  |    ✅    | 拼接                             | `http://www.aaa.com/{‍{$.id}}`          |
+| 嵌套组合   |    ✅    |                                  | `$.info.body@css:.box1 .box2@text`      |
+| `\|\|`     |    ✅    |                                  |                                         |
+| `&&`       |    ✅    |                                  |                                         |
 
 规则可以省略开头的,**@css**、**@xpath**、**@json**, 因为解析器会尝试自动识别。
 

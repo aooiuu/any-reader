@@ -11,13 +11,47 @@
         </div>
 
         <div class="flex-1 flex overflow-hidden">
-          <AForm v-if="formType === 'All' || formType === 'Form'" :model="formData" :auto-label-width="true" class="flex-1 overflow-auto">
+          <AForm
+            v-if="formType === 'All' || formType === 'Form'"
+            :model="formData"
+            :auto-label-width="true"
+            class="flex-1 overflow-auto"
+            layout="vertical"
+          >
+            <a-radio-group v-model="formStep" type="button" direction="vertical" class="mb-10 mx-10">
+              <a-radio :value="1">基础信息</a-radio>
+              <a-radio :value="2">搜索</a-radio>
+              <a-radio :value="3">章节列表</a-radio>
+              <a-radio :value="4">内容</a-radio>
+              <a-radio :value="5">发现页</a-radio>
+            </a-radio-group>
+
             <template v-for="item in formItems" :key="item.prop">
-              <AFormItem v-if="!item.show || item.show(formData)" :label="item.label">
+              <AFormItem v-if="item.formStep === formStep && (!item.show || item.show(formData))">
+                <template #label>
+                  <span>{{ item.label }}</span>
+                  <span class="op-70 ml-10 text-12">{{ item.prop }}</span>
+                </template>
                 <template v-if="item.type === 'select'">
                   <a-select v-model="formData[item.prop]">
                     <a-option v-for="o in item.options" :key="o.value" :value="o.value">{{ o.label }}</a-option>
                   </a-select>
+                </template>
+                <template v-else-if="item.type === 'number'">
+                  <AInputNumber v-model="formData[item.prop]" :min="0" :placeholder="item.prop" />
+                </template>
+                <template v-else-if="item.type === 'textarea'">
+                  <ATextarea
+                    v-model="formData[item.prop]"
+                    :placeholder="item.prop"
+                    :auto-size="{
+                      minRows: 2,
+                      maxRows: 5
+                    }"
+                  />
+                </template>
+                <template v-else-if="item.type === 'switch'">
+                  <ASwitch v-model="formData[item.prop]" :checked-value="true" :unchecked-value="false" :placeholder="item.prop" />
                 </template>
                 <template v-else>
                   <AInput v-model="formData[item.prop]" :placeholder="item.prop" />
@@ -51,43 +85,7 @@ const router = useRouter();
 const route = useRoute();
 
 const formType = ref('All');
-
-const formItems = [
-  { prop: 'id', label: 'uuid', show: () => false },
-  { prop: 'name', label: '名称' },
-  {
-    prop: 'contentType',
-    label: '类型',
-    type: 'select',
-    options: CONTENT_TYPES.filter((v) => [CONTENT_TYPE.GAME, CONTENT_TYPE.MANGA, CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO].includes(v.value))
-  },
-  { prop: 'host', label: '域名' },
-  { prop: 'searchUrl', label: '搜索地址', show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType) },
-  { prop: 'searchList', label: '搜索列表', show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType) },
-  { prop: 'searchCover', label: '封面', show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType) },
-  { prop: 'searchName', label: '标题', show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType) },
-  { prop: 'searchAuthor', label: '作者', show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType) },
-  { prop: 'searchChapter', label: '章节', show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType) },
-  {
-    prop: 'searchDescription',
-    label: '描述',
-    show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType)
-  },
-  {
-    prop: 'searchResult',
-    label: '搜索结果',
-    show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType)
-  },
-  { prop: 'chapterUrl', label: '章节地址', show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType) },
-  { prop: 'chapterName', label: '标题', show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType) },
-  { prop: 'chapterList', label: '列表', show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType) },
-  { prop: 'chapterCover', label: '封面', show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType) },
-  { prop: 'chapterTime', label: '时间', show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType) },
-  { prop: 'chapterResult', label: '结果', show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType) },
-  { prop: 'contentItems', label: '内容', show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType) }
-  // { prop: 'sort', label: '排序' }
-  // { prop: 'cookies', label: '' }
-];
+const formStep = ref(1);
 
 const formData = reactive({
   id: '',
@@ -144,6 +142,195 @@ const formData = reactive({
   loginUrl: '',
   cookies: '',
   viewStyle: ''
+});
+
+const formItems = computed(() => {
+  return [
+    { prop: 'id', label: 'uuid', show: () => false },
+    { prop: 'name', label: '名称', formStep: 1 },
+    {
+      prop: 'contentType',
+      label: '类型',
+      type: 'select',
+      formStep: 1,
+      options: CONTENT_TYPES.filter((v) => [CONTENT_TYPE.GAME, CONTENT_TYPE.MANGA, CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO].includes(v.value))
+    },
+    { prop: 'host', label: '域名', formStep: 1 },
+    { prop: 'sort', label: '排序', formStep: 1, type: 'number' },
+    { prop: 'loadJs', label: '全局JS脚本', formStep: 1, type: 'textarea' },
+    // { prop: 'cookies', label: 'cookies', formStep: 1 },
+
+    {
+      prop: 'enableSearch',
+      label: '是否启用',
+      type: 'switch',
+      show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType),
+      formStep: 2
+    },
+    {
+      prop: 'searchUrl',
+      label: '搜索地址',
+      type: 'textarea',
+      show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType),
+      formStep: 2
+    },
+    {
+      prop: 'searchList',
+      label: '搜索列表',
+      show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType),
+      formStep: 2
+    },
+    {
+      prop: 'searchCover',
+      label: '封面',
+      show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType),
+      formStep: 2
+    },
+    {
+      prop: 'searchName',
+      label: '标题',
+      show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType),
+      formStep: 2
+    },
+    {
+      prop: 'searchAuthor',
+      label: '作者',
+      show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType),
+      formStep: 2
+    },
+    {
+      prop: 'searchChapter',
+      label: '章节',
+      show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType),
+      formStep: 2
+    },
+    {
+      prop: 'searchDescription',
+      label: '描述',
+      show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType),
+      formStep: 2
+    },
+    {
+      prop: 'searchResult',
+      label: '搜索结果',
+      show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType),
+      formStep: 2
+    },
+
+    {
+      prop: 'chapterUrl',
+      label: '章节地址',
+      type: 'textarea',
+      show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType),
+      formStep: 3
+    },
+    {
+      prop: 'chapterName',
+      label: '标题',
+      show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType),
+      formStep: 3
+    },
+    {
+      prop: 'chapterList',
+      label: '列表',
+      show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType),
+      formStep: 3
+    },
+    {
+      prop: 'chapterCover',
+      label: '封面',
+      show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType),
+      formStep: 3
+    },
+    {
+      prop: 'chapterTime',
+      label: '时间',
+      show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType),
+      formStep: 3
+    },
+    {
+      prop: 'chapterResult',
+      label: '结果',
+      show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType),
+      formStep: 3
+    },
+
+    {
+      prop: 'contentItems',
+      label: '内容',
+      show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType),
+      formStep: 4
+    },
+
+    {
+      prop: 'enableDiscover',
+      label: '是否启用',
+      type: 'switch',
+      show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType),
+      formStep: 5
+    },
+    {
+      prop: 'discoverUrl',
+      label: '请求地址',
+      type: 'textarea',
+      show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType),
+      formStep: 5
+    },
+    {
+      prop: 'discoverList',
+      label: '列表',
+      show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType),
+      formStep: 5
+    },
+    {
+      prop: 'discoverName',
+      label: '标题',
+      show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType),
+      formStep: 5
+    },
+    {
+      prop: 'discoverCover',
+      label: '封面',
+      show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType),
+      formStep: 5
+    },
+    {
+      prop: 'discoverAuthor',
+      label: '作者',
+      show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType),
+      formStep: 5
+    },
+    {
+      prop: 'discoverDescription',
+      label: '描述',
+      show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType),
+      formStep: 5
+    },
+    {
+      prop: 'discoverResult',
+      label: '结果',
+      show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType),
+      formStep: 5
+    },
+    {
+      prop: 'discoverItems',
+      label: '内容',
+      show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType),
+      formStep: 5
+    },
+    {
+      prop: 'discoverTags',
+      label: '标签',
+      show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType),
+      formStep: 5
+    },
+    {
+      prop: 'discoverChapter',
+      label: '章节',
+      show: (item) => [CONTENT_TYPE.NOVEL, CONTENT_TYPE.VIDEO, CONTENT_TYPE.MANGA].includes(item.contentType),
+      formStep: 5
+    }
+  ];
 });
 
 // 规则字符串
