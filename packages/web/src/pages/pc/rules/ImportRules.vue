@@ -37,7 +37,7 @@ const url = ref('');
  * @returns {boolean}
  */
 function isESO(str: string): boolean {
-  return str.startsWith('eso://:');
+  return str.startsWith('eso://');
 }
 
 const canSubmit = computed(() => {

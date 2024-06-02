@@ -114,8 +114,8 @@ outline: deep
 
 ```json
 [
-  "eso://:****",
-  "eso://:****",
+  "eso://****",
+  "eso://****",
   {
     "searchUrl": "",
     "host": "",

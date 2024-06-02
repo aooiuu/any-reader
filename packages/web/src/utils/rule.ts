@@ -1,6 +1,6 @@
 export const isRule = (rule: any) => {
   if (typeof rule === 'string') {
-    return rule.startsWith('eso://:');
+    return rule.startsWith('eso://');
   }
 
   if (typeof rule !== 'object') return false;

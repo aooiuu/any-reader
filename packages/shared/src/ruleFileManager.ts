@@ -30,7 +30,7 @@ const writeDB = _.throttle(async () => {
  * @returns {boolean}
  */
 function isESO(str: string): boolean {
-  return str.startsWith('eso://:')
+  return str.startsWith('eso://')
 }
 
 // 初始化
