@@ -92,7 +92,14 @@ export class WebView {
           this.navigateTo('/player?url=' + textArr[0]);
           return;
         }
-
+        if (contentType === ContentType.AUDIO) {
+          const textArr = await bookManager.getContent(article);
+          if (!textArr?.length) {
+            vscode.window.showWarningMessage('empty content');
+          }
+          this.navigateTo('/iframe?url=' + textArr[0]);
+          return;
+        }
         // TODO: 漫画模板待优化
         // 小说
         if ([ContentType.MANGA, ContentType.NOVEL, ContentType.NOVELMORE].includes(contentType)) {

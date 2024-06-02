@@ -13,6 +13,7 @@
 
 <script setup>
 import { stringify } from 'qs';
+import { CONTENT_TYPE } from '@/constants';
 import { getChapter, getContent } from '@/api';
 import { openWindow } from '@/api/electron';
 import { useRulesStore } from '@/stores/rules';
@@ -39,7 +40,7 @@ init();
 async function showContent(item) {
   const { filePath, ruleId } = route.query;
   const rule = rulesStore.list.find((e) => e.id === ruleId);
-  if (rule?.contentType === 2) {
+  if (rule?.contentType === CONTENT_TYPE.VIDEO) {
     const res = await getContent({
       filePath,
       ruleId,
@@ -50,6 +51,24 @@ async function showContent(item) {
       openWindow({
         url:
           '/player?' +
+          stringify({
+            url: res?.data?.content || ''
+          })
+      });
+      return;
+    }
+  } else if (rule?.contentType === CONTENT_TYPE.AUDIO) {
+    // TODO: 音频规则, 待优化
+    const res = await getContent({
+      filePath,
+      ruleId,
+      chapterPath: item.url || item.chapterPath
+    }).catch(() => {});
+    console.log('getContent', res);
+    if (res?.code === 0) {
+      openWindow({
+        url:
+          '/iframe?' +
           stringify({
             url: res?.data?.content || ''
           })
