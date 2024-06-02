@@ -4,6 +4,8 @@
       <a-select v-model="contentType" class="mb-10">
         <a-option v-for="o in CONTENT_TYPES" :key="o.value" :value="o.value">{{ o.label }}</a-option>
       </a-select>
+      <a-input-search v-model="searchText" class="mb-10" placeholder="过滤" />
+
       <div class="flex-1 overflow-auto">
         <div
           v-for="r in ruleListDisplay"
@@ -63,11 +65,17 @@ favoritesStore.sync();
 
 const list = ref([]);
 const contentType = ref(CONTENT_TYPE.NOVEL);
-const ruleListDisplay = computed(() => rulesStore.list.filter((e) => e.enableDiscover && e.contentType === contentType.value));
 const ruleId = ref('');
 const rule = ref({});
 const categoryList = ref([]);
 const loading = ref(false);
+const searchText = ref('');
+
+const ruleListDisplay = computed(() => {
+  const filterContentType = rulesStore.list.filter((e) => e.enableDiscover && e.contentType === contentType.value);
+  if (!searchText.value) return filterContentType;
+  return filterContentType.filter((e) => e.name.includes(searchText.value));
+});
 
 // 分类被修改
 async function changeCategory(row) {
