@@ -85,9 +85,25 @@ XPath、JSONPath、CSS 选择器、正则让规则编写更简洁, 而 JS 脚本
 
 ## 预览
 
-### 操作界面
+![image](https://github.com/aooiuu/any-reader/assets/28108111/1c49fb48-198d-45a4-94ab-f30d8c2f7d1d)
 
-![image](https://github.com/aooiuu/any-reader/assets/28108111/cadd2121-2f34-4ddf-845e-5a30fded0cb0)
+|                                                搜索                                                 |                                              章节列表                                               |
+| :-------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------: |
+| ![image](https://github.com/aooiuu/any-reader/assets/28108111/f134196b-2943-4d91-937c-159940a44014) | ![image](https://github.com/aooiuu/any-reader/assets/28108111/ec23778a-d024-44a3-acfc-5d073aea3e8f) |
+|                                              文字阅读                                               |                                              漫画阅读                                               |
+| ![image](https://github.com/aooiuu/any-reader/assets/28108111/f331f5c9-3865-4bb2-a6e2-4c98ff0794ae) | ![image](https://github.com/aooiuu/any-reader/assets/28108111/41c0b214-c066-4b30-a3c4-02e4ab073440) |
+|                                                设置                                                 |                                                                                                     |
+| ![image](https://github.com/aooiuu/any-reader/assets/28108111/ad15fc5b-1d74-4298-a137-5c615fe6cbe8) |                                                                                                     |
+
+可以托到到其它侧边栏或底部栏
+
+![image](https://github.com/aooiuu/any-reader/assets/28108111/0b6738f3-20e0-4c55-a98b-01d2da6b7957)
+
+## 配置规则
+
+![image](https://github.com/aooiuu/any-reader/assets/28108111/59dbad74-a628-4835-94a3-c79dd3b52294)
+
+## 预览
 
 ### 聚合搜索
 
@@ -116,12 +132,6 @@ XPath、JSONPath、CSS 选择器、正则让规则编写更简洁, 而 JS 脚本
 ![1](https://github.com/aooiuu/any-reader/assets/28108111/8f85e896-3001-44cd-8c14-28e7140d10a1)
 
 ![1](https://github.com/aooiuu/any-reader/assets/28108111/01eabe01-84eb-4113-a10e-fdfd9a82f169)
-
-### 侧栏底部栏阅读
-
-![image](https://github.com/aooiuu/any-reader/assets/28108111/c0744239-9260-4696-8555-bf864ed7aebf)
-
-![image](https://github.com/aooiuu/any-reader/assets/28108111/d4c1eb85-e90a-45e6-98b8-420992a216e5)
 
 ### 桌面端
 

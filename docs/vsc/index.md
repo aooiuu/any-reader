@@ -8,11 +8,37 @@ outline: deep
 
 > 软件不提供内容, 也不提供任何规则, 但你可以通过编写 [规则](/rule/), 控制呈现内容
 
+## 安装
+
+插件商店搜索 **any-reader**
+
+![image](https://github.com/aooiuu/any-reader/assets/28108111/384ecfde-8ee1-4ab4-9f71-b4086388114d)
+
+安装完后会多一个侧边栏, 也就是插件入口
+
+![image](https://github.com/aooiuu/any-reader/assets/28108111/12ea0760-8bd3-4b22-b62e-636c3f081bd6)
+
 ## 预览
 
-### 操作界面
+![image](https://github.com/aooiuu/any-reader/assets/28108111/1c49fb48-198d-45a4-94ab-f30d8c2f7d1d)
 
-![image](https://github.com/aooiuu/any-reader/assets/28108111/cadd2121-2f34-4ddf-845e-5a30fded0cb0)
+|                                                搜索                                                 |                                              章节列表                                               |
+| :-------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------: |
+| ![image](https://github.com/aooiuu/any-reader/assets/28108111/f134196b-2943-4d91-937c-159940a44014) | ![image](https://github.com/aooiuu/any-reader/assets/28108111/ec23778a-d024-44a3-acfc-5d073aea3e8f) |
+|                                              文字阅读                                               |                                              漫画阅读                                               |
+| ![image](https://github.com/aooiuu/any-reader/assets/28108111/f331f5c9-3865-4bb2-a6e2-4c98ff0794ae) | ![image](https://github.com/aooiuu/any-reader/assets/28108111/41c0b214-c066-4b30-a3c4-02e4ab073440) |
+|                                                设置                                                 |                                                                                                     |
+| ![image](https://github.com/aooiuu/any-reader/assets/28108111/ad15fc5b-1d74-4298-a137-5c615fe6cbe8) |                                                                                                     |
+
+可以托到到其它侧边栏或底部栏
+
+![image](https://github.com/aooiuu/any-reader/assets/28108111/0b6738f3-20e0-4c55-a98b-01d2da6b7957)
+
+## 配置规则
+
+![image](https://github.com/aooiuu/any-reader/assets/28108111/59dbad74-a628-4835-94a3-c79dd3b52294)
+
+## 预览
 
 ### 聚合搜索
 
@@ -41,138 +67,3 @@ outline: deep
 ![1](https://github.com/aooiuu/any-reader/assets/28108111/8f85e896-3001-44cd-8c14-28e7140d10a1)
 
 ![1](https://github.com/aooiuu/any-reader/assets/28108111/01eabe01-84eb-4113-a10e-fdfd9a82f169)
-
-## 使用方式
-
-1. 插件市场搜索 `any-reader` 安装 (安装后, `VSCode` 侧边栏会出现插件入口)
-2. 点击插件侧边栏小房子图标， 或者 `F1` 输入 `>any-reader: Home`
-3. 配置好源后, 侧栏列表会出现配置好的源。
-4. 侧栏源列表有搜索的图标， 点击搜索图标搜索内容
-
-## 配置规则
-
-配置规则有两种方法
-
-### 原始 JSON 配置
-
-`F1` 输入 `>any-reader: 书源编辑` 会打开 `***\.any-reader\book-source.json`, 编辑后保存，刷新规则列表即可。
-
-`book-source.json` 的文件格式：
-
-```json
-[
-  {
-    "searchUrl": "",
-    "host": "",
-    "searchList": "",
-    "searchCover": "",
-    "searchName": "",
-    "searchAuthor": "",
-    "searchChapter": "",
-    "searchDescription": "",
-    "searchResult": "",
-    "chapterUrl": "",
-    "chapterName": "",
-    "chapterList": "",
-    "chapterCover": "",
-    "chapterTime": "",
-    "chapterResult": "",
-    "contentItems": "",
-    "id": "",
-    "name": "",
-    "sort": "",
-    "contentType": "",
-    "cookies": ""
-  },
-  {
-    "searchUrl": "",
-    "host": "",
-    "searchList": "",
-    "searchCover": "",
-    "searchName": "",
-    "searchAuthor": "",
-    "searchChapter": "",
-    "searchDescription": "",
-    "searchResult": "",
-    "chapterUrl": "",
-    "chapterName": "",
-    "chapterList": "",
-    "chapterCover": "",
-    "chapterTime": "",
-    "chapterResult": "",
-    "contentItems": "",
-    "id": "",
-    "name": "",
-    "sort": "",
-    "contentType": "",
-    "cookies": ""
-  }
-]
-```
-
-为了方便， 也可以支持直接写入 `eso` 格式的规则 (也可以 `eso` 和 `json` 混用)
-
-```json
-[
-  "eso://****",
-  "eso://****",
-  {
-    "searchUrl": "",
-    "host": "",
-    "searchList": "",
-    "searchCover": "",
-    "searchName": "",
-    "searchAuthor": "",
-    "searchChapter": "",
-    "searchDescription": "",
-    "searchResult": "",
-    "chapterUrl": "",
-    "chapterName": "",
-    "chapterList": "",
-    "chapterCover": "",
-    "chapterTime": "",
-    "chapterResult": "",
-    "contentItems": "",
-    "id": "",
-    "name": "",
-    "sort": "",
-    "contentType": "",
-    "cookies": ""
-  }
-]
-```
-
-### 图形界面配置
-
-点击插件侧边栏小房子图标， 或者 `F1` 输入 `>any-reader: Home`
-
-## 阅读页模式
-
-VSCode 界面区域：
-
-![VSCode 界面区域](https://code.visualstudio.com/assets/api/ux-guidelines/examples/architecture-containers.png)
-![image](https://github.com/aooiuu/any-reader/assets/28108111/9c6b4a46-22ff-44b4-9ad2-f9665532be3e)
-
-### 编辑器页阅读模式
-
-默认模式, 打开阅读页后会在 `Editor` 区域新打开一个页面。
-
-设置： `"any-reader.read-page-mode": "Editor"`
-
-### 侧边栏阅读模式
-
-默认模式, 打开阅读页后会在 `Sidebar` 区域新打开一个页面。
-
-设置：`"any-reader.read-page-mode": "Sidebar"`
-
-![image](https://github.com/aooiuu/any-reader/assets/28108111/c0744239-9260-4696-8555-bf864ed7aebf)
-
-![image](https://github.com/aooiuu/any-reader/assets/28108111/d4c1eb85-e90a-45e6-98b8-420992a216e5)
-
-## 常见问题
-
-### 侧边栏阅读问题
-
-进入阅读页面之前必须先激活阅读侧边栏
-
-关闭或隐藏侧边栏后再次打开,之前的状态不可恢复
