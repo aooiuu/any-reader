@@ -24,11 +24,12 @@
     "*.d.ts"
   ],
   "scripts": {
-    "clean": "rimraf packages/*/node_modules --glob",
+    "clean": "rimraf packages/*/node_modules --glob && rimraf node_modules",
     "run:core": "npm -C packages/core run start",
     "core:build": "npm -C packages/core run build",
     "shared:build": "npm -C packages/shared run build",
-    "build": "npm-run-all core:build shared:build build:web",
+    "epub:build": "npm -C packages/epub run build",
+    "build": "npm-run-all core:build shared:build epub:build",
     "build:web": "npm -C packages/web run build",
     "build:web-w": "npm -C packages/web run build:w",
     "run:vsc": "npm-run-all core:build build:web-w",
@@ -47,7 +48,8 @@
     "vscode:server": "npm -C packages/web run vscode:dev",
     "vscode:dev": "npm-run-all core:build shared:build --parallel vscode:server server",
     "vscode:build-tpl": "npm -C packages/web run vscode:build",
-    "vscode:build": "npm -C packages/vscode run build",
+    "vscode:build-vsx": "npm -C packages/vscode run build",
+    "vscode:build": "npm-run-all vscode:build-tpl vscode:build-vsx",
     "server:build": "npm -C packages/server run build",
     "cli:build-tpl": "npm -C packages/web run cli:build",
     "cli:build-js": "npm -C packages/cli run build",
@@ -60,6 +62,11 @@
     "@types/mime": "3.0.4",
     "@types/uuid": "^9.0.8",
     "husky": "^8.0.0",
-    "npm-run-all": "^4.1.5"
+    "npm-run-all": "^4.1.5",
+    "unbuild": "^2.0.0"
+  },
+  "optionalDependencies": {
+    "bufferutil": "^4.0.8",
+    "utf-8-validate": "^6.0.4"
   }
 }

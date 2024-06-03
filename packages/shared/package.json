@@ -2,31 +2,31 @@
   "name": "@any-reader/shared",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "type": "module",
   "scripts": {
-    "build": "rollup -c",
-    "dev": "rollup -c --watch",
-    "lint": "eslint .",
-    "prepublishOnly": "npm run build",
-    "start": "esno src/start.ts",
-    "typecheck": "tsc --noEmit"
+    "build": "unbuild",
+    "stub": "unbuild --stub"
   },
   "keywords": [],
+  "author": "",
+  "license": "GPL3",
+  "type": "module",
   "exports": {
     ".": {
-      "types": "./index.d.ts",
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.mjs"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
     },
     "./localBookManager": {
-      "types": "./localBookManager.d.ts",
+      "types": "./dist/localBookManager.d.ts",
       "require": "./dist/localBookManager.cjs",
       "import": "./dist/localBookManager.mjs"
     }
   },
-  "author": "",
-  "license": "GPL3",
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "@any-reader/core": "workspace:^",
     "@any-reader/epub": "workspace:^",

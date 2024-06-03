@@ -1,8 +1,8 @@
 import { app, BrowserWindow, Menu } from 'electron';
 import { createAPI } from './api';
+import { api } from '@any-reader/shared';
 
 app.whenReady().then(async () => {
-  const { api } = require('@any-reader/shared');
   const win = new BrowserWindow({
     title: 'AnyReader',
     titleBarStyle: 'hidden',

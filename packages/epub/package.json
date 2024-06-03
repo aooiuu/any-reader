@@ -2,26 +2,32 @@
   "name": "@any-reader/epub",
   "version": "1.0.0",
   "description": "",
-  "main": "./epub",
-  "typings": "./epub.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "unbuild"
   },
-  "dependencies": {
-    "adm-zip": "^0.4.11",
-    "xml2js": "^0.4.23"
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
   },
+  "main": "./dist/index.cjs",
+  "types": "./epub.d.ts",
+  "files": [
+    "dist",
+    "epub.d.ts"
+  ],
+  "dependencies": {},
   "devDependencies": {
+    "adm-zip": "^0.4.11",
+    "xml2js": "^0.4.23",
     "@types/mocha": "^5.2.5",
     "@types/node": "^10.11.7",
     "mocha": "^5.2.0",
     "p-event": "^4",
     "typescript": "3.6.4"
   },
-  "files": [
-    "epub.js",
-    "epub.d.ts"
-  ],
   "keywords": [],
   "author": "julien-c",
   "license": "ISC"

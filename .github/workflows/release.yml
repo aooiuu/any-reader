@@ -30,11 +30,8 @@ jobs:
       - name: pnpm install
         run: pnpm install
 
-      - name: build core
-        run: pnpm run core:build
-
-      - name: build shared
-        run: pnpm run shared:build
+      - name: build libs
+        run: pnpm run build
 
       - name: build vscode template
         run: pnpm run vscode:build-tpl

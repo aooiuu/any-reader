@@ -8,23 +8,19 @@
     "public"
   ],
   "bin": {
-    "any-reader": "./dist/index.js"
+    "any-reader": "./bin/index.mjs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rollup -c",
-    "dev": "esno watch src/index.ts"
+    "build": "esno ./scripts/publish.cjs && unbuild"
   },
   "keywords": [],
   "author": "",
   "license": "GPL3",
-  "devDependencies": {
+  "dependencies": {
     "@any-reader/server": "workspace:^",
-    "open": "^10.1.0",
-    "@rollup/plugin-alias": "^5.0.0",
-    "@rollup/plugin-commonjs": "^25.0.2",
-    "@rollup/plugin-json": "^6.0.0",
-    "@rollup/plugin-node-resolve": "^15.1.0",
-    "rollup-plugin-esbuild": "^5.0.0"
+    "open": "^10.1.0"
+  },
+  "devDependencies": {
+    "fs-extra": "^11.1.1"
   }
 }

@@ -81,5 +81,4 @@ dist
 .idea
 
 packages/core/index.d.ts
-packages/shared/index.d.ts
 packages/server/index.d.ts
