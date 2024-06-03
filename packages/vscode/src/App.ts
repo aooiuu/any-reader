@@ -1,15 +1,11 @@
 import * as vscode from 'vscode';
 import { stringify } from 'qs';
 import { openExplorer } from 'explorer-opener';
-import { Rule, RuleManager, SearchItem } from '@any-reader/core';
+import { SearchItem } from '@any-reader/core';
 import { CONSTANTS, api, ruleFileManager, favoritesManager, historyManager } from '@any-reader/shared';
 import { BookChapter, BOOK_TYPE, getBookType } from '@any-reader/shared/localBookManager';
 import localBookManager from '@any-reader/shared/localBookManager';
 import { COMMANDS, BOOK_SOURCE_PATH } from './constants';
-import bookProvider from './sidebar/book';
-import sourceProvider from './sidebar/source';
-import bookManager from './sidebar/bookManager';
-import { treeItemDecorationProvider } from './sidebar/TreeItemDecorationProvider';
 import { webviewProvider } from './sidebar/webviewProvider';
 import { WebView } from './webview';
 import { Config } from './config';
@@ -27,33 +23,18 @@ class App {
     // 注册命令
     const registerCommand = vscode.commands.registerCommand;
     [
-      vscode.window.registerFileDecorationProvider(treeItemDecorationProvider),
       registerCommand(COMMANDS.editBookSource, this.editBookSource, this),
       registerCommand(COMMANDS.searchBook, this.searchBook, this),
       registerCommand(COMMANDS.getChapter, this.getChapter, this),
       registerCommand(COMMANDS.discover, this.discover, this),
-      registerCommand(COMMANDS.searchBookByRule, this.searchBookByRule, this),
-      registerCommand(COMMANDS.getContent, this.webView.getContent, this.webView),
       registerCommand(COMMANDS.openLocalBookDir, this.openLocalBookDir, this),
-      registerCommand(COMMANDS.star, this.star, this),
-      registerCommand(COMMANDS.unstar, this.unstar, this),
       registerCommand(COMMANDS.home, () => this.webView.navigateTo('/rules'), this.webView),
-      registerCommand(COMMANDS.getBookSource, this.getBookSource, this),
       registerCommand(COMMANDS.gamePlay, (node: any) => this.webView.navigateTo('/iframe?url=' + node.host, node.name), this.webView)
     ].forEach((command) => context.subscriptions.push(command));
-
-    // TODO: 后续移除原生侧边栏, 改用统一的 webview 侧边栏
 
     // 侧边栏 - webview
     webviewProvider.setExtensionPath(context.extensionPath);
     vscode.window.registerWebviewViewProvider('any-reader-webview', webviewProvider);
-
-    // 侧边栏 - 规则
-    vscode.window.createTreeView('any-reader-source', { treeDataProvider: sourceProvider });
-    // 侧边栏 - 阅读
-    vscode.window.createTreeView('any-reader-book', { treeDataProvider: bookProvider });
-
-    vscode.commands.executeCommand(COMMANDS.getBookSource);
   }
 
   // 书源编辑
@@ -73,12 +54,6 @@ class App {
     this.webView.navigateTo('/discover');
   }
 
-  // 根据规则搜索内容
-  async searchBookByRule(rule: Rule) {
-    await bookManager.searchBook(rule);
-    bookProvider.refresh();
-  }
-
   /**
    * 获取章节
    */
@@ -90,11 +65,14 @@ class App {
         cancellable: false
       },
       async () => {
+        webviewProvider.navigateTo(
+          '/chapter?' +
+            stringify({
+              ...history,
+              filePath: history.url
+            })
+        );
         const rule = await ruleFileManager.findById(history.ruleId);
-        const ruleManager = new RuleManager(rule);
-        const chapterItems = await ruleManager.getChapter(history.url);
-        bookProvider.setChapters(chapterItems, rule, history.url);
-
         if (config?.saveHistory) {
           historyManager.add(config.saveHistory, rule);
         }
@@ -108,21 +86,14 @@ class App {
     openExplorer(getConfig().bookDir || CONSTANTS.LOCAL_BOOK_DIR);
   }
 
-  // 获取本地书源列表
-  async getBookSource() {
-    sourceProvider.refresh();
-  }
-
   // 收藏
   star(arg: any) {
     favoritesManager.add(arg.data, arg.rule);
-    bookProvider.refresh();
   }
 
   // 取消收藏
   unstar(arg: any) {
     favoritesManager.del(arg.data, arg.rule);
-    bookProvider.refresh();
   }
 
   // 阅读本地

@@ -3,7 +3,7 @@
   "displayName": "any-reader",
   "description": "摸鱼,自定义规则多站点聚合搜索阅读小说、漫画。包含JS规则解析库和VSCode插件。支持本地小说 TXT、EPUB",
   "icon": "resources/icon.png",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "publisher": "aooiu",
   "qna": "https://github.com/aooiuu/any-reader/issues",
   "bugs": {
@@ -31,14 +31,10 @@
   "activationEvents": [
     "onView:any-reader",
     "onWebviewPanel:any-reader",
-    "onCommand:any-reader.getBookSource",
-    "onCommand:any-reader.searchBook",
-    "onCommand:any-reader.searchBookByRule",
+    "onCommand:any-reader.search",
     "onCommand:any-reader.discover",
     "onCommand:any-reader.home",
     "onCommand:any-reader.gamePlay",
-    "onCommand:any-reader.star",
-    "onCommand:any-reader.unstar",
     "onCommand:any-reader.openLocalBookDir"
   ],
   "main": "./dist/extension.js",
@@ -59,19 +55,7 @@
   "contributes": {
     "commands": [
       {
-        "command": "any-reader.getBookSource",
-        "title": "刷新书源",
-        "icon": "$(refresh)",
-        "category": "any-reader"
-      },
-      {
-        "command": "any-reader.searchBook",
-        "title": "搜索",
-        "icon": "$(search)",
-        "category": "any-reader"
-      },
-      {
-        "command": "any-reader.searchBookByRule",
+        "command": "any-reader.search",
         "title": "搜索",
         "icon": "$(search)",
         "category": "any-reader"
@@ -95,16 +79,6 @@
         "category": "any-reader"
       },
       {
-        "command": "any-reader.star",
-        "title": "star",
-        "icon": "$(star)"
-      },
-      {
-        "command": "any-reader.unstar",
-        "title": "unstar",
-        "icon": "$(star-full)"
-      },
-      {
         "command": "any-reader.openLocalBookDir",
         "title": "open local book dir",
         "icon": "$(folder-opened)",
@@ -123,76 +97,12 @@
     "views": {
       "any-reader": [
         {
-          "id": "any-reader-book",
-          "name": "阅读"
-        },
-        {
-          "id": "any-reader-source",
-          "name": "规则"
-        },
-        {
           "id": "any-reader-webview",
           "name": "view",
           "type": "webview"
         }
       ]
     },
-    "menus": {
-      "view/title": [
-        {
-          "command": "any-reader.discover",
-          "when": "view == any-reader-source",
-          "group": "navigation"
-        },
-        {
-          "command": "any-reader.searchBook",
-          "when": "view == any-reader-source",
-          "group": "navigation"
-        },
-        {
-          "command": "any-reader.getBookSource",
-          "when": "view == any-reader-source",
-          "group": "navigation"
-        },
-        {
-          "command": "any-reader.home",
-          "when": "view == any-reader-source",
-          "group": "navigation"
-        }
-      ],
-      "view/item/context": [
-        {
-          "command": "any-reader.star",
-          "when": "view == any-reader-book && viewItem == star",
-          "group": "inline"
-        },
-        {
-          "command": "any-reader.unstar",
-          "when": "view == any-reader-book && viewItem == unstar",
-          "group": "inline"
-        },
-        {
-          "command": "any-reader.searchBookByRule",
-          "when": "view == any-reader-source && viewItem != GAME",
-          "group": "inline"
-        },
-        {
-          "command": "any-reader.gamePlay",
-          "when": "view == any-reader-source && viewItem == GAME",
-          "group": "inline"
-        }
-      ]
-    },
-    "viewsWelcome": [
-      {
-        "view": "any-reader-source",
-        "contents": "[如何添加规则](https://aooiuu.github.io/any-reader/vsc/#%E9%85%8D%E7%BD%AE%E8%A7%84%E5%88%99)\n[提建议 | 提BUG](https://github.com/aooiuu/any-reader/issues)"
-      },
-      {
-        "view": "any-reader-book",
-        "contents": "搜索或者查看章节列表后数据会出现在这里 \n[使用文档](https://aooiuu.github.io/any-reader/vsc/)\n[提建议 | 提BUG](https://github.com/aooiuu/any-reader/issues)"
-      }
-    ],
     "configuration": {
       "type": "object",
       "title": "AnyReader",

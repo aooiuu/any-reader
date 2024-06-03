@@ -11,23 +11,17 @@ export function getChapter(ruleId: string, data: any) {
   });
 }
 
-export function editBookSource() {
-  return request({
-    method: 'get',
-    url: 'vscode/editBookSource'
-  });
-}
-
-export function github() {
-  return request({
-    method: 'get',
-    url: 'vscode/github'
-  });
-}
-
 export function openLocalBookDir() {
   return request({
     method: 'get',
     url: 'vscode/openLocalBookDir'
+  });
+}
+
+export function executeCommand(data: any) {
+  return request({
+    method: 'post',
+    url: 'vscode/executeCommand',
+    data
   });
 }

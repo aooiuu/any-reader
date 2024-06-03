@@ -31,8 +31,7 @@ export class WebviewEvent {
 
     // vsc
     this._pm.answer('post@vscode/getChapter', this._vscGetChapter.bind(this));
-    this._pm.answer('get@vscode/editBookSource', this._vscEditBookSource.bind(this));
-    this._pm.answer('get@vscode/github', this._vscGithub.bind(this));
+    this._pm.answer('post@vscode/executeCommand', this.executeCommand.bind(this));
     this._pm.answer('get@vscode/openLocalBookDir', this._vscOpenLocalBookDir.bind(this));
 
     // 初始化通用接口
@@ -48,10 +47,9 @@ export class WebviewEvent {
     openExplorer(getConfig().bookDir || CONSTANTS.LOCAL_BOOK_DIR);
   }
 
-  // github
-  private _vscGithub() {
-    const doc = 'https://github.com/aooiuu/any-reader';
-    vscode.commands.executeCommand('vscode.open', doc);
+  private executeCommand({ command, data }: any) {
+    const args = Array.isArray(data) ? data : typeof data === 'object' ? [data] : [];
+    vscode.commands.executeCommand(command, ...args);
   }
 
   // 获取章节
@@ -68,10 +66,5 @@ export class WebviewEvent {
         saveHistory: searchItem
       }
     );
-  }
-
-  // 编辑规则
-  private _vscEditBookSource() {
-    vscode.commands.executeCommand(COMMANDS.editBookSource);
   }
 }

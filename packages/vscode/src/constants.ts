@@ -3,15 +3,10 @@ import * as path from 'path';
 
 export enum COMMANDS {
   editBookSource = 'any-reader.editBookSource',
-  searchBook = 'any-reader.searchBook',
-  searchBookByRule = 'any-reader.searchBookByRule',
+  searchBook = 'any-reader.search',
   getChapter = 'any-reader.getChapter',
-  getContent = 'any-reader.getContent',
   discover = 'any-reader.discover',
-  star = 'any-reader.star',
-  unstar = 'any-reader.unstar',
   openLocalBookDir = 'any-reader.openLocalBookDir',
-  getBookSource = 'any-reader.getBookSource',
   home = 'any-reader.home',
   gamePlay = 'any-reader.gamePlay'
 }

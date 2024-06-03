@@ -5,14 +5,10 @@
 import * as path from 'path';
 import { stringify } from 'qs';
 import * as vscode from 'vscode';
-import { ContentType } from '@any-reader/core';
 import { BookChapter, BOOK_TYPE, getBookType } from '@any-reader/shared/localBookManager';
 import { sleep } from '../utils/sleep';
-import bookManager, { TreeNode } from '../sidebar/bookManager';
 import { WebviewEvent } from './WebviewEvent';
 import { getWebViewContent } from '../utils/webview';
-import { Config } from '../config';
-import { webviewProvider } from '../sidebar/webviewProvider';
 
 export class WebView {
   private webviewPanel?: vscode.WebviewPanel;
@@ -71,61 +67,6 @@ export class WebView {
       this.pm = we.pm;
     }
     this.webviewPanel.title = title;
-  }
-
-  // 获取文章详情
-  async getContent(article: TreeNode) {
-    await vscode.window.withProgress(
-      {
-        location: vscode.ProgressLocation.Window,
-        title: 'loading...',
-        cancellable: false
-      },
-      async () => {
-        const contentType = article.rule.contentType;
-        // 视频
-        if (contentType === ContentType.VIDEO) {
-          const textArr = await bookManager.getContent(article);
-          if (!textArr?.length) {
-            vscode.window.showWarningMessage('empty content');
-          }
-          this.navigateTo('/player?url=' + textArr[0]);
-          return;
-        }
-        if (contentType === ContentType.AUDIO) {
-          const textArr = await bookManager.getContent(article);
-          if (!textArr?.length) {
-            vscode.window.showWarningMessage('empty content');
-          }
-          this.navigateTo('/iframe?url=' + textArr[0]);
-          return;
-        }
-        // TODO: 漫画模板待优化
-        // 小说
-        if ([ContentType.MANGA, ContentType.NOVEL, ContentType.NOVELMORE].includes(contentType)) {
-          if (Config.readPageMode === 'Sidebar') {
-            webviewProvider.navigateTo(
-              '/content?' +
-                stringify({
-                  ruleId: article.rule.id,
-                  filePath: article.url,
-                  chapterPath: article.data.url
-                })
-            );
-          } else {
-            this.navigateTo(
-              '/content?' +
-                stringify({
-                  ruleId: article.rule.id,
-                  filePath: article.url,
-                  chapterPath: article.data.url
-                })
-              // article.data.name
-            );
-          }
-        }
-      }
-    );
   }
 
   // 阅读本地书籍
