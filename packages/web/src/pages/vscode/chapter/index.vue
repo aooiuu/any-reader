@@ -7,12 +7,14 @@
 </template>
 
 <script setup>
-import { getChapter } from '@/api';
+import { getChapter, getContent } from '@/api';
 import { CONTENT_TYPE } from '@/constants';
 import TreeItem from '@/components/vsc/TreeItem.vue';
+import { useRulesStore } from '@/stores/rules';
 
 const route = useRoute();
 const router = useRouter();
+const rulesStore = useRulesStore();
 
 const list = ref([]);
 
