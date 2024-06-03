@@ -196,3 +196,21 @@ export function importRules(data: any) {
     data
   });
 }
+
+// 删除收藏
+export function removeFavorites(data: { ruleId: string; url: string }) {
+  return request({
+    method: 'post',
+    url: 'favorites/remove',
+    data
+  });
+}
+
+// 删除历史
+export function removeHistory(data: { ruleId: string; url: string }) {
+  return request({
+    method: 'post',
+    url: 'history/remove',
+    data
+  });
+}

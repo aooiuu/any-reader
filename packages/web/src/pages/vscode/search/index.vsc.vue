@@ -40,11 +40,22 @@
     </div>
 
     <div class="flex-1 overflow-auto mt-10">
-      <template v-for="item in displayList" :key="item.id">
-        <div class="flex items-center"><i class="codicon codicon-chevron-down mr-6"></i>{{ item.rule.name }}</div>
-        <TreeItem v-for="(row, idx) in item.list" :key="idx" class="pl-22" :title="row.author" @click="getChapter(row, item.rule)">
-          {{ row.name }}
-        </TreeItem>
+      <template v-for="item in displayList" :key="item.rule.id">
+        <div
+          class="flex items-center text-[--foreground] h-22 lh-22 cursor-pointer hover:bg-[--list-hoverBackground]"
+          @click="changeOpened(item.rule.id)"
+        >
+          <div class="flex-1 overflow-hidden flex items-center">
+            <i class="codicon mr-6" :class="[item.opened ? 'codicon-chevron-down' : 'codicon-chevron-right']"></i>
+            <div class="flex-1 overflow-hidden whitespace-nowrap text-ellipsis">{{ item.rule.name }}</div>
+          </div>
+          <span class="op-70 ml-6">{{ item.list.length }}</span>
+        </div>
+        <template v-if="item.opened">
+          <TreeItem v-for="(row, idx) in item.list" :key="idx" class="pl-22" :title="row.author" @click="getChapter(row, item.rule)">
+            {{ row.name }}
+          </TreeItem>
+        </template>
       </template>
     </div>
   </div>
@@ -75,8 +86,14 @@ const loading = ref(false);
 const total = ref(0);
 const runCount = ref(0);
 
-const list = ref<any[]>([]);
-const displayList = computed(() => {
+type List = {
+  opened: boolean;
+  rule: any;
+  list: any[];
+};
+const list = ref<List[]>([]);
+
+const displayList = computed<List[]>(() => {
   if (filterType.value === 1) {
     return list.value;
   }
@@ -113,6 +130,7 @@ function onSearch() {
           console.log({ rows });
 
           list.value.push({
+            opened: true,
             rule: rule,
             list: rows
           });
@@ -133,10 +151,18 @@ function getChapter(row: any, rule: any) {
   router.push({
     path: '/chapter',
     query: {
+      ...row,
       filePath: row.url,
       ruleId: rule.id
     }
   });
+}
+
+function changeOpened(ruleId: string) {
+  const row = list.value.find((e) => e.rule.id === ruleId);
+  if (row) {
+    row.opened = !row.opened;
+  }
 }
 
 onDeactivated(() => {

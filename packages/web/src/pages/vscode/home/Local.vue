@@ -39,7 +39,8 @@ function showChapter(item) {
   router.push({
     path: '/chapter',
     query: {
-      filePath: item.path
+      filePath: item.path,
+      name: item.name
     }
   });
 }

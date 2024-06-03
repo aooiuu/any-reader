@@ -39,6 +39,7 @@ export class RecordFile {
     this.history = this.history.filter(e => !(e.ruleId === rule.id && e.url === item.url))
     if (saveFile)
       await this.writeFile()
+    return true
   }
 
   // 添加记录
