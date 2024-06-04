@@ -267,15 +267,11 @@ const tableColumns = ref([
     sortable: {
       sortDirections: ['ascend', 'descend'],
       sorter: (a, b, { direction }) => {
+        const field = `extra.post@content.ok`;
         if (direction === 'descend') {
-          const field = `extra.post@content.ok`;
           return _.get(a, field, 0) > _.get(b, field, 0) ? -1 : 1;
         } else {
-          // 计算所有的失败字段
-          const fields = LOG_CONFIG.map(({ url }) => `extra.${url}.fail`);
-          const a1 = _.sum(fields.map((field) => _.get(a, field, 0)));
-          const b1 = _.sum(fields.map((field) => _.get(b, field, 0)));
-          return a1 > b1 ? -1 : 1;
+          return _.get(a, field, 0) > _.get(b, field, 0) ? 1 : -1;
         }
       }
     },

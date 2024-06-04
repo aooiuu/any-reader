@@ -27,6 +27,7 @@ class App {
       registerCommand(COMMANDS.searchBook, this.searchBook, this),
       registerCommand(COMMANDS.getChapter, this.getChapter, this),
       registerCommand(COMMANDS.discover, this.discover, this),
+      registerCommand(COMMANDS.openUrl, this.openUrl, this),
       registerCommand(COMMANDS.openLocalBookDir, this.openLocalBookDir, this),
       registerCommand(COMMANDS.home, () => this.webView.navigateTo('/rules'), this.webView),
       registerCommand(COMMANDS.gamePlay, (node: any) => this.webView.navigateTo('/iframe?url=' + node.host, node.name), this.webView)
@@ -52,6 +53,11 @@ class App {
   // 发现页
   discover() {
     this.webView.navigateTo('/discover');
+  }
+
+  // 打开链接
+  openUrl(url: string) {
+    this.webView.navigateTo(url);
   }
 
   /**
