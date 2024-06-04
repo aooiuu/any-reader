@@ -33,10 +33,12 @@ export default defineConfig(({ mode }) => {
       }
     },
     build: {
-      outDir
+      outDir,
+      emptyOutDir: true
     },
     resolve: {
       alias: {
+        '@/router/router': fileURLToPath(new URL('./src/router/router' + (env.VITE_APP_PLATFORM === 'vscode' ? '.vsc' : '.pc'), import.meta.url)),
         '@/stores/setting': fileURLToPath(new URL('./src/stores/setting' + (env.VITE_APP_PLATFORM === 'vscode' ? '.vsc' : '.pc'), import.meta.url)),
         '@': fileURLToPath(new URL('./src', import.meta.url))
       }

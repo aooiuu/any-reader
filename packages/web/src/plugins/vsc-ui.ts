@@ -11,7 +11,8 @@ import {
   vsCodeDropdown,
   vsCodeOption,
   vsCodeProgressRing,
-  vsCodeDivider
+  vsCodeDivider,
+  vsCodeLink
 } from '@vscode/webview-ui-toolkit';
 
 provideVSCodeDesignSystem().register(
@@ -23,5 +24,6 @@ provideVSCodeDesignSystem().register(
   vsCodeDropdown(),
   vsCodeOption(),
   vsCodeProgressRing(),
-  vsCodeDivider()
+  vsCodeDivider(),
+  vsCodeLink()
 );

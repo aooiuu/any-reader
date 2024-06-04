@@ -1,5 +1,3 @@
-import { PLATFORM } from '@/constants';
-import router from './router';
-import routerVSC from './router.vsc';
+import router from '@/router/router';
 
-export default ['browser', 'electron'].includes(PLATFORM) ? router : routerVSC;
+export default router;

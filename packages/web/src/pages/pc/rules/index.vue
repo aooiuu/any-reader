@@ -76,10 +76,10 @@ import { Modal, Message } from '@arco-design/web-vue';
 import _ from 'lodash-es';
 import { CONTENT_TYPES } from '@/constants';
 import { useRulesStore } from '@/stores/rules';
-import { ping, batchUpdateRules, delRules, updateRuleSort, createRule } from '@/api';
+import { ping, batchUpdateRules, delRules, updateRuleSort } from '@/api';
 import { timeoutWith } from '@/utils/promise';
-import { isRule } from '@/utils/rule';
 import { useRuleExtra } from './hooks/useRuleExtra';
+import { useDropRules } from '@/hooks/useDropRules';
 import ImportRules from './ImportRules.vue';
 
 const router = useRouter();
@@ -419,48 +419,13 @@ async function handleChange(data, extra, currentData) {
   loading.value = false;
 }
 
-async function drop(event) {
-  // vscode
-  if (typeof event.preventdefault === 'function') event.preventdefault();
-  const files = event.dataTransfer.files;
-  for (const file of files) {
-    await dropFile(file);
-  }
-}
-
-function readFile(file) {
-  if (file.type !== 'application/json') return;
-  return new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.readAsText(file, 'UTF-8');
-    reader.onload = function (e) {
-      let data;
-      try {
-        data = JSON.parse(e.target.result);
-      } catch (error) {
-        console.warn(error);
-      }
-      resolve(data);
-    };
-  });
-}
-
-async function dropFile(file) {
-  let count = 0;
-  const rules = await readFile(file);
-  for (const rule of rules) {
-    if (isRule(rule)) {
-      await createRule(rule);
-      count++;
-    }
-  }
-  rulesStore.sync();
+const { drop, dropFile } = useDropRules(({ count }) => {
   Message.success({
     content: `导入${count}条数据`,
     closable: true,
     resetOnHover: true
   });
-}
+});
 
 async function changeFile(e) {
   const files = e.target.files;
