@@ -69,6 +69,9 @@ XPath、JSONPath、CSS选择器、正则让规则编写更简洁, 而 JS 脚本�
 
 [文档](https://aooiuu.github.io/any-reader/vsc/)
 
+<details>
+<summary>功能清单</summary>
+
 - [x] 本地小说阅读
   - [x] txt格式
   - [x] epub格式
@@ -77,15 +80,38 @@ XPath、JSONPath、CSS选择器、正则让规则编写更简洁, 而 JS 脚本�
 - [x] 自定义书源规则
 - [x] 自定义热键
 - [x] 漫画
+- [x] 游戏
 - [x] 聚合搜索
 - [x] 发现页分类排行榜
-- [x] 侧边栏阅读(可拖动到底部栏)
+- [x] 侧边栏阅读(可拖动到底部)
 - [x] 收藏
 - [x] 历史记录
+
+</details>
 
 ### 桌面端
 
 [文档](https://aooiuu.github.io/any-reader/desktop/)
+
+<details>
+<summary>功能清单</summary>
+
+- [x] 本地小说阅读
+  - [x] txt格式
+  - [x] epub格式
+  - [x] 小说章节识别
+- [x] 在线小说阅读
+- [x] 自定义书源规则
+- [x] 自定义热键
+- [x] 漫画
+- [x] 视频
+- [ ] 视频下载 (🚧开发中)
+- [x] 聚合搜索
+- [x] 发现页分类排行榜
+- [x] 收藏
+- [x] 历史记录
+
+</details>
 
 |                                                  -                                                  |                                                  -                                                  |
 | :-------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------: |
@@ -94,11 +120,15 @@ XPath、JSONPath、CSS选择器、正则让规则编写更简洁, 而 JS 脚本�
 
 ### 网页端
 
+> 网页端功能基本和桌面端一致
+
 [文档](https://aooiuu.github.io/any-reader/browser/)
 
  <img src="https://github.com/aooiuu/any-reader/assets/28108111/6166cc3e-f5e5-42ca-a616-5e30157f6c89" width="600"/>
 
 快速体验:
+
+> 目前 cli 版没有实时同步更新, 建议使用 Docker 部署最新版
 
 ```sh
 npx any-reader
