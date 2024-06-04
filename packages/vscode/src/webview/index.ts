@@ -26,10 +26,9 @@ export class WebView {
       this.webviewPanel!.webview.html = getWebViewContent(
         path.join('template-dist', 'index.html'),
         this.context.extensionPath,
-        this.webviewPanel!.webview
+        this.webviewPanel!.webview,
+        `window.__vscode$initialize_page = '${routePath}'`
       );
-      // TODO: 第一次打开是没有就绪
-      await sleep(500);
     }
     this.pm.emit('router.push', routePath, this.webviewPanel?.webview);
     this.isVue = true;

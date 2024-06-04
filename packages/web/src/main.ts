@@ -31,4 +31,15 @@ app.use(Icon);
 app.use(createPinia());
 useComponent(app);
 
+router.beforeEach((_from, _to, next) => {
+  // 处理 vscode 第一次打开页面的地址
+  if (window.__vscode$initialize_page) {
+    const initialize_page = window.__vscode$initialize_page;
+    window.__vscode$initialize_page = '';
+    next(initialize_page);
+  } else {
+    next();
+  }
+});
+
 app.mount('#app');

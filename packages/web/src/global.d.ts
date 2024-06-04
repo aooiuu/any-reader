@@ -3,6 +3,8 @@ declare global {
     vscode: any;
     acquireVsCodeApi: any;
     _acquireVsCodeApi: any;
+
+    __vscode$initialize_page: string;
   }
 }
 

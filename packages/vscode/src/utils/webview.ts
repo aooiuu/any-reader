@@ -9,11 +9,22 @@ import * as vscode from 'vscode';
  * @param {vscode.Webview} webview
  * @returns {string} 模板HTML
  */
-export function getWebViewContent(templatePath: string, extensionPath: string, webview: vscode.Webview): string {
+export function getWebViewContent(templatePath: string, extensionPath: string, webview: vscode.Webview, injectScript = ''): string {
   const resourcePath = path.join(extensionPath, templatePath);
   const dirPath = path.dirname(resourcePath);
-  const html = fs.readFileSync(resourcePath, 'utf-8').replace(/(<link.+?href="|<script.+?src="|<img.+?src=")(\.\/.+?)"/g, (_, $1, $2) => {
-    return $1 + webview.asWebviewUri(vscode.Uri.file(path.resolve(dirPath, $2))) + '"';
-  });
+  const html = fs
+    .readFileSync(resourcePath, 'utf-8')
+    .replace(
+      '</head>',
+      `
+<script>
+${injectScript}
+</script>
+
+    </head>`
+    )
+    .replace(/(<link.+?href="|<script.+?src="|<img.+?src=")(\.\/.+?)"/g, (_, $1, $2) => {
+      return $1 + webview.asWebviewUri(vscode.Uri.file(path.resolve(dirPath, $2))) + '"';
+    });
   return html;
 }
