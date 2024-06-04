@@ -1,4 +1,4 @@
-import { createRule } from '@/api';
+import { createRule, importRules } from '@/api';
 import { readFile } from '@/utils/file';
 import { isRule } from '@/utils/rule';
 import { useRulesStore } from '@/stores/rules';
@@ -22,7 +22,11 @@ export function useDropRules(cb: { ({ count }: { count: any }): void; (arg0: { c
     const rules = await readFile(file);
     for (const rule of rules) {
       if (isRule(rule)) {
-        await createRule(rule);
+        if (typeof rule === 'string') {
+          await importRules({ url: rule });
+        } else {
+          await createRule(rule);
+        }
         count++;
       }
     }
