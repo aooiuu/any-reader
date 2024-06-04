@@ -37,6 +37,7 @@ export default defineConfig(({ mode }) => {
     },
     resolve: {
       alias: {
+        '@/stores/setting': fileURLToPath(new URL('./src/stores/setting' + (env.VITE_APP_PLATFORM === 'vscode' ? '.vsc' : '.pc'), import.meta.url)),
         '@': fileURLToPath(new URL('./src', import.meta.url))
       }
     }

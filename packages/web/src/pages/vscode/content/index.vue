@@ -1,6 +1,15 @@
 <template>
   <div class="w-full h-full flex flex-col overflow-hidden">
-    <div ref="contentRef" class="flex-1 p-10 whitespace-pre-wrap overflow-auto lh-1.5em" v-html="content" />
+    <div
+      ref="contentRef"
+      class="flex-1 p-10 whitespace-pre-wrap overflow-auto lh-1.5em"
+      :style="{
+        fontSize: settingStore.data.readStyle.fontSize + 'px',
+        lineHeight: settingStore.data.readStyle.lineHeight,
+        letterSpacing: settingStore.data.readStyle.letterSpacing + 'px'
+      }"
+      v-html="content"
+    />
   </div>
 </template>
 
@@ -9,7 +18,7 @@ import { useContent } from '@/pages/pc/content/useContent';
 
 const contentRef = ref();
 
-const { content } = useContent(contentRef);
+const { content, settingStore } = useContent(contentRef);
 </script>
 
 <style scoped>
