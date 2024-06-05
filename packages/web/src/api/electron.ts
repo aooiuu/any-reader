@@ -1,3 +1,4 @@
+import { PLATFORM } from '@/constants';
 import { request } from '@/utils/request';
 
 // 窗口最小化
@@ -37,6 +38,10 @@ export function alwaysOnTop(pinned: boolean) {
 
 // 打开新窗口
 export function openWindow(data: any) {
+  if (PLATFORM === 'browser') {
+    window.open((/^\//.test(data.url) ? '/#' : '') + data.url);
+    return;
+  }
   return request({
     method: 'post',
     url: 'openWindow',
