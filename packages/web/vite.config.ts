@@ -3,8 +3,10 @@ import { fileURLToPath, URL } from 'node:url';
 import { defineConfig, loadEnv } from 'vite';
 import createPlugins from './vite/plugins';
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => {
+export default defineConfig(({ mode, command }) => {
   const env = loadEnv(mode, process.cwd(), '');
+  const isBuild = command === 'build';
+
   let outDir = 'dist/web';
 
   if (env.outDir) {
@@ -20,7 +22,7 @@ export default defineConfig(({ mode }) => {
   }
 
   return {
-    plugins: createPlugins(env),
+    plugins: createPlugins({ env, isBuild }),
     base: './',
     server: {
       host: '0.0.0.0',

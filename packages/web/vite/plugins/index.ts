@@ -6,7 +6,7 @@ import mock from './mock';
 import electron from './electron';
 import vue from './vue';
 
-export default function createPlugins(env: Record<string, string>) {
+export default function createPlugins({ env, isBuild }: { env: Record<string, string>; isBuild: boolean }) {
   const vitePlugins: PluginOption[] = [];
   vitePlugins.push(vue());
   vitePlugins.push(jsx());
@@ -15,7 +15,7 @@ export default function createPlugins(env: Record<string, string>) {
   vitePlugins.push(autoImport());
 
   if (env.VITE_APP_PLATFORM === 'electron') {
-    vitePlugins.push(electron() as PluginOption);
+    vitePlugins.push(electron(isBuild) as PluginOption);
   }
   return vitePlugins;
 }
