@@ -19,7 +19,8 @@ jobs:
     steps:
       - name: Check out git repository
         uses: actions/checkout@v4.1.1
-
+        with:
+          fetch-depth: 0
       - uses: pnpm/action-setup@v3
       - name: Setup Node
         uses: actions/setup-node@v4
