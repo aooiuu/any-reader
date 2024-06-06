@@ -29,7 +29,7 @@ jobs:
 
       - run: npx changelogithub
         env:
-          GITHUB_TOKEN: ${{secrets.ACCESS_TOKEN}}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: pnpm install
         run: pnpm install
@@ -92,5 +92,3 @@ jobs:
             packages/web/dist/electron/**
             packages/vscode/*.vsix
           # prerelease: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
