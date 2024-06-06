@@ -126,12 +126,21 @@ XPath、JSONPath、CSS选择器、正则让规则编写更简洁, 而 JS 脚本�
 
  <img src="https://github.com/aooiuu/any-reader/assets/28108111/6166cc3e-f5e5-42ca-a616-5e30157f6c89" width="600"/>
 
-快速体验:
-
-> 目前 cli 版没有实时同步更新, 建议使用 Docker 部署最新版
 
 ```sh
-npx any-reader
+# 克隆项目
+git clone git@github.com:aooiuu/any-reader.git
+
+# 进入项目根目录
+cd any-reader
+
+# 安装依赖
+pnpm i
+
+# 编译 解析库、工具库
+pnpm run build
+
+pnpm run web:dev
 ```
 
 ### Docker
@@ -143,8 +152,6 @@ npx any-reader
 ```sh
 docker build https://github.com/aooiuu/any-reader.git -t any-reader
 docker run -d --name any-reader -p 8899:8899 any-reader
-
-docker run -d --name any-reader -p 8899:8899 aooiu/any-reader:master
 
 # 浏览器访问 http://localhost:8899/
 ```

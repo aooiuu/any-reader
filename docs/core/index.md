@@ -15,14 +15,12 @@ npm install @any-reader/core
 ```
 
 ```typescript
-import { RuleManager, decodeRule } from '@any-reader/core';
+import { RuleManager } from '@any-reader/core';
 
 const ruleManager = new RuleManager(rule: Rule);
 ruleManager.search(keyword: string): SearchItem[]; // 搜索
 ruleManager.getChapter(url: string): ChapterItem[]; // 获取章节列表
 ruleManager.getContent(url: string): string[]; // 获取内容
-
-decodeRule("eso://") // 可以解码 eso 书源, 得到原始 json
 ```
 
 - [Rule](https://www.jsdocs.io/package/@any-reader/core#Rule)

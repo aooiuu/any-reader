@@ -6,7 +6,7 @@ import type { Low } from 'lowdb/lib'
 import { JSONFilePreset } from 'lowdb/node'
 import axios from 'axios'
 import type { Rule } from '@any-reader/core'
-import { decodeRule } from '@any-reader/core'
+import { decodeRule } from '@any-reader/rule-utils'
 import { BOOK_SOURCE_PATH } from './constants'
 
 let mDb: Low<Rule[]>

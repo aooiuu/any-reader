@@ -1,0 +1,28 @@
+{
+  "name": "@any-reader/rule-utils",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build": "unbuild",
+    "stub": "unbuild --stub"
+  },
+  "keywords": [],
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "base64-js": "^1.5.1",
+    "pako": "^2.1.0"
+  },
+  "author": "aooiuu",
+  "license": "GPL3"
+}

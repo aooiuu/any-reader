@@ -21,7 +21,7 @@ cd any-reader
 # 安装依赖
 pnpm i
 
-# 编译 解析库、工具库、前端模板
+# 编译 解析库、工具库
 pnpm run build
 
 # 启动

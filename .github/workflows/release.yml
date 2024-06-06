@@ -27,6 +27,10 @@ jobs:
           node-version: 20
           cache: pnpm
 
+      - run: npx changelogithub
+        env:
+          GITHUB_TOKEN: ${{secrets.ACCESS_TOKEN}}
+
       - name: pnpm install
         run: pnpm install
 

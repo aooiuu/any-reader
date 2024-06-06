@@ -15,18 +15,18 @@
       <a-dropdown position="bottom">
         <a-button type="primary">添加规则<icon-down /></a-button>
         <template #content>
-          <a-doption @click="addRule">单个添加</a-doption>
+          <a-doption @click="addRuleUrl">从文本导入</a-doption>
           <a-doption @click="addRuleFile">从文件导入</a-doption>
           <a-doption @click="addRuleUrl">从URL导入</a-doption>
-          <a-doption @click="addRuleUrl">从文本导入</a-doption>
+          <a-doption @click="addRule">单个添加</a-doption>
         </template>
       </a-dropdown>
 
       <div class="flex-1" />
       <a-button type="primary" @click="pingAll">测速</a-button>
       <a-button type="primary" status="danger" @click="delTimeoutRules">一键删除超时规则</a-button>
-      <a-dropdown position="bottom">
-        <a-button>批量操作<icon-down /></a-button>
+      <a-dropdown position="bottom" :disabled="!selectedKeys.length">
+        <a-button :disabled="!selectedKeys.length">批量操作<icon-down /></a-button>
         <template #content>
           <a-doption @click="batchUpdate({ enableSearch: false })">禁用选中搜索</a-doption>
           <a-doption @click="batchUpdate({ enableDiscover: false })">禁用选中发现</a-doption>
@@ -35,6 +35,9 @@
           <a-doption @click="batchUpdate({ enableDiscover: true })">启用选中发现</a-doption>
           <div class="h-1 bg-[#ffffff33]"></div>
           <a-doption @click="delSelected">删除选中</a-doption>
+          <div class="h-1 bg-[#ffffff33]"></div>
+          <a-doption @click="copySelected">复制选中</a-doption>
+          <a-doption @click="exportSelected">导出选中</a-doption>
         </template>
       </a-dropdown>
     </div>
@@ -74,6 +77,9 @@
 <script setup lang="jsx">
 import { Modal, Message } from '@arco-design/web-vue';
 import _ from 'lodash-es';
+import { encodeRule } from '@any-reader/rule-utils';
+import { useClipboard } from '@vueuse/core';
+import { saveAs } from 'file-saver';
 import { CONTENT_TYPES } from '@/constants';
 import { useRulesStore } from '@/stores/rules';
 import { ping, batchUpdateRules, delRules, updateRuleSort } from '@/api';
@@ -428,5 +434,47 @@ async function changeFile(e) {
   for (const file of files) {
     await dropFile(file);
   }
+}
+
+const { copy } = useClipboard();
+
+function getSelectedRuleStr() {
+  const rules = selectedKeys.value
+    .map((id) => {
+      const rule = rulesStore.list.find((e) => e.id === id);
+      if (!rule) return;
+      try {
+        return encodeRule(rule);
+      } catch (error) {
+        console.error(error);
+      }
+    })
+    .filter((e) => e);
+  return JSON.stringify(rules);
+}
+
+function copySelected() {
+  copy(getSelectedRuleStr())
+    .then(() => {
+      Message.success({
+        content: `已复制到剪贴板`,
+        closable: true,
+        resetOnHover: true
+      });
+    })
+    .catch(() => {
+      Message.success({
+        content: `复制失败`,
+        closable: true,
+        resetOnHover: true
+      });
+    });
+}
+
+function exportSelected() {
+  const blob = new Blob([getSelectedRuleStr()], {
+    type: 'application/json'
+  });
+  saveAs(blob, 'rules.json');
 }
 </script>

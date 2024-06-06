@@ -24,12 +24,14 @@
     "*.d.ts"
   ],
   "scripts": {
-    "clean": "rimraf packages/*/node_modules --glob && rimraf node_modules",
+    "clean": "rimraf packages/*/dist --glob",
+    "clean:npm": "rimraf packages/*/node_modules --glob &&  rimraf node_modules",
     "run:core": "npm -C packages/core run start",
+    "rule-utils:build": "npm -C packages/rule-utils run build",
     "core:build": "npm -C packages/core run build",
     "shared:build": "npm -C packages/shared run build",
     "epub:build": "npm -C packages/epub run build",
-    "build": "npm-run-all core:build shared:build epub:build",
+    "build": "npm-run-all rule-utils:build core:build shared:build epub:build",
     "build:web": "npm -C packages/web run build",
     "build:web-w": "npm -C packages/web run build:w",
     "run:vsc": "npm-run-all core:build build:web-w",

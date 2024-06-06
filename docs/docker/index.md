@@ -12,8 +12,6 @@ outline: deep
 docker build https://github.com/aooiuu/any-reader.git -t any-reader
 docker run -d --name any-reader -p 8899:8899 any-reader
 
-docker run -d --name any-reader -p 8899:8899 aooiu/any-reader:master
-
 # 浏览器访问 http://localhost:8899/
 ```
 
