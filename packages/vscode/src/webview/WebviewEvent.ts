@@ -68,3 +68,7 @@ export class WebviewEvent {
     );
   }
 }
+
+export function useWebviewEvent(webView: vscode.Webview) {
+  new WebviewEvent(webView);
+}

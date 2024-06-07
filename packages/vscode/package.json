@@ -97,7 +97,8 @@
       "explorer/context": [
         {
           "command": "any-reader.openFile",
-          "when": "resourceExtname == .epub"
+          "when": "resourceExtname == .epub",
+          "group": "navigation"
         }
       ]
     },
@@ -110,6 +111,18 @@
         }
       ]
     },
+    "customEditors": [
+      {
+        "viewType": "any-reader.customEditor.epub",
+        "displayName": "打开 Epub",
+        "selector": [
+          {
+            "filenamePattern": "*.epub"
+          }
+        ],
+        "priority": "default"
+      }
+    ],
     "configuration": {
       "type": "object",
       "title": "AnyReader",

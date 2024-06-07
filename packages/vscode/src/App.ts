@@ -10,6 +10,7 @@ import { webviewProvider } from './sidebar/webviewProvider';
 import { WebView } from './webview';
 import { Config } from './config';
 import { getConfig } from './utils/config';
+import { CustomEditorProvider } from './editorProvider/CustomEditorProvider';
 
 class App {
   private webView!: WebView;
@@ -35,6 +36,7 @@ class App {
 
     // 侧边栏 - webview
     webviewProvider.setExtensionPath(context.extensionPath);
+    vscode.window.registerCustomEditorProvider('any-reader.customEditor.epub', new CustomEditorProvider(context));
     vscode.window.registerWebviewViewProvider('any-reader-webview', webviewProvider);
   }
 
