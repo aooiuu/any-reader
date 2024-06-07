@@ -7,7 +7,7 @@ import { BookParser } from './BookParser'
 // 缓存最后一个文件
 const mCache = new Map<string, string>()
 export class TXTBookParser extends BookParser {
-  private chapterPattern = /^第[\d|一|二|三|四|五|六|七|八|九|十|百]*[章|节|集]/
+  private chapterPattern = /^第\s{0,4}[\d〇零一二两三四五六七八九十百千万壹贰叁肆伍陆柒捌玖拾佰仟]+?\s{0,4}(?:章|节(?!课)|卷|页|集|部|篇(?!张)).{0,40}$/
 
   private _getText(filePath: string): string {
     if (mCache.has(filePath))
@@ -30,7 +30,7 @@ export class TXTBookParser extends BookParser {
       const line = lines[i]
       if (this.chapterPattern.test(line)) {
         result.push({
-          name: line,
+          name: line.trim(),
           chapterPath: i.toString(),
           filePath: this._filePath,
         })
