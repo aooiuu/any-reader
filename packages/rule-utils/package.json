@@ -1,6 +1,6 @@
 {
   "name": "@any-reader/rule-utils",
-  "version": "1.0.0",
+  "version": "1.5.4",
   "description": "",
   "scripts": {
     "build": "unbuild",
