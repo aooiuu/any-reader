@@ -30,12 +30,7 @@
   ],
   "activationEvents": [
     "onView:any-reader",
-    "onWebviewPanel:any-reader",
-    "onCommand:any-reader.search",
-    "onCommand:any-reader.discover",
-    "onCommand:any-reader.home",
-    "onCommand:any-reader.gamePlay",
-    "onCommand:any-reader.openLocalBookDir"
+    "onWebviewPanel:any-reader"
   ],
   "main": "./dist/extension.js",
   "scripts": {
@@ -62,31 +57,30 @@
       },
       {
         "command": "any-reader.discover",
-        "title": "discover",
+        "title": "发现页",
         "icon": "$(flame)",
         "category": "any-reader"
       },
       {
         "command": "any-reader.home",
-        "title": "Home",
+        "title": "首页",
         "icon": "$(home)",
         "category": "any-reader"
       },
       {
-        "command": "any-reader.gamePlay",
-        "title": "Game Play",
-        "icon": "$(game)",
-        "category": "any-reader"
-      },
-      {
         "command": "any-reader.openLocalBookDir",
-        "title": "open local book dir",
+        "title": "打开本地文件目录",
         "icon": "$(folder-opened)",
         "category": "any-reader"
       },
       {
         "command": "any-reader.openUrl",
-        "title": "open url",
+        "title": "打开URL",
+        "category": "any-reader"
+      },
+      {
+        "command": "any-reader.openFile",
+        "title": "打开文件",
         "category": "any-reader"
       }
     ],
@@ -96,6 +90,14 @@
           "id": "any-reader",
           "title": "any-reader",
           "icon": "resources/icon.svg"
+        }
+      ]
+    },
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "any-reader.openFile",
+          "when": "resourceExtname == .epub"
         }
       ]
     },

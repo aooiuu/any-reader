@@ -28,9 +28,9 @@ class App {
       registerCommand(COMMANDS.getChapter, this.getChapter, this),
       registerCommand(COMMANDS.discover, this.discover, this),
       registerCommand(COMMANDS.openUrl, this.openUrl, this),
+      registerCommand(COMMANDS.openFile, this.openFile, this),
       registerCommand(COMMANDS.openLocalBookDir, this.openLocalBookDir, this),
-      registerCommand(COMMANDS.home, () => this.webView.navigateTo('/rules'), this.webView),
-      registerCommand(COMMANDS.gamePlay, (node: any) => this.webView.navigateTo('/iframe?url=' + node.host, node.name), this.webView)
+      registerCommand(COMMANDS.home, () => this.webView.navigateTo('/rules'), this.webView)
     ].forEach((command) => context.subscriptions.push(command));
 
     // 侧边栏 - webview
@@ -58,6 +58,16 @@ class App {
   // 打开链接
   openUrl(url: string) {
     this.webView.navigateTo(url);
+  }
+
+  // 打开文件
+  openFile(fileEvent: { fsPath: string }) {
+    this.webView.navigateTo(
+      '/chapter?' +
+        stringify({
+          filePath: fileEvent.fsPath
+        })
+    );
   }
 
   /**
