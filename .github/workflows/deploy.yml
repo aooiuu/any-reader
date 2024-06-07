@@ -24,33 +24,36 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # Build job
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Not needed if lastUpdated is not enabled
-      - uses: pnpm/action-setup@v3 # Uncomment this if you're using pnpm
-      # - uses: oven-sh/setup-bun@v1 # Uncomment this if you're using Bun
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v3
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: pnpm # or pnpm / yarn
+          cache: pnpm
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
+
       - name: Install dependencies
-        run: pnpm install # or pnpm install / yarn install / bun install
+        run: pnpm install
+
       - name: Build with VitePress
-        run: pnpm build:docs # or pnpm docs:build / yarn docs:build / bun run docs:build
+        run: pnpm build:docs
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: docs/dist
 
-  # Deployment job
   deploy:
     environment:
       name: github-pages

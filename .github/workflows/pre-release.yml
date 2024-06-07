@@ -1,9 +1,9 @@
-name: Release
+name: Pre Release
 
 on:
   push:
     tags:
-      - v[0-9]+.[0-9]+.[0-9]+
+      - v[0-9]+.[0-9]+.[0-9]+-alpha.[0-9]+
 
 jobs:
   release:
@@ -52,6 +52,8 @@ jobs:
         with:
           packagePath: ./packages/vscode
           pat: ${{ secrets.VSCODE_TOKEN }}
+          # 不发布
+          dryRun: true
           skipDuplicate: true
           registryUrl: https://marketplace.visualstudio.com
           yarn: false

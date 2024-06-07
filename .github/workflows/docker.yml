@@ -3,13 +3,8 @@ name: docker
 on:
   workflow_dispatch:
   push:
-    # branches:
-    #   - "master"
     tags:
-      - "*"
-  # pull_request:
-  #   branches:
-  #     - "master"
+      - v[0-9]+.[0-9]+.[0-9]+
 
 jobs:
   docker:
