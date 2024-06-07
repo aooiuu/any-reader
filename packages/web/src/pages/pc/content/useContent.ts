@@ -113,6 +113,12 @@ export function useContent(contentRef: Ref<HTMLElement>) {
   return {
     settingStore,
     content,
-    toChapter
+    toChapter,
+    lastChapter,
+    nextChapter,
+    onPageUp,
+    onPageDown,
+    onPrevChapter,
+    onNextChapter
   };
 }
