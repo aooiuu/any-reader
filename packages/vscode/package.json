@@ -141,8 +141,8 @@
     }
   },
   "devDependencies": {
-    "@any-reader/core": "workspace:*",
-    "@any-reader/shared": "workspace:*",
+    "@any-reader/core": "workspace:^",
+    "@any-reader/shared": "workspace:^",
     "@types/fs-extra": "^11.0.4",
     "@types/glob": "^7.2.0",
     "@types/mocha": "^9.1.1",

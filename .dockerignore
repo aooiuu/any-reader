@@ -86,4 +86,3 @@ packages/server/index.d.ts
 
 **/node_modules
 **/dist
-**/.*

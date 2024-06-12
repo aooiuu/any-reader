@@ -266,10 +266,10 @@ importers:
   packages/vscode:
     devDependencies:
       '@any-reader/core':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../core
       '@any-reader/shared':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../shared
       '@types/fs-extra':
         specifier: ^11.0.4

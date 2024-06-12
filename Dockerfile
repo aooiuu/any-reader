@@ -1,9 +1,8 @@
-# syntax=docker/dockerfile:1.7-labs
 FROM node:20-bookworm AS dep-builder
 
 WORKDIR /app
 
-RUN corepack enable pnpm
+RUN corepack enable && corepack prepare pnpm@8.6.5 --activate
 
 RUN \
   echo 'use npm mirror' && \
@@ -11,16 +10,14 @@ RUN \
   yarn config set registry https://registry.npmmirror.com && \
   pnpm config set registry https://registry.npmmirror.com ;
 
+COPY ["./pnpm-lock.yaml", ".npmrc",  "./pnpm-workspace.yaml", "./package.json",  "/app/"]
 
-COPY ./pnpm-lock.yaml /app/
-COPY ./pnpm-workspace.yaml /app/
-COPY ./package.json /app/
-COPY --parents packages/*/package.json /app/
-
-RUN pnpm install
+RUN pnpm fetch
 
 COPY . /app
-RUN pnpm build
+RUN pnpm install -r --offline
+
+RUN pnpm run build
 
 EXPOSE 8899
 CMD ["pnpm", "web:dev"]
