@@ -1,6 +1,5 @@
 import { app, BrowserWindow, Menu } from 'electron';
 import { createAPI } from './api';
-import { api } from '@any-reader/shared';
 
 app.whenReady().then(async () => {
   const win = new BrowserWindow({
@@ -13,7 +12,6 @@ app.whenReady().then(async () => {
     }
   });
 
-  api.init();
   createAPI();
 
   // You can use `process.env.VITE_DEV_SERVER_URL` when the vite command is called `serve`

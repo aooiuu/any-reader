@@ -6,6 +6,7 @@
   "description": "",
   "license": "GPL3",
   "author": "aooiuu",
+  "private": true,
   "homepage": "https://github.com/aooiuu/any-reader#readme",
   "repository": {
     "type": "git",

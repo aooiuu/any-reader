@@ -1,7 +1,7 @@
 import { defineBuildConfig } from 'unbuild'
 
 export default defineBuildConfig({
-  entries: ['src/index', 'src/localBookManager'],
+  entries: ['src/index'],
   externals: [],
   clean: true,
   declaration: true,

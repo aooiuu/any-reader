@@ -1,14 +1,11 @@
 import * as vscode from 'vscode';
 import { stringify } from 'qs';
+import { ensureDirSync } from 'fs-extra';
 import { openExplorer } from 'explorer-opener';
-import { SearchItem } from '@any-reader/core';
-import { CONSTANTS, api, ruleFileManager, favoritesManager, historyManager } from '@any-reader/shared';
-import { BookChapter, BOOK_TYPE, getBookType } from '@any-reader/shared/localBookManager';
-import localBookManager from '@any-reader/shared/localBookManager';
+import { CONSTANTS } from '@any-reader/shared';
 import { COMMANDS, BOOK_SOURCE_PATH } from './constants';
 import { webviewProvider } from './sidebar/webviewProvider';
 import { WebView } from './webview';
-import { Config } from './config';
 import { getConfig } from './utils/config';
 import { CustomEditorProvider } from './editorProvider/CustomEditorProvider';
 
@@ -17,9 +14,6 @@ class App {
 
   async activate(context: vscode.ExtensionContext) {
     this.webView = new WebView(context);
-
-    // 初始化配置文件
-    await Promise.all([api.init(), ruleFileManager.init(), historyManager.init(), favoritesManager.init()]);
 
     // 注册命令
     const registerCommand = vscode.commands.registerCommand;
@@ -75,7 +69,9 @@ class App {
   /**
    * 获取章节
    */
-  async getChapter(history: any, config: { saveHistory: SearchItem }) {
+  async getChapter(params: any) {
+    const { ruleId, data } = params;
+
     await vscode.window.withProgress(
       {
         location: vscode.ProgressLocation.Window,
@@ -86,71 +82,20 @@ class App {
         webviewProvider.navigateTo(
           '/chapter?' +
             stringify({
-              ...history,
-              filePath: history.url
+              ruleId,
+              ...data,
+              filePath: data.url
             })
         );
-        const rule = await ruleFileManager.findById(history.ruleId);
-        if (config?.saveHistory) {
-          historyManager.add(config.saveHistory, rule);
-        }
       }
     );
   }
 
   // 打开本地书籍目录
   openLocalBookDir() {
-    localBookManager.checkDir(getConfig().bookDir || CONSTANTS.LOCAL_BOOK_DIR);
-    openExplorer(getConfig().bookDir || CONSTANTS.LOCAL_BOOK_DIR);
-  }
-
-  // 收藏
-  star(arg: any) {
-    favoritesManager.add(arg.data, arg.rule);
-  }
-
-  // 取消收藏
-  unstar(arg: any) {
-    favoritesManager.del(arg.data, arg.rule);
-  }
-
-  // 阅读本地
-  async getContentLocalBook(item: BookChapter) {
-    await vscode.window.withProgress(
-      {
-        location: vscode.ProgressLocation.Window,
-        title: 'loading...',
-        cancellable: false
-      },
-      async () => {
-        if (getBookType(item.filePath) === BOOK_TYPE.EPUB) {
-          if (Config.readPageMode === 'Sidebar') {
-            // 侧栏
-            webviewProvider.navigateTo(
-              '/content?' +
-                stringify({
-                  filePath: item.filePath,
-                  chapterPath: item.chapterPath
-                })
-            );
-          } else {
-            // 编辑器
-            this.webView.navigateTo(
-              '/content?' +
-                stringify({
-                  filePath: item.filePath,
-                  chapterPath: item.chapterPath
-                })
-            );
-          }
-        } else {
-          // TODO: TXT 数据太大, 分章处理?
-          const openPath = vscode.Uri.file(item.filePath);
-          // vscode.window.showTextDocument(openPath);
-          vscode.commands.executeCommand('vscode.open', openPath);
-        }
-      }
-    );
+    const dir = getConfig().bookDir || CONSTANTS.LOCAL_BOOK_DIR;
+    ensureDirSync(dir);
+    openExplorer(dir);
   }
 }
 

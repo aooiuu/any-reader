@@ -7,7 +7,7 @@
     "stub": "unbuild --stub"
   },
   "keywords": [],
-  "author": "",
+  "author": "aooiuu",
   "license": "GPL3",
   "type": "module",
   "exports": {
@@ -15,11 +15,6 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
-    },
-    "./localBookManager": {
-      "types": "./dist/localBookManager.d.ts",
-      "require": "./dist/localBookManager.cjs",
-      "import": "./dist/localBookManager.mjs"
     }
   },
   "main": "./dist/index.cjs",

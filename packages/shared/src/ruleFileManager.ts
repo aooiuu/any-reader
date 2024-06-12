@@ -33,9 +33,6 @@ function isESO(str: string): boolean {
   return str.startsWith('eso://')
 }
 
-// 初始化
-export async function init() {}
-
 export async function list(): Promise<Rule[]> {
   const db = await getDb()
   return db.data

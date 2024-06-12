@@ -5,13 +5,22 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes: [
     {
+      path: '/login',
+      name: 'login',
+      component: () => import('@/pages/pc/login/index.vue')
+    },
+    {
+      path: '/install',
+      name: 'install',
+      component: () => import('@/pages/pc/install/index.vue')
+    },
+    {
       path: '/',
       redirect: '/pc/books',
       component: () => import('@/pages/pc/layout/window.vue'),
       children: [
         {
           path: '/player',
-          name: '/player',
           component: () => import('@/pages/pc/player/index.vue')
         },
         {

@@ -7,7 +7,14 @@
     </div>
 
     <vscode-divider />
-    <div class="my-4 mx-8 flex items-center" @click="openLocalBookDir">
+    <div
+      class="my-4 mx-8 flex items-center"
+      @click="
+        executeCommand({
+          command: 'any-reader.openLocalBookDir'
+        })
+      "
+    >
       <i class="codicon codicon-folder-opened mr-2"></i>
       打开本地目录
     </div>
@@ -17,7 +24,7 @@
 
 <script setup>
 import { getLocalBooks } from '@/api';
-import { openLocalBookDir } from '@/api/vsc';
+import { executeCommand } from '@/api/vsc';
 import TreeItem from '@/components/vsc/TreeItem.vue';
 
 const router = useRouter();

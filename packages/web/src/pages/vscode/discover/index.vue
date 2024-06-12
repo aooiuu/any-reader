@@ -27,7 +27,15 @@
               v-for="(row, idx) in list"
               :key="idx"
               class="node relative flex flex-col flex-shrink-0 w-102 cursor-pointer hover:op-70"
-              @click="getChapter(ruleId, row)"
+              @click="
+                executeCommand({
+                  command: 'any-reader.getChapter',
+                  data: {
+                    ruleId,
+                    data: row
+                  }
+                })
+              "
             >
               <div class="w-102 h-136 mb-5 rounded-5 overflow-hidden">
                 <a-image :src="row.cover" :preview="false" alt="" srcset="" class="cover w-102 h-136" width="100%" height="100%" fit="cover" />
@@ -53,7 +61,7 @@
 <script setup>
 import { CONTENT_TYPES, CONTENT_TYPE } from '@/constants';
 import { discover, discoverMap } from '@/api';
-import { getChapter } from '@/api/vsc';
+import { executeCommand } from '@/api/vsc';
 import { useFavoritesStore } from '@/stores/favorites';
 import { useRulesStore } from '@/stores/rules';
 import Category from './Category.vue';

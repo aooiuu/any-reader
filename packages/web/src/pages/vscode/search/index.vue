@@ -27,7 +27,15 @@
                 v-for="(row, idx) in item.list"
                 :key="idx"
                 class="node relative flex flex-col flex-shrink-0 w-102 cursor-pointer hover:op-70"
-                @click="getChapter(item.rule.id, row)"
+                @click="
+                  executeCommand({
+                    command: 'any-reader.getChapter',
+                    data: {
+                      ruleId: item.rule.id,
+                      data: row
+                    }
+                  })
+                "
               >
                 <div class="w-102 h-136 mb-5 rounded-5 overflow-hidden">
                   <a-image :src="row.cover" :preview="false" alt="" srcset="" class="cover w-102 h-136" width="100%" height="100%" fit="cover" />
@@ -56,7 +64,7 @@ import { v4 as uuidV4 } from 'uuid';
 import pLimit from 'p-limit';
 import { CONTENT_TYPES, CONTENT_TYPE } from '@/constants';
 import { searchByRuleId } from '@/api';
-import { getChapter } from '@/api/vsc';
+import { executeCommand } from '@/api/vsc';
 import { useFavoritesStore } from '@/stores/favorites';
 import { useRulesStore } from '@/stores/rules';
 const favoritesStore = useFavoritesStore();

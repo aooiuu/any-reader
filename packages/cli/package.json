@@ -14,7 +14,7 @@
     "build": "esno ./scripts/publish.cjs && unbuild"
   },
   "keywords": [],
-  "author": "",
+  "author": "aooiuu",
   "license": "GPL3",
   "dependencies": {
     "@any-reader/server": "workspace:^",

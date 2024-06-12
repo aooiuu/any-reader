@@ -1,27 +1,73 @@
-import * as os from 'node:os'
-import * as path from 'node:path'
 import Router from 'koa-router'
-import { CONSTANTS, api } from '@any-reader/shared'
+import bcrypt from 'bcryptjs'
+import type { Api } from '@any-reader/shared'
 
-export const router = new Router()
+export function createRoute(api: Api) {
+  const router = new Router()
 
-export const ROOT_PATH = path.join(os.homedir(), '.any-reader')
-export const CONFIG_PATH = path.join(ROOT_PATH, 'config.desktop.json')
-
-api.useApi(
-  async (path: string, cb: any) => {
-    if (typeof path !== 'string')
+  router.post('/login', (ctx) => {
+    const passwordConf = api.config.password
+    if (!passwordConf) {
+      ctx.body = {
+        code: 10001,
+      }
       return
-    const paths = path.split('@')
-    if (paths.length !== 2)
-      return
-    const method = paths[0] as 'post' | 'get'
-    router[method](`/${paths[1]}`, async (ctx) => {
-      const data = method === 'get' ? ctx.query : ctx.request.body
-      ctx.body = await cb(data)
-    })
-  },
-  {
-    CONFIG_PATH,
-    bookDir: CONSTANTS.LOCAL_BOOK_DIR,
+    }
+    const { password } = ctx.request.body
+    if (bcrypt.compareSync(password, passwordConf)) {
+      ctx.session!.uid = 1
+      ctx.body = {
+        code: 0,
+      }
+    }
+    else {
+      ctx.body = {
+        code: -1,
+        msg: '密码错误',
+      }
+    }
   })
+
+  router.get('/logout', (ctx) => {
+    ctx.session!.uid = null
+    ctx.body = {
+      code: 0,
+    }
+  })
+
+  router.post('/install', (ctx) => {
+    const passwordConf = api.config.password
+    if (passwordConf) {
+      ctx.body = {
+        code: 10002,
+        msg: '已经设置过密码',
+
+      }
+      return
+    }
+    const { password } = ctx.request.body
+    api.updateConfig({
+      password,
+    })
+    ctx.session!.uid = 1
+    ctx.body = {
+      code: 0,
+    }
+  })
+
+  api.useApi(
+    async (path: string, cb: any) => {
+      if (typeof path !== 'string')
+        return
+      const paths = path.split('@')
+      if (paths.length !== 2)
+        return
+      const method = paths[0] as 'post' | 'get'
+      router[method](`/${paths[1]}`, async (ctx) => {
+        const data = method === 'get' ? ctx.query : ctx.request.body
+        ctx.body = await cb(data)
+      })
+    })
+
+  return router
+}

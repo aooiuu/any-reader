@@ -34,20 +34,23 @@
           </div>
         </div>
         <div class="w-20% h-full flex gap-4 items-center justify-end text-[--titleBar-inactiveForeground]">
+          <!-- 布局 -->
+          <div
+            v-if="PLATFORM === 'electron'"
+            class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--toolbar-hoverBackground] app-region-none"
+          >
+            <span
+              :class="['codicon', settingStore.data.pinned ? 'codicon-pinned-dirty' : 'codicon-pinned']"
+              @click="settingStore.data.pinned = !settingStore.data.pinned"
+            />
+          </div>
+          <div class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--toolbar-hoverBackground] app-region-none">
+            <span
+              :class="['codicon', settingStore.data.sidebar === 'hidden' ? 'codicon-layout-sidebar-left-off' : 'codicon-layout-sidebar-left']"
+              @click="changeSidebar"
+            />
+          </div>
           <template v-if="PLATFORM === 'electron'">
-            <!-- 布局 -->
-            <div class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--toolbar-hoverBackground] app-region-none">
-              <span
-                :class="['codicon', settingStore.data.pinned ? 'codicon-pinned-dirty' : 'codicon-pinned']"
-                @click="settingStore.data.pinned = !settingStore.data.pinned"
-              />
-            </div>
-            <div class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--toolbar-hoverBackground] app-region-none">
-              <span
-                :class="['codicon', settingStore.data.sidebar === 'hidden' ? 'codicon-layout-sidebar-left-off' : 'codicon-layout-sidebar-left']"
-                @click="changeSidebar"
-              />
-            </div>
             <!-- 窗口 -->
             <div
               class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--toolbar-hoverBackground] app-region-none"
@@ -61,13 +64,14 @@
             >
               <span class="codicon codicon-chrome-maximize"></span>
             </div>
-            <div
-              class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--toolbar-hoverBackground] app-region-none"
-              @click="exit"
-            >
-              <span class="codicon codicon-chrome-close"></span>
-            </div>
           </template>
+          <div
+            title="退出"
+            class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--toolbar-hoverBackground] app-region-none"
+            @click="onExit"
+          >
+            <span class="codicon codicon-chrome-close"></span>
+          </div>
         </div>
       </div>
       <div class="flex flex-1 overflow-auto">
@@ -111,6 +115,7 @@
 <script setup lang="jsx">
 import { Modal } from '@arco-design/web-vue';
 import { PLATFORM } from '@/constants';
+import { logout } from '@/api';
 import { minimize, maximize, exit } from '@/api/electron';
 import { useOpenChaptersBox, useSearchBox } from '@/utils/bus';
 import { useSettingStore } from '@/stores/setting';
@@ -147,5 +152,14 @@ function openSetting() {
     bodyClass: '!p-0',
     content: <Setting />
   });
+}
+
+async function onExit() {
+  if (PLATFORM === 'electron') {
+    exit();
+  } else if (PLATFORM === 'browser') {
+    await logout();
+    window.location.reload();
+  }
 }
 </script>

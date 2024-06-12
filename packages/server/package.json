@@ -20,19 +20,23 @@
     "dist"
   ],
   "keywords": [],
-  "author": "",
+  "author": "aooiuu",
   "license": "GPL3",
   "dependencies": {
     "@any-reader/core": "workspace:^",
     "@any-reader/shared": "workspace:^",
     "@koa/bodyparser": "^5.1.0",
     "@koa/cors": "^5.0.0",
+    "bcryptjs": "^2.4.3",
     "koa": "^2.15.2",
     "koa-bodyparser": "2",
     "koa-router": "^12.0.1",
+    "koa-session": "^6.4.0",
     "koa-static": "^5.0.0"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/koa-session": "^6.4.5",
     "@types/koa__cors": "^5.0.0",
     "esno": "^0.16.3"
   }

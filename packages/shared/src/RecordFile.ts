@@ -1,6 +1,8 @@
 // @ts-expect-error
-import { ensureFile, readJson, writeJson } from 'fs-extra/esm'
+import { readJson } from 'fs-extra/esm'
 import type { Rule, SearchItem } from '@any-reader/core'
+import { JSONFilePreset } from 'lowdb/node'
+import type { Low } from 'lowdb/lib'
 
 export interface RecordFileRow extends SearchItem {
   ruleId: string
@@ -11,32 +13,36 @@ const MAX_LENGTH = 100
 
 export class RecordFile {
   filePath: string
-  history: RecordFileRow[] = []
+  db!: Low<RecordFileRow[]>
 
   constructor(filePath: string) {
     this.filePath = filePath
   }
 
-  // 初始化
-  async init() {
-    await ensureFile(this.filePath)
-    this.history = await readJson(this.filePath).catch(() => this.history)
+  async getDb() {
+    if (this.db)
+      return this.db
+    const data = await readJson(this.filePath).catch(() => ([]))
+    this.db = await JSONFilePreset<RecordFileRow[]>(this.filePath, data)
+    return this.db
   }
 
   // 获取所有记录
   async list() {
-    return this.history
+    const db = await this.getDb()
+    return db.data
   }
 
   // 保存配置文件
   async writeFile() {
-    await ensureFile(this.filePath)
-    await writeJson(this.filePath, this.history, { spaces: 2 })
+    const db = await this.getDb()
+    db.write()
   }
 
   // 删除记录
   async del(item: SearchItem, rule: Rule, saveFile = true) {
-    this.history = this.history.filter(e => !(e.ruleId === rule.id && e.url === item.url))
+    const db = await this.getDb()
+    db.data = db.data.filter(e => !(e.ruleId === rule.id && e.url === item.url))
     if (saveFile)
       await this.writeFile()
     return true
@@ -44,11 +50,12 @@ export class RecordFile {
 
   // 添加记录
   async add(item: SearchItem, rule: Rule) {
-    if (this.history.length > MAX_LENGTH)
-      this.history.splice(MAX_LENGTH)
+    const db = await this.getDb()
+    if (db.data.length > MAX_LENGTH)
+      db.data.splice(MAX_LENGTH)
 
     this.del(item, rule, false)
-    this.history.unshift({
+    db.data.unshift({
       ...item,
       ruleId: rule.id,
       createTime: Date.now(),
@@ -57,7 +64,8 @@ export class RecordFile {
   }
 
   // 是否存在
-  has(rule: Rule, url: string) {
-    return this.history.find(e => e.ruleId === rule.id && e.url === url)
+  async has(rule: Rule, url: string) {
+    const db = await this.getDb()
+    return db.data.find(e => e.ruleId === rule.id && e.url === url)
   }
 }

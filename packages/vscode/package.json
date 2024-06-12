@@ -5,6 +5,7 @@
   "icon": "resources/icon.png",
   "version": "1.5.4",
   "publisher": "aooiu",
+  "private": true,
   "qna": "https://github.com/aooiuu/any-reader/issues",
   "bugs": {
     "url": "https://github.com/aooiuu/any-reader/issues",

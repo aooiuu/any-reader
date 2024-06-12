@@ -3,10 +3,7 @@
  */
 
 import * as path from 'path';
-import { stringify } from 'qs';
 import * as vscode from 'vscode';
-import { BookChapter, BOOK_TYPE, getBookType } from '@any-reader/shared/localBookManager';
-import { sleep } from '../utils/sleep';
 import { WebviewEvent } from './WebviewEvent';
 import { getWebViewContent } from '../utils/webview';
 
@@ -66,32 +63,5 @@ export class WebView {
       this.pm = we.pm;
     }
     this.webviewPanel.title = title;
-  }
-
-  // 阅读本地书籍
-  async getContentLocalBook(item: BookChapter) {
-    await vscode.window.withProgress(
-      {
-        location: vscode.ProgressLocation.Window,
-        title: 'loading...',
-        cancellable: false
-      },
-      async () => {
-        if (getBookType(item.filePath) === BOOK_TYPE.EPUB) {
-          this.navigateTo(
-            '/content?' +
-              stringify({
-                filePath: item.filePath,
-                chapterPath: item.chapterPath
-              })
-          );
-        } else {
-          // TODO: TXT 数据太大, 分章处理?
-          const openPath = vscode.Uri.file(item.filePath);
-          // vscode.window.showTextDocument(openPath);
-          vscode.commands.executeCommand('vscode.open', openPath);
-        }
-      }
-    );
   }
 }
