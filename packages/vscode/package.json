@@ -3,7 +3,7 @@
   "displayName": "any-reader",
   "description": "摸鱼,自定义规则多站点聚合搜索阅读小说、漫画。包含JS规则解析库和VSCode插件。支持本地小说 TXT、EPUB",
   "icon": "resources/icon.png",
-  "version": "1.5.4",
+  "version": "1.6.0",
   "publisher": "aooiu",
   "private": true,
   "qna": "https://github.com/aooiuu/any-reader/issues",

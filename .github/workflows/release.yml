@@ -7,6 +7,9 @@ on:
 
 jobs:
   release:
+    permissions:
+      id-token: write
+      contents: write
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -16,16 +19,17 @@ jobs:
         # os: [windows-latest, macos-latest, ubuntu-latest]
 
     steps:
-      - name: Check out git repository
+      - name: check out git repository
         uses: actions/checkout@v4.1.1
         with:
           fetch-depth: 0
+
       - uses: pnpm/action-setup@v3
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: pnpm
+          registry-url: "https://registry.npmjs.org"
 
       - run: npx changelogithub
         env:
@@ -36,6 +40,12 @@ jobs:
 
       - name: build libs
         run: pnpm run build
+
+      - name: publish to npm
+        run: pnpm -r publish --access public --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
 
       - name: build vscode template
         run: pnpm run vscode:build-tpl

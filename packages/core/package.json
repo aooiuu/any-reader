@@ -1,6 +1,6 @@
 {
   "name": "@any-reader/core",
-  "version": "1.5.4",
+  "version": "1.6.0",
   "description": "",
   "scripts": {
     "start": "esno src/start.ts",
@@ -20,6 +20,10 @@
   "files": [
     "dist"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aooiuu/any-reader"
+  },
   "dependencies": {
     "axios": "^1.5.1",
     "cheerio": "1.0.0-rc.12",

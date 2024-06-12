@@ -1,7 +1,7 @@
 {
   "name": "@any-reader/monorepo",
   "type": "module",
-  "version": "1.5.4",
+  "version": "1.6.0",
   "packageManager": "pnpm@8.6.5",
   "description": "",
   "license": "GPL3",
@@ -26,13 +26,12 @@
   ],
   "scripts": {
     "clean": "rimraf packages/*/dist --glob",
-    "clean:npm": "rimraf packages/*/node_modules --glob &&  rimraf node_modules",
+    "clean:npm": "rimraf packages/*/node_modules --glob && rimraf node_modules",
     "run:core": "npm -C packages/core run start",
     "rule-utils:build": "npm -C packages/rule-utils run build",
     "core:build": "npm -C packages/core run build",
     "shared:build": "npm -C packages/shared run build",
     "epub:build": "npm -C packages/epub run build",
-    "build": "npm-run-all rule-utils:build core:build shared:build epub:build",
     "build:web": "npm -C packages/web run build",
     "build:web-w": "npm -C packages/web run build:w",
     "run:vsc": "npm-run-all core:build build:web-w",
@@ -56,7 +55,8 @@
     "server:build": "npm -C packages/server run build",
     "cli:build-tpl": "npm -C packages/web run cli:build",
     "cli:build-js": "npm -C packages/cli run build",
-    "cli:build": "npm-run-all server:build cli:build-tpl cli:build-js"
+    "cli:build": "npm-run-all cli:build-tpl cli:build-js",
+    "build": "npm-run-all rule-utils:build core:build epub:build shared:build server:build cli:build"
   },
   "lint-staged": {
     "*.{vue,js,ts}": "eslint --fix"

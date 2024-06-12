@@ -1,6 +1,6 @@
 {
   "name": "@any-reader/cli",
-  "version": "1.5.4",
+  "version": "1.6.0",
   "description": "",
   "type": "commonjs",
   "files": [
@@ -16,6 +16,10 @@
   "keywords": [],
   "author": "aooiuu",
   "license": "GPL3",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aooiuu/any-reader"
+  },
   "dependencies": {
     "@any-reader/server": "workspace:^",
     "open": "^10.1.0"

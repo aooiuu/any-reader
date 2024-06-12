@@ -1,6 +1,6 @@
 {
   "name": "@any-reader/rule-utils",
-  "version": "1.5.4",
+  "version": "1.6.0",
   "description": "",
   "scripts": {
     "build": "unbuild",
@@ -19,6 +19,10 @@
   "files": [
     "dist"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aooiuu/any-reader"
+  },
   "dependencies": {
     "base64-js": "^1.5.1",
     "pako": "^2.1.0"
