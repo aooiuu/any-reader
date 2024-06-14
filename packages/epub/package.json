@@ -25,7 +25,7 @@
   "dependencies": {
     "adm-zip": "^0.4.11",
     "base64-js": "^1.5.1",
-    "xml2js": "^0.4.23"
+    "xml2js": "^0.5.0"
   },
   "devDependencies": {
     "@types/adm-zip": "^0.5.5",
