@@ -1,7 +1,7 @@
 import * as path from 'node:path'
 import type { BookParser } from './BookParser'
-import { EPubBookParser } from './EPubBookParser'
-import { TXTBookParser } from './TXTBookParser'
+import EPubBookParser from './EPubBookParser'
+import TXTBookParser from './TXTBookParser'
 
 export * from './BookParser'
 

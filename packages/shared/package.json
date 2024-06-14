@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "build": "unbuild",
-    "stub": "unbuild --stub"
+    "stub": "unbuild --stub",
+    "start": "esno src/start.ts"
   },
   "keywords": [],
   "author": "aooiuu",

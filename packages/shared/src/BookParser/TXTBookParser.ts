@@ -6,7 +6,7 @@ import { BookParser } from './BookParser'
 
 // 缓存最后一个文件
 const mCache = new Map<string, string>()
-export class TXTBookParser extends BookParser {
+export default class TXTBookParser extends BookParser {
   private chapterPattern = /^第\s{0,4}[\d〇零一二两三四五六七八九十百千万壹贰叁肆伍陆柒捌玖拾佰仟]+?\s{0,4}(?:章|节(?!课)|卷|页|集|部|篇(?!张)).{0,40}$/
 
   private _getText(filePath: string): string {

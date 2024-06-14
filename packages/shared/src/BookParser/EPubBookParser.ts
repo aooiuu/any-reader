@@ -2,9 +2,9 @@ import EPub from '@any-reader/epub'
 import type { BookChapter } from './BookParser'
 import { BookParser } from './BookParser'
 
-export class EPubBookParser extends BookParser {
+export default class EPubBookParser extends BookParser {
   public getChapter(): Promise<BookChapter[]> {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       const book = new EPub(this._filePath)
       book.on('end', () => {
         resolve(
@@ -16,6 +16,9 @@ export class EPubBookParser extends BookParser {
             }
           }),
         )
+      })
+      book.on('error', (err) => {
+        reject(err)
       })
       book.parse()
     })
