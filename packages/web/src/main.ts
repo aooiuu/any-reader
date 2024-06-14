@@ -7,7 +7,6 @@ import 'nprogress/nprogress.css';
 import '@unocss/reset/sanitize/sanitize.css';
 import '@unocss/reset/sanitize/assets.css';
 import 'uno.css';
-import './assets/vscode.css';
 import './assets/main.scss';
 
 // vscode ui

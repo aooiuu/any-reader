@@ -41,7 +41,7 @@ export const useSettingStore = defineStore('setting', () => {
       lineHeight: 1.5,
       letterSpacing: 1,
       textColor: '#ffffffb3',
-      backgroundColor: '#ffffff00'
+      backgroundColor: '#1f1f1f'
     },
     keyboardShortcuts: {
       prevChapter: '←',

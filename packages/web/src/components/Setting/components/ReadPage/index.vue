@@ -41,19 +41,19 @@ const settingStore = useSettingStore();
 
 // 预置配色
 const colors = [
-  { label: '杏仁黄', color: '#FAF9DE' },
-  { label: '秋叶褐', color: '#FFF2E2' },
-  { label: '胭脂红', color: '#FDE6E0' },
-  { label: '青草绿', color: '#E3EDCD' },
-  { label: '海天蓝', color: '#DCE2F1' },
-  { label: '葛巾紫', color: '#E9EBFE' },
-  { label: '极光灰', color: '#EAEAEF' },
-  { label: '默认黑', color: '#1f1f1f' }
+  { label: '杏仁黄', color: '#FAF9DE', textColor: '#000000e6' },
+  { label: '秋叶褐', color: '#FFF2E2', textColor: '#000000e6' },
+  { label: '胭脂红', color: '#FDE6E0', textColor: '#000000e6' },
+  { label: '青草绿', color: '#E3EDCD', textColor: '#000000e6' },
+  { label: '海天蓝', color: '#DCE2F1', textColor: '#000000e6' },
+  { label: '葛巾紫', color: '#E9EBFE', textColor: '#000000e6' },
+  { label: '极光灰', color: '#EAEAEF', textColor: '#000000e6' },
+  { label: '默认黑', color: '#1f1f1f', textColor: '#FFFFFFB3' }
 ];
 
 // 设置颜色
 function setTheme(color) {
   settingStore.data.readStyle.backgroundColor = color.color;
-  settingStore.data.readStyle.textColor = '#000000e6';
+  settingStore.data.readStyle.textColor = color.textColor;
 }
 </script>

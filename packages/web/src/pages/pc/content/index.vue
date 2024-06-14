@@ -20,6 +20,7 @@
     class="fixed top-5 left-50% translate-x--50% rounded-4 overflow-hidden h-400 w-400 flex flex-col"
     :style="{
       boxShadow: '0px 0px 5px 5px rgba(0, 0, 0, 0.2)',
+      color: settingStore.data.readStyle.textColor,
       backgroundColor: settingStore.data.readStyle.backgroundColor
     }"
   >

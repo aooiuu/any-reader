@@ -19,8 +19,6 @@ body {
   --scrollbarSlider-background: rgba(121, 121, 121, 0.4);
   --editor-background: #1f1f1f;
 
-  scrollbar-color: var(--scrollbarSlider-background) var(--editor-background);
-
   --color-bg-3: rgb(24, 24, 24);
 
   &[arco-theme='dark'] {
@@ -34,6 +32,20 @@ body {
   * {
     -webkit-app-region: none;
   }
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 2px;
+  background-color: var(--scrollbarSlider-background);
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.3);
 }
 </style>
 

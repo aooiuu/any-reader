@@ -27,6 +27,7 @@
 </template>
 
 <script setup>
+import '@/assets/vscode.css';
 import '@/plugins/vsc-ui';
 import { executeCommand } from '@/api/vsc';
 

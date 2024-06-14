@@ -49,11 +49,17 @@ const router = createRouter({
         },
         {
           path: 'category',
-          component: () => import('@/pages/pc/category/index.vue')
+          component: () => import('@/pages/pc/category/index.vue'),
+          meta: {
+            keepAlive: true
+          }
         },
         {
           path: 'rules',
-          component: () => import('@/pages/pc/rules/index.vue')
+          component: () => import('@/pages/pc/rules/index.vue'),
+          meta: {
+            keepAlive: true
+          }
         },
         {
           path: 'chapter',

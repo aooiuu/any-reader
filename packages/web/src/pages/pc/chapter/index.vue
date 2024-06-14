@@ -1,12 +1,18 @@
 <template>
   <div class="w-400 mx-a my-10 overflow-auto h-full p-10 bg-[#252525] rounded-10">
-    <div
-      v-for="item in list"
-      :key="item.url"
-      class="w-full text-[--foreground] h-22 lh-22 hover:bg-[--activityBar-background] cursor-pointer px-8 overflow-hidden whitespace-nowrap text-ellipsis rounded-2"
-      @click="showContent(item)"
-    >
-      {{ item.name }}
+    <a-spin v-if="loading" :loading="loading" class="w-full h-full !flex items-center justify-center" />
+    <template v-else-if="list.length">
+      <div
+        v-for="item in list"
+        :key="item.url"
+        class="w-full text-[--foreground] h-22 lh-22 hover:bg-[--activityBar-background] cursor-pointer px-8 overflow-hidden whitespace-nowrap text-ellipsis rounded-2"
+        @click="showContent(item)"
+      >
+        {{ item.name }}
+      </div>
+    </template>
+    <div v-else class="flex justify-center items-center h-full">
+      <a-empty />
     </div>
   </div>
 </template>
@@ -21,15 +27,17 @@ import { useRulesStore } from '@/stores/rules';
 const route = useRoute();
 const router = useRouter();
 const rulesStore = useRulesStore();
+const loading = ref(false);
 
 const list = ref([]);
-rulesStore.sync();
 
 async function init() {
   list.value = [];
   const { filePath, ruleId } = route.query;
   if (!filePath && !ruleId) return;
+  loading.value = true;
   const res = await getChapter(filePath, ruleId).catch(() => {});
+  loading.value = false;
   if (res?.code === 0) {
     list.value = res?.data || [];
   }

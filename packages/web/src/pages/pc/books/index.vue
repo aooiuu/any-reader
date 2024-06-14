@@ -14,7 +14,7 @@
     </div>
     <div class="flex-1 overflow-auto p-10 flex flex-wrap justify-center items-start content-start">
       <component :is="navs[activeNavIdx].component" />
-      <div v-for="i in 10" :key="i" class="w-102 invisible" />
+      <div v-for="i in 10" :key="i" class="w-102 invisible mr-10 mb-10" />
     </div>
   </div>
 </template>
