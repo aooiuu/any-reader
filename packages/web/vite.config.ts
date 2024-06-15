@@ -26,10 +26,10 @@ export default defineConfig(({ mode, command }) => {
     base: './',
     server: {
       host: '0.0.0.0',
-      port: 8899,
+      port: 8898,
       proxy: {
         '^/api': {
-          target: 'http://127.0.0.1:8898',
+          target: 'http://127.0.0.1:8899',
           rewrite: (path) => path.replace(/^\/api/, '')
         }
       }

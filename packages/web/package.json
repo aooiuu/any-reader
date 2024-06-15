@@ -19,7 +19,7 @@
     "electron:build": "npm-run-all electron:build-tpl electron:build-app",
     "vscode:dev": "cross-env VITE_APP_PLATFORM=vscode vite",
     "vscode:build": "cross-env VITE_APP_PLATFORM=vscode run-p type-check \"build-only {@}\" --",
-    "cli:build": "cross-env VITE_APP_PLATFORM=browser outDir=../cli/public VITE_APP_BASE_URL=/ vite build",
+    "cli:build": "cross-env VITE_APP_PLATFORM=browser outDir=../cli/public vite build",
     "postinstall": "electron-builder install-app-deps"
   },
   "main": "dist/electron-js/main.js",

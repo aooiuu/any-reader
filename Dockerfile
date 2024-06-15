@@ -1,4 +1,4 @@
-FROM node:20-bookworm AS dep-builder
+FROM node:20-alpine AS dep-builder
 
 WORKDIR /app
 
@@ -17,7 +17,7 @@ RUN pnpm fetch
 COPY . /app
 RUN pnpm install -r --offline
 
-RUN pnpm run build
+RUN pnpm run build && pnpm run web:build-b
 
 EXPOSE 8899
-CMD ["pnpm", "web:dev"]
+CMD ["pnpm", "run", "server"]
