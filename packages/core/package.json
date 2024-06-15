@@ -1,6 +1,6 @@
 {
   "name": "@any-reader/core",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "",
   "scripts": {
     "start": "esno src/start.ts",

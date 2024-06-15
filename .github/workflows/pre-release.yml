@@ -87,10 +87,10 @@ jobs:
       - name: release
         uses: softprops/action-gh-release@v2.0.4
         with:
-          tag_name: v${{ steps.pkgversion.outputs.value }}.alpha-${{ steps.short_sha.outputs.value }}
-          name: v${{ steps.pkgversion.outputs.value }}.alpha-${{ steps.short_sha.outputs.value }}
+          tag_name: v${{ steps.pkgversion.outputs.value }}-alpha.${{ steps.short_sha.outputs.value }}
+          name: v${{ steps.pkgversion.outputs.value }}-alpha.${{ steps.short_sha.outputs.value }}
           prerelease: trues
-          # draft: true
+          draft: true
           files: |
             packages/web/dist/electron/**
             packages/vscode/*.vsix
