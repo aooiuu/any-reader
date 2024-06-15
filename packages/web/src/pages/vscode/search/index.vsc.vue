@@ -65,17 +65,13 @@ import { v4 as uuidV4 } from 'uuid';
 import pLimit from 'p-limit';
 import { CONTENT_TYPES, CONTENT_TYPE } from '@/constants';
 import { searchByRuleId } from '@/api';
-import { useFavoritesStore } from '@/stores/favorites';
 import { useRulesStore } from '@/stores/rules';
 import TreeItem from '@/components/vsc/TreeItem.vue';
 
-const favoritesStore = useFavoritesStore();
 const rulesStore = useRulesStore();
 const router = useRouter();
 
 const runPromise = pLimit(5);
-
-favoritesStore.sync();
 
 let uuid: string = '';
 const searchText = ref('');
@@ -107,7 +103,7 @@ const displayList = computed<List[]>(() => {
     .filter((ruleRow: any) => ruleRow.list.length);
 });
 
-function onSearch() {
+async function onSearch() {
   const lastUuid = uuidV4();
   uuid = lastUuid;
   list.value = [];
@@ -115,31 +111,29 @@ function onSearch() {
   runCount.value = 0;
   loading.value = true;
 
-  rulesStore.sync().then(async () => {
-    const rules = rulesStore.list.filter((e) => contentType.value === e.contentType && e.enableSearch);
-    total.value = rules.length;
+  const rules = rulesStore.list.filter((e) => contentType.value === e.contentType && e.enableSearch);
+  total.value = rules.length;
 
-    const tasks = rules.map((rule) =>
-      runPromise(async () => {
-        if (lastUuid !== uuid) return;
-        runCount.value++;
-        const res = await searchByRuleId({ ruleId: rule.id, keyword: searchText.value });
-        if (res.code === 0) {
-          const rows = res.data;
-          if (!rows.length) return;
-          console.log({ rows });
+  const tasks = rules.map((rule) =>
+    runPromise(async () => {
+      if (lastUuid !== uuid) return;
+      runCount.value++;
+      const res = await searchByRuleId({ ruleId: rule.id, keyword: searchText.value });
+      if (res.code === 0) {
+        const rows = res.data;
+        if (!rows.length) return;
+        console.log({ rows });
 
-          list.value.push({
-            opened: true,
-            rule: rule,
-            list: rows
-          });
-        }
-      })
-    );
-    await Promise.all(tasks).catch(() => {});
-    loading.value = false;
-  });
+        list.value.push({
+          opened: true,
+          rule: rule,
+          list: rows
+        });
+      }
+    })
+  );
+  await Promise.all(tasks).catch(() => {});
+  loading.value = false;
 }
 
 function cancelSearch() {

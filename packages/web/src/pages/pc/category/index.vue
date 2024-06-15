@@ -47,9 +47,22 @@
 
               <div
                 class="star invisible absolute top-5 right-5 px-2 py-2 rounded-10 bg-[#000000cc] flex items-center justify-center"
-                @click.stop="favoritesStore.star(row, ruleId)"
+                @click.stop="
+                  favoritesStore.star({
+                    ...row,
+                    ruleId
+                  })
+                "
               >
-                <icon-star-fill v-if="favoritesStore.starred(row, ruleId)" :size="14" />
+                <icon-star-fill
+                  v-if="
+                    favoritesStore.starred({
+                      ...row,
+                      ruleId
+                    })
+                  "
+                  :size="14"
+                />
                 <icon-star v-else :size="14" />
               </div>
             </div>
@@ -71,8 +84,6 @@ import Category from './Category.vue';
 const router = useRouter();
 const favoritesStore = useFavoritesStore();
 const rulesStore = useRulesStore();
-
-favoritesStore.sync();
 
 const list = ref([]);
 const contentType = ref(CONTENT_TYPE.NOVEL);
@@ -112,8 +123,6 @@ async function changeRule(row) {
   categoryList.value = res?.data || [];
   loading.value = false;
 }
-
-rulesStore.sync();
 
 watch(
   () => rulesStore.list,

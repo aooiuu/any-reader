@@ -96,7 +96,6 @@ const selectedKeys = ref([]);
 const loading = ref(false);
 const fileInputRef = ref();
 
-rulesStore.sync();
 ruleExtra.sync();
 
 const searchText = ref('');

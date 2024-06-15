@@ -40,24 +40,23 @@ export class RecordFile {
   }
 
   // 删除记录
-  async del(item: SearchItem, rule: Rule, saveFile = true) {
+  async del(item: RecordFileRow, saveFile = true) {
     const db = await this.getDb()
-    db.data = db.data.filter(e => !(e.ruleId === rule.id && e.url === item.url))
+    db.data = db.data.filter(e => !(e.ruleId === item.ruleId && e.url === item.url))
     if (saveFile)
       await this.writeFile()
     return true
   }
 
   // 添加记录
-  async add(item: SearchItem, rule: Rule) {
+  async add(item: RecordFileRow) {
     const db = await this.getDb()
     if (db.data.length > MAX_LENGTH)
       db.data.splice(MAX_LENGTH)
 
-    this.del(item, rule, false)
+    await this.del(item, false)
     db.data.unshift({
       ...item,
-      ruleId: rule.id,
       createTime: Date.now(),
     })
     await this.writeFile()

@@ -57,8 +57,6 @@ const rules = computed(() => {
   }
   return rulesStore.list.filter((e) => e.contentType === contentType.value);
 });
-
-rulesStore.sync();
 </script>
 
 <style lang="scss">

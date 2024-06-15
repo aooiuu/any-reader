@@ -4,6 +4,8 @@ on:
   push:
     tags:
       - v[0-9]+.[0-9]+.[0-9]+-alpha.[0-9]+
+    branches:
+      - master
 
 jobs:
   release:
@@ -27,19 +29,18 @@ jobs:
           node-version: 20
           cache: pnpm
 
-      - run: npx changelogithub
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - id: pkgversion
+        uses: ashley-taylor/read-json-property-action@v1.2
+        with:
+          path: ./package.json
+          property: version
 
-      - name: pnpm install
-        run: pnpm install
+      - id: short_sha
+        run: echo "::set-output name=value::$(git rev-parse --short HEAD)"
 
-      - name: build libs
-        run: pnpm run build
-
-      - name: build vscode template
-        run: pnpm run vscode:build-tpl
-
+      - run: pnpm install
+      - run: pnpm run build
+      - run: pnpm run vscode:build-tpl
       - name: rename vscode vsx
         # working-directory 用于指定在哪个目录下执行命令
         working-directory: ./packages/vscode
@@ -85,10 +86,13 @@ jobs:
       # https://github.com/softprops/action-gh-release
       - name: release
         uses: softprops/action-gh-release@v2.0.4
-        if: startsWith(github.ref, 'refs/tags/')
         with:
+          tag_name: v${{ steps.pkgversion.outputs.value }}.alpha-${{ steps.short_sha.outputs.value }}
+          name: v${{ steps.pkgversion.outputs.value }}.alpha-${{ steps.short_sha.outputs.value }}
+          prerelease: trues
           # draft: true
           files: |
             packages/web/dist/electron/**
             packages/vscode/*.vsix
-          # prerelease: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}

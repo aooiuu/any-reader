@@ -19,6 +19,7 @@
 
 <script setup>
 import { stringify } from 'qs';
+import { Message } from '@arco-design/web-vue';
 import { CONTENT_TYPE } from '@/constants';
 import { getChapter, getContent } from '@/api';
 import { openWindow } from '@/api/electron';
@@ -49,22 +50,26 @@ async function showContent(item) {
   const { filePath, ruleId } = route.query;
   const rule = rulesStore.list.find((e) => e.id === ruleId);
   if (rule?.contentType === CONTENT_TYPE.VIDEO) {
+    loading.value = true;
     const res = await getContent({
       filePath,
       ruleId,
       chapterPath: item.url || item.chapterPath
     }).catch(() => {});
-    console.log('getContent', res);
-    if (res?.code === 0) {
+    loading.value = false;
+    const url = res?.data?.content || '';
+    if (res?.code === 0 && url) {
       openWindow({
         url:
           '/player?' +
           stringify({
-            url: res?.data?.content || ''
+            url
           })
       });
-      return;
+    } else {
+      Message.warning('获取地址失败！');
     }
+    return;
   } else if (rule?.contentType === CONTENT_TYPE.AUDIO) {
     // TODO: 音频规则, 待优化
     const res = await getContent({

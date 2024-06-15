@@ -13,7 +13,7 @@
 
 <script setup>
 import { v4 as uuidV4 } from 'uuid';
-import { useSearchBox } from '@/utils/bus';
+import { useBus, EVENT_SEARCH_BOX } from '@/utils/bus';
 import { onClickOutside } from '@vueuse/core';
 
 const router = useRouter();
@@ -22,7 +22,7 @@ const searchText = ref('');
 const inputRef = ref();
 
 const searchVisible = ref(false);
-const searchBox = useSearchBox();
+const searchBox = useBus(EVENT_SEARCH_BOX);
 
 function openSearchBox() {
   searchText.value = '';

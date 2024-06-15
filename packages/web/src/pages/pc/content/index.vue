@@ -52,7 +52,7 @@
 import { onClickOutside } from '@vueuse/core';
 import { useChaptersStore } from '@/stores/chapters';
 import { useReadStore } from '@/stores/read';
-import { useOpenChaptersBox } from '@/utils/bus';
+import { useBus, EVENT_CHAPTERS_BOX } from '@/utils/bus';
 import { useContent } from './useContent';
 
 const chaptersStore = useChaptersStore();
@@ -71,7 +71,7 @@ function scrollIntoViewChapter() {
   el.scrollIntoView({ behavior: 'instant' });
 }
 
-useOpenChaptersBox().on(() => {
+useBus(EVENT_CHAPTERS_BOX).on(() => {
   chaptersVisible.value = true;
   nextTick(scrollIntoViewChapter);
 });

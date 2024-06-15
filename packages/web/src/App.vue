@@ -1,12 +1,7 @@
 <template>
   <div class="flex flex-col h-full overflow-hidden">
     <div class="flex-1 overflow-auto">
-      <RouterView v-slot="{ Component, route }">
-        <KeepAlive>
-          <component :is="Component" v-if="route.meta.keepAlive" :key="route.fullPath" />
-        </KeepAlive>
-        <component :is="Component" v-if="!route.meta.keepAlive" :key="route.fullPath" />
-      </RouterView>
+      <RouterView />
     </div>
   </div>
 </template>
@@ -14,8 +9,13 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router';
 import { useMessage } from '@/utils/postMessage';
+import { useRulesStore } from '@/stores/rules';
+import { useFavoritesStore } from '@/stores/favorites';
 
 const router = useRouter();
+
+useRulesStore().sync();
+useFavoritesStore().sync();
 
 document.body.setAttribute('arco-theme', 'dark');
 

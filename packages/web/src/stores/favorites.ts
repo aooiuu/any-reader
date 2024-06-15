@@ -1,4 +1,4 @@
-import { getFavorites, star as _star, unstar } from '@/api';
+import { getFavorites, star as _star, unstar as _unstar } from '@/api';
 
 interface FavoriteRow {
   ruleId: string;
@@ -13,8 +13,8 @@ export const useFavoritesStore = defineStore('favorites', () => {
   const list = ref<FavoriteRow[]>([]);
 
   // 是否收藏
-  function starred(row: FavoriteRow, ruleId: string): boolean {
-    return !!list.value.find((e: FavoriteRow) => e.ruleId === ruleId && e.url === row.url);
+  function starred(row: FavoriteRow): boolean {
+    return !!list.value.find((e: FavoriteRow) => e.ruleId === row.ruleId && e.url === row.url);
   }
 
   // 同步收藏列表
@@ -28,18 +28,17 @@ export const useFavoritesStore = defineStore('favorites', () => {
   }
 
   // 收藏 | 取消收藏
-  async function star(row: any, ruleId: string) {
-    if (starred(row, ruleId)) {
-      await unstar({
-        ruleId,
-        data: row
-      });
+  async function star(row: any) {
+    if (starred(row)) {
+      await _unstar(row);
     } else {
-      await _star({
-        ruleId,
-        data: row
-      });
+      await _star(row);
     }
+    sync();
+  }
+
+  async function unstar(row: any) {
+    await _unstar(row);
     sync();
   }
 
@@ -47,6 +46,7 @@ export const useFavoritesStore = defineStore('favorites', () => {
     list,
     sync,
     star,
+    unstar,
     starred
   };
 });

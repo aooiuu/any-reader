@@ -28,7 +28,7 @@ export default class EPubBookParser extends BookParser {
     return new Promise((resolve, reject) => {
       const book = new EPub(item.filePath)
       book.on('end', () => {
-        book.getChapter(item.chapterPath, (error, text) => {
+        book.getChapter(item.chapterPath, (error: any, text: string) => {
           if (error)
             reject(error)
 

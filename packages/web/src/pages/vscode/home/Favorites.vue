@@ -12,7 +12,6 @@
 <script setup>
 import { useFavoritesStore } from '@/stores/favorites';
 import TreeItem from '@/components/vsc/TreeItem.vue';
-import { removeFavorites } from '@/api';
 
 const router = useRouter();
 const favoritesStore = useFavoritesStore();
@@ -31,8 +30,9 @@ function showChapter(item) {
 }
 
 async function remove(item) {
-  await removeFavorites({ ruleId: item.ruleId, url: item.url });
-  favoritesStore.sync();
+  favoritesStore.unstar({
+    ...item
+  });
 }
 </script>
 

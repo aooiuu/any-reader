@@ -42,13 +42,13 @@ const ruleId = computed(() => route.query.ruleId);
 const isStarred = computed(() => {
   const { filePath, ruleId } = route.query;
   if (!ruleId) return flase;
-  return favoritesStore.starred({ url: filePath }, ruleId);
+  return favoritesStore.starred({ url: filePath, ruleId });
 });
 
 function star() {
   const { ruleId } = route.query;
   if (!ruleId) return flase;
-  favoritesStore.star({ ...route.query }, ruleId);
+  favoritesStore.star({ ...route.query, ruleId });
 }
 
 init();

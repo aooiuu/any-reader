@@ -117,7 +117,7 @@ import { Modal } from '@arco-design/web-vue';
 import { PLATFORM } from '@/constants';
 import { logout } from '@/api';
 import { minimize, maximize, exit } from '@/api/electron';
-import { useOpenChaptersBox, useSearchBox } from '@/utils/bus';
+import { useBus, EVENT_CHAPTERS_BOX, EVENT_SEARCH_BOX } from '@/utils/bus';
 import { useSettingStore } from '@/stores/setting';
 import { useReadStore } from '@/stores/read';
 import Setting from '@/components/Setting/index.vue';
@@ -128,8 +128,8 @@ const route = useRoute();
 const router = useRouter();
 const settingStore = useSettingStore();
 const readStore = useReadStore();
-const openChaptersBox = useOpenChaptersBox();
-const searchBox = useSearchBox();
+const openChaptersBox = useBus(EVENT_CHAPTERS_BOX);
+const searchBox = useBus(EVENT_SEARCH_BOX);
 
 function changeSidebar() {
   settingStore.data.sidebar = settingStore.data.sidebar === 'hidden' ? 'left' : 'hidden';

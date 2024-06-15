@@ -58,8 +58,8 @@ function getLocalBooks(dir: string) {
  * @param param0
  * @returns
  */
-async function star({ data, ruleId }: any) {
-  await favoritesManager.add(data, await ruleFileManager.findById(ruleId))
+async function star(data: any) {
+  await favoritesManager.add(data)
   return true
 }
 
@@ -67,8 +67,8 @@ async function star({ data, ruleId }: any) {
  * 取消收藏
  * @returns
  */
-async function unstar({ data, ruleId }: any) {
-  await favoritesManager.del(data, await ruleFileManager.findById(ruleId))
+async function unstar(data: any) {
+  await favoritesManager.del(data)
   return true
 }
 
@@ -283,7 +283,6 @@ export class Api {
     registerApi('get@discoverMap', async ({ ruleId = '' } = {}) => await discoverMap(ruleId), discoverLog)
     registerApi('post@discover', async (data: any) => await discover(data), discoverLog)
     registerApi('get@getFavorites', async () => await getFavorites())
-    registerApi('post@favorites/remove', async ({ ruleId, url }: { ruleId: string; url: string }) => favoritesManager.del({ url } as any, { id: ruleId } as any))
     registerApi('get@getHistory', async () => await getHistory())
     registerApi('post@history/remove', async ({ ruleId, url }: { ruleId: string; url: string }) => historyManager.del({ url } as any, { id: ruleId } as any))
     registerApi('get@getLocalBooks', async () => await getLocalBooks(this.bookDir))
@@ -299,6 +298,9 @@ export class Api {
     // 配置
     registerApi('get@readConfig', async () => this.config)
     registerApi('post@updateConfig', async (data: any) => await this.updateConfig(data))
+    // 历史记录
+    registerApi('post@history/add', async (data: any) => await historyManager.add(data))
+    registerApi('post@history/del', async (data: any) => await historyManager.del(data))
 
     registerApi('get@getRuleExtras', async () => await getRuleExtras())
     registerApi('post@ping', async (data: any) => await ping(data))

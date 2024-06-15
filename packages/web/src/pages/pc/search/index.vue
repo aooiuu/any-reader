@@ -55,9 +55,22 @@
 
                 <div
                   class="star invisible absolute top-5 right-5 px-2 py-2 rounded-10 bg-[#000000cc] flex items-center justify-center"
-                  @click.stop="favoritesStore.star(row, item.rule.id)"
+                  @click.stop="
+                    favoritesStore.star({
+                      ...row,
+                      ruleId: item.rule.id
+                    })
+                  "
                 >
-                  <icon-star-fill v-if="favoritesStore.starred(row, item.rule.id)" :size="14" />
+                  <icon-star-fill
+                    v-if="
+                      favoritesStore.starred({
+                        ...row,
+                        ruleId: item.rule.id
+                      })
+                    "
+                    :size="14"
+                  />
                   <icon-star v-else :size="14" />
                 </div>
               </div>
@@ -84,8 +97,6 @@ const router = useRouter();
 const route = useRoute();
 const runPromise = pLimit(10);
 
-favoritesStore.sync();
-
 let uuid: string = '';
 const searchText = ref('');
 const contentTypes = ref(CONTENT_TYPES.map((e) => e.value).flat());
@@ -95,35 +106,33 @@ const runCount = ref(0);
 
 const list = ref<any[]>([]);
 
-function onSearch(uid: string) {
+async function onSearch(uid: string) {
   const lastUuid = uid || uuidV4();
   uuid = lastUuid;
   list.value = [];
   total.value = 0;
   runCount.value = 0;
   loading.value = true;
-  rulesStore.sync().then(async () => {
-    const rules = rulesStore.list.filter((e) => contentTypes.value.includes(e.contentType) && e.enableSearch);
-    total.value = rules.length;
+  const rules = rulesStore.list.filter((e) => contentTypes.value.includes(e.contentType) && e.enableSearch);
+  total.value = rules.length;
 
-    const tasks = rules.map((rule) =>
-      runPromise(async () => {
-        if (lastUuid !== uuid) return;
-        runCount.value++;
-        const res = await searchByRuleId({ ruleId: rule.id, keyword: searchText.value });
-        if (res.code === 0) {
-          const rows = res.data;
-          if (!rows.length) return;
-          list.value.push({
-            rule: rule,
-            list: rows
-          });
-        }
-      })
-    );
-    await Promise.all(tasks).catch(() => {});
-    loading.value = false;
-  });
+  const tasks = rules.map((rule) =>
+    runPromise(async () => {
+      if (lastUuid !== uuid) return;
+      runCount.value++;
+      const res = await searchByRuleId({ ruleId: rule.id, keyword: searchText.value });
+      if (res.code === 0) {
+        const rows = res.data;
+        if (!rows.length) return;
+        list.value.push({
+          rule: rule,
+          list: rows
+        });
+      }
+    })
+  );
+  await Promise.all(tasks).catch(() => {});
+  loading.value = false;
 }
 
 function cancelSearch() {
