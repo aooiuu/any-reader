@@ -2,7 +2,7 @@
   <Book
     v-for="item in favoritesStore.list"
     :key="item.url"
-    :cove="item.cover"
+    :cover="item.cover"
     :name="item.name"
     :file-path="item.url"
     :rule-id="item.ruleId"

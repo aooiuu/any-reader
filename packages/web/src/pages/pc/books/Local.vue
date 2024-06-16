@@ -1,5 +1,5 @@
 <template>
-  <Book v-for="item in list" :key="item.url" :cove="item.cover" :name="item.name" :author="item.author" class="mr-10 mb-10" :file-path="item.path" />
+  <Book v-for="item in list" :key="item.url" :cover="item.cover" :name="item.name" :author="item.author" class="mr-10 mb-10" :file-path="item.path" />
 </template>
 
 <script setup>

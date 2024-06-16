@@ -2,7 +2,7 @@
   <Book
     v-for="item in historyStore.list"
     :key="item.url"
-    :cove="item.cover"
+    :cover="item.cover"
     :name="item.name"
     :author="item.author"
     class="mr-10 mb-10"
