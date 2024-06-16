@@ -32,6 +32,10 @@ export class AnalyzerFilter implements Analyzer {
     const browser = await puppeteer.launch({
       // headless: false,
       timeout: 5000,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+      ],
     })
     const page = await browser.newPage()
     await page.setRequestInterception(true)
