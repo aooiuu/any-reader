@@ -1,7 +1,8 @@
 <template>
   <div class="w-full h-full flex flex-col overflow-hidden">
     <div
-      ref="contentRef"
+      id="text-container"
+      class="flex-1 p-10 whitespace-pre-wrap overflow-auto lh-1.5em text-[#b3b3b3]"
       :style="{
         fontSize: settingStore.data.readStyle.fontSize + 'px',
         lineHeight: settingStore.data.readStyle.lineHeight,
@@ -9,11 +10,32 @@
         color: settingStore.data.readStyle.textColor,
         backgroundColor: settingStore.data.readStyle.backgroundColor
       }"
-      class="flex-1 p-10 whitespace-pre-wrap overflow-auto lh-1.5em text-[#b3b3b3]"
-      v-html="content"
-    />
+    >
+      <div ref="contentRef" class="mx-60" v-html="content"></div>
+
+      <div class="flex justify-center">
+        <a-button-group>
+          <a-button type="text" :disabled="!lastChapter" :style="{ color: settingStore.data.readStyle.textColor }" @click="onPrevChapter">
+            <icon-left />
+            上一章
+          </a-button>
+          <a-button type="text" :style="{ color: settingStore.data.readStyle.textColor }" @click="showChapters">目录</a-button>
+          <a-button type="text" :disabled="!nextChapter" :style="{ color: settingStore.data.readStyle.textColor }" @click="onNextChapter">
+            下一章
+            <icon-right />
+          </a-button>
+        </a-button-group>
+      </div>
+
+      <a-back-top target-container="#text-container" :style="{ position: 'absolute' }">
+        <a-button type="text" shape="circle" class="!text-20px" :style="{ color: settingStore.data.readStyle.textColor }">
+          <icon-to-top />
+        </a-button>
+      </a-back-top>
+    </div>
   </div>
 
+  <!-- 目录 -->
   <div
     v-if="chaptersVisible"
     ref="chaptersRef"
@@ -64,17 +86,19 @@ const chaptersRef = ref();
 
 onClickOutside(chaptersRef, () => (chaptersVisible.value = false));
 
-const { settingStore, content, toChapter } = useContent(contentRef);
+const { settingStore, content, toChapter, lastChapter, nextChapter, onPrevChapter, onNextChapter } = useContent(contentRef);
 
 function scrollIntoViewChapter() {
   const el = chaptersRef.value.querySelector(`[title="${readStore.title}"]`);
   el.scrollIntoView({ behavior: 'instant' });
 }
 
-useBus(EVENT_CHAPTERS_BOX).on(() => {
+function showChapters() {
   chaptersVisible.value = true;
   nextTick(scrollIntoViewChapter);
-});
+}
+
+useBus(EVENT_CHAPTERS_BOX).on(showChapters);
 </script>
 
 <style scoped>
