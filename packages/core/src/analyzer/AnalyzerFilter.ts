@@ -29,7 +29,10 @@ export class AnalyzerFilter implements Analyzer {
       ]
     }
 
-    const browser = await puppeteer.launch()
+    const browser = await puppeteer.launch({
+      // headless: false,
+      timeout: 5000,
+    })
     const page = await browser.newPage()
     await page.setRequestInterception(true)
 
@@ -53,6 +56,8 @@ export class AnalyzerFilter implements Analyzer {
     })
 
     await page.goto(this._url)
+    await page.setViewport({ width: 1080, height: 1024 })
+    await sleep(4000) // 有时候可能是异步加载视频
     await browser.close()
     return result
   }
@@ -60,4 +65,13 @@ export class AnalyzerFilter implements Analyzer {
   async getElements(rule: string): Promise<string[]> {
     return this.getStringList(rule)
   }
+}
+
+/**
+ * 延时
+ * @param {number} time 时间
+ * @returns
+ */
+export function sleep(time: number) {
+  return new Promise(resolve => setTimeout(resolve, time))
 }
