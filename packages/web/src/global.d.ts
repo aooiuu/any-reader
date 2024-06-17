@@ -5,6 +5,9 @@ declare global {
     _acquireVsCodeApi: any;
 
     __vscode$initialize_page: string;
+
+    // utools
+    $AnyReader: any;
   }
 }
 

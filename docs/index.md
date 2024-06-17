@@ -4,7 +4,14 @@ outline: deep
 
 # any-reader
 
-多站点自定义规则聚合阅读工具, 支持小说、漫画、视频。包含 [JS 解析库]( ./core/)、[VSCode 插件]( ./vsc/)、[桌面端]( ./desktop/)、[网页端]( ./browser/)、[Docker]( ./docker/)
+开源的多平台自定义源资源聚合工具。支持小说、漫画阅读、视频播放、聚合搜索等, 也支持本地资源TXT、EPUB
+
+- [JS 解析库]( ./core/)
+- [VSCode 插件]( ./vsc/)
+- [桌面端]( ./desktop/)
+- [网页端]( ./browser/)
+- [Docker]( ./docker/)
+- uTools 插件
 
 软件不提供内容, 也不提供任何规则, 但你可以通过编写 [规则](./rule/), 控制呈现内容
 

@@ -5,7 +5,14 @@
 [![satr][satr-src]][satr-href]
 [![issues][issues-src]][issues-href]
 
-多站点自定义规则聚合阅读工具, 支持小说、漫画、视频。包含 [规则解析库](https://aooiuu.github.io/any-reader/core/)、[VSCode 插件](https://aooiuu.github.io/any-reader/vsc/)、[桌面端](https://aooiuu.github.io/any-reader/desktop/)、[网页端](https://aooiuu.github.io/any-reader/browser/)、[Docker](https://aooiuu.github.io/any-reader/docker/)
+开源的多平台自定义源资源聚合工具。支持小说、漫画阅读、视频播放、聚合搜索等, 也支持本地资源TXT、EPUB
+
+- [规则解析库](https://aooiuu.github.io/any-reader/core/)
+- [VSCode 插件](https://aooiuu.github.io/any-reader/vsc/)
+- [桌面端](https://aooiuu.github.io/any-reader/desktop/)
+- [网页端](https://aooiuu.github.io/any-reader/browser/)
+- [Docker](https://aooiuu.github.io/any-reader/docker/)
+- uTools 插件
 
 > 软件不提供内容, 也不提供任何规则, 但你可以通过编写 [规则](https://aooiuu.github.io/any-reader/rule/), 控制呈现内容, [查看文档](https://aooiuu.github.io/any-reader/)
 
@@ -67,6 +74,8 @@ XPath、JSONPath、CSS选择器、正则让规则编写更简洁, 而 JS 脚本�
   </a>
 </p>
 
+> 融入 VSCode, 鱼码合一
+
 [文档](https://aooiuu.github.io/any-reader/vsc/)
 
 <details>
@@ -90,6 +99,19 @@ XPath、JSONPath、CSS选择器、正则让规则编写更简洁, 而 JS 脚本�
 
 </details>
 
+<details>
+<summary>预览</summary>
+
+|                                                搜索                                                 |                                              章节列表                                               |
+| :-------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------: |
+| ![image](https://github.com/aooiuu/any-reader/assets/28108111/f134196b-2943-4d91-937c-159940a44014) | ![image](https://github.com/aooiuu/any-reader/assets/28108111/ec23778a-d024-44a3-acfc-5d073aea3e8f) |
+|                                              文字阅读                                               |                                              漫画阅读                                               |
+| ![image](https://github.com/aooiuu/any-reader/assets/28108111/f331f5c9-3865-4bb2-a6e2-4c98ff0794ae) | ![image](https://github.com/aooiuu/any-reader/assets/28108111/41c0b214-c066-4b30-a3c4-02e4ab073440) |
+|                                                设置                                                 |                                                                                                     |
+| ![image](https://github.com/aooiuu/any-reader/assets/28108111/ad15fc5b-1d74-4298-a137-5c615fe6cbe8) |                                                                                                     |
+
+</details>
+
 ### 桌面端
 
 [文档](https://aooiuu.github.io/any-reader/desktop/)
@@ -106,7 +128,6 @@ XPath、JSONPath、CSS选择器、正则让规则编写更简洁, 而 JS 脚本�
 - [x] 自定义热键
 - [x] 漫画
 - [x] 视频
-- [ ] 视频下载 (🚧开发中)
 - [x] 聚合搜索
 - [x] 发现页分类排行榜
 - [x] 收藏
@@ -127,41 +148,11 @@ XPath、JSONPath、CSS选择器、正则让规则编写更简洁, 而 JS 脚本�
 
  <img src="https://github.com/aooiuu/any-reader/assets/28108111/6166cc3e-f5e5-42ca-a616-5e30157f6c89" width="600"/>
 
-
-```sh
-# 克隆项目
-git clone git@github.com:aooiuu/any-reader.git
-
-# 进入项目根目录
-cd any-reader
-
-# 安装依赖
-pnpm i
-
-# 编译 解析库、工具库
-pnpm run build
-
-pnpm run web:dev
-```
-
 ### Docker
 
 ![Docker Image Version](https://img.shields.io/docker/v/aooiu/any-reader)
 
-快速体验：
-
-```sh
-docker build https://github.com/aooiuu/any-reader.git -t any-reader
-docker run -d --name any-reader -p 8899:8899 any-reader
-
-# 浏览器访问 http://localhost:8899/
-```
-
-如果构建失败, 可以使用 DockerHub 的镜像:
-
-```sh
-docker run -d --name any-reader -p 8899:8899 aooiu/any-reader
-```
+[文档](https://aooiuu.github.io/any-reader/docker/)
 
 ### 移动端
 

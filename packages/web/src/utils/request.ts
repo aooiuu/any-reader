@@ -6,18 +6,23 @@ NProgress.configure({ showSpinner: false });
 
 export async function request(config: any) {
   console.log('[request]', config);
+  const method = config.method ?? 'get';
   if (PLATFORM === 'browser') {
     // web
     return await axios(config);
   } else if (PLATFORM === 'electron') {
     // electron
     const { pm } = await import(`./postMessage.electron`);
-    const method = config.method ?? 'get';
     return pm.send(`${method}@${config.url}`, getPatams(config));
+  } else if (PLATFORM === 'utools') {
+    // utools
+    return await window.$AnyReader.request({
+      url: `${method}@${config.url}`,
+      data: getPatams(config)
+    });
   } else {
     // vscode
     const { pm } = await import(`./postMessage`);
-    const method = config.method ?? 'get';
     !NProgress.isStarted() && NProgress.start();
     const res = await pm.send(`${method}@${config.url}`, getPatams(config), window.acquireVsCodeApi());
     NProgress.done();

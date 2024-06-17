@@ -66,6 +66,7 @@
             </div>
           </template>
           <div
+            v-if="PLATFORM !== 'utools'"
             title="退出"
             class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--toolbar-hoverBackground] app-region-none"
             @click="onExit"

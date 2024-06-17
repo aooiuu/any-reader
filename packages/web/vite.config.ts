@@ -2,21 +2,27 @@ import { fileURLToPath, URL } from 'node:url';
 
 import { defineConfig, loadEnv } from 'vite';
 import createPlugins from './vite/plugins';
+
+export type TPlatform = 'browser' | 'vscode' | 'electron' | 'utools';
+
 // https://vitejs.dev/config/
 export default defineConfig(({ mode, command }) => {
   const env = loadEnv(mode, process.cwd(), '');
   const isBuild = command === 'build';
+  const VITE_APP_PLATFORM = env.VITE_APP_PLATFORM as TPlatform;
 
   let outDir = 'dist/web';
 
   if (env.outDir) {
     outDir = env.outDir;
   } else {
-    if (env.VITE_APP_PLATFORM === 'browser') {
+    if (VITE_APP_PLATFORM === 'browser') {
       outDir = '../server/public';
-    } else if (env.VITE_APP_PLATFORM === 'vscode') {
+    } else if (VITE_APP_PLATFORM === 'vscode') {
       outDir = '../vscode/template-dist';
-    } else if (env.VITE_APP_PLATFORM === 'electron') {
+    } else if (VITE_APP_PLATFORM === 'utools') {
+      outDir = '../utools/public/template';
+    } else if (VITE_APP_PLATFORM === 'electron') {
       outDir = 'dist/electron-template';
     }
   }

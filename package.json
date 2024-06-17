@@ -2,11 +2,11 @@
   "name": "any-reader",
   "type": "module",
   "version": "1.7.1",
+  "private": true,
   "packageManager": "pnpm@8.6.5",
   "description": "",
-  "license": "GPL3",
   "author": "aooiuu",
-  "private": true,
+  "license": "GPL3",
   "homepage": "https://github.com/aooiuu/any-reader#readme",
   "repository": {
     "type": "git",
@@ -57,10 +57,12 @@
     "cli:build-tpl": "npm -C packages/web run cli:build",
     "cli:build-js": "npm -C packages/cli run build",
     "cli:build": "npm-run-all cli:build-tpl cli:build-js",
+    "utools:build": "npm -C packages/web run utools:build && npm -C packages/utools run build",
     "build": "npm-run-all rule-utils:build core:build epub:build shared:build server:build cli:build"
   },
-  "lint-staged": {
-    "*.{vue,js,ts}": "eslint --fix"
+  "optionalDependencies": {
+    "bufferutil": "^4.0.8",
+    "utf-8-validate": "^6.0.4"
   },
   "devDependencies": {
     "@types/mime": "3.0.4",
@@ -70,8 +72,7 @@
     "npm-run-all": "^4.1.5",
     "unbuild": "^2.0.0"
   },
-  "optionalDependencies": {
-    "bufferutil": "^4.0.8",
-    "utf-8-validate": "^6.0.4"
+  "lint-staged": {
+    "*.{vue,js,ts}": "eslint --fix"
   }
 }

@@ -38,13 +38,12 @@ export function alwaysOnTop(pinned: boolean) {
 
 // 打开新窗口
 export function openWindow(data: any) {
-  if (PLATFORM === 'browser') {
-    window.open((/^\//.test(data.url) ? '/#' : '') + data.url);
-    return;
+  if (PLATFORM === 'electron') {
+    return request({
+      method: 'post',
+      url: 'openWindow',
+      data
+    });
   }
-  return request({
-    method: 'post',
-    url: 'openWindow',
-    data
-  });
+  window.open((/^\//.test(data.url) ? '/#' : '') + data.url);
 }
