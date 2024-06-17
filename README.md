@@ -114,6 +114,8 @@ XPath、JSONPath、CSS选择器、正则让规则编写更简洁, 而 JS 脚本�
 
 ### 桌面端
 
+[![release](https://img.shields.io/github/downloads/aooiuu/any-reader/total)](https://github.com/aooiuu/any-reader/releases)
+
 [文档](https://aooiuu.github.io/any-reader/desktop/)
 
 <details>
@@ -146,11 +148,12 @@ XPath、JSONPath、CSS选择器、正则让规则编写更简洁, 而 JS 脚本�
 
 [文档](https://aooiuu.github.io/any-reader/browser/)
 
- <img src="https://github.com/aooiuu/any-reader/assets/28108111/6166cc3e-f5e5-42ca-a616-5e30157f6c89" width="600"/>
+ <img src="https://github.com/aooiuu/any-reader/assets/28108111/6166cc3e-f5e5-42ca-a616-5e30157f6c89" width="400"/>
 
 ### Docker
-
-![Docker Image Version](https://img.shields.io/docker/v/aooiu/any-reader)
+ 
+[![docker version](https://img.shields.io/docker/v/aooiu/any-reader)](https://hub.docker.com/r/aooiu/any-reader)
+[![docker publish](https://img.shields.io/docker/pulls/aooiu/any-reader?label=docker%20pulls&logo=docker&style=flat-square)](https://hub.docker.com/r/aooiu/any-reader)
 
 [文档](https://aooiuu.github.io/any-reader/docker/)
 
