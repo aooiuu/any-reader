@@ -24,10 +24,6 @@ export async function fetch(url: string, keyword = '', result = '', rule: Rule) 
 
   let params: any = {
     method: 'get',
-    headers: {
-      'user-agent':
-       'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.80 Safari/537.36 Edg/98.0.1108.50',
-    },
     url,
   }
 
@@ -65,6 +61,24 @@ export async function fetch(url: string, keyword = '', result = '', rule: Rule) 
         data: params.body,
       })
     }
+  }
+
+  if (!params.headers) {
+    params.headers = {
+      'user-agent':
+       'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.80 Safari/537.36 Edg/98.0.1108.50',
+    }
+  }
+
+  const ua = rule.userAgent
+  if (typeof ua === 'string') {
+    if (ua.startsWith('{') && ua.endsWith('}'))
+      Object.assign(params.headers, JSON.parse(ua))
+    else
+      params.headers['user-agent'] = ua
+  }
+  else if (typeof ua === 'object') {
+    Object.assign(params.headers, ua)
   }
 
   const body = await http(params)

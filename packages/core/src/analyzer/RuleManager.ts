@@ -72,6 +72,15 @@ export interface Rule {
   // 线路
   enableMultiRoads: boolean // 启用多线路
   chapterRoads: string // 线路列表
+
+  // 几种形式
+  // 1.纯文本：
+  //  如: "userAgent": "Mozilla/5.0 xxx"
+  // 2.JSON文本
+  //  如: "userAgent": "{\"User-Agent\":\"Mozilla/5.0 xxx\",\"Cookie\":\"token=123;\"}"
+  // 3.JSON对象
+  //  如: "userAgent": {Cookie: ""}
+  userAgent?: string // Headers JSON字符串
 }
 
 export interface SearchItem {
