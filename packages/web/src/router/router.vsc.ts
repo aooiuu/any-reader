@@ -22,10 +22,7 @@ const router = createRouter({
         },
         {
           path: '/rules',
-          component: () => import('@/pages/pc/rules/index.vue'),
-          meta: {
-            hideBtmBar: true
-          }
+          component: () => import('@/pages/pc/rules/index.vue')
         },
         {
           path: '/rule-info',
@@ -43,8 +40,7 @@ const router = createRouter({
           path: '/search',
           component: () => import('@/pages/vscode/search/index.vue'),
           meta: {
-            keepAlive: true,
-            hideBtmBar: true
+            keepAlive: true
           }
         },
         {
@@ -60,10 +56,7 @@ const router = createRouter({
         },
         {
           path: '/discover',
-          component: () => import('@/pages/vscode/discover/index.vue'),
-          meta: {
-            hideBtmBar: true
-          }
+          component: () => import('@/pages/vscode/discover/index.vue')
         },
         {
           path: '/content',

@@ -123,22 +123,7 @@
         ],
         "priority": "default"
       }
-    ],
-    "configuration": {
-      "type": "object",
-      "title": "AnyReader",
-      "properties": {
-        "any-reader.read-page-mode": {
-          "type": "string",
-          "default": "Editor",
-          "enum": [
-            "Editor",
-            "Sidebar"
-          ],
-          "description": "阅读页模式： Editor=编辑器面板 Sideba=侧边栏"
-        }
-      }
-    }
+    ]
   },
   "devDependencies": {
     "@any-reader/core": "workspace:^",
