@@ -1,0 +1,30 @@
+{
+  "name": "@any-reader/rubick",
+  "type": "commonjs",
+  "version": "1.7.1",
+  "private": true,
+  "description": "",
+  "author": "aooiuu",
+  "license": "GPL3",
+  "homepage": "https://github.com/aooiuu/any-reader#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aooiuu/any-reader"
+  },
+  "bugs": {
+    "url": "https://github.com/aooiuu/any-reader/issues"
+  },
+  "keywords": [],
+  "files": [
+    "public"
+  ],
+  "pluginName": "",
+  "logo": "",
+  "preload": "",
+  "homePage": "",
+  "pluginType": "",
+  "features": [],
+  "scripts": {
+    "build": "node ./scripts/build.cjs"
+  }
+}

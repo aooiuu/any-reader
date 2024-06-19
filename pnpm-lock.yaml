@@ -142,6 +142,8 @@ importers:
         specifier: 3.6.4
         version: 3.6.4
 
+  packages/rubick: {}
+
   packages/rule-utils:
     dependencies:
       base64-js:

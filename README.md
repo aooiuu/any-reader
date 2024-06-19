@@ -12,7 +12,8 @@
 - [桌面端](https://aooiuu.github.io/any-reader/desktop/)
 - [网页端](https://aooiuu.github.io/any-reader/browser/)
 - [Docker](https://aooiuu.github.io/any-reader/docker/)
-- uTools 插件
+- uTools 插件 (暂未上架, 可自行编译)
+- rubick 插件 (any-reader-rubick)
 
 > 软件不提供内容, 也不提供任何规则, 但你可以通过编写 [规则](https://aooiuu.github.io/any-reader/rule/), 控制呈现内容, [查看文档](https://aooiuu.github.io/any-reader/)
 

@@ -58,6 +58,7 @@
     "cli:build-js": "npm -C packages/cli run build",
     "cli:build": "npm-run-all cli:build-tpl cli:build-js",
     "utools:build": "npm -C packages/web run utools:build && npm -C packages/utools run build",
+    "rubick:build": "npm -C packages/rubick run build",
     "build": "npm-run-all rule-utils:build core:build epub:build shared:build server:build cli:build"
   },
   "optionalDependencies": {
