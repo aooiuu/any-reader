@@ -81,10 +81,15 @@ export async function fetch(url: string, keyword = '', result = '', rule: Rule) 
     Object.assign(params.headers, ua)
   }
 
-  const body = await http(params)
-    .then((e) => {
-      return typeof e.data === 'object' ? JSON.stringify(e.data) : e.data
-    })
+  let responseEncoding = params.encoding || 'utf-8'
+  if (responseEncoding === 'gb2312')
+    responseEncoding = 'gbk'
+
+  const body = await http(params, {
+    responseType: 'text',
+    responseEncoding,
+  })
+    .then(e => e.data)
     .catch(() => {})
 
   return {

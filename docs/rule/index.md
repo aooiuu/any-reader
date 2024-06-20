@@ -101,12 +101,12 @@ enum ContentType {
 
 ### URL 规则
 
-| 特性 | 支持情况 | 示例                                                                                                       |
-| ---- | :------: | ---------------------------------------------------------------------------------------------------------- |
-| URL  |    ✅    | `https://xxx.com/search?q=$keyword&pageSize=10`                                                            |
-| JSON |    ✅    | `{"url":"https://xxx.com/search","method":"post","headers":{"token":"111"},"body":{"keyword":"$keyword"}}` |
-| @js  |    ✅    | `@js:(() => { return {url, method, body, encoding, headers}; })();`                                        |
-| 编码 |    ❌    |                                                                                                            |
+| 特性     | 支持情况 | 示例                                                                                                       |
+| -------- | :------: | ---------------------------------------------------------------------------------------------------------- |
+| URL      |    ✅    | `https://xxx.com/search?q=$keyword&pageSize=10`                                                            |
+| JSON     |    ✅    | `{"url":"https://xxx.com/search","method":"post","headers":{"token":"111"},"body":{"keyword":"$keyword"}}` |
+| @js      |    ✅    | `@js:(() => { return {url, method, body, encoding, headers}; })();`                                        |
+| encoding |    ✅    |                                                                                                            |
 
 #### 变量
 
@@ -130,11 +130,11 @@ enum ContentType {
 | `@css`     |    ✅    |                                  | `@css:.box1 .box2@text`                 |
 | `@json`    |    ✅    |                                  | `@json:$.list[:1].title`                |
 | `@xpath`   |    ✅    |                                  | `@xpath://*[@class="box3"]/text()`      |
-| `@js`      |    ⚠️    |                                  |                                         |
+| `@js`      |    ✅    |                                  |                                         |
 | `@filter`  |    ✅    | 模拟浏览器加载地址后匹配指定链接 | `@filter:(?:m3u8\|mp4)(?:$\|/\|\\?\|&)` |
 | `@replace` |    ✅    |                                  | `@replace:.*?url=\|.*?v=`               |
 | `##`       |    ✅    | 正则替换                         | `@css:.c2 a@href##\\d+\\.html`          |
-| `{‍​‍{}}`  |    ✅    | 拼接                             | `http://www.aaa.com/{‍{$.id}}`          |
+| `{‍​‍{}}`  |    ✅    | 使用变量                         | `http://www.aaa.com/{‍{$.id}}`          |
 | 嵌套组合   |    ✅    |                                  | `$.info.body@css:.box1 .box2@text`      |
 | `\|\|`     |    ✅    |                                  |                                         |
 | `&&`       |    ✅    |                                  |                                         |
@@ -176,11 +176,9 @@ enum ContentType {
 
 其中 `replacement` 和 `replaceFirstFlag` 均可以省略。
 
-### 拼接
+### 变量
 
 例子: `aa{‍​‍{rule1}}bb{‍​‍{rule2}}cc`
-
-使用 `{‍​‍{}}` 对结果进行拼接。
 
 ### 级联
 
