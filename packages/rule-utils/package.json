@@ -27,6 +27,6 @@
     "base64-js": "^1.5.1",
     "pako": "^2.1.0"
   },
-  "author": "aooiuu",
+  "author": "aooiuu <aooiu@qq.com>",
   "license": "GPL3"
 }

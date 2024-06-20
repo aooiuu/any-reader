@@ -8,7 +8,7 @@
     "start": "esno src/start.ts"
   },
   "keywords": [],
-  "author": "aooiuu",
+  "author": "aooiuu <aooiu@qq.com>",
   "license": "GPL3",
   "type": "module",
   "exports": {

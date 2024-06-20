@@ -6,16 +6,19 @@ on:
       - v[0-9]+.[0-9]+.[0-9]+-alpha.[0-9]+
     branches:
       - master
+      - dev
 
 jobs:
   release:
     runs-on: ${{ matrix.os }}
 
+    permissions:
+      contents: write
+
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest]
-        # os: [windows-latest, macos-latest, ubuntu-latest]
+        os: [windows-latest, macos-latest, ubuntu-latest]
 
     steps:
       - name: Check out git repository
@@ -48,6 +51,7 @@ jobs:
 
       # https://github.com/HaaLeo/publish-vscode-extension
       - name: build vscode vsx
+        if: matrix.os == 'windows-latest'
         uses: HaaLeo/publish-vscode-extension@v1
         id: publishVSX
         with:
@@ -61,38 +65,24 @@ jobs:
 
       - name: Build Electron App
         run: pnpm electron:build
-        # env:
-        #   GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-
-      - name: Cleanup Artifacts for Windows
-        if: matrix.os == 'windows-latest'
-        run: |
-          npx rimraf "packages/web/dist/electron/!(*.exe)"
-
-      # - name: Cleanup Artifacts for MacOS
-      #   if: matrix.os == 'macos-latest'
-      #   run: |
-      #     npx rimraf "packages/web/dist/electron/!(*.dmg)"
-
-      # https://github.com/actions/upload-artifact
-      - name: upload artifacts
-        uses: actions/upload-artifact@v3.0.0
-        with:
-          name: ${{ matrix.os }}
-          path: |
-            ${{ steps.publishVSX.outputs.vsixPath }}
-            packages/web/dist/electron
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # https://github.com/softprops/action-gh-release
       - name: release
         uses: softprops/action-gh-release@v2.0.4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: v${{ steps.pkgversion.outputs.value }}-alpha.${{ steps.short_sha.outputs.value }}
           name: v${{ steps.pkgversion.outputs.value }}-alpha.${{ steps.short_sha.outputs.value }}
           prerelease: trues
           draft: true
           files: |
-            packages/web/dist/electron/**
+            packages/web/dist/electron/*.AppImage
+            packages/web/dist/electron/*.deb
+            packages/web/dist/electron/*.dmg
+            packages/web/dist/electron/*.exe
+            packages/web/dist/electron/*.rpm
+            packages/web/dist/electron/*.zip
             packages/vscode/*.vsix
-        env:
-          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}

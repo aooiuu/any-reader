@@ -14,7 +14,7 @@
     "build": "esno ./scripts/publish.cjs && unbuild"
   },
   "keywords": [],
-  "author": "aooiuu",
+  "author": "aooiuu <aooiu@qq.com>",
   "license": "GPL3",
   "repository": {
     "type": "git",

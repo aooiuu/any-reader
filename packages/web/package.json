@@ -1,7 +1,19 @@
 {
   "name": "@any-reader/web",
   "version": "1.7.2",
+  "description": "",
+  "author": "aooiuu <aooiu@qq.com>",
+  "license": "GPL3",
+  "homepage": "https://github.com/aooiuu/any-reader#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aooiuu/any-reader"
+  },
+  "bugs": {
+    "url": "https://github.com/aooiuu/any-reader/issues"
+  },
   "private": true,
+  "keywords": [],
   "scripts": {
     "dev": "cross-env VITE_APP_PLATFORM=browser vite",
     "build:w": "cross-env VITE_APP_PLATFORM=vscode vite build --watch",

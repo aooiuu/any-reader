@@ -2,22 +2,6 @@ FROM node:20-bookworm-slim AS dep-builder
 
 WORKDIR /app
 
-RUN corepack enable && corepack prepare pnpm@8.6.5 --activate
-
-RUN \
-  echo 'use npm mirror' && \
-  npm config set registry https://registry.npmmirror.com && \
-  yarn config set registry https://registry.npmmirror.com && \
-  pnpm config set registry https://registry.npmmirror.com ;
-
-COPY ["./pnpm-lock.yaml", ".npmrc",  "./pnpm-workspace.yaml", "./package.json",  "/app/"]
-
-RUN pnpm fetch
-
-COPY . /app
-RUN pnpm install -r --offline
-
-
 # puppeteer
 RUN apt-get update \
   && apt-get install -y \
@@ -65,6 +49,21 @@ RUN apt-get update \
   xdg-utils \
   --no-install-recommends \
   && rm -rf /var/lib/apt/lists/*
+
+RUN corepack enable && corepack prepare pnpm@8.6.5 --activate
+
+RUN \
+  echo 'use npm mirror' && \
+  npm config set registry https://registry.npmmirror.com && \
+  yarn config set registry https://registry.npmmirror.com && \
+  pnpm config set registry https://registry.npmmirror.com ;
+
+COPY ["./pnpm-lock.yaml", ".npmrc",  "./pnpm-workspace.yaml", "./package.json",  "/app/"]
+
+RUN pnpm fetch
+
+COPY . /app
+RUN pnpm install -r --offline
 
 RUN pnpm run build && pnpm run web:build-b
 
