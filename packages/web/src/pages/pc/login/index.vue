@@ -13,6 +13,8 @@
 <script setup>
 import md5 from 'blueimp-md5';
 import { login } from '@/api';
+import { useRulesStore } from '@/stores/rules';
+import { useFavoritesStore } from '@/stores/favorites';
 
 const inputText = ref('');
 const loading = ref(false);
@@ -23,6 +25,8 @@ async function submit() {
   const res = await login({ password: md5(inputText.value) }).catch(() => {});
   loading.value = false;
   if (res?.code === 0) {
+    useRulesStore().sync();
+    useFavoritesStore().sync();
     router.push('/');
   }
 }
