@@ -76,7 +76,7 @@ jobs:
         with:
           tag_name: v${{ steps.pkgversion.outputs.value }}-alpha.${{ steps.short_sha.outputs.value }}
           name: v${{ steps.pkgversion.outputs.value }}-alpha.${{ steps.short_sha.outputs.value }}
-          prerelease: trues
+          prerelease: true
           draft: true
           files: |
             packages/web/dist/electron/*.AppImage
