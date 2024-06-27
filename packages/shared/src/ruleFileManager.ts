@@ -116,7 +116,7 @@ export async function importRules(url: string) {
     return 1
   }
   // 网络地址
-  if (/https?:\/\/.{3,}/.test(url)) {
+  if (/^https?:\/\/.{3,}/.test(url)) {
     const res = await axios.create().get(url).catch((e) => {
       console.warn(e)
     })
@@ -141,8 +141,15 @@ export async function importRules(url: string) {
     return 0
   const jsons = Array.isArray(json) ? json : [json]
   for (let json of jsons) {
-    if (typeof json === 'string' && isESO(json))
-      json = decodeRule(json)
+    if (typeof json === 'string' && isESO(json)) {
+      try {
+        json = decodeRule(json)
+      }
+      catch (error) {
+        console.warn(error)
+        continue
+      }
+    }
     if (isRule(json))
       await update(json).catch(() => {})
   }
