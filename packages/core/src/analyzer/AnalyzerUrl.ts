@@ -85,7 +85,8 @@ export async function fetch(url: string, keyword = '', result = '', rule: Rule) 
   if (responseEncoding === 'gb2312')
     responseEncoding = 'gbk'
 
-  const body = await http(params, {
+  const body = await http({
+    ...params,
     responseType: 'text',
     responseEncoding,
   })

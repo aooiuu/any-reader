@@ -21,7 +21,7 @@
     </div>
 
     <div class="h-full flex flex-col flex-1 ml-5 overflow-hidden">
-      <Category :list="categoryList" @change="changeCategory" />
+      <ARCategory :list="categoryList" @change="changeCategory" />
       <a-spin class="w-full h-full" :loading="loading">
         <div v-if="list.length" class="mt-10 flex-1 overflow-auto">
           <div class="flex overflow-auto justify-center flex-wrap gap-6">
@@ -79,7 +79,6 @@ import { CONTENT_TYPES, CONTENT_TYPE } from '@/constants';
 import { discover, discoverMap } from '@/api';
 import { useFavoritesStore } from '@/stores/favorites';
 import { useRulesStore } from '@/stores/rules';
-import Category from './Category.vue';
 
 const router = useRouter();
 const favoritesStore = useFavoritesStore();
