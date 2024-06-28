@@ -1,4 +1,5 @@
 import jsx from '@vitejs/plugin-vue-jsx';
+import { analyzer } from 'vite-bundle-analyzer';
 import UnoCSS from 'unocss/vite';
 import type { PluginOption } from 'vite';
 import autoImport from './autoImport';
@@ -13,6 +14,7 @@ export default function createPlugins({ env, isBuild }: { env: Record<string, st
   vitePlugins.push(UnoCSS());
   vitePlugins.push(mock());
   vitePlugins.push(autoImport());
+  vitePlugins.push(analyzer());
 
   if (env.VITE_APP_PLATFORM === 'electron') {
     vitePlugins.push(electron(isBuild) as PluginOption);

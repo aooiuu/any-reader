@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import { monaco } from '@/utils/monaco';
 
 const modelValue = defineModel();
 let lastValue = '';

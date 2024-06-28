@@ -42,7 +42,23 @@ export default defineConfig(({ mode, command }) => {
     },
     build: {
       outDir,
-      emptyOutDir: true
+      emptyOutDir: true,
+      rollupOptions: {
+        output: {
+          manualChunks: (id) => {
+            const vendors = ['monaco-editor', 'ant-design-vue', 'hls.js'];
+            for (const vendor of vendors) {
+              if (id.includes(vendor)) {
+                return vendor;
+              }
+            }
+
+            if (id.includes('node_modules')) {
+              return 'vendor';
+            }
+          }
+        }
+      }
     },
     resolve: {
       alias: {

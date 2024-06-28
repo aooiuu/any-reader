@@ -1,5 +1,5 @@
 import type { GlobalToken } from 'ant-design-vue/es/theme';
-import { kebabCase } from 'lodash';
+import { kebabCase } from 'lodash-es';
 import { updateCSS } from '@v-c/utils';
 
 function formatKey(key: string, prefixCls: string) {

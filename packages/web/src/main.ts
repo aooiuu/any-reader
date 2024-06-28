@@ -15,8 +15,6 @@ import Antd from 'ant-design-vue';
 
 import { createPinia } from 'pinia';
 
-import '@/utils/monaco';
-
 const app = createApp(App);
 
 app.use(router);
