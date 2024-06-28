@@ -1,5 +1,8 @@
 import jsx from '@vitejs/plugin-vue-jsx';
 import { analyzer } from 'vite-bundle-analyzer';
+import Components from 'unplugin-vue-components/vite';
+import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
+
 import UnoCSS from 'unocss/vite';
 import type { PluginOption } from 'vite';
 import autoImport from './autoImport';
@@ -15,6 +18,18 @@ export default function createPlugins({ env, isBuild }: { env: Record<string, st
   vitePlugins.push(mock());
   vitePlugins.push(autoImport());
   vitePlugins.push(analyzer());
+  vitePlugins.push(
+    Components({
+      dts: true,
+      dirs: [],
+      resolvers: [
+        AntDesignVueResolver({
+          // resolveIcons: true,
+          importStyle: false
+        })
+      ]
+    })
+  );
 
   if (env.VITE_APP_PLATFORM === 'electron') {
     vitePlugins.push(electron(isBuild) as PluginOption);

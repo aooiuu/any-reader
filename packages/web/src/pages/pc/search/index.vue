@@ -7,7 +7,7 @@
           placeholder="输入关键词，回车键搜索"
           class="!w-120px"
           :disabled="loading"
-          @keyup.enter="onSearch"
+          @keyup.enter="onSearch()"
         />
         <a-checkbox-group v-model:value="contentTypes" :disabled="loading" :options="CONTENT_TYPES.filter((e) => e.value !== CONTENT_TYPE.GAME)">
         </a-checkbox-group>
@@ -110,7 +110,7 @@ const runCount = ref(0);
 
 const list = ref<any[]>([]);
 
-async function onSearch(uid: string) {
+async function onSearch(uid?: string) {
   const lastUuid = uid || uuidV4();
   uuid = lastUuid;
   list.value = [];

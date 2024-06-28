@@ -11,14 +11,11 @@ import './assets/main.scss';
 // vscode ui
 import './plugins/vsc-ui';
 
-import Antd from 'ant-design-vue';
-
 import { createPinia } from 'pinia';
 
 const app = createApp(App);
 
 app.use(router);
-app.use(Antd);
 app.use(createPinia());
 useComponent(app);
 
