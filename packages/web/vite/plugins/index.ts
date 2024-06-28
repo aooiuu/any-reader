@@ -17,7 +17,7 @@ export default function createPlugins({ env, isBuild }: { env: Record<string, st
   vitePlugins.push(UnoCSS());
   vitePlugins.push(mock());
   vitePlugins.push(autoImport());
-  vitePlugins.push(analyzer());
+  env.ENABLE_BUNDLE_ANALYZER && vitePlugins.push(analyzer());
   vitePlugins.push(
     Components({
       dts: true,
