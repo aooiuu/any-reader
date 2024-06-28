@@ -2,23 +2,21 @@
   <div class="px-10 py-10 h-full flex flex-col">
     <div class="mb-10 flex gap-10">
       <div class="flex-1 flex items-center gap-10">
-        <a-input-search v-model="searchText" placeholder="搜索" class="!w-140px" />
-        <a-checkbox-group v-model="contentTypes">
-          <a-checkbox v-for="item in CONTENT_TYPES" :key="item.value" :value="item.value">
-            {{ item.label }}
-          </a-checkbox>
-        </a-checkbox-group>
+        <a-input-search v-model:value="searchText" placeholder="搜索" class="!w-140px" />
+        <a-checkbox-group v-model:value="contentTypes" :options="CONTENT_TYPES"> </a-checkbox-group>
       </div>
     </div>
     <input ref="fileInputRef" type="file" class="hidden" @change="changeFile" />
     <div class="mb-10 flex gap-10">
       <a-dropdown position="bottom">
-        <a-button type="primary">添加规则<icon-down /></a-button>
-        <template #content>
-          <a-doption @click="addRuleUrl">从文本导入</a-doption>
-          <a-doption @click="addRuleFile">从文件导入</a-doption>
-          <a-doption @click="addRuleUrl">从URL导入</a-doption>
-          <a-doption @click="addRule">单个添加</a-doption>
+        <a-button type="primary">添加规则</a-button>
+        <template #overlay>
+          <a-menu>
+            <a-menu-item @click="addRuleUrl">从文本导入</a-menu-item>
+            <a-menu-item @click="addRuleFile">从文件导入</a-menu-item>
+            <a-menu-item @click="addRuleUrl">从URL导入</a-menu-item>
+            <a-menu-item @click="addRule">单个添加</a-menu-item>
+          </a-menu>
         </template>
       </a-dropdown>
 
@@ -26,45 +24,35 @@
       <a-button type="primary" @click="pingAll">测速</a-button>
       <a-button type="primary" status="danger" @click="delTimeoutRules">一键删除超时规则</a-button>
       <a-dropdown position="bottom" :disabled="!selectedKeys.length">
-        <a-button :disabled="!selectedKeys.length">批量操作<icon-down /></a-button>
-        <template #content>
-          <a-doption @click="batchUpdate({ enableSearch: false })">禁用选中搜索</a-doption>
-          <a-doption @click="batchUpdate({ enableDiscover: false })">禁用选中发现</a-doption>
-          <div class="h-1 bg-[#ffffff33]"></div>
-          <a-doption @click="batchUpdate({ enableSearch: true })">启用选中搜索</a-doption>
-          <a-doption @click="batchUpdate({ enableDiscover: true })">启用选中发现</a-doption>
-          <div class="h-1 bg-[#ffffff33]"></div>
-          <a-doption @click="delSelected">删除选中</a-doption>
-          <div class="h-1 bg-[#ffffff33]"></div>
-          <a-doption @click="copySelected">复制选中</a-doption>
-          <a-doption @click="exportSelected">导出选中</a-doption>
+        <a-button :disabled="!selectedKeys.length">批量操作</a-button>
+        <template #overlay>
+          <a-menu>
+            <a-menu-item @click="batchUpdate({ enableSearch: false })">禁用选中搜索</a-menu-item>
+            <a-menu-item @click="batchUpdate({ enableDiscover: false })">禁用选中发现</a-menu-item>
+            <a-menu-item @click="batchUpdate({ enableSearch: true })">启用选中搜索</a-menu-item>
+            <a-menu-item @click="batchUpdate({ enableDiscover: true })">启用选中发现</a-menu-item>
+            <a-menu-item @click="delSelected">删除选中</a-menu-item>
+            <a-menu-item @click="copySelected">复制选中</a-menu-item>
+            <a-menu-item @click="exportSelected">导出选中</a-menu-item>
+          </a-menu>
         </template>
       </a-dropdown>
     </div>
-    <div class="flex-1 overflow-hidden" @drop="drop" @dragover.prevent @dragenter.prevent>
+    <div ref="tableWarpRef" class="flex-1 overflow-hidden" @drop="drop" @dragover.prevent @dragenter.prevent>
       <a-table
-        v-model:selectedKeys="selectedKeys"
-        :loading="loading"
-        :draggable="{ type: 'handle', width: 40 }"
         row-key="id"
+        :custom-row="(record) => customRow(record, tableData)"
         :pagination="{
-          showTotal: true,
-          showJumper: true,
-          showPageSize: true,
-          pageSizeOptions: [10, 20, 50, 100, 500]
+          defaultPageSize: 10,
+          showTotal: (total) => `总数: ${total}`
         }"
-        :row-selection="{
-          type: 'checkbox',
-          showCheckedAll: true,
-          onlyCurrent: true
-        }"
-        :columns="tableColumns"
-        :data="tableData"
-        :scrollbar="true"
         :scroll="{
-          y: '100%'
+          y: height - 120
         }"
-        @change="handleChange"
+        :row-selection="{ selectedRowKeys: selectedKeys, onChange: (v) => (selectedKeys = v) }"
+        :columns="tableColumns"
+        :data-source="tableData"
+        :scrollbar="true"
       >
         <template #empty>
           <div class="h-80 flex items-center justify-center">没有规则, 你可以拖拽规则 JSON 文件到这里导入</div>
@@ -75,10 +63,10 @@
 </template>
 
 <script setup lang="jsx">
-import { Modal, Message } from '@arco-design/web-vue';
+import { App } from 'ant-design-vue';
 import _ from 'lodash-es';
 import { encodeRule } from '@any-reader/rule-utils';
-import { useClipboard } from '@vueuse/core';
+import { useClipboard, useElementSize } from '@vueuse/core';
 import { saveAs } from 'file-saver';
 import { CONTENT_TYPES } from '@/constants';
 import { useRulesStore } from '@/stores/rules';
@@ -87,6 +75,11 @@ import { timeoutWith } from '@/utils/promise';
 import { useRuleExtra } from './hooks/useRuleExtra';
 import { useDropRules } from '@/hooks/useDropRules';
 import ImportRules from './ImportRules.vue';
+
+const { modal, message } = App.useApp();
+
+const tableWarpRef = ref();
+const { height } = useElementSize(tableWarpRef);
 
 const router = useRouter();
 const rulesStore = useRulesStore();
@@ -129,7 +122,9 @@ const tableColumns = ref([
     align: 'center',
     width: 100,
     ellipsis: true,
+    fixed: 'left',
     tooltip: true,
+    rowDrag: true,
     sortable: {
       sortDirections: ['ascend', 'descend']
     }
@@ -142,14 +137,15 @@ const tableColumns = ref([
     sortable: {
       sortDirections: ['ascend', 'descend']
     },
-    render: ({ record }) => {
+    customRender: ({ record }) => {
       return (
-        <a-link
+        <a-button
+          type="link"
           onClick={() => {
             window.open(record.host);
           }}>
           {record.host}
-        </a-link>
+        </a-button>
       );
     }
   },
@@ -158,7 +154,7 @@ const tableColumns = ref([
     dataIndex: 'extra.ping',
     width: 90,
     align: 'center',
-    render: ({ record }) => {
+    customRender: ({ record }) => {
       const extra = record.extra;
       return (
         <a-button
@@ -210,10 +206,10 @@ const tableColumns = ref([
       ],
       filter: (value, record) => value.includes(record.enableSearch)
     },
-    render: ({ record }) => (
+    customRender: ({ record }) => (
       <a-switch
-        model-value={record.enableSearch}
-        onUpdate:model-value={(v) =>
+        checked={record.enableSearch}
+        onUpdate:checked={(v) =>
           rulesStore.updateRuleById(record.id, {
             enableSearch: v
           })
@@ -239,10 +235,10 @@ const tableColumns = ref([
       filter: (value, record) => value.includes(record.enableDiscover),
       multiple: false
     },
-    render: ({ record }) => (
+    customRender: ({ record }) => (
       <a-switch
-        model-value={record.enableDiscover}
-        onUpdate:model-value={(v) =>
+        checked={record.enableDiscover}
+        onUpdate:checked={(v) =>
           rulesStore.updateRuleById(record.id, {
             enableDiscover: v
           })
@@ -280,7 +276,7 @@ const tableColumns = ref([
         }
       }
     },
-    render: ({ record }) => (
+    customRender: ({ record }) => (
       <div>
         {LOG_CONFIG.map((log) => (
           <div class="flex items-center">
@@ -297,13 +293,13 @@ const tableColumns = ref([
     width: 120,
     align: 'center',
     fixed: 'right',
-    render: ({ record }) => (
-      <div class="flex gap-5">
-        <a-button type="primary" shape="circle" onClick={() => editRule(record)}>
-          <icon-edit />
+    customRender: ({ record }) => (
+      <div class="flex gap-5 text-12">
+        <a-button size="small" type="text" onClick={() => editRule(record)}>
+          编辑
         </a-button>
-        <a-button type="primary" status="danger" shape="circle" onClick={() => delRule(record.id)}>
-          <icon-delete />
+        <a-button size="small" type="text" danger onClick={() => delRule(record.id)}>
+          删除
         </a-button>
       </div>
     )
@@ -334,9 +330,10 @@ function addRuleFile() {
 }
 
 function addRuleUrl() {
-  const modal = Modal.open({
+  const m = modal.confirm({
     draggable: true,
     mask: true,
+    closable: true,
     width: 400,
     footer: false,
     title: '导入规则',
@@ -344,12 +341,12 @@ function addRuleUrl() {
       <ImportRules
         onDone={(count = 0) => {
           rulesStore.sync();
-          Message.success({
+          message.success({
             content: `导入${count}条数据`,
             closable: true,
             resetOnHover: true
           });
-          modal.close();
+          m.destroy();
         }}
       />
     )
@@ -376,7 +373,7 @@ async function batchUpdate(rule) {
 
 // 删除规则
 function delRule(id) {
-  Modal.confirm({
+  modal.confirm({
     title: '提示',
     content: '规则删除后不可恢复',
     closable: true,
@@ -408,20 +405,69 @@ function delTimeoutRules() {
   );
 }
 
-// 表格数据发生变化时触发
-async function handleChange(data, extra, currentData) {
-  console.log('[handleChange]', { data, extra, currentData });
-  const { type } = extra;
-  if (type !== 'drag') return;
+async function onDrag() {
   loading.value = true;
-  const ids = currentData.map((e) => e.raw.id);
+  const ids = rulesStore.list.map((e) => e.id);
   await updateRuleSort({ id: ids }).catch(() => {});
   await rulesStore.sync();
   loading.value = false;
 }
 
+let dragStartId = '';
+function customRow(record, state) {
+  return {
+    draggable: true,
+    style: { cursor: 'move' },
+    onDragstart: (ev) => {
+      console.log('[onDragStart]', { record });
+      ev.dataTransfer.effectAllowed = 'move';
+      dragStartId = record.id;
+    },
+    onDragenter: (ev) => {
+      const nodes = ev.target.parentNode.childNodes;
+      nodes.forEach((item) => {
+        if (!item.style) return;
+        item.style.borderTop = '2px dashed #1890ff';
+      });
+    },
+    onDragleave: (ev) => {
+      const nodes = ev.target.parentNode.childNodes;
+      nodes.forEach((item) => {
+        if (!item.style) return;
+        item.style.borderTop = '';
+      });
+    },
+    onDrop: (ev) => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      const files = ev.dataTransfer?.files || [];
+      if (files.length) {
+        for (const file of files) {
+          dropFile(file);
+        }
+        return;
+      }
+
+      const dropCol = ev.target.tagName !== 'TR' ? ev.target.parentNode : ev.target;
+      const dropId = record.id;
+      const dragIndex = state.findIndex((item) => item.id === dragStartId);
+      const dropIndex = state.findIndex((item) => item.id === dropId);
+      const data = [...state];
+      const item = data.splice(dragIndex, 1); // 移除拖动前的元素
+      data.splice(dropIndex, 0, item[0]); // 将拖动元素插入到新的位置
+      rulesStore.list = data;
+      onDrag();
+      dropCol.childNodes.forEach((item) => {
+        if (!item.style) return;
+        item.style.borderTop = '';
+      });
+    },
+    onDragOver: (ev) => ev.preventDefault()
+  };
+}
+
 const { drop, dropFile } = useDropRules(({ count }) => {
-  Message.success({
+  message.success({
     content: `导入${count}条数据`,
     closable: true,
     resetOnHover: true
@@ -455,14 +501,14 @@ function getSelectedRuleStr() {
 function copySelected() {
   copy(getSelectedRuleStr())
     .then(() => {
-      Message.success({
+      message.success({
         content: `已复制到剪贴板`,
         closable: true,
         resetOnHover: true
       });
     })
     .catch(() => {
-      Message.success({
+      message.success({
         content: `复制失败`,
         closable: true,
         resetOnHover: true

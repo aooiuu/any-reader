@@ -1,6 +1,6 @@
 <template>
   <SettingRow :title="props.title">
-    <a-input v-model="modelValue" class="!w-200px" @keydown="keydown" @keyup="keyup" />
+    <a-input v-model:value="modelValue" class="!w-200px" @keydown="keydown" @keyup="keyup" />
   </SettingRow>
 </template>
 

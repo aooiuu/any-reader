@@ -1,12 +1,15 @@
 <template>
-  <a-spin class="w-full h-full" :loading="loading">
-    <div class="px-10 py-10 h-full flex flex-col overflow-hidden">
+  <div class="w-full h-full">
+    <div v-if="loading" class="w-full h-full flex items-center justify-center">
+      <a-spin />
+    </div>
+    <div v-else class="px-10 py-10 h-full flex flex-col overflow-hidden">
       <div class="flex-1 overflow-hidden flex flex-col">
         <div class="mb-10">
-          <a-radio-group v-model="formType" type="button">
-            <a-radio value="All">双栏</a-radio>
-            <a-radio value="Form">Form</a-radio>
-            <a-radio value="JSON">JSON</a-radio>
+          <a-radio-group v-model:value="formType" type="button">
+            <a-radio-button value="All">双栏</a-radio-button>
+            <a-radio-button value="Form">Form</a-radio-button>
+            <a-radio-button value="JSON">JSON</a-radio-button>
           </a-radio-group>
         </div>
 
@@ -18,12 +21,12 @@
             class="flex-1 overflow-auto"
             layout="vertical"
           >
-            <a-radio-group v-model="formStep" type="button" direction="vertical" class="mb-10 mx-10">
-              <a-radio :value="1">基础信息</a-radio>
-              <a-radio :value="2">搜索</a-radio>
-              <a-radio :value="3">章节列表</a-radio>
-              <a-radio :value="4">内容</a-radio>
-              <a-radio :value="5">发现页</a-radio>
+            <a-radio-group v-model:value="formStep" type="button" direction="vertical" class="mb-10 mx-10">
+              <a-radio-button :value="1">基础信息</a-radio-button>
+              <a-radio-button :value="2">搜索</a-radio-button>
+              <a-radio-button :value="3">章节列表</a-radio-button>
+              <a-radio-button :value="4">内容</a-radio-button>
+              <a-radio-button :value="5">发现页</a-radio-button>
             </a-radio-group>
 
             <template v-for="item in formItems" :key="item.prop">
@@ -33,16 +36,16 @@
                   <span class="op-70 ml-10 text-12">{{ item.prop }}</span>
                 </template>
                 <template v-if="item.type === 'select'">
-                  <a-select v-model="formData[item.prop]">
-                    <a-option v-for="o in item.options" :key="o.value" :value="o.value">{{ o.label }}</a-option>
+                  <a-select v-model:value="formData[item.prop]">
+                    <a-select-option v-for="o in item.options" :key="o.value" :value="o.value">{{ o.label }}</a-select-option>
                   </a-select>
                 </template>
                 <template v-else-if="item.type === 'number'">
-                  <AInputNumber v-model="formData[item.prop]" :min="0" :placeholder="item.prop" />
+                  <a-input-number v-model:value="formData[item.prop]" :min="0" :placeholder="item.prop" />
                 </template>
                 <template v-else-if="item.type === 'textarea'">
-                  <ATextarea
-                    v-model="formData[item.prop]"
+                  <a-textarea
+                    v-model:value="formData[item.prop]"
                     :placeholder="item.prop"
                     :auto-size="{
                       minRows: 2,
@@ -51,10 +54,10 @@
                   />
                 </template>
                 <template v-else-if="item.type === 'switch'">
-                  <ASwitch v-model="formData[item.prop]" :checked-value="true" :unchecked-value="false" :placeholder="item.prop" />
+                  <a-switch v-model:value="formData[item.prop]" :checked-value="true" :unchecked-value="false" :placeholder="item.prop" />
                 </template>
                 <template v-else>
-                  <AInput v-model="formData[item.prop]" :placeholder="item.prop" />
+                  <a-input v-model:value="formData[item.prop]" :placeholder="item.prop" />
                 </template>
               </AFormItem>
             </template>
@@ -71,7 +74,7 @@
         <a-button type="primary" @click="submit">确定</a-button>
       </div>
     </div>
-  </a-spin>
+  </div>
 </template>
 
 <script setup>

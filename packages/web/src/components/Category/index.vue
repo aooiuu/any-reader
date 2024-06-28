@@ -1,18 +1,18 @@
 <template>
-  <div class="w-full">
-    <a-radio-group
-      ref="containerRef"
-      :model-value="value"
-      type="button"
-      class="w-full overflow-auto"
-      @wheel="onWheel($event)"
-      @update:model-value="onInput"
+  <div ref="containerRef" class="w-full flex overflow-x-auto overflow-y-hidden" @wheel="onWheel($event)">
+    <div
+      v-for="item in props.list"
+      :key="item.name"
+      :class="[
+        'flex-shrink-0 h-32 lh-32 px-10 rounded-10 mb-5 cursor-pointer hover:bg-[--ar-color-primary-bg]',
+        value === item.name ? ' bg-[--ar-color-primary-bg] text-[--ar-color-primary-text]' : ''
+      ]"
+      @click="onInput(item.name)"
     >
-      <a-radio v-for="item in props.list" :key="item.name" :value="item.name" class="block flex-shrink-0">{{ item.name }}</a-radio>
-    </a-radio-group>
-
-    <Category v-if="nextList.length > 1" :list="nextList" @change="(row: any) => emit('change', row)" />
+      {{ item.name }}
+    </div>
   </div>
+  <Category v-if="nextList.length > 1" :list="nextList" @change="(row: any) => emit('change', row)" />
 </template>
 
 <script setup lang="ts">
@@ -31,9 +31,9 @@ const containerRef = ref();
 // 处理鼠标滚轮
 function onWheel(event: WheelEvent) {
   if (event.deltaY > 0) {
-    containerRef.value.$el.scrollLeft += 20;
+    containerRef.value.scrollLeft += 20;
   } else {
-    containerRef.value.$el.scrollLeft -= 20;
+    containerRef.value.scrollLeft -= 20;
   }
 }
 

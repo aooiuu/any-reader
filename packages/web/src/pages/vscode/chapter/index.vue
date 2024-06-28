@@ -1,8 +1,8 @@
 <template>
   <div class="w-full h-full flex flex-col overflow-hidden">
     <TreeItem v-if="ruleId" class="flex items-center" @click="star">
-      <icon-star-fill v-if="isStarred" :size="14" />
-      <icon-star v-else :size="14" />
+      <StarFilled v-if="isStarred" :size="14" />
+      <StarOutlined v-else :size="14" />
       <span class="ml-2 mb-2">{{ isStarred ? '移出收藏' : '加入收藏' }}</span>
     </TreeItem>
     <div class="flex-1 overflow-auto">
@@ -14,6 +14,7 @@
 </template>
 
 <script setup>
+import { StarOutlined, StarFilled } from '@ant-design/icons-vue';
 import { getChapter, getContent } from '@/api';
 import { CONTENT_TYPE } from '@/constants';
 import TreeItem from '@/components/vsc/TreeItem.vue';

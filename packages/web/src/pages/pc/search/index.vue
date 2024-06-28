@@ -2,11 +2,14 @@
   <div class="px-10 py-10 h-full flex flex-col">
     <div class="mb-10 flex gap-10">
       <div class="flex-1 flex items-center gap-10">
-        <a-input-search v-model="searchText" placeholder="输入关键词，回车键搜索" class="!w-120px" :disabled="loading" @keyup.enter="onSearch" />
-        <a-checkbox-group v-model="contentTypes" :disabled="loading">
-          <a-checkbox v-for="item in CONTENT_TYPES.filter((e) => e.value !== CONTENT_TYPE.GAME)" :key="item.value" :value="item.value">
-            {{ item.label }}
-          </a-checkbox>
+        <a-input-search
+          v-model:value="searchText"
+          placeholder="输入关键词，回车键搜索"
+          class="!w-120px"
+          :disabled="loading"
+          @keyup.enter="onSearch"
+        />
+        <a-checkbox-group v-model:value="contentTypes" :disabled="loading" :options="CONTENT_TYPES.filter((e) => e.value !== CONTENT_TYPE.GAME)">
         </a-checkbox-group>
       </div>
     </div>
@@ -38,7 +41,7 @@
                 "
               >
                 <div class="w-102 h-136 mb-5 rounded-5 overflow-hidden">
-                  <a-image
+                  <ARCover
                     :src="row.cover"
                     error-icon="icon-book"
                     :preview="false"
@@ -62,7 +65,7 @@
                     })
                   "
                 >
-                  <icon-star-fill
+                  <StarFilled
                     v-if="
                       favoritesStore.starred({
                         ...row,
@@ -71,7 +74,7 @@
                     "
                     :size="14"
                   />
-                  <icon-star v-else :size="14" />
+                  <StarOutlined v-else :size="14" />
                 </div>
               </div>
             </div>
@@ -85,6 +88,7 @@
 <script setup lang="tsx">
 import { v4 as uuidV4 } from 'uuid';
 import pLimit from 'p-limit';
+import { StarOutlined, StarFilled } from '@ant-design/icons-vue';
 import { CONTENT_TYPES, CONTENT_TYPE } from '@/constants';
 import { searchByRuleId } from '@/api';
 import { useFavoritesStore } from '@/stores/favorites';

@@ -3,7 +3,7 @@
     <div class="max-w-400 mt-20vh mx-a bg-[#252526] p-20 rounded-4">
       <div class="text-[#cccccc] mb-20 b-b-1 b-b-solid b-b-[#333333] pb-20">第一次登录，请设置密码</div>
       <div class="flex gap-6">
-        <a-input v-model="inputText" type="password" placeholder="请输入密码，6-25位" />
+        <a-input v-model:value="inputText" type="password" placeholder="请输入密码，6-25位" />
         <a-button :loading="loading" :disabled="disabled" @click="submit">确定</a-button>
       </div>
     </div>

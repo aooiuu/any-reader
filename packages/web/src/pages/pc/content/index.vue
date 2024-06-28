@@ -26,12 +26,7 @@
           </a-button>
         </a-button-group>
       </div>
-
-      <a-back-top target-container="#text-container" :style="{ position: 'absolute' }">
-        <a-button type="text" shape="circle" class="!text-20px" :style="{ color: settingStore.data.readStyle.textColor }">
-          <icon-to-top />
-        </a-button>
-      </a-back-top>
+      <a-back-top :visibility-height="100" :target="topTarget" />
     </div>
   </div>
 
@@ -83,6 +78,8 @@ const readStore = useReadStore();
 const chaptersVisible = ref(false);
 const contentRef = ref();
 const chaptersRef = ref();
+
+const topTarget = () => document.querySelector('#text-container');
 
 onClickOutside(chaptersRef, () => (chaptersVisible.value = false));
 

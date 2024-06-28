@@ -1,11 +1,11 @@
 <template>
-  <div class="w-400 mx-a my-10 overflow-auto h-full p-10 bg-[#252525] rounded-10">
-    <a-spin v-if="loading" :loading="loading" class="w-full h-full !flex items-center justify-center" />
+  <div class="w-400 mx-a my-10 overflow-auto h-full p-10 text-[--ar-color-text-secondary] bg-[--activityBar-background] rounded-10">
+    <a-spin v-if="loading" :spinning="loading" class="w-full h-full !flex items-center justify-center" />
     <template v-else-if="list.length">
       <div
         v-for="item in list"
         :key="item.url"
-        class="w-full text-[--foreground] h-22 lh-22 hover:bg-[--activityBar-background] cursor-pointer px-8 overflow-hidden whitespace-nowrap text-ellipsis rounded-2"
+        class="w-full text-[--foreground] h-32 lh-32 hover:bg-[--ar-color-primary-bg] hover:text-[--ar-color-primary-text] cursor-pointer px-8 overflow-hidden whitespace-nowrap text-ellipsis rounded-2"
         @click="showContent(item)"
       >
         {{ item.name }}
@@ -19,11 +19,13 @@
 
 <script setup>
 import { stringify } from 'qs';
-import { Message } from '@arco-design/web-vue';
+import { App } from 'ant-design-vue';
 import { CONTENT_TYPE } from '@/constants';
 import { getChapter, getContent } from '@/api';
 import { openWindow } from '@/api/electron';
 import { useRulesStore } from '@/stores/rules';
+
+const { message } = App.useApp();
 
 const route = useRoute();
 const router = useRouter();
@@ -67,7 +69,7 @@ async function showContent(item) {
           })
       });
     } else {
-      Message.warning('获取地址失败！');
+      message.warning('获取地址失败！');
     }
     return;
   } else if (rule?.contentType === CONTENT_TYPE.AUDIO) {

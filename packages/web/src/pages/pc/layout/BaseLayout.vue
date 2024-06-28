@@ -4,25 +4,28 @@
 
 <style lang="scss">
 body {
-  --titleBar-inactiveBackground: rgb(31, 31, 31);
-  --titleBar-inactiveForeground: rgba(204, 204, 204, 0.6);
+  --titleBar-inactiveBackground: var(--ar-color-bg-container);
   --titleBar-border-bottom: rgb(43, 43, 43);
-  /* --toolbar-activeBackground: rgba(90, 93, 94, 0.31); */
+
   --toolbar-hoverBackground: rgba(90, 93, 94, 0.31);
   --commandCenter-background: rgba(255, 255, 255, 0.05);
-  --commandCenter-inactiveBorder: rgba(204, 204, 204, 0.15);
   --commandCenter-activeBackground: rgba(255, 255, 255, 0.08);
-  --foreground: rgb(134, 134, 134);
-  --activityBar-foreground: rgb(215, 215, 215);
-  --activityBar-background: rgb(24, 24, 24);
-  --main-background: rgb(31, 31, 31);
+
+  --foreground: var(--ar-color-text);
+  --activityBar-foreground: var(--ar-color-text-secondary);
+
+  --titleBar-inactiveForeground: var(--ar-color-text);
+  --commandCenter-inactiveBorder: var(--ar-color-text);
+
+  --activityBar-background: var(--ar-color-bg-container);
+  --main-background: var(--ar-color-bg-elevated);
   --scrollbarSlider-background: rgba(121, 121, 121, 0.4);
   --editor-background: #1f1f1f;
 
-  --color-bg-3: rgb(24, 24, 24);
+  --color-bg-3: var(--ar-color-bg-container);
 
   &[arco-theme='dark'] {
-    --color-bg-3: rgb(24, 24, 24);
+    --color-bg-3: var(--ar-color-bg-container);
   }
 }
 

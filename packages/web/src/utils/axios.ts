@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Message } from '@arco-design/web-vue';
+import { message } from 'ant-design-vue';
 import { BASE_URL } from '@/constants';
 import router from '@/router';
 
@@ -30,7 +30,7 @@ service.interceptors.response.use(
       return Promise.reject(response.data);
     }
     if (code === -1 && msg) {
-      Message.warning(msg);
+      message.warning(msg);
       return Promise.reject(response.data);
     }
     return response.data;

@@ -1,8 +1,8 @@
 import type { App } from 'vue';
-import ARImage from './ARImage/index.vue';
+import Cover from './Cover/index.vue';
 import Category from './Category/index.vue';
 
 export function useComponent(app: App<Element>) {
-  app.component('ARImage', ARImage);
+  app.component('ARCover', Cover);
   app.component('ARCategory', Category);
 }

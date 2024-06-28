@@ -13,13 +13,14 @@
       class="star invisible absolute top-5 right-5 px-2 py-2 rounded-10 flex items-center justify-center text-[--foreground]"
       @click.stop="favoritesStore.unstar({ url: item.url, ruleId: item.ruleId })"
     >
-      <icon-star-fill v-if="favoritesStore.starred(item)" :size="14" />
-      <icon-star v-else :size="14" />
+      <StarFilled v-if="favoritesStore.starred(item)" :size="14" />
+      <StarOutlined v-else :size="14" />
     </div>
   </Book>
 </template>
 
 <script setup>
+import { StarOutlined, StarFilled } from '@ant-design/icons-vue';
 import { useFavoritesStore } from '@/stores/favorites';
 import Book from './Book.vue';
 

@@ -1,6 +1,6 @@
 <template>
   <BaseLayout>
-    <div class="w-full h-full flex flex-col overflow-hidden">
+    <div class="w-full h-full flex flex-col overflow-hidden text-[--ar-color-text]">
       <div
         class="text-12 flex justify-center items-center h-34 lh-34 bg-[--titleBar-inactiveBackground] border-b-1 border-b-solid border-b-[--titleBar-border-bottom] pr-2"
         :style="{
@@ -8,7 +8,7 @@
         }"
       >
         <div class="topbar__left w-20%" />
-        <div class="w-60% flex gap-4 items-center justify-center flex-1 text-[--titleBar-inactiveForeground]">
+        <div class="w-60% flex gap-4 items-center justify-center flex-1">
           <span
             v-if="route.path !== '/pc/books'"
             class="w-22 codicon codicon-home cursor-pointer hover:op-70 app-region-none"
@@ -17,7 +17,7 @@
           <span class="w-22 codicon codicon-arrow-left cursor-pointer hover:op-70 app-region-none" @click="router.back"></span>
           <span class="w-22 codicon codicon-arrow-right cursor-pointer hover:op-70 app-region-none" @click="router.forward"></span>
           <div
-            class="topbar__cmd app-region-none box-content flex items-center justify-center ml-6 w-38vw max-w-600 bg-[--commandCenter-background] border-1 border-solid rounded-6 h-22 border-[--commandCenter-inactiveBorder] cursor-pointer hover:bg-[--commandCenter-activeBackground] px-6"
+            class="topbar__cmd app-region-none box-content flex items-center justify-center ml-6 w-38vw max-w-600 bg-[--commandCenter-background] border-1 border-solid rounded-6 h-22 border-[--ar-color-border-secondary] cursor-pointer hover:bg-[--commandCenter-activeBackground] px-6"
           >
             <div
               v-if="route.path === '/pc/content'"
@@ -33,7 +33,7 @@
             </div>
           </div>
         </div>
-        <div class="w-20% h-full flex gap-4 items-center justify-end text-[--titleBar-inactiveForeground]">
+        <div class="w-20% h-full flex gap-4 items-center justify-end">
           <!-- 布局 -->
           <div
             v-if="PLATFORM === 'electron'"
@@ -79,15 +79,15 @@
         <!-- 侧边栏 -->
         <div
           v-if="settingStore.data.sidebar !== 'hidden'"
-          class="w-48 flex flex-col py-10 text-[--foreground] bg-[--activityBar-background] text-24 border-r-1 border-r-solid border-r-[--titleBar-border-bottom]"
+          class="w-48 flex flex-col py-10 text-[--ar-color-text-secondary] bg-[--activityBar-background] text-24 border-r-1 border-r-solid border-r-[--titleBar-border-bottom]"
         >
           <!-- 收藏 -->
           <div
             v-for="nav in navs"
             :key="nav.path"
             :class="[
-              'w-42 h-42 flex items-center justify-center hover:text-[--activityBar-foreground] cursor-pointer',
-              route.path === nav.path ? 'text-[--activityBar-foreground]' : ''
+              'w-42 h-42 flex items-center justify-center hover:text-[--ar-color-primary] cursor-pointer',
+              route.path === nav.path ? 'text-[--ar-color-primary]' : ''
             ]"
             @click="router.push(nav.path)"
           >
@@ -95,7 +95,7 @@
           </div>
           <div class="flex-1"></div>
 
-          <div :class="['w-42 h-42 flex items-center justify-center hover:text-[--activityBar-foreground] cursor-pointer']" @click="openSetting">
+          <div :class="['w-42 h-42 flex items-center justify-center hover:text-[--ar-color-text] cursor-pointer']" @click="openSetting">
             <span :class="['codicon !text-24px codicon-settings-gear']"></span>
           </div>
         </div>
@@ -114,7 +114,7 @@
 </template>
 
 <script setup lang="jsx">
-import { Modal } from '@arco-design/web-vue';
+import { App } from 'ant-design-vue';
 import { PLATFORM } from '@/constants';
 import { logout } from '@/api';
 import { minimize, maximize, exit } from '@/api/electron';
@@ -125,6 +125,7 @@ import Setting from '@/components/Setting/index.vue';
 import Search from '@/components/Search/index.vue';
 import BaseLayout from './BaseLayout.vue';
 
+const { modal } = App.useApp();
 const route = useRoute();
 const router = useRouter();
 const settingStore = useSettingStore();
@@ -144,7 +145,9 @@ const navs = [
 ];
 
 function openSetting() {
-  Modal.open({
+  modal.confirm({
+    icon: null,
+    closable: true,
     draggable: true,
     mask: false,
     width: 600,

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex mb-10">
-      <a-textarea v-model="url" :disabled="loading" :placeholder="placeholder" :auto-size="{ minRows: 8, maxRows: 10 }" class="flex-1 mr-5" />
+      <a-textarea v-model:value="url" :disabled="loading" :placeholder="placeholder" :auto-size="{ minRows: 8, maxRows: 10 }" class="flex-1 mr-5" />
     </div>
     <div class="op-70">
       <icon-exclamation-circle-fill />
@@ -14,10 +14,11 @@
 </template>
 
 <script setup lang="ts">
-import { Message } from '@arco-design/web-vue';
+import { App } from 'ant-design-vue';
 import { importRules } from '@/api';
 
 const emit = defineEmits(['done']);
+const { message } = App.useApp();
 
 const placeholder = `可以是以下类型：
 http://
@@ -59,10 +60,8 @@ async function submit() {
   if (res.code === 0) {
     emit('done', res.data);
   } else {
-    Message.warning({
-      content: `导入失败`,
-      closable: true,
-      resetOnHover: true
+    message.warning({
+      content: `导入失败`
     });
   }
 }
