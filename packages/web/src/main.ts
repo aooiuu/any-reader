@@ -4,8 +4,8 @@ import router from './router';
 import { useComponent } from './components';
 
 import 'nprogress/nprogress.css';
-import '@unocss/reset/sanitize/sanitize.css';
-import '@unocss/reset/sanitize/assets.css';
+// import '@unocss/reset/sanitize/sanitize.css';
+// import '@unocss/reset/sanitize/assets.css';
 import 'uno.css';
 import './assets/main.scss';
 // vscode ui

@@ -2,8 +2,9 @@ import { merge } from 'lodash-es'
 
 // @ts-expect-error
 import { ensureFileSync, readJSONSync, writeJSONSync } from 'fs-extra/esm'
-import type { Rule } from '@any-reader/core'
-import { ContentType, RuleManager } from '@any-reader/core'
+import type { Rule } from '@any-reader/rule-utils'
+import { ContentType } from '@any-reader/rule-utils'
+import { RuleManager } from '@any-reader/core'
 import * as ruleFileManager from './ruleFileManager'
 import * as ruleExtraManager from './ruleExtraManager'
 import { favoritesManager } from './favoritesManager'
@@ -308,5 +309,6 @@ export class Api {
     registerApi('post@delRules', async (data: any) => await delRules(data))
     registerApi('post@updateRuleSort', async (data: any) => await ruleFileManager.updateRuleSort(data && data.id))
     registerApi('post@importRules', async (data: any) => await ruleFileManager.importRules(data && data.url))
+    registerApi('post@importCMS', async (data: any) => await ruleFileManager.importCMS(data))
   }
 }

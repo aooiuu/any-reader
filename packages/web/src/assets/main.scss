@@ -7,6 +7,13 @@ body,
   margin: 0;
 }
 
+*,
+::before,
+::after {
+  box-sizing: border-box; /* 1 */
+  background-repeat: no-repeat; /* 2 */
+}
+
 :root {
   --foreground: var(--vscode-foreground);
   --textLink-foreground: var(--vscode-textLink-foreground);
@@ -15,8 +22,6 @@ body,
   --list-hoverBackground: var(--vscode-list-hoverBackground);
 }
 
-// 让 arco-design 色彩适应 VSCode 主题
-// VSCode Theme Color: https://code.visualstudio.com/api/references/theme-color
 :root {
   --color-bg-1: var(--vscode-editor-background);
   --color-bg-2: var(--vscode-editor-background);
@@ -25,21 +30,4 @@ body,
   --color-text-1: var(--vscode-editor-foreground);
   --color-text-2: var(--vscode-editor-foreground);
   --color-text-3: var(--vscode-editor-foreground);
-
-  // .arco-table-td {
-  //   color: var(--color-text-2);
-  // }
-
-  // .arco-switch {
-  //   background-color: var(--vscode-disabledForeground);
-  // }
-
-  // .arco-switch-checked {
-  //   // background-color: var(--vscode-button-background);
-  //   background-color: rgb(var(--primary-6));
-  // }
-
-  // .arco-input-wrapper {
-  //   border-color: var(--vscode-button-background);
-  // }
 }

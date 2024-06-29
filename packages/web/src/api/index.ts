@@ -197,6 +197,15 @@ export function importRules(data: any) {
   });
 }
 
+// 导入规则
+export function importCMS(data: any) {
+  return request({
+    method: 'post',
+    url: 'importCMS',
+    data
+  });
+}
+
 // 删除历史
 export function removeHistory(data: { ruleId: string; url: string }) {
   return request({

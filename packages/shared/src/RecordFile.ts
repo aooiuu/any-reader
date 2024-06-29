@@ -1,6 +1,7 @@
 // @ts-expect-error
 import { readJson } from 'fs-extra/esm'
-import type { Rule, SearchItem } from '@any-reader/core'
+import type { SearchItem } from '@any-reader/core'
+import type { Rule } from '@any-reader/rule-utils'
 import { JSONFilePreset } from 'lowdb/node'
 import type { Low } from 'lowdb/lib'
 

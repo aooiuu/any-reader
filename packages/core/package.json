@@ -36,6 +36,7 @@
     "xpath.js": "^1.1.0"
   },
   "devDependencies": {
+    "@any-reader/rule-utils": "workspace:^",
     "@types/jest": "^29.5.11",
     "@types/node": "^18.16.19",
     "@types/xmldom": "^0.1.34",

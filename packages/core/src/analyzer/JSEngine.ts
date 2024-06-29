@@ -1,6 +1,6 @@
 import vm from 'node:vm'
+import type { Rule } from '@any-reader/rule-utils'
 import { AnalyzerXPath } from '../analyzer/AnalyzerXPath'
-import type { Rule } from '../index'
 import { __http__ } from './AnalyzerUrl'
 
 export class JSEngine {

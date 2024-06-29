@@ -1,5 +1,5 @@
 import axios from 'axios'
-import type { Rule } from '../..'
+import type { Rule } from '@any-reader/rule-utils'
 import { JSEngine } from './JSEngine'
 
 const http = axios.create()
@@ -65,7 +65,7 @@ export async function fetch(url: string, keyword = '', result = '', rule: Rule) 
 
   if (!params.headers) {
     params.headers = {
-      'user-agent':
+      'User-Agent':
        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.80 Safari/537.36 Edg/98.0.1108.50',
     }
   }
@@ -75,7 +75,7 @@ export async function fetch(url: string, keyword = '', result = '', rule: Rule) 
     if (ua.startsWith('{') && ua.endsWith('}'))
       Object.assign(params.headers, JSON.parse(ua))
     else
-      params.headers['user-agent'] = ua
+      params.headers['User-Agent'] = ua
   }
   else if (typeof ua === 'object') {
     Object.assign(params.headers, ua)

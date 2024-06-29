@@ -1,4 +1,4 @@
-import type { Rule } from './index'
+import type { Rule } from '@any-reader/rule-utils'
 import { RuleManager } from './index'
 
 const rule = {

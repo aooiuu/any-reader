@@ -1,17 +1,19 @@
 {
   "name": "@any-reader/rule-utils",
+  "type": "module",
   "version": "1.7.2",
   "description": "",
-  "scripts": {
-    "build": "unbuild",
-    "stub": "unbuild --stub"
+  "author": "aooiuu <aooiu@qq.com>",
+  "license": "GPL3",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aooiuu/any-reader"
   },
   "keywords": [],
-  "type": "module",
   "exports": {
     ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs"
     }
   },
   "main": "./dist/index.cjs",
@@ -19,14 +21,14 @@
   "files": [
     "dist"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/aooiuu/any-reader"
+  "scripts": {
+    "build": "unbuild",
+    "stub": "unbuild --stub"
   },
   "dependencies": {
+    "axios": "^1.7.2",
     "base64-js": "^1.5.1",
-    "pako": "^2.1.0"
-  },
-  "author": "aooiuu <aooiu@qq.com>",
-  "license": "GPL3"
+    "pako": "^2.1.0",
+    "uuid": "^9.0.1"
+  }
 }

@@ -1,21 +1,20 @@
 {
   "name": "@any-reader/shared",
+  "type": "module",
   "version": "1.7.2",
   "description": "",
-  "scripts": {
-    "build": "unbuild",
-    "stub": "unbuild --stub",
-    "start": "esno src/start.ts"
-  },
-  "keywords": [],
   "author": "aooiuu <aooiu@qq.com>",
   "license": "GPL3",
-  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aooiuu/any-reader"
+  },
+  "keywords": [],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs"
     }
   },
   "main": "./dist/index.cjs",
@@ -23,9 +22,10 @@
   "files": [
     "dist"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/aooiuu/any-reader"
+  "scripts": {
+    "build": "unbuild",
+    "stub": "unbuild --stub",
+    "start": "esno src/start.ts"
   },
   "dependencies": {
     "@any-reader/core": "workspace:^",

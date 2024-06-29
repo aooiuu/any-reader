@@ -77,6 +77,9 @@ importers:
         specifier: ^1.1.0
         version: 1.1.0
     devDependencies:
+      '@any-reader/rule-utils':
+        specifier: workspace:^
+        version: link:../rule-utils
       '@types/jest':
         specifier: ^29.5.11
         version: 29.5.11
@@ -146,12 +149,18 @@ importers:
 
   packages/rule-utils:
     dependencies:
+      axios:
+        specifier: ^1.7.2
+        version: 1.7.2
       base64-js:
         specifier: ^1.5.1
         version: 1.5.1
       pako:
         specifier: ^2.1.0
         version: 2.1.0
+      uuid:
+        specifier: ^9.0.1
+        version: 9.0.1
 
   packages/server:
     dependencies:
@@ -942,7 +951,7 @@ packages:
       '@babel/traverse': 7.23.6
       '@babel/types': 7.24.5
       convert-source-map: 2.0.0
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.5
       gensync: 1.0.0-beta.2
       json5: 2.2.3
       semver: 6.3.1
@@ -1687,7 +1696,7 @@ packages:
     resolution: {integrity: sha512-Qkzpg2s9GnVV2I2BjRksUi43U5e6+zaQMcjoJy0C+C5oxaKl+fmckGDQFtRpZpZV0NQekuZZ+tGz7EA9TVnQtQ==}
     engines: {node: '>=12'}
     dependencies:
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.5
       env-paths: 2.2.1
       fs-extra: 8.1.0
       got: 11.8.6
@@ -3264,7 +3273,7 @@ packages:
       rollup:
         optional: true
     dependencies:
-      '@rollup/pluginutils': 5.1.0(rollup@3.29.4)
+      '@rollup/pluginutils': 5.0.2(rollup@3.29.4)
       rollup: 3.29.4
     dev: true
 
@@ -8511,7 +8520,7 @@ packages:
     engines: {node: '>= 10.17.0'}
     hasBin: true
     dependencies:
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.5
       get-stream: 5.2.0
       yauzl: 2.10.0
     optionalDependencies:

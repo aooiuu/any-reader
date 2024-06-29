@@ -7,31 +7,42 @@
       </div>
     </div>
     <input ref="fileInputRef" type="file" class="hidden" @change="changeFile" />
-    <div class="mb-10 flex gap-10">
-      <a-dropdown position="bottom">
-        <a-button type="primary">添加规则</a-button>
+    <div class="mb-10 flex gap-10 text-14">
+      <a-dropdown>
+        <a-button type="primary">
+          添加规则
+          <PlusOutlined />
+        </a-button>
         <template #overlay>
           <a-menu>
-            <a-menu-item @click="addRuleUrl">从文本导入</a-menu-item>
             <a-menu-item @click="addRuleFile">从文件导入</a-menu-item>
+            <a-menu-divider />
+            <a-menu-item @click="addRuleUrl">从文本导入</a-menu-item>
             <a-menu-item @click="addRuleUrl">从URL导入</a-menu-item>
+            <a-menu-divider />
             <a-menu-item @click="addRule">单个添加</a-menu-item>
+            <a-menu-divider />
+            <a-menu-item @click="addCMS">从资源站添加</a-menu-item>
+            <a-menu-divider />
           </a-menu>
         </template>
       </a-dropdown>
 
       <div class="flex-1" />
       <a-button type="primary" @click="pingAll">测速</a-button>
-      <a-button type="primary" status="danger" @click="delTimeoutRules">一键删除超时规则</a-button>
+      <a-button type="primary" danger @click="delTimeoutRules">一键删除超时规则</a-button>
       <a-dropdown position="bottom" :disabled="!selectedKeys.length">
-        <a-button :disabled="!selectedKeys.length">批量操作</a-button>
+        <a-button type="primary" :disabled="!selectedKeys.length">批量操作<DownOutlined /></a-button>
         <template #overlay>
           <a-menu>
             <a-menu-item @click="batchUpdate({ enableSearch: false })">禁用选中搜索</a-menu-item>
             <a-menu-item @click="batchUpdate({ enableDiscover: false })">禁用选中发现</a-menu-item>
+            <a-menu-divider />
             <a-menu-item @click="batchUpdate({ enableSearch: true })">启用选中搜索</a-menu-item>
             <a-menu-item @click="batchUpdate({ enableDiscover: true })">启用选中发现</a-menu-item>
+            <a-menu-divider />
             <a-menu-item @click="delSelected">删除选中</a-menu-item>
+            <a-menu-divider />
             <a-menu-item @click="copySelected">复制选中</a-menu-item>
             <a-menu-item @click="exportSelected">导出选中</a-menu-item>
           </a-menu>
@@ -64,6 +75,7 @@
 
 <script setup lang="jsx">
 import { App } from 'ant-design-vue';
+import { PlusOutlined, DownOutlined } from '@ant-design/icons-vue';
 import _ from 'lodash-es';
 import { encodeRule } from '@any-reader/rule-utils';
 import { useClipboard, useElementSize } from '@vueuse/core';
@@ -75,6 +87,7 @@ import { timeoutWith } from '@/utils/promise';
 import { useRuleExtra } from './hooks/useRuleExtra';
 import { useDropRules } from '@/hooks/useDropRules';
 import ImportRules from './ImportRules.vue';
+import ImportCMS from './ImportCMS.vue';
 
 const { modal, message } = App.useApp();
 
@@ -327,6 +340,31 @@ function addRuleUrl() {
     title: '导入规则',
     content: (
       <ImportRules
+        onDone={(count = 0) => {
+          rulesStore.sync();
+          message.success({
+            content: `导入${count}条数据`,
+            closable: true,
+            resetOnHover: true
+          });
+          m.destroy();
+        }}
+      />
+    )
+  });
+}
+
+// 从资源站添加
+function addCMS() {
+  const m = modal.confirm({
+    draggable: true,
+    mask: true,
+    closable: true,
+    width: 600,
+    footer: false,
+    title: '从资源站添加',
+    content: (
+      <ImportCMS
         onDone={(count = 0) => {
           rulesStore.sync();
           message.success({

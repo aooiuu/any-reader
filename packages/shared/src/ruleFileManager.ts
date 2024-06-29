@@ -5,8 +5,8 @@ import _ from 'lodash-es'
 import type { Low } from 'lowdb/lib'
 import { JSONFilePreset } from 'lowdb/node'
 import axios from 'axios'
-import type { Rule } from '@any-reader/core'
-import { decodeRule } from '@any-reader/rule-utils'
+import type { Rule } from '@any-reader/rule-utils'
+import { cmsJsonToRule, decodeRule } from '@any-reader/rule-utils'
 import { BOOK_SOURCE_PATH } from './constants'
 
 let mDb: Low<Rule[]>
@@ -154,4 +154,16 @@ export async function importRules(url: string) {
       await update(json).catch(() => {})
   }
   return jsons.length
+}
+
+interface ImportCMSParams {
+  type: string
+  name: string
+  api: string
+}
+
+export async function importCMS(params: ImportCMSParams) {
+  const rule = await cmsJsonToRule(params.api, params.name)
+  await update(rule)
+  return 1
 }

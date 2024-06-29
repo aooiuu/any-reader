@@ -149,7 +149,7 @@ export class AnalyzerManager {
     return ruleList.reverse()
   }
 
-  async _getElements(r: SingleRule, rule?: string) {
+  private async _getElements(r: SingleRule, rule?: string) {
     if (!rule)
       rule = r.rule
 
@@ -221,7 +221,7 @@ export class AnalyzerManager {
     }
   }
 
-  async _getString(r: SingleRule, rule?: string): Promise<string> {
+  private async _getString(r: SingleRule, rule?: string): Promise<string> {
     const res = r.analyzer.getString(rule || r.rule)
     return Array.isArray(res) ? res.join('').trim() : res
   }
@@ -259,7 +259,7 @@ export class AnalyzerManager {
     return temp
   }
 
-  async _getStringList(r: SingleRule, rule?: string): Promise<string[]> {
+  private async _getStringList(r: SingleRule, rule?: string): Promise<string[]> {
     const res = await r.analyzer.getStringList(rule || r.rule)
     return res
   }

@@ -25,6 +25,7 @@
     "*.d.ts"
   ],
   "scripts": {
+    "start": "esno index.ts",
     "release": "bumpp -r --no-push",
     "clean": "rimraf packages/*/dist --glob",
     "clean:npm": "rimraf packages/*/node_modules --glob && rimraf node_modules",
