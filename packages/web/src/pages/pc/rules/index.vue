@@ -168,14 +168,12 @@ const tableColumns = ref([
         </a-button>
       );
     },
-    sortable: {
-      sortDirections: ['ascend', 'descend'],
-      sorter: (a, b, { direction }) => {
-        if (direction === 'ascend') {
-          return sortableValue(a, 'extra.ping') - sortableValue(b, 'extra.ping');
-        }
-        return sortableValue(b, 'extra.ping') - sortableValue(a, 'extra.ping');
+    sortDirections: ['ascend', 'descend'],
+    sorter: (a, b, { direction }) => {
+      if (direction === 'ascend') {
+        return sortableValue(a, 'extra.ping') - sortableValue(b, 'extra.ping');
       }
+      return sortableValue(b, 'extra.ping') - sortableValue(a, 'extra.ping');
     }
   },
   {
@@ -191,21 +189,20 @@ const tableColumns = ref([
   },
   {
     title: '启用搜索',
-    width: 100,
+    width: 120,
     align: 'center',
-    filterable: {
-      filters: [
-        {
-          text: '启用',
-          value: true
-        },
-        {
-          text: '禁用',
-          value: false
-        }
-      ],
-      filter: (value, record) => value.includes(record.enableSearch)
-    },
+    filters: [
+      {
+        text: '启用',
+        value: true
+      },
+      {
+        text: '禁用',
+        value: false
+      }
+    ],
+    filterMultiple: false,
+    onFilter: (value, record) => value === record.enableSearch,
     customRender: ({ record }) => (
       <a-switch
         checked={record.enableSearch}
@@ -219,22 +216,20 @@ const tableColumns = ref([
   },
   {
     title: '启用发现',
-    width: 100,
+    width: 120,
     align: 'center',
-    filterable: {
-      filters: [
-        {
-          text: '启用',
-          value: true
-        },
-        {
-          text: '禁用',
-          value: false
-        }
-      ],
-      filter: (value, record) => value.includes(record.enableDiscover),
-      multiple: false
-    },
+    filters: [
+      {
+        text: '启用',
+        value: true
+      },
+      {
+        text: '禁用',
+        value: false
+      }
+    ],
+    filterMultiple: false,
+    onFilter: (value, record) => value === record.enableDiscover,
     customRender: ({ record }) => (
       <a-switch
         checked={record.enableDiscover}
@@ -248,39 +243,32 @@ const tableColumns = ref([
   },
   {
     title: '接口调用',
-    width: 140,
+    width: 160,
     align: 'center',
-    filterable: {
-      filters: LOG_CONFIG.map((log) => ({
-        text: log.title + '失败>3且成功=0',
-        value: log.url
-      })),
-      filter: (value, record) => {
-        if (value.length !== 1) return true;
-        const url = value[0];
-
-        const ok = _.get(record, `extra.${url}.ok`, 0);
-        const fail = _.get(record, `extra.${url}.fail`, 0);
-        return ok === 0 && fail > 3;
-      },
-      multiple: false
+    filters: LOG_CONFIG.map((log) => ({
+      text: log.title + '失败>3且成功=0',
+      value: log.url
+    })),
+    filterMultiple: false,
+    onFilter: (value, record) => {
+      const ok = _.get(record, `extra.${value}.ok`, 0);
+      const fail = _.get(record, `extra.${value}.fail`, 0);
+      return ok === 0 && fail > 3;
     },
-    sortable: {
-      sortDirections: ['ascend', 'descend'],
-      sorter: (a, b, { direction }) => {
-        const field = `extra.post@content.ok`;
-        if (direction === 'descend') {
-          return _.get(a, field, 0) > _.get(b, field, 0) ? -1 : 1;
-        } else {
-          return _.get(a, field, 0) > _.get(b, field, 0) ? 1 : -1;
-        }
+    sortDirections: ['ascend', 'descend'],
+    sorter: (a, b, { direction }) => {
+      const field = `extra.post@content.ok`;
+      if (direction === 'descend') {
+        return _.get(a, field, 0) > _.get(b, field, 0) ? -1 : 1;
+      } else {
+        return _.get(a, field, 0) > _.get(b, field, 0) ? 1 : -1;
       }
     },
     customRender: ({ record }) => (
       <div>
         {LOG_CONFIG.map((log) => (
-          <div class="flex items-center">
-            <span class="text-10 mr-4">{log.title}</span>
+          <div class="flex items-center text-10">
+            <span class="mr-4">{log.title}</span>
             <span class="color-green">{_.get(record, `extra.${log.url}.ok`, 0)}</span>/
             <span class="color-red">{_.get(record, `extra.${log.url}.fail`, 0)}</span>
           </div>

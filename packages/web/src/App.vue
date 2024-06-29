@@ -4,6 +4,7 @@
       algorithm: theme.darkAlgorithm,
       token
     }"
+    :locale="zhCN"
   >
     <a-app class="flex flex-col h-full overflow-hidden">
       <div class="flex-1 overflow-auto">
@@ -16,6 +17,7 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router';
 import { theme } from 'ant-design-vue';
+import zhCN from 'ant-design-vue/es/locale/zh_CN';
 import { theme as colors } from '@/constants/theme';
 import { useMessage } from '@/utils/postMessage';
 import { useRulesStore } from '@/stores/rules';

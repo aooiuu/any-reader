@@ -1,5 +1,5 @@
 <template>
-  <a-image class="ar-cover" :src="props.src || fallback" :fallback="fallback"> </a-image>
+  <a-image class="ar-cover object-cover" :placeholder="true" :src="props.src || fallback" :fallback="fallback"> </a-image>
 </template>
 
 <script setup lang="ts">
