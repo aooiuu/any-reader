@@ -77,7 +77,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          # draft: true
+          draft: true
           # prerelease: true
           files: |
             packages/web/dist/electron/*.AppImage

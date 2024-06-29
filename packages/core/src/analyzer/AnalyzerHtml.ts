@@ -1,13 +1,24 @@
 import { load } from 'cheerio'
 import type { Analyzer } from './Analyzer'
 
+function htmlDecode(str: string) {
+  return str.replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&#39;/g, '\'')
+    .replace(/&quot;/g, '"')
+    .replace(/<br\/>/g, '\n')
+}
+
 /**
  * 去除 html 标签
  * @param {string} html
  * @returns {string}
  */
 function getHtmlString(html: string) {
-  return html.replaceAll(/<\/?(?:div|p|br|hr|h\d|article|b|dd|dl)[^>]*>/g, '\n')
+  return htmlDecode(html.replaceAll(/<\/?(?:div|p|br|hr|h\d|article|b|dd|dl)[^>]*>/g, '\n')
+    .replace(/<!--[\w\W\r\n]*?-->/gmi, ''))
 }
 
 export class AnalyzerHtml implements Analyzer {

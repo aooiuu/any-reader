@@ -134,8 +134,14 @@ export class RuleManager {
     })
     const bodyAnalyzer = new AnalyzerManager(body)
     let list = await bodyAnalyzer.getStringList(this.rule.contentItems)
-    if (this.rule.contentType === ContentType.NOVEL)
-      list = list.map(row => row.split('\n').filter(e => e).join(''))
+    if (this.rule.contentType === ContentType.NOVEL) {
+      list = list.map(row => row.split('\n'))
+        .flat()
+        .join('\n')
+        .trim()
+        .split('\n')
+        .filter(e => e)
+    }
     return list
   }
 

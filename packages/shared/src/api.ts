@@ -141,7 +141,7 @@ async function content({ filePath, chapterPath, ruleId }: any) {
     else if (rule.contentType === ContentType.VIDEO)
       text = content?.[0] || ''
     else
-      text = content.join('')
+      text = content.join('\n')
 
     return {
       content: text,
