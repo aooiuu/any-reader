@@ -26,6 +26,9 @@ onMounted(async () => {
       }
     }
   });
+
+  const { name, chapterName } = route.query;
+  document.title = [name, chapterName].filter((e) => e).join('-');
 });
 
 watch(

@@ -49,7 +49,7 @@ async function init() {
 init();
 
 async function showContent(item) {
-  const { filePath, ruleId } = route.query;
+  const { filePath, ruleId, name } = route.query;
   const rule = rulesStore.list.find((e) => e.id === ruleId);
   if (rule?.contentType === CONTENT_TYPE.VIDEO) {
     loading.value = true;
@@ -65,7 +65,9 @@ async function showContent(item) {
         url:
           '/player?' +
           stringify({
-            url
+            url,
+            name,
+            chapterName: item.name
           })
       });
     } else {
@@ -80,12 +82,15 @@ async function showContent(item) {
       chapterPath: item.url || item.chapterPath
     }).catch(() => {});
     console.log('getContent', res);
+    const url = res?.data?.content || '';
     if (res?.code === 0) {
       openWindow({
         url:
           '/iframe?' +
           stringify({
-            url: res?.data?.content || ''
+            url,
+            name,
+            chapterName: item.name
           })
       });
       return;

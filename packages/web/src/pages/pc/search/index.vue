@@ -35,6 +35,7 @@
                     path: '/pc/chapter',
                     query: {
                       ruleId: item.rule.id,
+                      name: row.name,
                       filePath: row.url
                     }
                   })
