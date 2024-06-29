@@ -34,5 +34,13 @@ declare module 'vue' {
     ATextarea: typeof import('ant-design-vue/es')['Textarea']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    VanConfigProvider: typeof import('vant/es')['ConfigProvider']
+    VanSkeleton: typeof import('vant/es')['Skeleton']
+    VanSkeletonImage: typeof import('vant/es')['SkeletonImage']
+    VanSkeletonParagraph: typeof import('vant/es')['SkeletonParagraph']
+    VanTab: typeof import('vant/es')['Tab']
+    VanTabbar: typeof import('vant/es')['Tabbar']
+    VanTabbarItem: typeof import('vant/es')['TabbarItem']
+    VanTabs: typeof import('vant/es')['Tabs']
   }
 }

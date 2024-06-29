@@ -1,4 +1,5 @@
 import { fileURLToPath, URL } from 'node:url';
+import path from 'node:path';
 
 import { defineConfig, loadEnv } from 'vite';
 import createPlugins from './vite/plugins';
@@ -44,6 +45,10 @@ export default defineConfig(({ mode, command }) => {
       outDir,
       emptyOutDir: true,
       rollupOptions: {
+        input: {
+          index: path.resolve(__dirname, 'index.html'),
+          mobile: path.resolve(__dirname, 'mobile.html')
+        },
         output: {
           manualChunks: (id) => {
             const vendors = ['monaco-editor', 'ant-design-vue', 'hls.js'];

@@ -31,3 +31,8 @@ body,
   --color-text-2: var(--vscode-editor-foreground);
   --color-text-3: var(--vscode-editor-foreground);
 }
+
+.van-theme-dark {
+  --ar-color-background: #000;
+  --ar-color-text: #ffffff99;
+}
