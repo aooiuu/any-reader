@@ -5,19 +5,20 @@
 [![satr][satr-src]][satr-href]
 [![issues][issues-src]][issues-href]
 
-开源的多平台自定义源资源聚合工具。支持小说、漫画阅读、视频播放、聚合搜索等, 也支持本地资源TXT、EPUB
+## 目录
 
-- [规则解析库](https://aooiuu.github.io/any-reader/core/)
-- [VSCode 插件](https://aooiuu.github.io/any-reader/vsc/)
-- [桌面端](https://aooiuu.github.io/any-reader/desktop/)
-- [网页端](https://aooiuu.github.io/any-reader/browser/)
-- [Docker](https://aooiuu.github.io/any-reader/docker/)
-- uTools 插件 (暂未上架, 可自行编译)
-- rubick 插件 (any-reader-rubick)
+- [软件介绍](#软件介绍)
+- [功能亮点](#功能亮点)
+- [界面预览](#界面预览)
+- [完整文档](https://aooiuu.github.io/any-reader/)
+- [声明](#声明)
 
-> 软件不提供内容, 也不提供任何规则, 但你可以通过编写 [规则](https://aooiuu.github.io/any-reader/rule/), 控制呈现内容, [查看文档](https://aooiuu.github.io/any-reader/)
+## 软件介绍
 
-QQ群: 50057637
+开源的多平台自定义源资源聚合工具。支持小说、漫画阅读、视频播放、聚合搜索、发现分类等, 也支持本地资源TXT、EPUB
+
+**QQ群**: 50057637
+**注意**: 软件不提供内容, 也不提供任何规则, 但你可以通过编写 [规则](https://aooiuu.github.io/any-reader/rule/), 控制呈现内容, [查看文档](https://aooiuu.github.io/any-reader/)
 
 <details>
 <summary>展开查看软件是如何工作的</summary>
@@ -50,7 +51,18 @@ XPath、JSONPath、CSS选择器、正则让规则编写更简洁, 而 JS 脚本�
 
 </details>
 
-## 多端支持
+## 功能亮点
+
+- **跨平台**: Windows、Mac、Linux
+- **多应用**: 桌面端、网页端、Docker、VSCode插件、 uTools 插件、rubick 插件
+- **多类型**：小说、漫画、视频、~~音频~~
+- **自定义源**：通过 XPath、JSONPath、CSS选择器、正则、JS等轻松编写规则
+- **生态兼容**：兼容 [eso](https://github.com/mabDc/eso) 源
+- **资源站接入**：轻松导入苹果CMS
+- **开放解析库**：规则解析库分离, 你可以使用解析库开发自己的程序
+- **本地资源支持**：支持本地小说格式 TXT、Epub
+
+## 界面预览
 
 ### VSCode 插件
 
@@ -152,7 +164,7 @@ XPath、JSONPath、CSS选择器、正则让规则编写更简洁, 而 JS 脚本�
  <img src="https://github.com/aooiuu/any-reader/assets/28108111/6166cc3e-f5e5-42ca-a616-5e30157f6c89" width="400"/>
 
 ### Docker
- 
+
 [![docker version](https://img.shields.io/docker/v/aooiu/any-reader)](https://hub.docker.com/r/aooiu/any-reader)
 [![docker publish](https://img.shields.io/docker/pulls/aooiu/any-reader?label=docker%20pulls&logo=docker&style=flat-square)](https://hub.docker.com/r/aooiu/any-reader)
 
