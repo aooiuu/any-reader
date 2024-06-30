@@ -21,11 +21,8 @@
 </template>
 
 <script setup>
-const route = useRoute();
-const router = useRouter();
-
 const navs = [
-  { title: '首页', path: '/home', icon: 'home-o' },
+  // { title: '首页', path: '/home', icon: 'home-o' },
   { title: '视频', path: '/video', icon: 'tv-o' },
   { title: '小说', path: '/novel', icon: 'font-o' },
   { title: '漫画', path: '/manga', icon: 'flower-o' },

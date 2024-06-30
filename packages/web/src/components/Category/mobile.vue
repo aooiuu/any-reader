@@ -1,7 +1,15 @@
 <template>
-  <van-tabs @change="(_, title) => onInput(title)">
-    <van-tab v-for="rule in props.list" :key="rule.name" :title="rule.name"></van-tab>
-  </van-tabs>
+  <div ref="containerRef" class="w-full flex overflow-x-auto overflow-y-hidden" @wheel="onWheel($event)">
+    <div
+      v-for="item in props.list"
+      :key="item.name"
+      :class="['flex-shrink-0 h-32 lh-32 px-10 rounded-2 mb-5 cursor-pointer', value === item.name ? ' text-[--van-primary-color]' : '']"
+      @click="onInput(item.name)"
+    >
+      {{ item.name }}
+    </div>
+  </div>
+
   <Category v-if="nextList.length > 1" :list="nextList" @change="(row: any) => emit('change', row)" />
 </template>
 

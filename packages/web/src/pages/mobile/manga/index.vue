@@ -1,10 +1,10 @@
 <template>
   <Category
-    :content-type="CONTENT_TYPE.VIDEO"
+    :content-type="CONTENT_TYPE.MANGA"
     @to-chapter="
       (arg) =>
         router.push({
-          path: '/player',
+          path: '/chapter',
           query: arg
         })
     "
