@@ -10,9 +10,9 @@
         <div class="topbar__left w-20%" />
         <div class="w-60% flex gap-4 items-center justify-center flex-1">
           <span
-            v-if="route.path !== '/pc/books'"
+            v-if="route.path !== '/books'"
             class="w-22 codicon codicon-home cursor-pointer hover:op-70 app-region-none"
-            @click="router.push('/pc/books')"
+            @click="router.push('/books')"
           ></span>
           <span class="w-22 codicon codicon-arrow-left cursor-pointer hover:op-70 app-region-none" @click="router.back"></span>
           <span class="w-22 codicon codicon-arrow-right cursor-pointer hover:op-70 app-region-none" @click="router.forward"></span>
@@ -20,7 +20,7 @@
             class="topbar__cmd app-region-none box-content flex items-center justify-center ml-6 w-38vw max-w-600 bg-[--commandCenter-background] border-1 border-solid rounded-6 h-22 border-[--ar-color-border-secondary] cursor-pointer hover:bg-[--commandCenter-activeBackground] px-6"
           >
             <div
-              v-if="route.path === '/pc/content'"
+              v-if="route.path === '/content'"
               class="w-full h-full flex items-center justify-center"
               :title="readStore.title"
               @click.stop="openChaptersBox.emit"
@@ -138,10 +138,10 @@ function changeSidebar() {
 }
 
 const navs = [
-  { icon: 'codicon-book', path: '/pc/books', title: '书架' },
-  { icon: 'codicon-search', path: '/pc/search', title: '搜索' },
-  { icon: 'codicon-globe', path: '/pc/category', title: '分类' },
-  { icon: 'codicon-extensions', path: '/pc/rules', title: '规则' }
+  { icon: 'codicon-book', path: '/books', title: '书架' },
+  { icon: 'codicon-search', path: '/search', title: '搜索' },
+  { icon: 'codicon-globe', path: '/category', title: '分类' },
+  { icon: 'codicon-extensions', path: '/rules', title: '规则' }
 ];
 
 function openSetting() {

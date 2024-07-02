@@ -98,7 +98,7 @@ async function showContent(item) {
   }
 
   router.push({
-    path: '/pc/content',
+    path: '/content',
     query: {
       filePath,
       ruleId,

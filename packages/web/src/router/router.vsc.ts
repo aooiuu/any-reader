@@ -38,14 +38,14 @@ const router = createRouter({
         },
         {
           path: '/search',
-          component: () => import('@/pages/vscode/search/index.vue'),
+          component: () => import('@/pages/pc/search/index.vue'),
           meta: {
             keepAlive: true
           }
         },
         {
           path: '/vsc/search',
-          component: () => import('@/pages/vscode/search/index.vsc.vue'),
+          component: () => import('@/pages/vscode/search/index.vue'),
           meta: {
             keepAlive: true
           }
@@ -55,8 +55,8 @@ const router = createRouter({
           component: () => import('@/pages/vscode/rules/index.vsc.vue')
         },
         {
-          path: '/discover',
-          component: () => import('@/pages/vscode/discover/index.vue')
+          path: '/category',
+          component: () => import('@/pages/pc/category/index.vue')
         },
         {
           path: '/content',

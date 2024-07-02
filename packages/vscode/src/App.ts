@@ -48,7 +48,7 @@ class App {
 
   // 发现页
   discover() {
-    this.webView.navigateTo('/discover');
+    this.webView.navigateTo('/category');
   }
 
   // 打开链接

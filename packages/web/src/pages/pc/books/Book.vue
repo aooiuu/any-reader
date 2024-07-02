@@ -16,7 +16,7 @@ const router = useRouter();
 
 function showChapter() {
   router.push({
-    path: '/pc/chapter',
+    path: '/chapter',
     query: {
       filePath: props.filePath,
       ruleId: props.ruleId

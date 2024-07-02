@@ -32,8 +32,9 @@
                 class="node relative flex flex-col flex-shrink-0 w-102 cursor-pointer hover:op-70"
                 @click="
                   router.push({
-                    path: '/pc/chapter',
+                    path: '/chapter',
                     query: {
+                      ...row,
                       ruleId: item.rule.id,
                       name: row.name,
                       filePath: row.url

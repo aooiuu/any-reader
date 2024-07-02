@@ -16,7 +16,7 @@ const router = createRouter({
     },
     {
       path: '/',
-      redirect: '/pc/books',
+      redirect: '/books',
       component: () => import('@/pages/pc/layout/window.vue'),
       children: [
         {
@@ -32,7 +32,7 @@ const router = createRouter({
 
     // pc
     {
-      path: '/pc',
+      path: '/',
       component: () => import('@/pages/pc/layout/index.vue'),
       children: [
         {

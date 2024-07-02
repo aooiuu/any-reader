@@ -1,104 +1,109 @@
 <template>
-  <div class="px-10 py-10 h-full flex flex-col">
-    <div class="mb-10 flex gap-10">
-      <div class="flex-1 flex items-center gap-10">
-        <a-input-search
-          v-model:value="searchText"
-          placeholder="输入关键词，回车键搜索"
-          class="!w-220px"
-          :disabled="loading"
+  <div class="p-8 h-full overflow-hidden flex flex-col">
+    <div v-if="!loading" class="flex">
+      <div class="vsc-toolbar-btn mr-2 flex items-center h-full" @click="expand = !expand">
+        <span class="codicon" :class="[expand ? 'codicon-chevron-down' : 'codicon-chevron-right']"></span>
+      </div>
+      <div class="flex-1">
+        <vscode-text-field
+          class="w-full"
+          placeholder="按回车键搜索"
+          :value="searchText"
+          @input="(event:any) => (searchText = event.target.value)"
           @keyup.enter="onSearch"
-        />
-        <a-checkbox-group v-model:value="contentTypes" :disabled="loading" :options="CONTENT_TYPES.filter((e) => e.value !== CONTENT_TYPE.GAME)">
-        </a-checkbox-group>
+        >
+          <!-- eslint-disable-next-line vue/no-deprecated-slot-attribute -->
+          <span slot="end" class="codicon codicon-search"></span>
+        </vscode-text-field>
+
+        <template v-if="expand">
+          <!-- 规则类型 -->
+          <vscode-dropdown class="w-full" :value="'' + contentType" @input="(event:any) => (contentType = +event.target.value)">
+            <vscode-option v-for="item in CONTENT_TYPES.filter((e) => e.value !== CONTENT_TYPE.GAME)" :key="item.value" :value="item.value">
+              {{ item.label }}
+            </vscode-option>
+          </vscode-dropdown>
+          <!-- filter -->
+          <vscode-dropdown class="w-full mt-2" :value="'' + filterType" @input="(event:any) => (filterType = +event.target.value)">
+            <vscode-option :value="1">默认</vscode-option>
+            <vscode-option :value="2">包含关键字</vscode-option>
+          </vscode-dropdown>
+        </template>
       </div>
     </div>
-    <!-- 搜索进度 -->
-    <div v-if="loading" class="flex items-center">
-      <a-button class="mr-5" @click="cancelSearch">取消</a-button>
-      <ASpin />
-      <div v-if="runCount > 0" class="ml-2">搜索进度: {{ runCount }}/{{ total }} {{ ((runCount / total) * 100).toFixed(0) }}%</div>
-    </div>
-    <div class="flex-1 overflow-auto">
-      <!-- 规则列表 -->
-      <template v-for="item in list" :key="item.id">
-        <div v-if="item.list.length" class="pt-20">
-          <div class="mb-6">{{ item.rule.name }}</div>
-          <div class="overflow-hidden">
-            <div class="flex overflow-auto gap-5 pb-5">
-              <div
-                v-for="(row, idx) in item.list"
-                :key="idx"
-                class="node relative flex flex-col flex-shrink-0 w-102 cursor-pointer hover:op-70"
-                @click="
-                  executeCommand({
-                    command: 'any-reader.getChapter',
-                    data: {
-                      ruleId: item.rule.id,
-                      data: row
-                    }
-                  })
-                "
-              >
-                <div class="w-102 h-136 mb-5 rounded-5 overflow-hidden">
-                  <ARCover :src="row.cover" :preview="false" alt="" srcset="" class="cover w-102 h-136" width="100%" height="100%" fit="cover" />
-                </div>
-                <div class="overflow-hidden whitespace-nowrap text-ellipsis mb-2">{{ row.name }}</div>
-                <div class="overflow-hidden whitespace-nowrap text-ellipsis text-12 op-70">{{ row.author }}</div>
 
-                <div
-                  class="star invisible absolute top-5 right-5 px-2 py-2 rounded-10 bg-[#000000cc] flex items-center justify-center"
-                  @click.stop="
-                    favoritesStore.star({
-                      ...row,
-                      ruleId: item.rule.id
-                    })
-                  "
-                >
-                  <StarFilled
-                    v-if="
-                      favoritesStore.starred({
-                        ...row,
-                        ruleId: item.rule.id
-                      })
-                    "
-                    :size="14"
-                  />
-                  <StarOutlined v-else :size="14" />
-                </div>
-              </div>
-            </div>
+    <div v-else class="flex items-center">
+      <div v-if="runCount > 0" class="flex-1">
+        <div class="op-70 text-12">搜索中: {{ runCount }}/{{ total }}</div>
+      </div>
+      <vscode-button appearance="Secondary" @click="cancelSearch">取消</vscode-button>
+    </div>
+
+    <div class="flex-1 overflow-auto mt-10">
+      <template v-for="item in displayList" :key="item.rule.id">
+        <div
+          class="flex items-center text-[--foreground] h-22 lh-22 cursor-pointer hover:bg-[--list-hoverBackground]"
+          @click="changeOpened(item.rule.id)"
+        >
+          <div class="flex-1 overflow-hidden flex items-center">
+            <i class="codicon mr-6" :class="[item.opened ? 'codicon-chevron-down' : 'codicon-chevron-right']"></i>
+            <div class="flex-1 overflow-hidden whitespace-nowrap text-ellipsis">{{ item.rule.name }}</div>
           </div>
+          <span class="op-70 ml-6">{{ item.list.length }}</span>
         </div>
+        <template v-if="item.opened">
+          <TreeItem v-for="(row, idx) in item.list" :key="idx" class="pl-22" :title="row.author" @click="getChapter(row, item.rule)">
+            {{ row.name }}
+          </TreeItem>
+        </template>
       </template>
     </div>
   </div>
 </template>
-
 <script setup lang="tsx">
 import { v4 as uuidV4 } from 'uuid';
 import pLimit from 'p-limit';
-import { StarOutlined, StarFilled } from '@ant-design/icons-vue';
 import { CONTENT_TYPES, CONTENT_TYPE } from '@/constants';
 import { searchByRuleId } from '@/api';
-import { executeCommand } from '@/api/vsc';
-import { useFavoritesStore } from '@/stores/favorites';
 import { useRulesStore } from '@/stores/rules';
-const favoritesStore = useFavoritesStore();
+import TreeItem from '@/components/vsc/TreeItem.vue';
+
 const rulesStore = useRulesStore();
+const router = useRouter();
 
 const runPromise = pLimit(5);
 
 let uuid: string = '';
 const searchText = ref('');
-const contentTypes = ref(CONTENT_TYPES.map((e) => e.value).flat());
+const expand = ref(false);
+const contentType = ref(CONTENT_TYPE.NOVEL);
+const filterType = ref(1);
 const loading = ref(false);
 const total = ref(0);
 const runCount = ref(0);
 
-const list = ref<any[]>([]);
+type List = {
+  opened: boolean;
+  rule: any;
+  list: any[];
+};
+const list = ref<List[]>([]);
 
-function onSearch() {
+const displayList = computed<List[]>(() => {
+  if (filterType.value === 1) {
+    return list.value;
+  }
+  return list.value
+    .map((ruleRow: any) => {
+      return {
+        ...ruleRow,
+        list: ruleRow.list.filter((e: any) => e.name.includes(searchText.value))
+      };
+    })
+    .filter((ruleRow: any) => ruleRow.list.length);
+});
+
+async function onSearch() {
   const lastUuid = uuidV4();
   uuid = lastUuid;
   list.value = [];
@@ -106,51 +111,55 @@ function onSearch() {
   runCount.value = 0;
   loading.value = true;
 
-  rulesStore.sync().then(async () => {
-    const rules = rulesStore.list.filter((e) => contentTypes.value.includes(e.contentType) && e.enableSearch);
-    total.value = rules.length;
+  const rules = rulesStore.list.filter((e) => contentType.value === e.contentType && e.enableSearch);
+  total.value = rules.length;
 
-    const tasks = rules.map((rule) =>
-      runPromise(async () => {
-        if (lastUuid !== uuid) return;
-        runCount.value++;
-        const res = await searchByRuleId({ ruleId: rule.id, keyword: searchText.value });
-        if (res.code === 0) {
-          const rows = res.data;
-          if (!rows.length) return;
-          list.value.push({
-            rule: rule,
-            list: rows
-          });
-        }
-      })
-    );
-    await Promise.all(tasks).catch(() => {});
-    loading.value = false;
-  });
+  const tasks = rules.map((rule) =>
+    runPromise(async () => {
+      if (lastUuid !== uuid) return;
+      runCount.value++;
+      const res = await searchByRuleId({ ruleId: rule.id, keyword: searchText.value });
+      if (res.code === 0) {
+        const rows = res.data;
+        if (!rows.length) return;
+        console.log({ rows });
+
+        list.value.push({
+          opened: true,
+          rule: rule,
+          list: rows
+        });
+      }
+    })
+  );
+  await Promise.all(tasks).catch(() => {});
+  loading.value = false;
 }
 
 function cancelSearch() {
   uuid = uuidV4();
   loading.value = false;
 }
-</script>
 
-<style scoped lang="scss">
-.node .cover {
-  transition: all ease 0.3s;
-}
-.node:hover {
-  .star {
-    visibility: visible;
-
-    &:hover {
-      background: rgba(0, 0, 0, 1);
+function getChapter(row: any, rule: any) {
+  router.push({
+    path: '/chapter',
+    query: {
+      ...row,
+      filePath: row.url,
+      ruleId: rule.id
     }
-  }
+  });
+}
 
-  .cover {
-    transform: scale(1.2);
+function changeOpened(ruleId: string) {
+  const row = list.value.find((e) => e.rule.id === ruleId);
+  if (row) {
+    row.opened = !row.opened;
   }
 }
-</style>
+
+onDeactivated(() => {
+  cancelSearch();
+});
+</script>
