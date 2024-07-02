@@ -14,7 +14,9 @@ let mDb: Low<Rule[]>
 async function getDb() {
   if (mDb)
     return mDb
-  const data = await readJson(BOOK_SOURCE_PATH).catch(() => ([]))
+  let data = await readJson(BOOK_SOURCE_PATH).catch(() => ([]))
+  if (!Array.isArray(data))
+    data = []
   mDb = await JSONFilePreset<Rule[]>(BOOK_SOURCE_PATH, data)
   return mDb
 }

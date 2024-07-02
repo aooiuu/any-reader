@@ -23,7 +23,9 @@ export class RecordFile {
   async getDb() {
     if (this.db)
       return this.db
-    const data = await readJson(this.filePath).catch(() => ([]))
+    let data = await readJson(this.filePath).catch(() => ([]))
+    if (!Array.isArray(data))
+      data = []
     this.db = await JSONFilePreset<RecordFileRow[]>(this.filePath, data)
     return this.db
   }
