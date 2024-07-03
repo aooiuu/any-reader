@@ -1,7 +1,7 @@
 <template>
   <div class="px-10 py-10 h-full flex overflow-hidden bg-[--activityBar-background] text-[--foreground]">
     <div class="flex flex-col h-full w-120 overflow-hidden">
-      <a-select v-model:value="contentType" class="mb-10">
+      <a-select v-if="typeof route.params.contentType === 'undefined'" v-model:value="contentType" class="mb-10">
         <a-select-option v-for="o in CONTENT_TYPES" :key="o.value" :value="o.value">{{ o.label }}</a-select-option>
       </a-select>
       <a-input-search v-model:value="searchText" class="mb-10" placeholder="过滤" />
@@ -84,6 +84,7 @@ import { discover, discoverMap } from '@/api';
 import { useFavoritesStore } from '@/stores/favorites';
 import { useRulesStore } from '@/stores/rules';
 
+const route = useRoute();
 const router = useRouter();
 const favoritesStore = useFavoritesStore();
 const rulesStore = useRulesStore();
@@ -95,6 +96,12 @@ const rule = ref({});
 const categoryList = ref([]);
 const loading = ref(false);
 const searchText = ref('');
+
+onMounted(() => {
+  if (typeof route.params.contentType !== 'undefined') {
+    contentType.value = +route.params.contentType;
+  }
+});
 
 const ruleListDisplay = computed(() => {
   const filterContentType = rulesStore.list.filter((e) => e.enableDiscover && e.contentType === contentType.value);
@@ -128,7 +135,7 @@ async function changeRule(row) {
 }
 
 watch(
-  () => rulesStore.list,
+  ruleListDisplay,
   (data) => {
     if (data.length > 0) {
       changeRule(data[0]);

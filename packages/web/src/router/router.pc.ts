@@ -55,6 +55,13 @@ const router = createRouter({
           }
         },
         {
+          path: 'category/:contentType',
+          component: () => import('@/pages/pc/category/index.vue'),
+          meta: {
+            keepAlive: true
+          }
+        },
+        {
           path: 'rules',
           component: () => import('@/pages/pc/rules/index.vue'),
           meta: {

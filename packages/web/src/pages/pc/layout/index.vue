@@ -85,6 +85,7 @@
           <div
             v-for="nav in navs"
             :key="nav.path"
+            :title="nav.title"
             :class="[
               'w-42 h-42 flex items-center justify-center hover:text-[--ar-color-primary] cursor-pointer',
               route.path === nav.path ? 'text-[--ar-color-primary]' : ''
@@ -138,9 +139,12 @@ function changeSidebar() {
 }
 
 const navs = [
-  { icon: 'codicon-book', path: '/books', title: '书架' },
+  { icon: 'codicon-home', path: '/books', title: '首页' },
   { icon: 'codicon-search', path: '/search', title: '搜索' },
-  { icon: 'codicon-globe', path: '/category', title: '分类' },
+  { icon: 'codicon-book', path: '/category/1', title: '小说' },
+  { icon: 'codicon-library', path: '/category/0', title: '漫画' },
+  { icon: 'codicon-play-circle', path: '/category/2', title: '视频' },
+  { icon: 'codicon-music', path: '/category/3', title: '音频' },
   { icon: 'codicon-extensions', path: '/rules', title: '规则' }
 ];
 
