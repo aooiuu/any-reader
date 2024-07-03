@@ -6,7 +6,7 @@ import type { Low } from 'lowdb/lib'
 import { JSONFilePreset } from 'lowdb/node'
 import axios from 'axios'
 import type { Rule } from '@any-reader/rule-utils'
-import { cmsJsonToRule, decodeRule } from '@any-reader/rule-utils'
+import { cmsJsonToRule, cmsXmlToRule, decodeRule } from '@any-reader/rule-utils'
 import { BOOK_SOURCE_PATH } from './constants'
 
 let mDb: Low<Rule[]>
@@ -165,7 +165,15 @@ interface ImportCMSParams {
 }
 
 export async function importCMS(params: ImportCMSParams) {
-  const rule = await cmsJsonToRule(params.api, params.name)
+  let rule = {} as Rule
+  if (params.type === 'maccms.json')
+    rule = await cmsJsonToRule(params.api)
+  else if (params.type === 'maccms.xml')
+    rule = await cmsXmlToRule(params.api)
+  else
+    throw new Error('未知的规则类型')
+
+  Object.assign(rule, { name: params.name })
   await update(rule)
   return 1
 }

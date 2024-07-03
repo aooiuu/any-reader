@@ -25,12 +25,12 @@ const emit = defineEmits(['done']);
 const { message } = App.useApp();
 
 const cmsTypes = [
-  { label: '苹果CMS (json)', value: 'json' },
-  { label: '苹果CMS (xml)', value: 'xml', disabled: true }
+  { label: '苹果CMS (json)', value: 'maccms.json' },
+  { label: '苹果CMS (xml)', value: 'maccms.xml' }
 ];
 
 const formData = reactive({
-  type: 'json',
+  type: 'maccms.json',
   name: '',
   api: ''
 });
