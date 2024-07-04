@@ -1,7 +1,7 @@
 <template>
-  <div class="w-full h-full overflow-hidden flex">
+  <div class="w-full h-full overflow-hidden flex flex-col sm:flex-row">
     <div
-      class="w-120 text-[--ar-color-text-secondary] bg-[--activityBar-background] h-full p-10 border-r-1 border-r-solid border-r-[--titleBar-border-bottom]"
+      class="w-full flex sm:block sm:w-120 text-[--ar-color-text-secondary] bg-[--activityBar-background] p-10 border-r-1 border-r-solid border-r-[--titleBar-border-bottom]"
     >
       <div v-for="(nav, idx) in navs" :key="nav.title" class="" @click="activeNavIdx = idx">
         <div

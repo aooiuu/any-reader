@@ -1,13 +1,13 @@
 <template>
-  <div class="px-10 py-10 h-full flex overflow-hidden bg-[--activityBar-background] text-[--foreground]">
-    <div class="flex flex-col h-full w-120 overflow-hidden">
+  <div class="flex flex-col md:flex-row h-full px-10 py-10 overflow-hidden bg-[--activityBar-background] text-[--foreground]">
+    <div class="flex flex-col md:h-full md:w-120 overflow-hidden">
       <a-select v-if="typeof route.params.contentType === 'undefined'" v-model:value="contentType" class="mb-10">
         <a-select-option v-for="o in CONTENT_TYPES" :key="o.value" :value="o.value">{{ o.label }}</a-select-option>
       </a-select>
       <a-input-search v-model:value="searchText" class="mb-10" placeholder="过滤" />
 
-      <div class="flex-1 overflow-auto">
-        <div v-for="r in ruleListDisplay" :key="r.id" class="" @click="changeRule(r)">
+      <div class="flex md:block flex-1 overflow-auto">
+        <div v-for="r in ruleListDisplay" :key="r.id" class="flex-shrink-0" @click="changeRule(r)">
           <div
             :class="[
               'h-32 lh-32 px-10 rounded-10 mb-5 cursor-pointer hover:bg-[--main-background] overflow-hidden',

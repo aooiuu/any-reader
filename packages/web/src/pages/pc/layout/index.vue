@@ -2,7 +2,7 @@
   <BaseLayout>
     <div class="w-full h-full flex flex-col overflow-hidden text-[--ar-color-text]">
       <div
-        class="text-12 flex justify-center items-center h-34 lh-34 bg-[--titleBar-inactiveBackground] border-b-1 border-b-solid border-b-[--titleBar-border-bottom] pr-2"
+        class="hidden sm:flex text-12 justify-center items-center h-34 lh-34 bg-[--titleBar-inactiveBackground] border-b-1 border-b-solid border-b-[--titleBar-border-bottom] pr-2"
         :style="{
           '-webkit-app-region': 'drag'
         }"
@@ -75,11 +75,11 @@
           </div>
         </div>
       </div>
-      <div class="flex flex-1 overflow-auto">
+      <div class="flex flex-1 overflow-auto flex-col-reverse sm:flex-row">
         <!-- 侧边栏 -->
         <div
           v-if="settingStore.data.sidebar !== 'hidden'"
-          class="w-48 flex flex-col py-10 text-[--ar-color-text-secondary] bg-[--activityBar-background] text-24 border-r-1 border-r-solid border-r-[--titleBar-border-bottom]"
+          class="flex w-full flex flex-row sm:w-48 sm:flex-col py-10 text-[--ar-color-text-secondary] bg-[--activityBar-background] text-24 border-r-1 border-r-solid border-r-[--titleBar-border-bottom]"
         >
           <!-- 收藏 -->
           <div

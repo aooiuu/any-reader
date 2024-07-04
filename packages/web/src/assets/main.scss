@@ -31,3 +31,9 @@ body,
   --color-text-2: var(--vscode-editor-foreground);
   --color-text-3: var(--vscode-editor-foreground);
 }
+
+@media (max-width: 640px) {
+  ::-webkit-scrollbar {
+    display: none;
+  }
+}

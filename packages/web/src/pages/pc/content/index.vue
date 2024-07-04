@@ -11,7 +11,7 @@
         backgroundColor: settingStore.data.readStyle.backgroundColor
       }"
     >
-      <div ref="contentRef" class="mx-60" v-html="content"></div>
+      <div ref="contentRef" class="md:mx-60" v-html="content"></div>
 
       <div class="flex justify-center">
         <a-button-group>
@@ -26,40 +26,44 @@
           </a-button>
         </a-button-group>
       </div>
-      <a-back-top :visibility-height="100" :target="topTarget" />
+      <a-back-top class="hidden md:block" :visibility-height="100" :target="topTarget" />
     </div>
   </div>
 
   <!-- 目录 -->
-  <div
-    v-if="chaptersVisible"
-    ref="chaptersRef"
-    class="fixed top-5 left-50% translate-x--50% rounded-4 overflow-hidden h-400 w-400 flex flex-col"
-    :style="{
-      boxShadow: '0px 0px 5px 5px rgba(0, 0, 0, 0.2)',
-      color: settingStore.data.readStyle.textColor,
-      backgroundColor: settingStore.data.readStyle.backgroundColor
-    }"
-  >
+  <div v-if="chaptersVisible" class="z-10 fixed top-0 left-0 right-0 bottom-0 bg-[#000000cc]">
     <div
-      class="p-10 cursor-pointer text-center overflow-hidden whitespace-nowrap text-ellipsis b-b-1 b-b-solid b-b-[#00000033] pb-4 mb-4"
-      @click="scrollIntoViewChapter"
+      ref="chaptersRef"
+      class="fixed top-0 left-0 right-0 md:top-5 md:left-50% md:translate-x--50% md:rounded-4 md:w-400 overflow-hidden h-400 flex flex-col"
+      :style="{
+        boxShadow: '0px 0px 5px 5px rgba(0, 0, 0, 0.2)',
+        color: settingStore.data.readStyle.textColor,
+        backgroundColor: settingStore.data.readStyle.backgroundColor
+      }"
     >
-      {{ readStore.title || '-' }}
-    </div>
-
-    <div class="h-full overflow-auto" style="scrollbar-width: none">
       <div
-        v-for="chapter in chaptersStore.chapters"
-        :key="chapter.name"
-        :title="chapter.name"
-        :class="[
-          'px-10 overflow-hidden whitespace-nowrap text-ellipsis lh-24 hover:bg-[#00000026] cursor-pointer',
-          readStore.path === chapter.chapterPath ? 'bg-[#00000026]' : ''
-        ]"
-        @click="toChapter(chapter.chapterPath)"
+        :style="{
+          '-webkit-app-region': 'drag'
+        }"
+        class="p-10 cursor-pointer text-center overflow-hidden whitespace-nowrap text-ellipsis b-b-1 b-b-solid b-b-[#00000033] pb-4 mb-4"
+        @click="scrollIntoViewChapter"
       >
-        {{ chapter.name }}
+        {{ readStore.title || '-' }}
+      </div>
+
+      <div class="h-full overflow-auto" style="scrollbar-width: none">
+        <div
+          v-for="chapter in chaptersStore.chapters"
+          :key="chapter.name"
+          :title="chapter.name"
+          :class="[
+            'px-10 overflow-hidden whitespace-nowrap text-ellipsis lh-24 hover:bg-[#00000026] cursor-pointer',
+            readStore.path === chapter.chapterPath ? 'bg-[#00000026]' : ''
+          ]"
+          @click="toChapter(chapter.chapterPath)"
+        >
+          {{ chapter.name }}
+        </div>
       </div>
     </div>
   </div>

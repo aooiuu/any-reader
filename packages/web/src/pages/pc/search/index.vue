@@ -2,15 +2,12 @@
   <div class="px-10 py-10 h-full flex flex-col">
     <div class="mb-10 flex gap-10">
       <div class="flex-1 flex items-center gap-10">
-        <a-input-search
-          v-model:value="searchText"
-          placeholder="输入关键词，回车键搜索"
-          class="!w-120px"
-          :disabled="loading"
-          @keyup.enter="onSearch()"
-        />
-        <a-checkbox-group v-model:value="contentTypes" :disabled="loading" :options="CONTENT_TYPES.filter((e) => e.value !== CONTENT_TYPE.GAME)">
-        </a-checkbox-group>
+        <a-input-group compact class="!flex">
+          <a-select v-model:value="contentType">
+            <a-select-option v-for="item in CONTENT_TYPES" :key="item.value" :value="item.value">{{ item.label }}</a-select-option>
+          </a-select>
+          <a-input v-model:value="searchText" placeholder="输入关键词，回车键搜索" :disabled="loading" @keyup.enter="onSearch()" />
+        </a-input-group>
       </div>
     </div>
     <!-- 搜索进度 -->
@@ -105,7 +102,8 @@ const runPromise = pLimit(10);
 
 let uuid: string = '';
 const searchText = ref('');
-const contentTypes = ref(CONTENT_TYPES.map((e) => e.value).flat());
+const contentType = ref(CONTENT_TYPE.NOVEL);
+const contentTypes = computed(() => [contentType.value]);
 const loading = ref(false);
 const total = ref(0);
 const runCount = ref(0);
