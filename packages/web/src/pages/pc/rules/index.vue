@@ -23,6 +23,7 @@
             <a-menu-item @click="addRule">单个添加</a-menu-item>
             <a-menu-divider />
             <a-menu-item @click="addCMS">从资源站添加</a-menu-item>
+            <a-menu-item @click="addRuleFile">从ZY-Player导入</a-menu-item>
             <a-menu-divider />
           </a-menu>
         </template>
@@ -52,6 +53,7 @@
     <div ref="tableWarpRef" class="flex-1 overflow-hidden" @drop="drop" @dragover.prevent @dragenter.prevent>
       <a-table
         row-key="id"
+        :loading="loading"
         :custom-row="(record) => customRow(record, tableData)"
         :pagination="{
           defaultPageSize: 10,
@@ -326,6 +328,7 @@ function addRule() {
   });
 }
 
+// 从文件导入
 function addRuleFile() {
   fileInputRef.value.click();
 }
@@ -502,9 +505,11 @@ const { drop, dropFile } = useDropRules(({ count }) => {
 
 async function changeFile(e) {
   const files = e.target.files;
+  loading.value = true;
   for (const file of files) {
-    await dropFile(file);
+    await dropFile(file).catch(() => {});
   }
+  loading.value = false;
 }
 
 const { copy } = useClipboard();

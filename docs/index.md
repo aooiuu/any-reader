@@ -6,11 +6,11 @@ outline: deep
 
 开源的多平台自定义源资源聚合工具。支持小说、漫画阅读、视频播放、聚合搜索等, 也支持本地资源TXT、EPUB
 
-- [JS 解析库]( ./core/)
-- [VSCode 插件]( ./vsc/)
-- [桌面端]( ./desktop/)
-- [网页端]( ./browser/)
-- [Docker]( ./docker/)
+- [JS 解析库](./core/)
+- [VSCode 插件](./vsc/)
+- [桌面端](./desktop/)
+- [网页端](./browser/)
+- [Docker](./docker/)
 - uTools 插件
 
 软件不提供内容, 也不提供任何规则, 但你可以通过编写 [规则](./rule/), 控制呈现内容
@@ -37,13 +37,11 @@ pnpm run build
 
 ### Core
 
-
 调试：
 
 1. 修改 `src\start.ts` 文件, 把 `rule` 变量修改为真实的书源
 2. 进入目录 `cd packages\core`
 3. vscode 打开调试终端, 输入 `pnpm run start`
-
 
 ### 前端模板
 
@@ -73,6 +71,33 @@ pnpm run build:w
 
 如果您是从网络上找到的源，那么可能是源过期了，也可能是规则部分没有支持。
 
-如果使用 `eso` 可以搜索， 那说明没过期。您可以检查规则是否有不支持的部分。
+如果使用 `eso` 可以搜索， 那说明没过期。请提交 [issues](https://github.com/aooiuu/any-reader/issues)
 
-[查看规则支持情况](/core/#规则支持情况). 如果规则支持情况说明里写了支持或部分支持，那请提交 [issues](https://github.com/aooiuu/any-reader/issues)
+### 导入 ZY-Player 源
+
+`AnyReader` 会从 `tbl_site` 列表转换为可以使用的规则。
+
+`ZY-Player` 配置一般长这样:
+
+```json
+{
+  "tbl_site": [
+    {
+      "key": "xxx",
+      "name": "xxx",
+      "api": "xxx",
+      "playUrl": "",
+      "search": 1,
+      "group": "xxx",
+      "status": false,
+      "type": 1,
+      "id": "1",
+      "isActive": true
+    }
+  ],
+  // ...
+}
+```
+
+> 转换后的规则不但 `AnyReader`  可以使用, `ESO` 一样可以使用哦
+
