@@ -1,0 +1,73 @@
+# @see https://www.electron.build/configuration/configuration
+
+appId: io.github.any-reader
+productName: AnyReader
+artifactName: AnyReader_${version}.${ext}
+
+asar: true
+directories:
+  output: dist/electron
+files:
+  - dist/electron-js
+  - dist/electron-template
+  - '!**/node_modules/**/*.map'
+  - '!**/node_modules/**/*.md'
+  - '!**/node_modules/**/*.ts'
+  - '!**/node_modules/**/*.scss'
+  - '!**/node_modules/.bin'
+  - '!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}'
+
+win:
+  artifactName: ${productName}-win32-${arch}-${version}.${ext}
+  target:
+    - target: nsis
+      arch:
+        - x64
+        - arm64
+        - ia32
+  verifyUpdateCodeSignature: false
+
+mac:
+  target:
+    - dmg
+    - zip
+  category: public.app-category.productivity
+  artifactName: ${productName}-mac-${arch}-${version}.${ext}
+
+dmg:
+  iconSize: 100
+  contents:
+    - x: 380
+      'y': 280
+      type: link
+      path: /Applications
+    - x: 110
+      'y': 280
+      type: file
+  window:
+    width: 500
+    height: 500
+
+linux:
+  target:
+    - deb
+    - AppImage
+  artifactName: ${productName}-linux-${arch}-${version}.${ext}
+
+# 安装程序配置
+nsis:
+  oneClick: false
+  perMachine: false
+  # 允许更改安装目录
+  allowToChangeInstallationDirectory: true
+  deleteAppDataOnUninstall: false
+
+# 自动更新的配置
+publish:
+  - provider: github
+    owner: aooiuu
+    repo: any-reader
+
+# https://github.com/electron/get#usage
+electronDownload:
+  mirror: https://npmmirror.com/mirrors/electron/

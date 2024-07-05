@@ -80,6 +80,7 @@ jobs:
           draft: true
           # prerelease: true
           files: |
+            packages/web/dist/electron/latest*.yml
             packages/web/dist/electron/*.AppImage
             packages/web/dist/electron/*.deb
             packages/web/dist/electron/*.dmg

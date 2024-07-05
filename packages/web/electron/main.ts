@@ -1,5 +1,6 @@
 import { app, BrowserWindow, Menu } from 'electron';
 import { createAPI } from './api';
+import { useAutoUpdater } from './updater';
 
 app.whenReady().then(async () => {
   const win = new BrowserWindow({
@@ -25,4 +26,6 @@ app.whenReady().then(async () => {
     win.loadFile('dist/electron-template/index.html');
   }
   Menu.setApplicationMenu(null);
+
+  useAutoUpdater();
 });

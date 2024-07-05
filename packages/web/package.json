@@ -52,6 +52,7 @@
     "blueimp-md5": "^2.19.0",
     "dplayer": "^1.27.1",
     "easy-post-message": "^0.1.0",
+    "electron-updater": "^6.2.1",
     "file-saver": "^2.0.5",
     "hls.js": "^1.5.3",
     "lodash-es": "^4.17.21",
