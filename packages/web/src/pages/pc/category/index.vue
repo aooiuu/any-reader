@@ -6,18 +6,8 @@
       </a-select>
       <a-input-search v-model:value="searchText" class="mb-10" placeholder="过滤" />
 
-      <div class="flex md:block flex-1 overflow-auto">
-        <div v-for="r in ruleListDisplay" :key="r.id" class="flex-shrink-0" @click="changeRule(r)">
-          <div
-            :class="[
-              'h-32 lh-32 px-10 rounded-10 mb-5 cursor-pointer hover:bg-[--main-background] overflow-hidden',
-              ruleId === r.id ? ' bg-[--main-background]' : ''
-            ]"
-          >
-            {{ r.name }}
-          </div>
-        </div>
-      </div>
+      <!-- 分类 -->
+      <ARTabs v-model="ruleId" :options="ruleListDisplay" value-key="id" label-key="name" @update:model-value="changeRule" />
     </div>
 
     <div class="h-full flex flex-col flex-1 ml-5 overflow-hidden">
@@ -44,7 +34,7 @@
             "
           >
             <div class="w-102 h-136 mb-5 rounded-5 overflow-hidden">
-              <ARCover :src="row.cover" :preview="false" alt="" srcset="" class="cover w-102 h-136" width="100%" height="100%" fit="cover" />
+              <ARCover :src="row.cover" :preview="false" alt="" srcset="" class="w-102 h-136" width="100%" height="100%" fit="cover" />
             </div>
             <div class="overflow-hidden whitespace-nowrap text-ellipsis mb-2">{{ row.name }}</div>
             <div class="overflow-hidden whitespace-nowrap text-ellipsis text-12 op-70">{{ row.author }}</div>
@@ -123,10 +113,10 @@ async function changeCategory(row) {
 }
 
 // 规则被修改
-async function changeRule(row) {
+async function changeRule(id) {
+  ruleId.value = id;
   loading.value = true;
-  ruleId.value = row.id;
-  rule.value = row;
+  rule.value = categoryList.value.find((e) => e.id === id);
   list.value = [];
   categoryList.value = [];
   const res = await discoverMap(ruleId.value);
@@ -138,7 +128,7 @@ watch(
   ruleListDisplay,
   (data) => {
     if (data.length > 0) {
-      changeRule(data[0]);
+      changeRule(data[0].id);
     }
   },
   {
@@ -146,21 +136,3 @@ watch(
   }
 );
 </script>
-
-<style scoped lang="scss">
-.node .cover {
-  transition: all ease 0.3s;
-}
-.node:hover {
-  .star {
-    visibility: visible;
-    &:hover {
-      background: rgba(0, 0, 0, 1);
-    }
-  }
-
-  .cover {
-    transform: scale(1.2);
-  }
-}
-</style>

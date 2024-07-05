@@ -1,21 +1,31 @@
 <template>
-  <div ref="containerRef" class="w-full flex overflow-x-auto overflow-y-hidden" @wheel="onWheel($event)">
-    <div
-      v-for="item in props.list"
-      :key="item.name"
-      :class="[
-        'flex-shrink-0 h-32 lh-32 px-10 rounded-10 mb-5 cursor-pointer hover:bg-[--ar-color-primary-bg]',
-        value === item.name ? ' bg-[--ar-color-primary-bg] text-[--ar-color-primary-text]' : ''
-      ]"
-      @click="onInput(item.name)"
-    >
-      {{ item.name }}
+  <div class="flex items-center overflow-hidden mb-5 select-none">
+    <div class="mx-2 hover:text-[--ar-color-primary-text] cursor-pointer" @click="scrollToLeft">
+      <LeftOutlined />
+    </div>
+    <div ref="navsRef" class="w-full flex overflow-x-auto overflow-y-hidden ar-scrollbar-none" @wheel="onWheel($event)">
+      <div
+        v-for="item in props.list"
+        :key="item.name"
+        :class="[
+          'flex-shrink-0 h-32 lh-32 px-10 rounded-10 cursor-pointer hover:bg-[--ar-color-primary-bg]',
+          value === item.name ? ' bg-[--ar-color-primary-bg] text-[--ar-color-primary-text]' : ''
+        ]"
+        @click="onInput(item.name)"
+      >
+        {{ item.name }}
+      </div>
+    </div>
+    <div class="mx-2 hover:text-[--ar-color-primary-text] cursor-pointer" @click="scrollToRight">
+      <RightOutlined />
     </div>
   </div>
   <Category v-if="nextList.length > 1" :list="nextList" @change="(row: any) => emit('change', row)" />
 </template>
 
 <script setup lang="ts">
+import { LeftOutlined, RightOutlined } from '@ant-design/icons-vue';
+import { useTabs } from '@/components/Tabs/useTabs';
 import Category from './index.vue';
 
 const props = defineProps<{
@@ -26,16 +36,9 @@ const emit = defineEmits(['change']);
 
 const value = ref<string>('');
 const nextList = ref([]);
-const containerRef = ref();
+const navsRef = ref();
 
-// 处理鼠标滚轮
-function onWheel(event: WheelEvent) {
-  if (event.deltaY > 0) {
-    containerRef.value.scrollLeft += 20;
-  } else {
-    containerRef.value.scrollLeft -= 20;
-  }
-}
+const { scrollToLeft, scrollToRight, onWheel } = useTabs(navsRef);
 
 function onInput(v: any) {
   if (!v) return;

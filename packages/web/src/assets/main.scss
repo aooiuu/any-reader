@@ -37,3 +37,9 @@ body,
     display: none;
   }
 }
+
+.ar-scrollbar-none {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

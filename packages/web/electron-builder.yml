@@ -20,6 +20,7 @@ files:
 win:
   artifactName: ${productName}-win32-${arch}-${version}.${ext}
   target:
+    - target: zip
     - target: nsis
       arch:
         - x64
