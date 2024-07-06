@@ -103,8 +103,13 @@ useBus(EVENT_CHAPTERS_BOX).on(showChapters);
 </script>
 
 <style scoped>
-::v-deep p {
+:deep(p) {
   margin: 0;
   padding: 0;
+}
+:deep(img) {
+  max-width: 100%;
+  margin: 0 auto;
+  display: block;
 }
 </style>

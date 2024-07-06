@@ -73,11 +73,11 @@ pnpm run build:w
 
 如果使用 `eso` 可以搜索， 那说明没过期。请提交 [issues](https://github.com/aooiuu/any-reader/issues)
 
-### 导入 ZY-Player 源
+### 导入 ZyPlayer 源
 
 `AnyReader` 会从 `tbl_site` 列表转换为可以使用的规则。
 
-`ZY-Player` 配置一般长这样:
+`ZyPlayer` 配置一般长这样:
 
 ```json
 {

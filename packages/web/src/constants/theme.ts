@@ -1,10 +1,16 @@
 // 预置配色
-export const theme = [
+
+const BASE_THEME = {
+  borderRadius: 4
+};
+
+export const THEME = [
   {
     label: '杏仁黄',
     color: '#FAF9DE',
     textColor: '#000000e6',
     theme: {
+      ...BASE_THEME,
       colorPrimary: '#d4d192'
     }
   },
@@ -13,6 +19,7 @@ export const theme = [
     color: '#FFF2E2',
     textColor: '#000000e6',
     theme: {
+      ...BASE_THEME,
       colorPrimary: '#ffcf94'
     }
   },
@@ -21,6 +28,7 @@ export const theme = [
     color: '#FDE6E0',
     textColor: '#000000e6',
     theme: {
+      ...BASE_THEME,
       colorPrimary: '#fdbbaa'
     }
   },
@@ -29,6 +37,7 @@ export const theme = [
     color: '#E3EDCD',
     textColor: '#000000e6',
     theme: {
+      ...BASE_THEME,
       colorPrimary: '#acbf82'
     }
   },
@@ -37,6 +46,7 @@ export const theme = [
     color: '#DCE2F1',
     textColor: '#000000e6',
     theme: {
+      ...BASE_THEME,
       colorPrimary: '#adbadb'
     }
   },
@@ -45,6 +55,7 @@ export const theme = [
     color: '#E9EBFE',
     textColor: '#000000e6',
     theme: {
+      ...BASE_THEME,
       colorPrimary: '#b4bbfe'
     }
   },
@@ -53,6 +64,7 @@ export const theme = [
     color: '#EAEAEF',
     textColor: '#000000e6',
     theme: {
+      ...BASE_THEME,
       colorPrimary: '#b2b2db'
     }
   },
@@ -61,6 +73,7 @@ export const theme = [
     color: '#1f1f1f',
     textColor: '#FFFFFFB3',
     theme: {
+      ...BASE_THEME,
       colorPrimary: '#40b883'
     }
   }

@@ -1,5 +1,6 @@
 <template>
-  <div class="px-10 py-10 h-full flex flex-col">
+  <ARRuleEmpty v-if="!rulesStore.list.length" />
+  <div v-else class="px-10 py-10 h-full flex flex-col">
     <div class="mb-10 flex gap-10">
       <div class="flex-1 flex items-center gap-10">
         <a-input-group compact class="!flex">

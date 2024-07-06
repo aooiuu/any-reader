@@ -23,15 +23,27 @@
             <a-menu-item @click="addRule">单个添加</a-menu-item>
             <a-menu-divider />
             <a-menu-item @click="addCMS">从资源站添加</a-menu-item>
-            <a-menu-item @click="addRuleFile">从ZY-Player导入</a-menu-item>
+            <a-menu-item @click="addRuleFile">从ZyPlayer导入</a-menu-item>
             <a-menu-divider />
           </a-menu>
         </template>
       </a-dropdown>
 
       <div class="flex-1" />
-      <a-button type="primary" @click="pingAll">测速</a-button>
-      <a-button type="primary" danger @click="delTimeoutRules">一键删除超时规则</a-button>
+      <a-dropdown>
+        <a-button>
+          测速
+          <DownOutlined />
+        </a-button>
+        <template #overlay>
+          <a-menu>
+            <a-menu-item @click="pingAll">测速</a-menu-item>
+            <a-menu-item class="!text-red" @click="delTimeoutRules">一键删除超时规则</a-menu-item>
+            <a-menu-divider />
+          </a-menu>
+        </template>
+      </a-dropdown>
+
       <a-dropdown position="bottom" :disabled="!selectedKeys.length">
         <a-button type="primary" :disabled="!selectedKeys.length">批量操作<DownOutlined /></a-button>
         <template #overlay>
@@ -165,44 +177,6 @@ const tableColumns = ref([
     }
   },
   {
-    title: '延迟',
-    dataIndex: 'extra.ping',
-    width: 90,
-    align: 'center',
-    customRender: ({ record }) => {
-      const extra = record.extra;
-      return (
-        <a-button
-          class={extra?.ping === -1 ? '!text-red' : ''}
-          type="text"
-          onClick={async () => {
-            await ping(_.pick(record, ['id', 'host']));
-            ruleExtra.sync();
-          }}>
-          {pingIds.value.includes(record.id) ? '-' : extra?.ping === -1 ? '超时' : extra?.ping || '测速'}
-        </a-button>
-      );
-    },
-    sortDirections: ['ascend', 'descend'],
-    sorter: (a, b, { direction }) => {
-      if (direction === 'ascend') {
-        return sortableValue(a, 'extra.ping') - sortableValue(b, 'extra.ping');
-      }
-      return sortableValue(b, 'extra.ping') - sortableValue(a, 'extra.ping');
-    }
-  },
-  {
-    title: '作者',
-    dataIndex: 'author',
-    align: 'center',
-    width: 100,
-    ellipsis: true,
-    tooltip: true,
-    sortable: {
-      sortDirections: ['ascend', 'descend']
-    }
-  },
-  {
     title: '启用搜索',
     width: 120,
     align: 'center',
@@ -255,6 +229,44 @@ const tableColumns = ref([
         }
       />
     )
+  },
+  {
+    title: '作者',
+    dataIndex: 'author',
+    align: 'center',
+    width: 100,
+    ellipsis: true,
+    tooltip: true,
+    sortable: {
+      sortDirections: ['ascend', 'descend']
+    }
+  },
+  {
+    title: '延迟',
+    dataIndex: 'extra.ping',
+    width: 90,
+    align: 'center',
+    customRender: ({ record }) => {
+      const extra = record.extra;
+      return (
+        <a-button
+          class={extra?.ping === -1 ? '!text-red' : ''}
+          type="text"
+          onClick={async () => {
+            await ping(_.pick(record, ['id', 'host']));
+            ruleExtra.sync();
+          }}>
+          {pingIds.value.includes(record.id) ? '-' : extra?.ping === -1 ? '超时' : extra?.ping || '测速'}
+        </a-button>
+      );
+    },
+    sortDirections: ['ascend', 'descend'],
+    sorter: (a, b, { direction }) => {
+      if (direction === 'ascend') {
+        return sortableValue(a, 'extra.ping') - sortableValue(b, 'extra.ping');
+      }
+      return sortableValue(b, 'extra.ping') - sortableValue(a, 'extra.ping');
+    }
   },
   {
     title: '接口调用',

@@ -7,7 +7,6 @@
       <div class="flex-1 overflow-hidden flex flex-col">
         <div class="mb-10">
           <a-radio-group v-model:value="formType" type="button">
-            <a-radio-button value="All">双栏</a-radio-button>
             <a-radio-button value="Form">Form</a-radio-button>
             <a-radio-button value="JSON">JSON</a-radio-button>
           </a-radio-group>
@@ -18,10 +17,10 @@
             v-if="formType === 'All' || formType === 'Form'"
             :model="formData"
             :auto-label-width="true"
-            class="flex-1 overflow-auto"
+            class="flex-1 overflow-auto pr-10"
             layout="vertical"
           >
-            <a-radio-group v-model:value="formStep" type="button" direction="vertical" class="mb-10 mx-10">
+            <a-radio-group v-model:value="formStep" type="button" direction="vertical" class="mb-10">
               <a-radio-button :value="1">基础信息</a-radio-button>
               <a-radio-button :value="2">搜索</a-radio-button>
               <a-radio-button :value="3">章节列表</a-radio-button>
@@ -54,7 +53,7 @@
                   />
                 </template>
                 <template v-else-if="item.type === 'switch'">
-                  <a-switch v-model:value="formData[item.prop]" :checked-value="true" :unchecked-value="false" :placeholder="item.prop" />
+                  <a-switch v-model:checked="formData[item.prop]" :placeholder="item.prop" />
                 </template>
                 <template v-else>
                   <a-input v-model:value="formData[item.prop]" :placeholder="item.prop" />
@@ -87,7 +86,7 @@ const loading = ref(false);
 const router = useRouter();
 const route = useRoute();
 
-const formType = ref('All');
+const formType = ref('JSON');
 const formStep = ref(1);
 
 const formData = reactive({

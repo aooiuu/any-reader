@@ -19,7 +19,7 @@
       <div class="flex-1">推荐背景色</div>
       <div class="flex gap-4 flex-wrap">
         <div
-          v-for="color in colors"
+          v-for="color in THEME"
           :key="color.label"
           :style="{
             background: color.color
@@ -34,7 +34,7 @@
 </template>
 
 <script setup>
-import { theme as colors } from '@/constants/theme';
+import { THEME } from '@/constants/theme';
 import { useSettingStore } from '@/stores/setting';
 import SettingRow from '../SettingRow/index.vue';
 

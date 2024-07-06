@@ -1,5 +1,6 @@
 <template>
-  <div class="flex flex-col md:flex-row h-full px-10 py-10 overflow-hidden bg-[--activityBar-background] text-[--foreground]">
+  <ARRuleEmpty v-if="!rulesStore.list.length" />
+  <div v-else class="flex flex-col md:flex-row h-full px-10 py-10 overflow-hidden bg-[--activityBar-background] text-[--foreground]">
     <div class="flex flex-col md:h-full md:w-120 overflow-hidden">
       <a-select v-if="typeof route.params.contentType === 'undefined'" v-model:value="contentType" class="mb-10">
         <a-select-option v-for="o in CONTENT_TYPES" :key="o.value" :value="o.value">{{ o.label }}</a-select-option>

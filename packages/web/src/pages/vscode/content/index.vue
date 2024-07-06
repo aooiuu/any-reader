@@ -22,7 +22,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup scoped>
 import { useContent } from '@/pages/pc/content/useContent';
 
 const contentRef = ref();
@@ -31,9 +31,14 @@ const { content, settingStore, lastChapter, nextChapter, onPageUp, onPageDown, o
 </script>
 
 <style scoped>
-::v-deep p {
+:deep(p) {
   margin: 0;
   padding: 0;
+}
+:deep(img) {
+  max-width: 100%;
+  margin: 0 auto;
+  display: block;
 }
 
 .topbar {
