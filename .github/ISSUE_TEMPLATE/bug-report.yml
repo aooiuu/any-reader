@@ -1,0 +1,37 @@
+name: Bug Report
+description: File a bug report.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢您花时间填写这个bug报告!
+
+  - type: dropdown
+    id: app
+    attributes:
+      label: 在哪个平台出现的问题?
+      multiple: true
+      options:
+        - VSCode
+        - 桌面端
+        - 网页端
+        - Docker
+        - 其它
+    validations:
+      required: true
+
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: 问题描述
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: 请描述BUG产生过程
+    validations:
+      required: false
