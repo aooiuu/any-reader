@@ -1,3 +1,5 @@
+import { version } from '../../package.json';
+
 export enum CONTENT_TYPE {
   MANGA = 0,
   NOVEL = 1,
@@ -24,3 +26,5 @@ export const CONTENT_TYPES = [
 ].filter((e) => e.platform.includes(PLATFORM));
 
 export const BASE_URL = import.meta.env.VITE_APP_BASE_URL || '/api';
+
+export const VERSION = version;

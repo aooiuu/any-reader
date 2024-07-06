@@ -22,11 +22,13 @@
 import ReadPage from './components/ReadPage/index.vue';
 import KeyboardShortcuts from './components/KeyboardShortcuts/index.vue';
 import App from './components/App/index.vue';
+import About from './components/About/index.vue';
 
 const navs = [
   { title: '阅读页', component: ReadPage },
   { title: '热键', component: KeyboardShortcuts },
-  { title: '应用', component: App }
+  { title: '应用', component: App },
+  { title: '关于', component: About }
 ];
 
 const activeNavIdx = ref(0);
