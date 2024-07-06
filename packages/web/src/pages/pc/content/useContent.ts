@@ -83,12 +83,18 @@ export function useContent(contentRef: Ref<HTMLElement>) {
 
   // 上一页
   function onPageUp() {
-    contentRef.value.scrollTop = contentRef.value.scrollTop - contentRef.value.offsetHeight + 5;
+    contentRef.value.scrollTo({
+      top: contentRef.value.scrollTop - contentRef.value.offsetHeight + 5,
+      behavior: 'smooth'
+    });
   }
 
   // 下一页
   function onPageDown() {
-    contentRef.value.scrollTop = contentRef.value.scrollTop + contentRef.value.offsetHeight - 5;
+    contentRef.value.scrollTo({
+      top: contentRef.value.scrollTop + contentRef.value.offsetHeight - 5,
+      behavior: 'smooth'
+    });
   }
 
   // 监听热键

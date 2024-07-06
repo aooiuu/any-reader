@@ -2,6 +2,7 @@
   <div class="w-full h-full flex flex-col overflow-hidden">
     <div
       id="text-container"
+      ref="contentRef"
       class="flex-1 p-10 whitespace-pre-wrap overflow-auto lh-1.5em text-[#b3b3b3]"
       :style="{
         fontSize: settingStore.data.readStyle.fontSize + 'px',
@@ -11,7 +12,7 @@
         backgroundColor: settingStore.data.readStyle.backgroundColor
       }"
     >
-      <div ref="contentRef" class="md:mx-60" v-html="content"></div>
+      <div class="md:mx-60" v-html="content"></div>
 
       <div class="flex justify-center">
         <a-button-group>
