@@ -1,0 +1,15 @@
+name: 提交需求
+description: 提出一个想法
+title: "[需求]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢您花时间填写!
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 功能描述
+    validations:
+      required: true

@@ -1,4 +1,4 @@
-name: Bug Report
+name: 提交Bug
 description: File a bug report.
 title: "[Bug]: "
 labels: ["bug"]
