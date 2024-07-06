@@ -280,35 +280,41 @@ export class Api {
       check: (v: any) => v?.content?.length > 0,
     }
 
-    // 注册接口
     registerApi('get@discoverMap', async ({ ruleId = '' } = {}) => await discoverMap(ruleId), discoverLog)
     registerApi('post@discover', async (data: any) => await discover(data), discoverLog)
-    registerApi('get@getFavorites', async () => await getFavorites())
-    registerApi('get@getHistory', async () => await getHistory())
-    registerApi('post@history/remove', async ({ ruleId, url }: { ruleId: string; url: string }) => historyManager.del({ url } as any, { id: ruleId } as any))
-    registerApi('get@getLocalBooks', async () => await getLocalBooks(this.bookDir))
-    registerApi('post@star', async (data: any) => await star(data))
-    registerApi('post@unstar', async (data: any) => await unstar(data))
-    registerApi('get@rules', async () => await rules())
-    registerApi('get@getRuleById', async ({ id = '' } = {}) => await getRuleById(id))
-    registerApi('post@createRule', async (data: any) => await createRule(data))
-    registerApi('post@updateRule', async (data: any) => await updateRule(data))
     registerApi('post@searchByRuleId', async (data: any) => await searchByRuleId(data), discoverLog)
-    registerApi('post@content', async (data: any) => await content(data), contentLog)
     registerApi('post@getChapter', async (data: any) => await getChapter(data), discoverLog)
+    registerApi('post@content', async (data: any) => await content(data), contentLog)
+
     // 配置
     registerApi('get@readConfig', async () => this.config)
     registerApi('post@updateConfig', async (data: any) => await this.updateConfig(data))
+
     // 历史记录
+    registerApi('get@getHistory', async () => await getHistory())
+    registerApi('post@history/remove', async ({ ruleId, url }: { ruleId: string; url: string }) => historyManager.del({ url } as any, { id: ruleId } as any))
     registerApi('post@history/add', async (data: any) => await historyManager.add(data))
     registerApi('post@history/del', async (data: any) => await historyManager.del(data))
 
+    // 收藏
+    registerApi('get@getFavorites', async () => await getFavorites())
+    registerApi('post@star', async (data: any) => await star(data))
+    registerApi('post@unstar', async (data: any) => await unstar(data))
+
+    // 本地
+    registerApi('get@getLocalBooks', async () => await getLocalBooks(this.bookDir))
+
+    // 规则
+    registerApi('post@createRule', async (data: any) => await createRule(data))
+    registerApi('post@updateRule', async (data: any) => await updateRule(data))
+    registerApi('get@rules', async () => await rules())
+    registerApi('get@getRuleById', async ({ id = '' } = {}) => await getRuleById(id))
     registerApi('get@getRuleExtras', async () => await getRuleExtras())
-    registerApi('post@ping', async (data: any) => await ping(data))
     registerApi('post@batchUpdateRules', async (data: any) => await batchUpdateRules(data))
     registerApi('post@delRules', async (data: any) => await delRules(data))
     registerApi('post@updateRuleSort', async (data: any) => await ruleFileManager.updateRuleSort(data && data.id))
     registerApi('post@importRules', async (data: any) => await ruleFileManager.importRules(data && data.url))
     registerApi('post@importCMS', async (data: any) => await ruleFileManager.importCMS(data))
+    registerApi('post@ping', async (data: any) => await ping(data))
   }
 }

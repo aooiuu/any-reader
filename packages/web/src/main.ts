@@ -10,6 +10,7 @@ import 'uno.css';
 import './assets/main.scss';
 // vscode ui
 import './plugins/vsc-ui';
+import { addHistory } from '@/api/index';
 
 import { createPinia } from 'pinia';
 
@@ -19,7 +20,14 @@ app.use(router);
 app.use(createPinia());
 useComponent(app);
 
-router.beforeEach((_from, _to, next) => {
+router.beforeEach((to, _from, next) => {
+  const { query, path } = to;
+
+  // 添加历史记录
+  if (path === '/chapter' && query.ruleId && query.name) {
+    addHistory(query);
+  }
+
   // 处理 vscode 第一次打开页面的地址
   if (window.__vscode$initialize_page) {
     const initialize_page = window.__vscode$initialize_page;

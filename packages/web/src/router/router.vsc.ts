@@ -11,7 +11,10 @@ const router = createRouter({
       children: [
         {
           path: '/home',
-          component: () => import('@/pages/vscode/home/index.vue')
+          component: () => import('@/pages/vscode/home/index.vue'),
+          meta: {
+            keepAlive: true
+          }
         },
         {
           path: '/player',

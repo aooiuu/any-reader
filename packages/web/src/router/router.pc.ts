@@ -37,7 +37,10 @@ const router = createRouter({
       children: [
         {
           path: 'books',
-          component: () => import('@/pages/pc/books/index.vue')
+          component: () => import('@/pages/pc/books/index.vue'),
+          meta: {
+            keepAlive: true
+          }
         },
         {
           path: 'search',

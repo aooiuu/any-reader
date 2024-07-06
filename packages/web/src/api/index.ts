@@ -215,6 +215,15 @@ export function removeHistory(data: { ruleId: string; url: string }) {
   });
 }
 
+// 添加历史
+export function addHistory(data: any) {
+  return request({
+    method: 'post',
+    url: 'history/add',
+    data
+  });
+}
+
 export function install(data: { password: string }) {
   return request({
     method: 'post',
