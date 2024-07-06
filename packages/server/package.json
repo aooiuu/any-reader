@@ -1,6 +1,6 @@
 {
   "name": "@any-reader/server",
-  "version": "1.7.5",
+  "version": "1.7.6",
   "description": "",
   "scripts": {
     "build": "unbuild",
