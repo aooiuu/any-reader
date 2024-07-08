@@ -1,6 +1,6 @@
 name: 提交需求
 description: 提出一个想法
-title: "[需求]: "
+title: "[需求] "
 body:
   - type: markdown
     attributes:
