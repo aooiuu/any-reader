@@ -61,6 +61,9 @@ importers:
       cheerio:
         specifier: 1.0.0-rc.12
         version: 1.0.0-rc.12
+      iconv-lite:
+        specifier: ^0.6.3
+        version: 0.6.3
       jsonpath-plus:
         specifier: ^7.2.0
         version: 7.2.0

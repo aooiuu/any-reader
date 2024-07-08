@@ -1,4 +1,5 @@
 import axios from 'axios'
+import iconv from 'iconv-lite'
 import type { Rule } from '@any-reader/rule-utils'
 import { JSEngine } from './JSEngine'
 
@@ -63,14 +64,10 @@ export async function fetch(url: string, keyword = '', result = '', rule: Rule) 
     }
   }
 
-  if (!params.headers) {
-    params.headers = {
-      'User-Agent':
-       'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.80 Safari/537.36 Edg/98.0.1108.50',
-    }
-  }
+  if (!params.headers)
+    params.headers = { }
 
-  const ua = rule.userAgent
+  const ua = rule.userAgent || 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.80 Safari/537.36 Edg/98.0.1108.50'
   if (typeof ua === 'string') {
     if (ua.startsWith('{') && ua.endsWith('}'))
       Object.assign(params.headers, JSON.parse(ua))
@@ -81,17 +78,24 @@ export async function fetch(url: string, keyword = '', result = '', rule: Rule) 
     Object.assign(params.headers, ua)
   }
 
-  let responseEncoding = params.encoding || 'utf-8'
-  if (responseEncoding === 'gb2312')
-    responseEncoding = 'gbk'
+  let ruleEncoding = params.encoding
+  if (ruleEncoding === 'gb2312')
+    ruleEncoding = 'gbk'
 
   const body = await http({
     ...params,
-    responseType: 'text',
-    responseEncoding,
+    responseType: 'arraybuffer',
+    responseEncoding: undefined,
   })
-    .then(e => e.data)
-    .catch(() => {})
+    .then((e) => {
+      const contentType = e.headers['content-type'] || ''
+      const resEncoding = /gbk|gb2312/.test(contentType) ? 'gbk' : ''
+      return iconv.decode(e.data, resEncoding || ruleEncoding || 'utf8')
+    })
+    .catch((e) => {
+      console.error(e)
+      return ''
+    })
 
   return {
     params,
