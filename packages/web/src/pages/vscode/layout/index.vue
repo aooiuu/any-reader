@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full flex flex-col">
+  <div class="w-full h-full flex flex-col text-[--foreground]">
     <div class="flex-1 overflow-auto">
       <RouterView v-slot="{ Component, route: routev }">
         <KeepAlive>
@@ -27,7 +27,7 @@
 </template>
 
 <script setup>
-import '@/assets/vscode.css';
+// import '@/assets/vscode.css';
 import '@/plugins/vsc-ui';
 
 import { executeCommand } from '@/api/vsc';
