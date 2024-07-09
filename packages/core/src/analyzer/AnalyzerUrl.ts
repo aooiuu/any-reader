@@ -98,7 +98,7 @@ export async function fetch(url: string, keyword = '', result = '', rule: Rule) 
         encoding = chardet.detect(e.data)
 
       let str = iconv.decode(e.data, encoding || 'utf8')
-      if (ct.type === 'text/html' && /<!doctype/i.test(str))
+      if (ct.type === 'text/html' && /<!doctype html>/i.test(str))
         str = load(str, null, true).html()
 
       return str
