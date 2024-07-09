@@ -36,7 +36,7 @@ export class AnalyzerHtml implements Analyzer {
   }
 
   _getResult(lastRule: string, html?: string): string {
-    const $ = load(html || this._content, null, true)
+    const $ = load(html || this._content, null, false)
 
     switch (lastRule) {
       case 'text':
@@ -61,12 +61,12 @@ export class AnalyzerHtml implements Analyzer {
       return [this._getResult(rule)]
 
     const [selectors, lastRule] = rule.split('@')
-    const $ = load(this._content, null, true)
+    const $ = load(this._content, null, false)
     return $(selectors).map((_, el) => this._getResult(lastRule, $(el).toString())).get()
   }
 
   async getElements(rule: string) {
-    const $ = load(this._content, null, true)
+    const $ = load(this._content, null, false)
     return $(`${rule.trim()}`).map((_, el) => $(el).toString()).get()
   }
 }

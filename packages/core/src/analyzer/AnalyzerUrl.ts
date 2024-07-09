@@ -1,5 +1,7 @@
 import axios from 'axios'
+import { load } from 'cheerio'
 import iconv from 'iconv-lite'
+import contentType from 'content-type'
 import chardet from 'chardet'
 import type { Rule } from '@any-reader/rule-utils'
 import { JSEngine } from './JSEngine'
@@ -89,12 +91,17 @@ export async function fetch(url: string, keyword = '', result = '', rule: Rule) 
     responseEncoding: undefined,
   })
     .then((e) => {
-      const contentType = e.headers['content-type'] || ''
-      const resEncoding = /gbk|gb2312/.test(contentType) ? 'gbk' : ''
-      let encoding = resEncoding || ruleEncoding
+      const ct = contentType.parse(e.headers['content-type'] || '')
+      const charset = ct.parameters.charset
+      let encoding = charset || ruleEncoding
       if (!encoding)
         encoding = chardet.detect(e.data)
-      return iconv.decode(e.data, encoding || 'utf8')
+
+      let str = iconv.decode(e.data, encoding || 'utf8')
+      if (ct.type === 'text/html' && /<!doctype/i.test(str))
+        str = load(str, null, true).html()
+
+      return str
     })
     .catch((e) => {
       console.error(e)

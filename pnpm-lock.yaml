@@ -64,6 +64,9 @@ importers:
       cheerio:
         specifier: 1.0.0-rc.12
         version: 1.0.0-rc.12
+      content-type:
+        specifier: ^1.0.5
+        version: 1.0.5
       iconv-lite:
         specifier: ^0.6.3
         version: 0.6.3
@@ -86,6 +89,9 @@ importers:
       '@any-reader/rule-utils':
         specifier: workspace:^
         version: link:../rule-utils
+      '@types/content-type':
+        specifier: ^1.1.8
+        version: 1.1.8
       '@types/jest':
         specifier: ^29.5.11
         version: 29.5.11
@@ -3663,6 +3669,10 @@ packages:
 
   /@types/content-disposition@0.5.8:
     resolution: {integrity: sha512-QVSSvno3dE0MgO76pJhmv4Qyi/j0Yk9pBp0Y7TJ2Tlj+KCgJWY6qX7nnxCOLkZ3VYRSIk1WTxCvwUSdx6CCLdg==}
+    dev: true
+
+  /@types/content-type@1.1.8:
+    resolution: {integrity: sha512-1tBhmVUeso3+ahfyaKluXe38p+94lovUZdoVfQ3OnJo9uJC42JT7CBoN3k9HYhAae+GwiBYmHu+N9FZhOG+2Pg==}
     dev: true
 
   /@types/cookies@0.9.0:
