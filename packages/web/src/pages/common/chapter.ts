@@ -40,7 +40,7 @@ export function useChapter() {
   const ruleId = computed(() => route.query.ruleId);
 
   const loading = ref(false);
-  const list = ref([]);
+  const list = ref<any[]>([]);
   const historys = ref<any[]>([]);
 
   async function chapterHistory() {
@@ -52,7 +52,12 @@ export function useChapter() {
     const rows = res?.data || [];
     historys.value = rows;
     if (rows.length && rows[0].chapterPath) {
+      // const item = list.value.find((l) => l.chapterPath === rows[0].chapterPath);
+      // if (item) {
+      //   showContent(item);
+      // } else {
       chaptersRef.value?.querySelector(`[data-url="${rows[0].chapterPath}"]`)?.scrollIntoView({ behavior: 'smooth' });
+      // }
     }
   }
 
@@ -66,7 +71,7 @@ export function useChapter() {
     if (res?.code === 0) {
       list.value = res?.data || [];
     }
-    chapterHistory();
+    await chapterHistory();
   }
 
   onActivated(() => {
@@ -75,6 +80,11 @@ export function useChapter() {
 
   function findHistory(item: any) {
     return historys.value.find((history) => history.chapterPath === item.chapterPath);
+  }
+
+  function isLastRead(item: any) {
+    if (!historys.value.length) return false;
+    return historys.value[0].chapterPath === item.chapterPath;
   }
 
   async function showContent(item: any) {
@@ -149,6 +159,7 @@ export function useChapter() {
     loading,
     historys,
     chaptersRef,
+    isLastRead,
     ...useFavorites(route.query as Record<string, string>)
   };
 }

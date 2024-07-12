@@ -8,7 +8,7 @@ import { useSettingStore } from '@/stores/setting';
 import { useReadStore } from '@/stores/read';
 import { useKeyboardShortcuts } from '@/hooks/useMagicKeys';
 
-function useSaveHistory(contentRef: Ref<HTMLElement>, options: { chapterPath: string; filePath: string; ruleId: string }) {
+function useSaveHistory(contentRef: Ref<HTMLElement>, options: Ref<any>) {
   const savePercentage = debounce(
     (params: any) => {
       saveChapterHistory(params);
@@ -20,7 +20,7 @@ function useSaveHistory(contentRef: Ref<HTMLElement>, options: { chapterPath: st
   );
 
   useEventListener(contentRef, 'scroll', () => {
-    const { chapterPath, filePath, ruleId } = options;
+    const { chapterPath, filePath, ruleId } = options.value;
     savePercentage({
       ruleId,
       filePath,
@@ -37,7 +37,9 @@ export function useContent(contentRef: Ref<HTMLElement>) {
   const chaptersStore = useChaptersStore();
   const settingStore = useSettingStore();
   const readStore = useReadStore();
-  useSaveHistory(contentRef, route.query as { chapterPath: string; filePath: string; ruleId: string });
+  const options = computed(() => route.query);
+
+  useSaveHistory(contentRef, options);
 
   const chapterPath = ref<string>('');
 
@@ -96,6 +98,7 @@ export function useContent(contentRef: Ref<HTMLElement>) {
       name: route.name as string,
       query: {
         ...route.query,
+        percentage: 0,
         chapterPath
       }
     });

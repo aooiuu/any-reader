@@ -5,10 +5,13 @@
       <div
         v-for="item in list"
         :key="item.url"
-        class="w-full text-[--foreground] h-32 lh-32 hover:bg-[--ar-color-primary-bg] hover:text-[--ar-color-primary-text] cursor-pointer px-8 overflow-hidden whitespace-nowrap text-ellipsis rounded-2"
-        :class="{
-          'op-70': !!findHistory(item)
-        }"
+        class="w-full h-32 lh-32 hover:bg-[--ar-color-primary-bg] hover:text-[--ar-color-primary-text] cursor-pointer px-8 overflow-hidden whitespace-nowrap text-ellipsis rounded-2"
+        :class="[
+          isLastRead(item) ? 'text-[--ar-color-primary-text]' : 'text-[--foreground]',
+          {
+            'op-70': !!findHistory(item)
+          }
+        ]"
         :data-url="item.chapterPath"
         @click="showContent(item)"
       >
@@ -24,5 +27,5 @@
 <script setup>
 import { useChapter } from '@/pages/common/chapter';
 
-const { chaptersRef, showContent, loading, list, findHistory } = useChapter();
+const { chaptersRef, showContent, loading, list, findHistory, isLastRead } = useChapter();
 </script>

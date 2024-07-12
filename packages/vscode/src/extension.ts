@@ -13,11 +13,10 @@ export async function activate(context: ExtensionContext) {
 async function npmInstall(cwd: string) {
   return new Promise<void>(async (resolve, reject) => {
     console.log(`extensionPath: ${cwd}`);
-    window.showInformationMessage(`正在安装 sqlite3, 如果失败, 可以手动安装: cd ${cwd} && npm install`);
-
     if (fs.existsSync(path.resolve(cwd, 'node_modules'))) {
       return resolve();
     }
+    window.showInformationMessage(`正在安装 sqlite3, 如果失败, 可以手动安装: cd ${cwd} && npm install`);
     const terminal = window.createTerminal({ name: 'AnyReader', cwd });
     window.onDidCloseTerminal((e: any) => {
       if (e.processId !== terminal.processId) {

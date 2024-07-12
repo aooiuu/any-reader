@@ -10,9 +10,12 @@
         v-for="item in list"
         :key="item.url"
         :data-url="item.chapterPath"
-        :class="{
-          'op-70': !!findHistory(item)
-        }"
+        :class="[
+          isLastRead(item) ? '!text-[--vscode-textLink-foreground]' : '',
+          {
+            'op-70': !!findHistory(item)
+          }
+        ]"
         @click="showContent(item)"
       >
         {{ item.name }}
@@ -26,5 +29,5 @@ import { StarOutlined, StarFilled } from '@ant-design/icons-vue';
 import TreeItem from '@/components/vsc/TreeItem.vue';
 import { useChapter } from '@/pages/common/chapter';
 
-const { chaptersRef, showContent, list, findHistory, isStarred, star } = useChapter();
+const { chaptersRef, showContent, list, findHistory, isStarred, star, isLastRead } = useChapter();
 </script>
