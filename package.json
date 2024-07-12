@@ -1,7 +1,7 @@
 {
   "name": "any-reader",
   "type": "module",
-  "version": "1.7.10",
+  "version": "1.8.0",
   "private": true,
   "packageManager": "pnpm@8.6.5",
   "description": "",
