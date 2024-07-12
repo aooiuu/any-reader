@@ -13,7 +13,7 @@ export default (isBuild: boolean) => {
         sourcemap: isBuild ? false : true,
         outDir: 'dist/electron-js',
         rollupOptions: {
-          external: []
+          external: ['sqlite3', 'typeorm']
         }
       },
       resolve: {

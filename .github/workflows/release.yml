@@ -30,6 +30,11 @@ jobs:
           cache: pnpm
           registry-url: "https://registry.npmjs.org"
 
+      - name: fix pnpm.cjs
+        if: matrix.os == 'windows-latest'
+        run: sed -i 's/\/usr\/bin\/env node/node/g' C:/Users/runneradmin/setup-pnpm/node_modules/.pnpm/pnpm@8.6.5/node_modules/pnpm/bin/pnpm.cjs
+        shell: bash
+
       - run: npx changelogithub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

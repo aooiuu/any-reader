@@ -40,6 +40,11 @@ jobs:
       - id: short_sha
         run: echo "::set-output name=value::$(git rev-parse --short HEAD)"
 
+      - name: fix pnpm.cjs
+        if: matrix.os == 'windows-latest'
+        run: sed -i 's/\/usr\/bin\/env node/node/g' C:/Users/runneradmin/setup-pnpm/node_modules/.pnpm/pnpm@8.6.5/node_modules/pnpm/bin/pnpm.cjs
+        shell: bash
+
       - run: pnpm install
       - run: pnpm run build
       - run: pnpm run vscode:build-tpl
@@ -60,6 +65,7 @@ jobs:
           dryRun: true
           skipDuplicate: true
           registryUrl: https://marketplace.visualstudio.com
+          dependencies: false
           yarn: false
 
       - name: Build Electron App
