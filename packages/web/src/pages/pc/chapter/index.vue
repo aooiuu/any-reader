@@ -6,6 +6,10 @@
         v-for="item in list"
         :key="item.url"
         class="w-full text-[--foreground] h-32 lh-32 hover:bg-[--ar-color-primary-bg] hover:text-[--ar-color-primary-text] cursor-pointer px-8 overflow-hidden whitespace-nowrap text-ellipsis rounded-2"
+        :class="{
+          'op-70': !!findHistory(item)
+        }"
+        :data-url="item.chapterPath"
         @click="showContent(item)"
       >
         {{ item.name }}
@@ -20,5 +24,5 @@
 <script setup>
 import { useChapter } from '@/pages/common/chapter';
 
-const { chaptersRef, showContent, loading, list } = useChapter();
+const { chaptersRef, showContent, loading, list, findHistory } = useChapter();
 </script>

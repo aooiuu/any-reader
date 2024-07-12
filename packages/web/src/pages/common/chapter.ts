@@ -52,7 +52,7 @@ export function useChapter() {
     const rows = res?.data || [];
     historys.value = rows;
     if (rows.length && rows[0].chapterPath) {
-      chaptersRef.value?.querySelector(`[data-url="${rows[0].chapterPath}"]`)?.scrollIntoView({ behavior: 'instant' });
+      chaptersRef.value?.querySelector(`[data-url="${rows[0].chapterPath}"]`)?.scrollIntoView({ behavior: 'smooth' });
     }
   }
 
