@@ -68,6 +68,7 @@ jobs:
           pat: ${{ secrets.VSCODE_TOKEN }}
           skipDuplicate: true
           registryUrl: https://marketplace.visualstudio.com
+          dependencies: false
           yarn: false
 
       - name: Build Electron App
