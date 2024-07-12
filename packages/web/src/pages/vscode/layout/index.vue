@@ -2,7 +2,7 @@
   <div class="w-full h-full flex flex-col text-[--foreground]">
     <div class="flex-1 overflow-auto">
       <RouterView v-slot="{ Component, route: routev }">
-        <KeepAlive>
+        <KeepAlive :max="5">
           <component :is="Component" v-if="routev.meta.keepAlive" :key="routev.fullPath" />
         </KeepAlive>
         <component :is="Component" v-if="!routev.meta.keepAlive" :key="routev.fullPath" />

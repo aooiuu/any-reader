@@ -1,8 +1,5 @@
-import NProgress from 'nprogress';
 import { PLATFORM } from '@/constants';
 import axios from './axios';
-
-NProgress.configure({ showSpinner: false });
 
 export async function request(config: any) {
   console.log('[request]', config);
@@ -23,10 +20,7 @@ export async function request(config: any) {
   } else {
     // vscode
     const { pm } = await import(`./postMessage`);
-    !NProgress.isStarted() && NProgress.start();
-    const res = await pm.send(`${method}@${config.url}`, getPatams(config), window.acquireVsCodeApi());
-    NProgress.done();
-    return res;
+    return await pm.send(`${method}@${config.url}`, getPatams(config), window.acquireVsCodeApi());
   }
 }
 

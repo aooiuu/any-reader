@@ -1,6 +1,6 @@
 import { getFavorites, star as _star, unstar as _unstar } from '@/api';
 
-interface FavoriteRow {
+export interface FavoriteRow {
   ruleId: string;
   url: string;
 }
@@ -21,7 +21,7 @@ export const useFavoritesStore = defineStore('favorites', () => {
   async function sync() {
     const res = await getFavorites();
     if (res?.code === 0) {
-      list.value = res.data;
+      list.value = res.data || [];
     } else {
       list.value = [];
     }

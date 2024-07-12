@@ -3,7 +3,7 @@
     <div
       id="text-container"
       ref="contentRef"
-      class="flex-1 p-10 whitespace-pre-wrap overflow-auto lh-1.5em text-[#b3b3b3]"
+      class="flex-1 p-10 whitespace-pre-wrap overflow-y-auto lh-1.5em text-[#b3b3b3] break-words"
       :style="{
         fontSize: settingStore.data.readStyle.fontSize + 'px',
         lineHeight: settingStore.data.readStyle.lineHeight,
@@ -75,7 +75,7 @@ import { onClickOutside } from '@vueuse/core';
 import { useChaptersStore } from '@/stores/chapters';
 import { useReadStore } from '@/stores/read';
 import { useBus, EVENT_CHAPTERS_BOX } from '@/utils/bus';
-import { useContent } from './useContent';
+import { useContent } from '@/pages/common/content';
 
 const chaptersStore = useChaptersStore();
 const readStore = useReadStore();

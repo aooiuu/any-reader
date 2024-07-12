@@ -1,18 +1,43 @@
 import type { Ref } from 'vue';
+import { useEventListener } from '@vueuse/core';
+import { debounce } from 'lodash-es';
 import { getContent } from '@/api';
+import { saveChapterHistory } from '@/api/chapterHistory';
 import { useChaptersStore } from '@/stores/chapters';
 import { useSettingStore } from '@/stores/setting';
 import { useReadStore } from '@/stores/read';
 import { useKeyboardShortcuts } from '@/hooks/useMagicKeys';
 
+function useSaveHistory(contentRef: Ref<HTMLElement>, options: { chapterPath: string; filePath: string; ruleId: string }) {
+  const savePercentage = debounce(
+    (params: any) => {
+      saveChapterHistory(params);
+    },
+    400,
+    {
+      maxWait: 30000
+    }
+  );
+
+  useEventListener(contentRef, 'scroll', () => {
+    const { chapterPath, filePath, ruleId } = options;
+    savePercentage({
+      ruleId,
+      filePath,
+      chapterPath,
+      percentage: Math.floor((contentRef.value.scrollTop / contentRef.value.scrollHeight) * 100000)
+    });
+  });
+}
+
 export function useContent(contentRef: Ref<HTMLElement>) {
+  const content = ref<string>('');
   const route = useRoute();
   const router = useRouter();
   const chaptersStore = useChaptersStore();
   const settingStore = useSettingStore();
   const readStore = useReadStore();
-
-  const content = ref('');
+  useSaveHistory(contentRef, route.query as { chapterPath: string; filePath: string; ruleId: string });
 
   const chapterPath = ref<string>('');
 
@@ -33,10 +58,11 @@ export function useContent(contentRef: Ref<HTMLElement>) {
 
   // 初始化
   async function init() {
+    const { chapterPath: _chapterPath, filePath, ruleId, percentage } = route.query as Record<string, string>;
     content.value = '';
     const res = await getContent(route.query).catch(() => {});
-    chapterPath.value = route.query.chapterPath as string;
-    chaptersStore.getChapters(route.query.filePath as string, route.query.ruleId as string).then(() => {
+    chapterPath.value = _chapterPath as string;
+    chaptersStore.getChapters(filePath as string, ruleId as string).then(() => {
       const chapterInfo = chaptersStore.chapters.find((e) => e.chapterPath === route.query.chapterPath);
       readStore.setPath(chapterInfo?.chapterPath || '');
       readStore.setTitle(chapterInfo?.name || '');
@@ -45,7 +71,11 @@ export function useContent(contentRef: Ref<HTMLElement>) {
       content.value = res?.data?.content || '';
     }
     nextTick(() => {
-      contentRef.value.scrollTop = 0;
+      let scrollTop = 0;
+      if (percentage) {
+        scrollTop = contentRef.value.scrollHeight * (+percentage / 100000);
+      }
+      contentRef.value.scrollTop = scrollTop;
     });
   }
 

@@ -11,6 +11,7 @@ import './assets/main.scss';
 // vscode ui
 import './plugins/vsc-ui';
 import { addHistory } from '@/api/index';
+import { saveChapterHistory } from '@/api/chapterHistory';
 
 import { createPinia } from 'pinia';
 
@@ -26,6 +27,8 @@ router.beforeEach((to, _from, next) => {
   // 添加历史记录
   if (path === '/chapter' && query.ruleId && query.name) {
     addHistory(query);
+  } else if (path === '/content') {
+    saveChapterHistory(query);
   }
 
   // 处理 vscode 第一次打开页面的地址

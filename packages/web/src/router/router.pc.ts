@@ -73,7 +73,10 @@ const router = createRouter({
         },
         {
           path: 'chapter',
-          component: () => import('@/pages/pc/chapter/index.vue')
+          component: () => import('@/pages/pc/chapter/index.vue'),
+          meta: {
+            keepAlive: true
+          }
         },
         {
           path: 'content',

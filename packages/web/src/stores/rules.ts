@@ -11,7 +11,7 @@ export const useRulesStore = defineStore('rules', () => {
   async function sync() {
     const res = await getRules().catch(() => {});
     if (res?.code === 0) {
-      list.value = res.data.sort((a: any, b: any) => b.sort - a.sort);
+      list.value = (res.data || []).sort((a: any, b: any) => b.sort - a.sort);
     } else {
       list.value = [];
     }

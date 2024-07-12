@@ -1,0 +1,154 @@
+import { stringify } from 'qs';
+import { App } from 'ant-design-vue';
+import { CONTENT_TYPE } from '@/constants';
+import { getChapter, getContent } from '@/api';
+import { getChapterHistorys } from '@/api/chapterHistory';
+import { openWindow } from '@/api/electron';
+import { useRulesStore } from '@/stores/rules';
+import { useFavoritesStore } from '@/stores/favorites';
+
+function useFavorites(params: Record<string, string>) {
+  const favoritesStore = useFavoritesStore();
+
+  const isStarred = computed<boolean>(() => {
+    const { filePath, ruleId } = params;
+    if (!ruleId) return false;
+    return favoritesStore.starred({ url: filePath, ruleId });
+  });
+
+  function star() {
+    const { ruleId } = params;
+    if (!ruleId) return false;
+    favoritesStore.star({ ...params, ruleId });
+  }
+
+  return {
+    favoritesStore,
+    isStarred,
+    star
+  };
+}
+
+export function useChapter() {
+  const { message } = App.useApp();
+
+  const chaptersRef = ref();
+  const route = useRoute();
+  const router = useRouter();
+  const rulesStore = useRulesStore();
+
+  const ruleId = computed(() => route.query.ruleId);
+
+  const loading = ref(false);
+  const list = ref([]);
+  const historys = ref<any[]>([]);
+
+  async function chapterHistory() {
+    const { filePath, ruleId } = route.query;
+    const res = await getChapterHistorys({
+      ruleId,
+      filePath
+    });
+    const rows = res?.data || [];
+    historys.value = rows;
+    if (rows.length && rows[0].chapterPath) {
+      chaptersRef.value?.querySelector(`[data-url="${rows[0].chapterPath}"]`)?.scrollIntoView({ behavior: 'instant' });
+    }
+  }
+
+  async function init() {
+    list.value = [];
+    const { filePath, ruleId } = route.query as Record<string, string>;
+    if (!filePath && !ruleId) return;
+    loading.value = true;
+    const res = await getChapter(filePath, ruleId).catch(() => {});
+    loading.value = false;
+    if (res?.code === 0) {
+      list.value = res?.data || [];
+    }
+    chapterHistory();
+  }
+
+  onActivated(() => {
+    init();
+  });
+
+  function findHistory(item: any) {
+    return historys.value.find((history) => history.chapterPath === item.chapterPath);
+  }
+
+  async function showContent(item: any) {
+    const { filePath, ruleId, name } = route.query;
+    const history = findHistory(item);
+    const rule = rulesStore.list.find((e) => e.id === ruleId);
+    const params = {
+      percentage: history?.percentage ?? 0
+    };
+
+    if (rule?.contentType === CONTENT_TYPE.VIDEO) {
+      loading.value = true;
+      const res = await getContent({
+        filePath,
+        ruleId,
+        chapterPath: item.url || item.chapterPath
+      }).catch(() => {});
+      loading.value = false;
+      const url = res?.data?.content || '';
+      if (res?.code === 0 && url) {
+        openWindow({
+          url:
+            '/player?' +
+            stringify({
+              url,
+              name,
+              chapterName: item.name
+            })
+        });
+      } else {
+        message.warning('获取地址失败！');
+      }
+      return;
+    } else if (rule?.contentType === CONTENT_TYPE.AUDIO) {
+      // TODO: 音频规则, 待优化
+      const res = await getContent({
+        filePath,
+        ruleId,
+        chapterPath: item.url || item.chapterPath
+      }).catch(() => {});
+      const url = res?.data?.content || '';
+      if (res?.code === 0) {
+        openWindow({
+          url:
+            '/iframe?' +
+            stringify({
+              url,
+              name,
+              chapterName: item.name
+            })
+        });
+        return;
+      }
+    }
+
+    router.push({
+      path: '/content',
+      query: {
+        ...params,
+        filePath,
+        ruleId,
+        chapterPath: item.url || item.chapterPath
+      }
+    });
+  }
+
+  return {
+    ruleId,
+    showContent,
+    findHistory,
+    list,
+    loading,
+    historys,
+    chaptersRef,
+    ...useFavorites(route.query as Record<string, string>)
+  };
+}

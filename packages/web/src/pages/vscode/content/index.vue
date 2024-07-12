@@ -2,7 +2,7 @@
   <div class="w-full h-full flex flex-col overflow-hidden relative">
     <div
       ref="contentRef"
-      class="flex-1 p-10 whitespace-pre-wrap overflow-auto lh-1.5em"
+      class="flex-1 p-10 whitespace-pre-wrap overflow-y-auto lh-1.5em break-words"
       :style="{
         fontSize: settingStore.data.readStyle.fontSize + 'px',
         lineHeight: settingStore.data.readStyle.lineHeight,
@@ -23,7 +23,7 @@
 </template>
 
 <script setup scoped>
-import { useContent } from '@/pages/pc/content/useContent';
+import { useContent } from '@/pages/common/content';
 
 const contentRef = ref();
 

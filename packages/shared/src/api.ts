@@ -5,13 +5,14 @@ import { ensureFileSync, readJSONSync, writeJSONSync } from 'fs-extra/esm'
 import type { Rule } from '@any-reader/rule-utils'
 import { ContentType } from '@any-reader/rule-utils'
 import { RuleManager } from '@any-reader/core'
+import { LOCAL_BOOK_DIR } from './constants'
 import * as ruleFileManager from './ruleFileManager'
 import * as ruleExtraManager from './ruleExtraManager'
 import { favoritesManager } from './favoritesManager'
 import { historyManager } from './historyManager'
 import type { BookChapter } from './localBookManager'
 import localBookManager from './localBookManager'
-import { LOCAL_BOOK_DIR } from './constants'
+import { db } from './database'
 
 // 发现页分类
 async function discoverMap(ruleId: string) {
@@ -245,7 +246,9 @@ export class Api {
     return this.config.bookDir
   }
 
-  useApi(register: any) {
+  async useApi(register: any) {
+    await db.initialize()
+
     const registerApi = async (apiPath: string, handle: Function, log?: {
       ruleId: (...arg: any) => string
       check: (arg: any) => boolean
@@ -316,5 +319,9 @@ export class Api {
     registerApi('post@importRules', async (data: any) => await ruleFileManager.importRules(data && data.url))
     registerApi('post@importCMS', async (data: any) => await ruleFileManager.importCMS(data))
     registerApi('post@ping', async (data: any) => await ping(data))
+
+    // 章节历史记录
+    registerApi('post@chapterHistory/save', async (data: any) => await db.getChapterHistory().save(data))
+    registerApi('post@chapterHistory/list', async (data: any) => await db.getChapterHistory().list(data))
   }
 }

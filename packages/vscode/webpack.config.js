@@ -2,6 +2,7 @@
 
 'use strict';
 const webpack = require('webpack');
+const FilterWarningsPlugin = require('webpack-filter-warnings-plugin');
 const path = require('path');
 
 //@ts-check
@@ -19,7 +20,18 @@ const extensionConfig = {
     filename: 'extension.js',
     libraryTarget: 'commonjs2'
   },
+  ignoreWarnings: [
+    { module: /node_modules\/typeorm\/util\/ImportUtils\.js/ },
+    {
+      module: /node_modules\/typeorm\/util\/DirectoryExportedClassesLoader\.js/
+    },
+    { module: /node_modules\/typeorm\/platform\/PlatformTools\.js/ },
+    {
+      module: /node_modules\/typeorm\/connection\/ConnectionOptionsReader\.js/
+    }
+  ],
   externals: {
+    sqlite3: 'commonjs sqlite3',
     vscode: 'commonjs vscode' // the vscode-module is created on-the-fly and must be excluded. Add other modules that cannot be webpack'ed, 📖 -> https://webpack.js.org/configuration/externals/
     // modules added here also need to be added in the .vscodeignore file
   },
@@ -27,21 +39,35 @@ const extensionConfig = {
     // support reading TypeScript and JavaScript files, 📖 -> https://github.com/TypeStrong/ts-loader
     extensions: ['.ts', '.js']
   },
-  module: {
-    rules: [
-      {
-        test: /\.ts$/,
-        exclude: /node_modules/,
-        use: [
-          {
-            loader: 'ts-loader'
-          }
-        ]
-      }
-    ]
-  },
+  module: { rules: [{ test: /\.ts$/, exclude: /(node_modules|bin)/, use: ['ts-loader'] }] },
   devtool: 'nosources-source-map',
-  plugins: [new webpack.ContextReplacementPlugin(/keyv/)],
+  plugins: [
+    // @ts-ignore
+    new FilterWarningsPlugin({
+      exclude: [
+        /mongodb/,
+        /mssql/,
+        /mysql/,
+        /mysql2/,
+        /oracledb/,
+        /pg/,
+        /pg-native/,
+        /pg-query-stream/,
+        /react-native-sqlite-storage/,
+        /redis/,
+        /sqlite3/,
+        /sql.js/,
+        /typeorm-aurora-data-api-driver/,
+        /hdb-pool/,
+        /spanner/,
+        /hana-client/,
+
+        /original-fs/
+      ]
+    }),
+
+    new webpack.ContextReplacementPlugin(/keyv/)
+  ],
   infrastructureLogging: {
     level: 'log' // enables logging required for problem matchers
   }

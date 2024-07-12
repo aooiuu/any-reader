@@ -16,7 +16,7 @@ export const useHistoryStore = defineStore('history', () => {
   async function sync() {
     const res = await getHistory();
     if (res?.code === 0) {
-      list.value = res.data;
+      list.value = res.data || [];
     } else {
       list.value = [];
     }

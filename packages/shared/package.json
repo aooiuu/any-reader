@@ -37,6 +37,8 @@
     "iconv-lite": "^0.6.3",
     "lodash-es": "^4.17.21",
     "lowdb": "^7.0.1",
+    "sqlite3": "5.1.6",
+    "typeorm": "^0.3.20",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
@@ -49,6 +51,7 @@
     "@types/lodash-es": "^4.17.12",
     "@types/node": "^18.16.19",
     "esno": "^0.16.3",
+    "reflect-metadata": "^0.2.2",
     "rollup": "^3.26.0",
     "rollup-plugin-dts": "^5.3.0",
     "rollup-plugin-esbuild": "^5.0.0",

@@ -8,6 +8,7 @@ async function publish() {
   const rawJSON = await fs.readFile(pkgPath, 'utf-8');
   const pkg = JSON.parse(rawJSON);
   pkg.name = 'any-reader';
+  pkg.devDependencies = {};
   await fs.writeJSON(pkgPath, pkg, { spaces: 2 });
 }
 

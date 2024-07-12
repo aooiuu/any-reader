@@ -13,3 +13,5 @@ export const FAVORITES_PATH = path.join(ROOT_PATH, 'favorites.json')
 export const LOCAL_BOOK_DIR = path.join(ROOT_PATH, 'local-book')
 // 规则扩展数据
 export const RULE_EXTRA_PATH = path.join(ROOT_PATH, 'source.extra.json')
+// 数据库路径
+export const DB_PATH = path.join(ROOT_PATH, 'data.db')
