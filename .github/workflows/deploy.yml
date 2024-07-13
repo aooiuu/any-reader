@@ -46,7 +46,7 @@ jobs:
 
       - name: Build with VitePress
         working-directory: ./docs
-        run: npm docs:build
+        run: npm run docs:build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
