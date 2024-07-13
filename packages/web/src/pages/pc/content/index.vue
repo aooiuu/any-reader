@@ -43,10 +43,7 @@
       }"
     >
       <div
-        :style="{
-          '-webkit-app-region': 'drag'
-        }"
-        class="p-10 cursor-pointer text-center overflow-hidden whitespace-nowrap text-ellipsis b-b-1 b-b-solid b-b-[#00000033] pb-4 mb-4"
+        class="app-region-drag p-10 cursor-pointer text-center overflow-hidden whitespace-nowrap text-ellipsis b-b-1 b-b-solid b-b-[#00000033] pb-4 mb-4"
         @click="scrollIntoViewChapter"
       >
         {{ readStore.title || '-' }}
@@ -70,7 +67,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { onClickOutside } from '@vueuse/core';
 import { useChaptersStore } from '@/stores/chapters';
 import { useReadStore } from '@/stores/read';

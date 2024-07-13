@@ -76,8 +76,8 @@
     "@types/lodash-es": "^4.17.12",
     "@types/node": "^20.11.16",
     "@types/nprogress": "^0.2.3",
-    "@vitejs/plugin-vue": "^5.0.3",
-    "@vitejs/plugin-vue-jsx": "^3.1.0",
+    "@vitejs/plugin-vue": "^5.0.5",
+    "@vitejs/plugin-vue-jsx": "^4.0.0",
     "@vue/eslint-config-prettier": "^8.0.0",
     "@vue/eslint-config-typescript": "^12.0.0",
     "@vue/tsconfig": "^0.5.1",
@@ -97,10 +97,10 @@
     "unocss": "^0.58.4",
     "unplugin-auto-import": "^0.16.4",
     "unplugin-vue-components": "^0.27.2",
-    "vite": "^4.5.3",
+    "vite": "^5.3.1",
     "vite-bundle-analyzer": "^0.10.3",
     "vite-plugin-electron": "^0.28.7",
     "vite-plugin-mock": "^3.0.1",
-    "vue-tsc": "^1.8.27"
+    "vue-tsc": "^2.0.21"
   }
 }

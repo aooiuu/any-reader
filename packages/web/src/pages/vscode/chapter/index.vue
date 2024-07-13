@@ -24,10 +24,10 @@
   </div>
 </template>
 
-<script setup>
-import { StarOutlined, StarFilled } from '@ant-design/icons-vue';
+<script setup lang="ts">
+import { StarFilled, StarOutlined } from '@ant-design/icons-vue';
 import TreeItem from '@/components/vsc/TreeItem.vue';
 import { useChapter } from '@/pages/common/chapter';
 
-const { chaptersRef, showContent, list, findHistory, isStarred, star, isLastRead } = useChapter();
+const { ruleId, chaptersRef, showContent, list, findHistory, isStarred, star, isLastRead } = useChapter();
 </script>

@@ -22,7 +22,7 @@
   </div>
 </template>
 
-<script setup scoped>
+<script setup lang="ts">
 import { useContent } from '@/pages/common/content';
 
 const contentRef = ref();

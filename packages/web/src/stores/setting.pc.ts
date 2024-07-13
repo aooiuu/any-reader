@@ -4,11 +4,11 @@ import { alwaysOnTop } from '@/api/electron';
 
 export type ReadStyle = {
   // 字体大小
-  fontSize: Number;
+  fontSize: number;
   // 行高
-  lineHeight: Number;
+  lineHeight: number;
   // 文字间距
-  letterSpacing: Number;
+  letterSpacing: number;
   // 文字颜色
   textColor: string;
   // 背景颜色

@@ -37,6 +37,14 @@ body {
   }
 }
 
+.app-region-drag {
+  -webkit-app-region: drag;
+
+  * {
+    -webkit-app-region: drag;
+  }
+}
+
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;

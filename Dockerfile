@@ -50,7 +50,7 @@ RUN apt-get update \
   --no-install-recommends \
   && rm -rf /var/lib/apt/lists/*
 
-RUN corepack enable && corepack prepare pnpm@8.6.5 --activate
+RUN corepack enable && corepack prepare pnpm@9.4.0 --activate
 
 RUN \
   echo 'use npm mirror' && \

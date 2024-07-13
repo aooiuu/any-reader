@@ -24,7 +24,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useChapter } from '@/pages/common/chapter';
 
 const { chaptersRef, showContent, loading, list, findHistory, isLastRead } = useChapter();

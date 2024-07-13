@@ -3,11 +3,11 @@ import { readConfig, updateConfig } from '@/api';
 
 export type ReadStyle = {
   // 字体大小
-  fontSize: Number;
+  fontSize: number;
   // 行高
-  lineHeight: Number;
+  lineHeight: number;
   // 文字间距
-  letterSpacing: Number;
+  letterSpacing: number;
 };
 
 // 快捷键
