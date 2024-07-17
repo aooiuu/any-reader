@@ -26,6 +26,9 @@ git clone git@github.com:aooiuu/any-reader.git
 # 进入项目根目录
 cd any-reader
 
+# 启用 Corepack
+corepack enable
+
 # 安装依赖
 pnpm i
 
