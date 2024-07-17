@@ -58,6 +58,17 @@ export function useContent(contentRef: Ref<HTMLElement>) {
     return item?.chapterPath || '';
   });
 
+  function preload(chapterPath: string) {
+    const key = 'preload@' + chapterPath;
+    if (!sessionStorage.getItem(key)) {
+      sessionStorage.setItem(key, '1');
+      getContent({
+        ...route.query,
+        chapterPath
+      });
+    }
+  }
+
   // 初始化
   async function init() {
     const { chapterPath: _chapterPath, filePath, ruleId, percentage } = route.query as Record<string, string>;
@@ -68,6 +79,13 @@ export function useContent(contentRef: Ref<HTMLElement>) {
       const chapterInfo = chaptersStore.chapters.find((e) => e.chapterPath === route.query.chapterPath);
       readStore.setPath(chapterInfo?.chapterPath || '');
       readStore.setTitle(chapterInfo?.name || '');
+
+      if (lastChapter.value) {
+        preload(lastChapter.value);
+      }
+      if (nextChapter.value) {
+        preload(nextChapter.value);
+      }
     });
     if (res?.code === 0) {
       content.value = res?.data?.content || '';
