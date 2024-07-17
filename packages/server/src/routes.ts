@@ -1,8 +1,8 @@
 import Router from 'koa-router'
 import bcrypt from 'bcryptjs'
-import type { Api } from '@any-reader/shared'
+import type { App } from '@any-reader/shared'
 
-export function createRoute(api: Api) {
+export function createRoute(api: App) {
   const router = new Router()
 
   router.post('/login', (ctx) => {
@@ -62,7 +62,7 @@ export function createRoute(api: Api) {
       const paths = path.split('@')
       if (paths.length !== 2)
         return
-      const method = paths[0] as 'post' | 'get'
+      const method = paths[0].toLocaleLowerCase() as 'post' | 'get'
       router[method](`/${paths[1]}`, async (ctx) => {
         const data = method === 'get' ? ctx.query : ctx.request.body
         ctx.body = await cb(data)

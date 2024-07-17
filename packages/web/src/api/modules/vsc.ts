@@ -1,3 +1,7 @@
+/**
+ * vscode
+ */
+
 import { request } from '@/utils/request';
 
 export function executeCommand(data: any) {

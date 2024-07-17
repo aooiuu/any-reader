@@ -66,10 +66,7 @@ const router = createRouter({
         },
         {
           path: 'rules',
-          component: () => import('@/pages/pc/rules/index.vue'),
-          meta: {
-            keepAlive: true
-          }
+          component: () => import('@/pages/pc/rules/index.vue')
         },
         {
           path: 'chapter',

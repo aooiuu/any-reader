@@ -30,7 +30,7 @@
 // import '@/assets/vscode.css';
 import '@/plugins/vsc-ui';
 
-import { executeCommand } from '@/api/vsc';
+import { executeCommand } from '@/api/modules/vsc';
 
 const route = useRoute();
 const router = useRouter();

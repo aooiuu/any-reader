@@ -1,7 +1,7 @@
 import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity({ name: 'chapter_history' })
-@Index(['ruleId', 'filePath', 'chapterPath'], { unique: true })
+@Index(['uid', 'ruleId', 'filePath', 'chapterPath'], { unique: true })
 export class ChapterHistory {
   @PrimaryGeneratedColumn()
   id!: number

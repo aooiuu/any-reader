@@ -57,7 +57,7 @@ async function submit() {
   loading.value = true;
   const res = await importRules({ url: url.value }).catch(() => {});
   loading.value = false;
-  if (res.code === 0) {
+  if (res?.code === 0) {
     emit('done', res.data);
   } else {
     message.warning({

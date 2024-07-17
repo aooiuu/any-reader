@@ -24,7 +24,7 @@
 
 <script setup>
 import { getLocalBooks } from '@/api';
-import { executeCommand } from '@/api/vsc';
+import { executeCommand } from '@/api/modules/vsc';
 import TreeItem from '@/components/vsc/TreeItem.vue';
 
 const router = useRouter();

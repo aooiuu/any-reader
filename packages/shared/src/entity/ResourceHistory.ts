@@ -1,7 +1,7 @@
 import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity({ name: 'resource_history' })
-@Index(['ruleId', 'filePath', 'url'], { unique: true })
+@Index(['uid', 'ruleId', 'url'], { unique: true })
 export class ResourceHistory {
   @PrimaryGeneratedColumn()
   id!: number
@@ -12,13 +12,10 @@ export class ResourceHistory {
   @Column({ name: 'rule_id', type: 'text', default: '' })
   ruleId!: string
 
-  @Column({ name: 'filePath', type: 'text', default: '' })
-  filePath!: string
-
-  // =====================================================
-
   @Column({ name: 'url', type: 'text', default: '' })
   url!: string
+
+  // =====================================================
 
   @Column({ name: 'name', type: 'text', default: '' })
   name!: string

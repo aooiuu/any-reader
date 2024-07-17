@@ -4,7 +4,7 @@
 
 import * as path from 'path';
 import * as vscode from 'vscode';
-import { WebviewEvent } from './WebviewEvent';
+import { useWebviewEvent } from './WebviewEvent';
 import { getWebViewContent } from '../utils/webview';
 
 export class WebView {
@@ -59,7 +59,7 @@ export class WebView {
         this.context!.subscriptions
       );
       // @ts-ignore
-      const we = new WebviewEvent(this.webviewPanel.webview);
+      const we = useWebviewEvent(this.webviewPanel.webview, this.context.extensionPath);
       this.pm = we.pm;
     }
     this.webviewPanel.title = title;

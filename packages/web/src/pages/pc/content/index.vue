@@ -81,7 +81,7 @@ const chaptersVisible = ref(false);
 const contentRef = ref();
 const chaptersRef = ref();
 
-const topTarget = () => document.querySelector('#text-container');
+const topTarget = () => document.querySelector('#text-container') as HTMLElement;
 
 onClickOutside(chaptersRef, () => (chaptersVisible.value = false));
 

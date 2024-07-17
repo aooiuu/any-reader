@@ -4,6 +4,7 @@
 const webpack = require('webpack');
 const FilterWarningsPlugin = require('webpack-filter-warnings-plugin');
 const path = require('path');
+const CopyPlugin = require('copy-webpack-plugin');
 
 //@ts-check
 /** @typedef {import('webpack').Configuration} WebpackConfig **/
@@ -37,11 +38,22 @@ const extensionConfig = {
   },
   resolve: {
     // support reading TypeScript and JavaScript files, 📖 -> https://github.com/TypeStrong/ts-loader
-    extensions: ['.ts', '.js']
+    extensions: ['.ts', '.js', '.wasm']
   },
-  module: { rules: [{ test: /\.ts$/, exclude: /(node_modules|bin)/, use: ['ts-loader'] }] },
+  experiments: {
+    asyncWebAssembly: true,
+    topLevelAwait: true
+  },
+  module: {
+    noParse: /sql.js/,
+    rules: [{ test: /\.ts$/, exclude: /(node_modules|bin)/, use: ['ts-loader'] }]
+  },
   devtool: 'nosources-source-map',
   plugins: [
+    new CopyPlugin({
+      patterns: [{ from: '../../node_modules/sql.js/dist/sql-wasm.wasm' }]
+    }),
+
     // @ts-ignore
     new FilterWarningsPlugin({
       exclude: [
@@ -56,7 +68,7 @@ const extensionConfig = {
         /react-native-sqlite-storage/,
         /redis/,
         /sqlite3/,
-        /sql.js/,
+        // /sql.js/,
         /typeorm-aurora-data-api-driver/,
         /hdb-pool/,
         /spanner/,

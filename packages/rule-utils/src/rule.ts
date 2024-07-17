@@ -134,3 +134,27 @@ export function createRule(rule: Rule | any): Rule {
     viewStyle: 0,
   }, rule)
 }
+
+/**
+ *
+ * @param {string} str
+ * @returns {boolean}
+ */
+export function isEsoStr(str: string): boolean {
+  return str.startsWith('eso://')
+}
+
+/**
+ *
+ * @param rule
+ * @returns {boolean}
+ */
+export function isRule(rule: any): boolean {
+  if (typeof rule === 'string')
+    return isEsoStr(rule)
+
+  if (typeof rule !== 'object')
+    return false
+
+  return rule.id && rule.host && typeof rule.contentType !== 'undefined'
+}

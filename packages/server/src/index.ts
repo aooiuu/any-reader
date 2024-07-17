@@ -6,7 +6,7 @@ import { bodyParser } from '@koa/bodyparser'
 import cors from '@koa/cors'
 import serve from 'koa-static'
 import session from 'koa-session'
-import { Api } from '@any-reader/shared'
+import { createApp } from '@any-reader/shared'
 import { createRoute } from './routes'
 
 const __filename = fileURLToPath(import.meta.url)
@@ -18,7 +18,7 @@ const CONFIG_PATH = path.join(ROOT_PATH, 'config.desktop.json')
 const app = new Koa()
 
 export async function start(port = 8898, root = resolve(__dirname, 'public')) {
-  const api = new Api({
+  const api = createApp({
     configPath: CONFIG_PATH,
   })
   const router = createRoute(api)

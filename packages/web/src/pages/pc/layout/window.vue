@@ -52,7 +52,7 @@
 
 <script setup lang="jsx">
 import { PLATFORM } from '@/constants';
-import { minimize, maximize, exit, alwaysOnTop } from '@/api/electron';
+import { minimize, maximize, exit, alwaysOnTop } from '@/api/modules/electron';
 import Search from '@/components/Search/index.vue';
 import BaseLayout from './BaseLayout.vue';
 

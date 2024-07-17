@@ -10,8 +10,8 @@ import 'uno.css';
 import './assets/main.scss';
 // vscode ui
 import './plugins/vsc-ui';
-import { addHistory } from '@/api/index';
-import { saveChapterHistory } from '@/api/chapterHistory';
+import { addHistory } from '@/api';
+import { saveChapterHistory } from '@/api/modules/chapter-history';
 
 import { createPinia } from 'pinia';
 

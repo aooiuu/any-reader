@@ -2,8 +2,8 @@ import { stringify } from 'qs';
 import { App } from 'ant-design-vue';
 import { CONTENT_TYPE } from '@/constants';
 import { getChapter, getContent } from '@/api';
-import { getChapterHistorys } from '@/api/chapterHistory';
-import { openWindow } from '@/api/electron';
+import { getChapterHistorys } from '@/api/modules/chapter-history';
+import { openWindow } from '@/api/modules/electron';
 import { useRulesStore } from '@/stores/rules';
 import { useFavoritesStore } from '@/stores/favorites';
 

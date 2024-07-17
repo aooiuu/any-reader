@@ -118,7 +118,7 @@
 import { App } from 'ant-design-vue';
 import { PLATFORM } from '@/constants';
 import { logout } from '@/api';
-import { minimize, maximize, exit } from '@/api/electron';
+import { minimize, maximize, exit } from '@/api/modules/electron';
 import { useBus, EVENT_CHAPTERS_BOX, EVENT_SEARCH_BOX } from '@/utils/bus';
 import { useSettingStore } from '@/stores/setting';
 import { useReadStore } from '@/stores/read';

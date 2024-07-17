@@ -26,7 +26,7 @@ export class CustomEditorProvider implements vscode.CustomReadonlyEditorProvider
       enableScripts: true
     };
     // 绑定事件
-    useWebviewEvent(this.webviewPanel.webview);
+    useWebviewEvent(this.webviewPanel.webview, this._context.extensionPath);
     // 打开模板
     this.navigateTo(
       '/chapter?' +

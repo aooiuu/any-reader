@@ -1,3 +1,3 @@
-import { Api } from '@any-reader/shared'
+import { createApp } from '@any-reader/shared'
 
-export default Api
+export default createApp

@@ -3,7 +3,7 @@ import * as path from 'node:path';
 import { BrowserWindow, app } from 'electron';
 import EasyPostMessage from 'easy-post-message';
 import Adapter from 'easy-post-message/electron-adapter';
-import { Api } from '@any-reader/shared';
+import { createApp } from '@any-reader/shared';
 
 export const ROOT_PATH = path.join(os.homedir(), '.any-reader');
 export const CONFIG_PATH = path.join(ROOT_PATH, 'config.desktop.json');
@@ -19,7 +19,7 @@ function success(data: any, msg = '') {
 export function createAPI() {
   const pm = new EasyPostMessage(Adapter);
 
-  new Api({
+  createApp({
     configPath: CONFIG_PATH
   }).useApi(pm.answer.bind(pm));
 

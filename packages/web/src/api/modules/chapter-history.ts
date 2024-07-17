@@ -1,9 +1,13 @@
+/**
+ * 阅读进度
+ */
+
 import { request } from '@/utils/request';
 
 export function saveChapterHistory(data: any) {
   return request({
     method: 'post',
-    url: 'chapterHistory/save',
+    url: 'chapter-history/save',
     data
   });
 }
@@ -11,7 +15,7 @@ export function saveChapterHistory(data: any) {
 export function getChapterHistorys(data: any) {
   return request({
     method: 'post',
-    url: 'chapterHistory/list',
+    url: 'chapter-history/list',
     data
   });
 }

@@ -2,7 +2,7 @@ import type { Ref } from 'vue';
 import { useEventListener } from '@vueuse/core';
 import { debounce } from 'lodash-es';
 import { getContent } from '@/api';
-import { saveChapterHistory } from '@/api/chapterHistory';
+import { saveChapterHistory } from '@/api/modules/chapter-history';
 import { useChaptersStore } from '@/stores/chapters';
 import { useSettingStore } from '@/stores/setting';
 import { useReadStore } from '@/stores/read';

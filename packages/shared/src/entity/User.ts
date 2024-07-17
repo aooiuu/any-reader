@@ -10,7 +10,7 @@ export class User {
   username!: string
 
   @Column({ name: 'password', type: 'text', default: 0, length: 32 })
-  password!: number
+  password!: string
 
   @Column({ name: 'create_time', type: 'integer', default: 0 })
   createTime!: number

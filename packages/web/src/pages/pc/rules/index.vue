@@ -66,20 +66,21 @@
       <a-table
         row-key="id"
         :loading="loading"
-        :custom-row="(record) => customRow(record, tableData)"
+        :custom-row="(record: any) => customRow(record, tableData)"
         :pagination="{
           defaultPageSize: 10,
-          showTotal: (total) => `总数: ${total}`
+          showTotal: (total: number) => `总数: ${total}`
         }"
         :scroll="{
           y: height - 120
         }"
-        :row-selection="{ selectedRowKeys: selectedKeys, onChange: (v) => (selectedKeys = v) }"
+        :row-selection="{ selectedRowKeys: selectedKeys, onChange: (v: any) => (selectedKeys = v as string[]) }"
         :columns="tableColumns"
         :data-source="tableData"
         :scrollbar="true"
+        empty-text="没有规则, 你可以拖拽规则 JSON 文件到这里导入"
       >
-        <template #empty>
+        <template #emptyText>
           <div class="h-80 flex items-center justify-center">没有规则, 你可以拖拽规则 JSON 文件到这里导入</div>
         </template>
       </a-table>
@@ -87,21 +88,21 @@
   </div>
 </template>
 
-<script setup lang="jsx">
+<script setup lang="tsx">
 import { App } from 'ant-design-vue';
 import { PlusOutlined, DownOutlined } from '@ant-design/icons-vue';
 import _ from 'lodash-es';
-import { encodeRule } from '@any-reader/rule-utils';
+import { encodeRule, type Rule } from '@any-reader/rule-utils';
 import { useClipboard, useElementSize } from '@vueuse/core';
 import { saveAs } from 'file-saver';
 import { CONTENT_TYPES } from '@/constants';
 import { useRulesStore } from '@/stores/rules';
 import { ping, batchUpdateRules, delRules, updateRuleSort } from '@/api';
 import { timeoutWith } from '@/utils/promise';
-import { useRuleExtra } from './hooks/useRuleExtra';
 import { useDropRules } from '@/hooks/useDropRules';
 import ImportRules from './ImportRules.vue';
 import ImportCMS from './ImportCMS.vue';
+import type { ColumnsType } from 'ant-design-vue/es/table/Table';
 
 const { modal, message } = App.useApp();
 
@@ -110,18 +111,21 @@ const { height } = useElementSize(tableWarpRef);
 
 const router = useRouter();
 const rulesStore = useRulesStore();
-const ruleExtra = useRuleExtra();
-const pingIds = ref([]);
-const selectedKeys = ref([]);
+const pingIds = ref<string[]>([]);
+const selectedKeys = ref<string[]>([]);
 const loading = ref(false);
 const fileInputRef = ref();
 
-ruleExtra.sync();
+onMounted(async () => {
+  loading.value = true;
+  await rulesStore.sync();
+  loading.value = false;
+});
 
 const searchText = ref('');
 const contentTypes = ref(CONTENT_TYPES.map((e) => e.value).flat());
 
-function editRule(row) {
+function editRule(row: Rule) {
   router.push({
     name: 'ruleInfo',
     query: {
@@ -130,19 +134,19 @@ function editRule(row) {
   });
 }
 
-function sortableValue(obj, path) {
+function sortableValue(obj: any, path: string) {
   return _.get(obj, path) || Number.MAX_SAFE_INTEGER;
 }
 
-const LOG_CONFIG = [
-  { url: 'post@searchByRuleId', title: '搜索' },
-  { url: 'get@discoverMap', title: '发现分类' },
-  { url: 'post@discover', title: '发现列表' },
-  { url: 'post@getChapter', title: '章节列表' },
-  { url: 'post@content', title: '内容' }
-];
+// const LOG_CONFIG = [
+//   { url: 'post@searchByRuleId', title: '搜索' },
+//   { url: 'get@discoverMap', title: '发现分类' },
+//   { url: 'post@discover', title: '发现列表' },
+//   { url: 'post@getChapter', title: '章节列表' },
+//   { url: 'post@content', title: '内容' }
+// ];
 
-const tableColumns = ref([
+const tableColumns = ref<ColumnsType<any>>([
   {
     title: '名称',
     dataIndex: 'name',
@@ -150,20 +154,13 @@ const tableColumns = ref([
     width: 100,
     ellipsis: true,
     fixed: 'left',
-    tooltip: true,
-    rowDrag: true,
-    sortable: {
-      sortDirections: ['ascend', 'descend']
-    }
+    sortDirections: ['ascend', 'descend']
   },
   {
     title: '域名',
     dataIndex: 'host',
     ellipsis: true,
-    tooltip: true,
-    sortable: {
-      sortDirections: ['ascend', 'descend']
-    },
+    sortDirections: ['ascend', 'descend'],
     customRender: ({ record }) => {
       return (
         <a-button
@@ -195,7 +192,7 @@ const tableColumns = ref([
     customRender: ({ record }) => (
       <a-switch
         checked={record.enableSearch}
-        onUpdate:checked={(v) =>
+        onUpdate:checked={(v: boolean) =>
           rulesStore.updateRuleById(record.id, {
             enableSearch: v
           })
@@ -222,7 +219,7 @@ const tableColumns = ref([
     customRender: ({ record }) => (
       <a-switch
         checked={record.enableDiscover}
-        onUpdate:checked={(v) =>
+        onUpdate:checked={(v: boolean) =>
           rulesStore.updateRuleById(record.id, {
             enableDiscover: v
           })
@@ -236,10 +233,7 @@ const tableColumns = ref([
     align: 'center',
     width: 100,
     ellipsis: true,
-    tooltip: true,
-    sortable: {
-      sortDirections: ['ascend', 'descend']
-    }
+    sortDirections: ['ascend', 'descend']
   },
   {
     title: '延迟',
@@ -253,56 +247,55 @@ const tableColumns = ref([
           class={extra?.ping === -1 ? '!text-red' : ''}
           type="text"
           onClick={async () => {
-            await ping(_.pick(record, ['id', 'host']));
-            ruleExtra.sync();
+            const res = await ping(_.pick(record, ['id', 'host'])).catch(() => {});
+            if (res?.code === 0 && res.data) {
+              record.extra.ping = res.data.ping;
+            }
           }}>
           {pingIds.value.includes(record.id) ? '-' : extra?.ping === -1 ? '超时' : extra?.ping || '测速'}
         </a-button>
       );
     },
     sortDirections: ['ascend', 'descend'],
-    sorter: (a, b, { direction }) => {
-      if (direction === 'ascend') {
-        return sortableValue(a, 'extra.ping') - sortableValue(b, 'extra.ping');
-      }
-      return sortableValue(b, 'extra.ping') - sortableValue(a, 'extra.ping');
+    sorter: (a, b) => {
+      return sortableValue(a, 'extra.ping') - sortableValue(b, 'extra.ping');
     }
   },
-  {
-    title: '接口调用',
-    width: 160,
-    align: 'center',
-    filters: LOG_CONFIG.map((log) => ({
-      text: log.title + '失败>3且成功=0',
-      value: log.url
-    })),
-    filterMultiple: false,
-    onFilter: (value, record) => {
-      const ok = _.get(record, `extra.${value}.ok`, 0);
-      const fail = _.get(record, `extra.${value}.fail`, 0);
-      return ok === 0 && fail > 3;
-    },
-    sortDirections: ['ascend', 'descend'],
-    sorter: (a, b, { direction }) => {
-      const field = `extra.post@content.ok`;
-      if (direction === 'descend') {
-        return _.get(a, field, 0) > _.get(b, field, 0) ? -1 : 1;
-      } else {
-        return _.get(a, field, 0) > _.get(b, field, 0) ? 1 : -1;
-      }
-    },
-    customRender: ({ record }) => (
-      <div>
-        {LOG_CONFIG.map((log) => (
-          <div class="flex items-center text-10">
-            <span class="mr-4">{log.title}</span>
-            <span class="color-green">{_.get(record, `extra.${log.url}.ok`, 0)}</span>/
-            <span class="color-red">{_.get(record, `extra.${log.url}.fail`, 0)}</span>
-          </div>
-        ))}
-      </div>
-    )
-  },
+  // {
+  //   title: '接口调用',
+  //   width: 160,
+  //   align: 'center',
+  //   filters: LOG_CONFIG.map((log) => ({
+  //     text: log.title + '失败>3且成功=0',
+  //     value: log.url
+  //   })),
+  //   filterMultiple: false,
+  //   onFilter: (value, record) => {
+  //     const ok = _.get(record, `extra.${value}.ok`, 0);
+  //     const fail = _.get(record, `extra.${value}.fail`, 0);
+  //     return ok === 0 && fail > 3;
+  //   },
+  //   sortDirections: ['ascend', 'descend'],
+  //   sorter: (a, b, { direction }) => {
+  //     const field = `extra.post@content.ok`;
+  //     if (direction === 'descend') {
+  //       return _.get(a, field, 0) > _.get(b, field, 0) ? -1 : 1;
+  //     } else {
+  //       return _.get(a, field, 0) > _.get(b, field, 0) ? 1 : -1;
+  //     }
+  //   },
+  //   customRender: ({ record }) => (
+  //     <div>
+  //       {LOG_CONFIG.map((log) => (
+  //         <div class="flex items-center text-10">
+  //           <span class="mr-4">{log.title}</span>
+  //           <span class="color-green">{_.get(record, `extra.${log.url}.ok`, 0)}</span>/
+  //           <span class="color-red">{_.get(record, `extra.${log.url}.fail`, 0)}</span>
+  //         </div>
+  //       ))}
+  //     </div>
+  //   )
+  // },
   {
     title: '操作',
     width: 120,
@@ -321,16 +314,9 @@ const tableColumns = ref([
   }
 ]);
 
-const tableDataFilter = computed(() => {
+const tableData = computed(() => {
   if (!searchText.value) return rulesStore.list.filter((e) => contentTypes.value.includes(e.contentType));
   return rulesStore.list.filter((e) => e.name?.includes(searchText.value) && contentTypes.value.includes(e.contentType));
-});
-
-const tableData = computed(() => {
-  return tableDataFilter.value.map((e) => ({
-    ...e,
-    extra: ruleExtra.data.value[e.id] || {}
-  }));
 });
 
 // 添加规则
@@ -347,7 +333,6 @@ function addRuleFile() {
 
 function addRuleUrl() {
   const m = modal.confirm({
-    draggable: true,
     mask: true,
     closable: true,
     width: 400,
@@ -358,9 +343,7 @@ function addRuleUrl() {
         onDone={(count = 0) => {
           rulesStore.sync();
           message.success({
-            content: `导入${count}条数据`,
-            closable: true,
-            resetOnHover: true
+            content: `导入${count}条数据`
           });
           m.destroy();
         }}
@@ -372,7 +355,6 @@ function addRuleUrl() {
 // 从资源站添加
 function addCMS() {
   const m = modal.confirm({
-    draggable: true,
     mask: true,
     closable: true,
     width: 600,
@@ -383,9 +365,7 @@ function addCMS() {
         onDone={(count = 0) => {
           rulesStore.sync();
           message.success({
-            content: `导入${count}条数据`,
-            closable: true,
-            resetOnHover: true
+            content: `导入${count}条数据`
           });
           m.destroy();
         }}
@@ -395,16 +375,28 @@ function addCMS() {
 }
 
 async function pingAll() {
-  const rows = _.chunk(tableDataFilter.value, 5);
-  for (const row of rows) {
-    pingIds.value = row.map((e) => e.id);
-    await timeoutWith(Promise.all(row.map((e) => ping(_.pick(e, ['id', 'host'])))), 3000).catch(() => {});
+  const chunks = _.chunk(tableData.value, 5);
+  for (const rules of chunks) {
+    pingIds.value = rules.map((e) => e.id);
+    await timeoutWith(
+      Promise.all(
+        rules.map((rule) =>
+          ping(_.pick(rule, ['id', 'host']))
+            .then((res) => {
+              if (res.code === 0 && res.data) {
+                rule.extra.ping = res.data.ping;
+              }
+            })
+            .catch(() => {})
+        )
+      ),
+      3000
+    ).catch(() => {});
     pingIds.value = [];
-    await ruleExtra.sync();
   }
 }
 
-async function batchUpdate(rule) {
+async function batchUpdate(rule: Partial<Rule>) {
   await batchUpdateRules({
     ids: [...selectedKeys.value],
     rule
@@ -413,7 +405,7 @@ async function batchUpdate(rule) {
 }
 
 // 删除规则
-function delRule(id) {
+function delRule(id: string[]) {
   modal.confirm({
     title: '提示',
     content: '规则删除后不可恢复',
@@ -437,7 +429,7 @@ function delTimeoutRules() {
   delRule(
     rulesStore.list
       .filter((rule) => {
-        const extra = ruleExtra.data.value[rule.id];
+        const { extra } = rule;
         if (!extra) return false;
         if (extra.ping === -1) return true;
         return false;
@@ -455,30 +447,31 @@ async function onDrag() {
 }
 
 let dragStartId = '';
-function customRow(record, state) {
+function customRow(record: any, state: any[]) {
   return {
     draggable: true,
     style: { cursor: 'move' },
-    onDragstart: (ev) => {
-      console.log('[onDragStart]', { record });
-      ev.dataTransfer.effectAllowed = 'move';
+    onDragstart: (ev: DragEvent) => {
+      ev.dataTransfer!.effectAllowed = 'move';
       dragStartId = record.id;
     },
-    onDragenter: (ev) => {
-      const nodes = ev.target.parentNode.childNodes;
+    onDragenter: (ev: DragEvent) => {
+      const target = ev.target as HTMLElement;
+      const nodes = target.parentNode!.childNodes as unknown as HTMLElement[];
       nodes.forEach((item) => {
         if (!item.style) return;
         item.style.borderTop = '2px dashed #1890ff';
       });
     },
-    onDragleave: (ev) => {
-      const nodes = ev.target.parentNode.childNodes;
+    onDragleave: (ev: DragEvent) => {
+      const target = ev.target as HTMLElement;
+      const nodes = target.parentNode!.childNodes as unknown as HTMLElement[];
       nodes.forEach((item) => {
         if (!item.style) return;
         item.style.borderTop = '';
       });
     },
-    onDrop: (ev) => {
+    onDrop: (ev: DragEvent) => {
       ev.preventDefault();
       ev.stopPropagation();
       const files = ev.dataTransfer?.files || [];
@@ -489,7 +482,8 @@ function customRow(record, state) {
         return;
       }
 
-      const dropCol = ev.target.tagName !== 'TR' ? ev.target.parentNode : ev.target;
+      const target = ev.target as HTMLElement;
+      const dropCol = target.tagName !== 'TR' ? target.parentNode : target;
       const dropId = record.id;
       const dragIndex = state.findIndex((item) => item.id === dragStartId);
       const dropIndex = state.findIndex((item) => item.id === dropId);
@@ -498,25 +492,24 @@ function customRow(record, state) {
       data.splice(dropIndex, 0, item[0]); // 将拖动元素插入到新的位置
       rulesStore.list = data;
       onDrag();
-      dropCol.childNodes.forEach((item) => {
+      dropCol!.childNodes.forEach((item: any) => {
         if (!item.style) return;
         item.style.borderTop = '';
       });
     },
-    onDragOver: (ev) => ev.preventDefault()
+    onDragOver: (ev: DragEvent) => ev.preventDefault()
   };
 }
 
 const { drop, dropFile } = useDropRules(({ count }) => {
   message.success({
-    content: `导入${count}条数据`,
-    closable: true,
-    resetOnHover: true
+    content: `导入${count}条数据`
   });
 });
 
-async function changeFile(e) {
-  const files = e.target.files;
+async function changeFile(e: Event) {
+  const files = (e.target as HTMLInputElement)!.files;
+  if (!files || !files.length) return;
   loading.value = true;
   for (const file of files) {
     await dropFile(file).catch(() => {});
@@ -545,16 +538,12 @@ function copySelected() {
   copy(getSelectedRuleStr())
     .then(() => {
       message.success({
-        content: `已复制到剪贴板`,
-        closable: true,
-        resetOnHover: true
+        content: `已复制到剪贴板`
       });
     })
     .catch(() => {
       message.success({
-        content: `复制失败`,
-        closable: true,
-        resetOnHover: true
+        content: `复制失败`
       });
     });
 }

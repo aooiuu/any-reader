@@ -7,10 +7,9 @@ export function useDropRules(cb: { ({ count }: { count: any }): void; (arg0: { c
   const rulesStore = useRulesStore();
   const loading = ref(false);
 
-  async function drop(event: { preventdefault: () => void; dataTransfer: { files: any } }) {
-    // vscode
-    if (typeof event.preventdefault === 'function') event.preventdefault();
-    const files = event.dataTransfer.files;
+  async function drop(event: DragEvent) {
+    if (typeof event.preventDefault === 'function') event.preventDefault();
+    const files = event.dataTransfer!.files;
     loading.value = true;
     for (const file of files) {
       await dropFile(file);

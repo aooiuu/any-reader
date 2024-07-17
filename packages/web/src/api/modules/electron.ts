@@ -1,3 +1,7 @@
+/**
+ * electron
+ */
+
 import { PLATFORM } from '@/constants';
 import { request } from '@/utils/request';
 

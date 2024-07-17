@@ -44,7 +44,7 @@
 import { CONTENT_TYPES } from '@/constants';
 import { useRulesStore } from '@/stores/rules';
 import TreeItem from '@/components/vsc/TreeItem.vue';
-import { executeCommand } from '@/api/vsc';
+import { executeCommand } from '@/api/modules/vsc';
 import { useDropRules } from '@/hooks/useDropRules';
 
 const contentType = ref(null);

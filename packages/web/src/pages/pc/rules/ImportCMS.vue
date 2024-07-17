@@ -47,7 +47,7 @@ const onFinish = async (values: any) => {
   loading.value = true;
   const res = await importCMS(values).catch(() => {});
   loading.value = false;
-  if (res.code === 0) {
+  if (res?.code === 0) {
     emit('done', res.data);
   } else {
     message.warning({

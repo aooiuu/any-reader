@@ -1,24 +1,24 @@
 {
   "name": "@any-reader/cli",
+  "type": "commonjs",
   "version": "1.8.2",
   "description": "",
-  "type": "commonjs",
-  "files": [
-    "dist",
-    "public"
-  ],
-  "bin": {
-    "any-reader": "./bin/index.mjs"
-  },
-  "scripts": {
-    "build": "esno ./scripts/publish.cjs && unbuild"
-  },
-  "keywords": [],
   "author": "aooiuu <aooiu@qq.com>",
   "license": "GPL3",
   "repository": {
     "type": "git",
     "url": "https://github.com/aooiuu/any-reader"
+  },
+  "keywords": [],
+  "bin": {
+    "any-reader": "./bin/index.mjs"
+  },
+  "files": [
+    "dist",
+    "public"
+  ],
+  "scripts": {
+    "build": "tsx ./scripts/publish.cjs && unbuild"
   },
   "dependencies": {
     "@any-reader/server": "workspace:^",

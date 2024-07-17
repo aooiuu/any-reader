@@ -20,6 +20,8 @@ service.interceptors.request.use(
 
 service.interceptors.response.use(
   (response) => {
+    const { showMsg = true } = response.config as any;
+
     const { code, msg } = response.data;
     if (code === 401 || code === 10002) {
       router.push({ name: 'login' });
@@ -29,8 +31,8 @@ service.interceptors.response.use(
       router.push({ name: 'install' });
       return Promise.reject(response.data);
     }
-    if (code === -1 && msg) {
-      message.warning(msg);
+    if (code === -1) {
+      msg && showMsg && message.warning(msg);
       return Promise.reject(response.data);
     }
     return response.data;

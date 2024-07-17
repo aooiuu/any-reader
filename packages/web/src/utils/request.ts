@@ -1,9 +1,13 @@
 import { PLATFORM } from '@/constants';
 import axios from './axios';
 
-export async function request(config: any) {
+export async function request(config: any): Promise<{
+  code: number;
+  data: any;
+  msg?: string;
+}> {
   console.log('[request]', config);
-  const method = config.method ?? 'get';
+  const method = config.method?.toLowerCase() ?? 'get';
   if (PLATFORM === 'browser') {
     // web
     return await axios(config);

@@ -6,9 +6,8 @@ import * as os from 'node:os';
 import * as path from 'node:path';
 import * as vscode from 'vscode';
 import * as EasyPostMessage from 'easy-post-message';
-import { Api } from '@any-reader/shared';
+import { createApp } from '@any-reader/shared';
 import { createAdapter } from '../utils/easyPostMessage';
-
 export const ROOT_PATH = path.join(os.homedir(), '.any-reader');
 export const CONFIG_PATH = path.join(ROOT_PATH, 'config.vscode.json');
 
@@ -19,7 +18,7 @@ export class WebviewEvent {
     return this._pm;
   }
 
-  constructor(webview: vscode.Webview) {
+  constructor(webview: vscode.Webview, extensionPath: string) {
     // @ts-ignore
     this._pm = new EasyPostMessage(createAdapter(webview));
 
@@ -27,9 +26,18 @@ export class WebviewEvent {
 
     // vsc
     this._pm.answer('post@vscode/executeCommand', this.executeCommand.bind(this));
-
-    new Api({
-      configPath: CONFIG_PATH
+    const sql = require('sql.js/dist/sql-wasm');
+    createApp({
+      configPath: CONFIG_PATH,
+      dataSourceOptions: {
+        driver: sql?.Module || sql,
+        sqlJsConfig: {
+          locateFile: (file: string) => {
+            console.log('[locateFile]', path.join(extensionPath, 'dist', file));
+            return path.join(extensionPath, 'dist', file);
+          }
+        }
+      }
     }).useApi(this._pm.answer.bind(this._pm));
   }
 
@@ -39,6 +47,6 @@ export class WebviewEvent {
   }
 }
 
-export function useWebviewEvent(webView: vscode.Webview) {
-  new WebviewEvent(webView);
+export function useWebviewEvent(webView: vscode.Webview, extensionPath: string) {
+  return new WebviewEvent(webView, extensionPath);
 }

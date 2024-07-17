@@ -1,7 +1,7 @@
 import * as path from 'path';
 import * as vscode from 'vscode';
 import { getWebViewContent } from '../utils/webview';
-import { WebviewEvent } from '../webview/WebviewEvent';
+import { useWebviewEvent, WebviewEvent } from '../webview/WebviewEvent';
 
 export class WebviewProvider implements vscode.WebviewViewProvider {
   private _webviewView!: vscode.WebviewView;
@@ -18,7 +18,7 @@ export class WebviewProvider implements vscode.WebviewViewProvider {
       enableScripts: true
     };
     this.webview.html = getWebViewContent(path.join('template-dist', 'index.html'), this._extensionPath, this.webview);
-    this._event = new WebviewEvent(this.webview);
+    this._event = useWebviewEvent(this.webview, this._extensionPath);
   }
 
   get webviewView() {

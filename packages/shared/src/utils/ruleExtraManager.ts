@@ -3,7 +3,7 @@ import { readJson } from 'fs-extra/esm'
 import _ from 'lodash-es'
 import { JSONFilePreset } from 'lowdb/node'
 import type { Low } from 'lowdb/lib'
-import { RULE_EXTRA_PATH } from './constants'
+import { RULE_EXTRA_PATH } from '../constants'
 import _ping from './ping'
 
 export interface SourceExtraRow {

@@ -1,6 +1,6 @@
 import { merge } from 'lodash-es';
 import { readConfig, updateConfig } from '@/api';
-import { alwaysOnTop } from '@/api/electron';
+import { alwaysOnTop } from '@/api/modules/electron';
 
 export type ReadStyle = {
   // 字体大小

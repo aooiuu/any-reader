@@ -1,6 +1,6 @@
 const path = require('node:path')
 const os = require('node:os')
-const Api = require('./libs')
+const createApp = require('./libs')
 
 const ROOT_PATH = path.join(os.homedir(), '.any-reader')
 const CONFIG_PATH = path.join(ROOT_PATH, 'config.desktop.json')
@@ -16,7 +16,7 @@ window.$AnyReader = {
   },
 }
 
-const api = new Api({
+const api = createApp({
   configPath: CONFIG_PATH,
 })
 
