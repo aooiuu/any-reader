@@ -1,8 +1,9 @@
+import md5 from 'blueimp-md5'
 import { RuleManager as RM } from '@any-reader/core'
 import { ContentType } from '@any-reader/rule-utils'
-import { Controller, Post } from '../decorators'
-import type { BookChapter } from '../utils/localBookManager'
-import localBookManager from '../utils/localBookManager'
+import { Cacheable, Controller, Post } from '../decorators'
+import type { BookChapter } from '../utils/book-manager'
+import bookManager from '../utils/book-manager'
 import { BaseController } from './BaseController'
 
 @Controller('/rule-manager')
@@ -42,10 +43,16 @@ export class RuleManager extends BaseController {
       )
     }
     // 本地
-    return localBookManager.getChapter(filePath)
+    return bookManager.getChapter(filePath)
   }
 
   @Post('content')
+  @Cacheable({
+    cacheKey({ args }) {
+      const { filePath = '', chapterPath = '', ruleId = '' } = args[0]
+      return `${ruleId}@${md5(filePath + chapterPath)}`
+    },
+  })
   async content({ filePath, chapterPath, ruleId }: any) {
     // 在线
     if (ruleId) {
@@ -65,7 +72,7 @@ export class RuleManager extends BaseController {
       }
     }
     // 本地
-    const content = await localBookManager.getContent(toBookChapter(filePath, chapterPath))
+    const content = await bookManager.getContent(toBookChapter(filePath, chapterPath))
     return {
       content,
     }

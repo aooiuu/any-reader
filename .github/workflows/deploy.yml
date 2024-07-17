@@ -32,6 +32,8 @@ jobs:
         with:
           fetch-depth: 0
 
+      - uses: pnpm/action-setup@v3
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -41,12 +43,10 @@ jobs:
         uses: actions/configure-pages@v4
 
       - name: Install dependencies
-        working-directory: ./docs
-        run: npm install
+        run: pnpm install
 
       - name: Build with VitePress
-        working-directory: ./docs
-        run: npm run docs:build
+        run: pnpm build:docs
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

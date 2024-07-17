@@ -31,6 +31,7 @@
     "@any-reader/epub": "workspace:^",
     "@any-reader/rule-utils": "workspace:^",
     "axios": "^1.7.2",
+    "blueimp-md5": "^2.19.0",
     "chardet": "^2.0.0",
     "fs-extra": "^11.1.1",
     "iconv-lite": "^0.6.3",

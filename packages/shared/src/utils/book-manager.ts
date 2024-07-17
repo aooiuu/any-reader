@@ -5,7 +5,7 @@ import { getBookParser, path2bookFile } from './BookParser'
 
 export * from './BookParser'
 
-class LocalBookManager {
+class BookManager {
   // 检查目录
   checkDir(dir: string) {
     if (!fs.existsSync(dir) || !fs.lstatSync(dir).isDirectory())
@@ -33,4 +33,4 @@ class LocalBookManager {
   }
 }
 
-export default new LocalBookManager()
+export default new BookManager()
