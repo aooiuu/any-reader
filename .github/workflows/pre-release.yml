@@ -63,9 +63,6 @@ jobs:
         with:
           packagePath: ./packages/vscode
           pat: ${{ secrets.VSCODE_TOKEN }}
-          # 不发布
-          dryRun: true
-          # 预发布
           preRelease: true
           skipDuplicate: true
           registryUrl: https://marketplace.visualstudio.com
