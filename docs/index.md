@@ -6,12 +6,11 @@ outline: deep
 
 开源的多平台自定义源资源聚合工具。支持小说、漫画阅读、视频播放、聚合搜索等, 也支持本地资源TXT、EPUB
 
-- [JS 解析库](./core/)
+- [规则解析库](./core/)
 - [VSCode 插件](./vsc/)
 - [桌面端](./desktop/)
 - [网页端](./browser/)
 - [Docker](./docker/)
-- uTools 插件
 
 软件不提供内容, 也不提供任何规则, 但你可以通过编写 [规则](./rule/), 控制呈现内容
 
@@ -38,37 +37,52 @@ pnpm run build
 
 用 `VSCode` 打开 `/packages/vscode` 目录, `F5` 即可运行调试插件!
 
-### Core
-
-调试：
-
-1. 修改 `src\start.ts` 文件, 把 `rule` 变量修改为真实的书源
-2. 进入目录 `cd packages\core`
-3. vscode 打开调试终端, 输入 `pnpm run start`
-
-### 前端模板
-
-```sh
-# 进入目录
-cd packages\web
-
-# 实时编译到 VSCode 目录
-pnpm run build:w
-```
-
 ### 源码目录结构
 
 ```
 ├── docs
 ├── packages
-|  ├── core         规则解析库
-|  ├── vscode       vscode 扩展
-|  └── web          目前用于 vscode 扩展的 Web 相关页面
+|  ├── cli                命令行工具
+|  ├── core               规则解析库
+|  ├── rule-utils         规则转换
+|  ├── epub               epub解析
+|  ├── shared             多端通用逻辑
+|  ├── vscode             vscode插件
+|  ├── utools             utools插件
+|  ├── rubick             rubick插件
+|  ├── server             web端需要的服务端
+|  └── web                模板
 ├── README.md
 └── scripts
 ```
 
 ## 常见问题
+
+### 无法使用搜索功能
+
+需要配置规则
+
+### 本地书籍怎么导入
+
+`设置` -> `本地书籍目录` 填写本地目录
+
+软件会自动加载目录下的 `.txt` 和 `.epub` 文件
+
+### 数据文件在哪
+
+windows: `C:\Users\%USERNAME%\.any-reader\`
+
+对应的源码: `path.join(os.homedir(), '.any-reader')`
+
+### Docker 部署怎么持久化数据
+
+加上 `-v any-reader:/root/.any-reader`
+
+比如:
+
+```sh
+docker run -d --name any-reader -p 9900:8899 -v any-reader:/root/.any-reader aooiu/any-reader
+```
 
 ### 搜索失败
 
@@ -97,10 +111,9 @@ pnpm run build:w
       "id": "1",
       "isActive": true
     }
-  ],
+  ]
   // ...
 }
 ```
 
-> 转换后的规则不但 `AnyReader`  可以使用, `ESO` 一样可以使用哦
-
+> 转换后的规则不但 `AnyReader` 可以使用, `ESO` 一样可以使用哦
