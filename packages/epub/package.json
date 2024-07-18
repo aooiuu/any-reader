@@ -1,6 +1,6 @@
 {
   "name": "@any-reader/epub",
-  "version": "1.9.0-beta.1",
+  "version": "1.9.0",
   "description": "",
   "scripts": {
     "build": "unbuild"
