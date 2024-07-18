@@ -66,7 +66,6 @@
       <a-table
         row-key="id"
         :loading="loading"
-        :custom-row="(record: any) => customRow(record, tableData)"
         :pagination="{
           defaultPageSize: 10,
           showTotal: (total: number) => `总数: ${total}`
@@ -97,7 +96,7 @@ import { useClipboard, useElementSize } from '@vueuse/core';
 import { saveAs } from 'file-saver';
 import { CONTENT_TYPES } from '@/constants';
 import { useRulesStore } from '@/stores/rules';
-import { ping, batchUpdateRules, delRules, updateRuleSort } from '@/api';
+import { ping, batchUpdateRules, delRules } from '@/api';
 import { timeoutWith } from '@/utils/promise';
 import { useDropRules } from '@/hooks/useDropRules';
 import ImportRules from './ImportRules.vue';
@@ -438,68 +437,69 @@ function delTimeoutRules() {
   );
 }
 
-async function onDrag() {
-  loading.value = true;
-  const ids = rulesStore.list.map((e) => e.id);
-  await updateRuleSort({ id: ids }).catch(() => {});
-  await rulesStore.sync();
-  loading.value = false;
-}
+// async function onDrag() {
+//   loading.value = true;
+//   const ids = rulesStore.list.map((e) => e.id);
+//   await updateRuleSort({ id: ids }).catch(() => {});
+//   await rulesStore.sync();
+//   loading.value = false;
+// }
 
-let dragStartId = '';
-function customRow(record: any, state: any[]) {
-  return {
-    draggable: true,
-    style: { cursor: 'move' },
-    onDragstart: (ev: DragEvent) => {
-      ev.dataTransfer!.effectAllowed = 'move';
-      dragStartId = record.id;
-    },
-    onDragenter: (ev: DragEvent) => {
-      const target = ev.target as HTMLElement;
-      const nodes = target.parentNode!.childNodes as unknown as HTMLElement[];
-      nodes.forEach((item) => {
-        if (!item.style) return;
-        item.style.borderTop = '2px dashed #1890ff';
-      });
-    },
-    onDragleave: (ev: DragEvent) => {
-      const target = ev.target as HTMLElement;
-      const nodes = target.parentNode!.childNodes as unknown as HTMLElement[];
-      nodes.forEach((item) => {
-        if (!item.style) return;
-        item.style.borderTop = '';
-      });
-    },
-    onDrop: (ev: DragEvent) => {
-      ev.preventDefault();
-      ev.stopPropagation();
-      const files = ev.dataTransfer?.files || [];
-      if (files.length) {
-        for (const file of files) {
-          dropFile(file);
-        }
-        return;
-      }
+// TODO: 拖拽排序
+// let dragStartId = '';
+// function customRow(record: any, state: any[]) {
+//   return {
+//     draggable: true,
+//     style: { cursor: 'move' },
+//     onDragstart: (ev: DragEvent) => {
+//       ev.dataTransfer!.effectAllowed = 'move';
+//       dragStartId = record.id;
+//     },
+//     onDragenter: (ev: DragEvent) => {
+//       const target = ev.target as HTMLElement;
+//       const nodes = target.parentNode!.childNodes as unknown as HTMLElement[];
+//       nodes.forEach((item) => {
+//         if (!item.style) return;
+//         item.style.borderTop = '2px dashed #1890ff';
+//       });
+//     },
+//     onDragleave: (ev: DragEvent) => {
+//       const target = ev.target as HTMLElement;
+//       const nodes = target.parentNode!.childNodes as unknown as HTMLElement[];
+//       nodes.forEach((item) => {
+//         if (!item.style) return;
+//         item.style.borderTop = '';
+//       });
+//     },
+//     onDrop: (ev: DragEvent) => {
+//       ev.preventDefault();
+//       ev.stopPropagation();
+//       const files = ev.dataTransfer?.files || [];
+//       if (files.length) {
+//         for (const file of files) {
+//           dropFile(file);
+//         }
+//         return;
+//       }
 
-      const target = ev.target as HTMLElement;
-      const dropCol = target.tagName !== 'TR' ? target.parentNode : target;
-      const dropId = record.id;
-      const dragIndex = state.findIndex((item) => item.id === dragStartId);
-      const dropIndex = state.findIndex((item) => item.id === dropId);
-      const data = [...state];
-      const item = data.splice(dragIndex, 1); // 移除拖动前的元素
-      data.splice(dropIndex, 0, item[0]); // 将拖动元素插入到新的位置
-      rulesStore.list = data;
-      onDrag();
-      dropCol!.childNodes.forEach((item: any) => {
-        if (!item.style) return;
-        item.style.borderTop = '';
-      });
-    },
-    onDragOver: (ev: DragEvent) => ev.preventDefault()
-  };
-}
+//       const target = ev.target as HTMLElement;
+//       const dropCol = target.tagName !== 'TR' ? target.parentNode : target;
+//       const dropId = record.id;
+//       const dragIndex = state.findIndex((item) => item.id === dragStartId);
+//       const dropIndex = state.findIndex((item) => item.id === dropId);
+//       const data = [...state];
+//       const item = data.splice(dragIndex, 1); // 移除拖动前的元素
+//       data.splice(dropIndex, 0, item[0]); // 将拖动元素插入到新的位置
+//       rulesStore.list = data;
+//       onDrag();
+//       dropCol!.childNodes.forEach((item: any) => {
+//         if (!item.style) return;
+//         item.style.borderTop = '';
+//       });
+//     },
+//     onDragOver: (ev: DragEvent) => ev.preventDefault()
+//   };
+// }
 
 const { drop, dropFile } = useDropRules(({ count }) => {
   message.success({

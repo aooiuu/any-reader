@@ -1,5 +1,8 @@
 <template>
   <div class="w-full h-full flex flex-col overflow-hidden relative">
+    <div v-if="loading" class="flex flex-1 justify-center items-center">
+      <vscode-progress-ring></vscode-progress-ring>
+    </div>
     <div
       ref="contentRef"
       class="flex-1 p-10 whitespace-pre-wrap overflow-y-auto lh-1.5em break-words"
@@ -27,7 +30,7 @@ import { useContent } from '@/pages/common/content';
 
 const contentRef = ref();
 
-const { content, settingStore, lastChapter, nextChapter, onPageUp, onPageDown, onPrevChapter, onNextChapter } = useContent(contentRef);
+const { content, settingStore, lastChapter, nextChapter, onPageUp, onPageDown, onPrevChapter, onNextChapter, loading } = useContent(contentRef);
 </script>
 
 <style scoped>

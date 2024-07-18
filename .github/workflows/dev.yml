@@ -2,8 +2,8 @@ name: Pre Release
 
 on:
   push:
-    tags:
-      - v[0-9]+.[0-9]+.[0-9]+-beta.[0-9]+
+    branches:
+      - dev
 
 jobs:
   release:
@@ -65,8 +65,6 @@ jobs:
           pat: ${{ secrets.VSCODE_TOKEN }}
           # 不发布
           dryRun: true
-          # 预发布
-          preRelease: true
           skipDuplicate: true
           registryUrl: https://marketplace.visualstudio.com
           dependencies: false
@@ -83,6 +81,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          tag_name: v${{ steps.pkgversion.outputs.value }}-alpha.${{ steps.short_sha.outputs.value }}
+          name: v${{ steps.pkgversion.outputs.value }}-alpha.${{ steps.short_sha.outputs.value }}
           prerelease: true
           draft: true
           files: |

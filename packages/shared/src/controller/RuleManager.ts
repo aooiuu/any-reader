@@ -30,6 +30,13 @@ export class RuleManager extends BaseController {
   }
 
   @Post('chapter')
+  @Cacheable({
+    ttl: 1000 * 60 * 60,
+    cacheKey({ args }) {
+      const { ruleId = '', filePath = '' } = args[0]
+      return `chapter@${ruleId || '__local__'}@${md5(filePath)}`
+    },
+  })
   async getChapter({ ruleId, filePath }: { ruleId?: string; filePath: string }) {
     if (ruleId) {
       const rule = await this.getRule(ruleId)
@@ -50,7 +57,7 @@ export class RuleManager extends BaseController {
   @Cacheable({
     cacheKey({ args }) {
       const { filePath = '', chapterPath = '', ruleId = '' } = args[0]
-      return `${ruleId}@${md5(filePath + chapterPath)}`
+      return `content@${ruleId || '__local__'}@${md5(filePath)}@${md5(chapterPath)}`
     },
   })
   async content({ filePath, chapterPath, ruleId }: any) {

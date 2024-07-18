@@ -1,12 +1,26 @@
 export interface CreateCacheDecoratorOptions<T> {
   getItem: (key: string) => Promise<T>
-  setItem: (key: string, value: T) => Promise<void>
+  setItem: (key: string, value: T, options: {
+    ttl: number
+  }) => Promise<void>
+}
+
+function isEmpty(data: any): boolean {
+  if (typeof data === 'undefined')
+    return true
+  if (typeof data === 'string' || Array.isArray(data))
+    return !data.length
+  if (typeof data === 'boolean')
+    return false
+  else
+    return !Object.keys(data).length
 }
 
 export function createCacheDecorator<T>(
   options: CreateCacheDecoratorOptions<T>,
 ) {
   return (decoratorArgs: {
+    ttl?: number
     cacheKey: (arg: {
       className: string
       methodName: string
@@ -36,12 +50,17 @@ export function createCacheDecorator<T>(
 
         const cachedResult = await options.getItem(cacheKey)
 
-        if (cachedResult !== undefined) {
+        if (!isEmpty(cachedResult)) {
           return cachedResult
         }
         else {
           const result = await fn.apply(this, args)
-          await options.setItem(cacheKey, result)
+          if (!isEmpty(result)) {
+            await options.setItem(cacheKey, result, {
+              ttl: decoratorArgs.ttl || 0,
+            })
+          }
+
           return result
         }
       }

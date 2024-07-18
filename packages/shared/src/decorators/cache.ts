@@ -1,13 +1,18 @@
 import * as fs from 'node:fs'
 import * as path from 'node:path'
-
-// @ts-expect-error
-import { ensureFileSync } from 'fs-extra/esm'
 import { CACHE_DIR } from '../constants'
 import { createCacheDecorator } from './create-cache-decorator'
 
-function getCachePath(key: string) {
-  return path.join(CACHE_DIR, key)
+export function getCachePath(key: string) {
+  if (!key)
+    throw new Error('key is required')
+  const keys = key.split('@')
+  const fileName = keys.pop() as string
+  const dir = path.join(CACHE_DIR, ...keys)
+  if (!fs.existsSync(dir))
+    fs.mkdirSync(dir, { recursive: true })
+
+  return path.join(dir, `${fileName}.json`)
 }
 
 export const Cacheable = createCacheDecorator<any>({
@@ -15,11 +20,30 @@ export const Cacheable = createCacheDecorator<any>({
     const cachePath = getCachePath(key)
     if (!fs.existsSync(cachePath))
       return
-    return JSON.parse(fs.readFileSync(cachePath, 'utf-8'))
+    let jsonData
+    try {
+      jsonData = JSON.parse(fs.readFileSync(cachePath, 'utf-8'))
+    }
+    catch (error) {
+      fs.unlinkSync(cachePath)
+      return
+    }
+    if (
+      !jsonData
+      || !jsonData.val
+      || (jsonData.exp !== 0 && jsonData.exp < Date.now())
+    ) {
+      fs.unlinkSync(cachePath)
+      return
+    }
+
+    return jsonData.val
   },
-  setItem: async (key: string, value: any) => {
-    const cachePath = getCachePath(key)
-    ensureFileSync(cachePath)
-    fs.writeFileSync(cachePath, JSON.stringify(value), 'utf-8')
+  setItem: async (key: string, val: any, options: { ttl: number }) => {
+    const data = JSON.stringify({
+      val,
+      exp: options.ttl ? Date.now() + options.ttl : 0,
+    })
+    fs.writeFile(getCachePath(key), data, 'utf-8', () => {})
   },
 })

@@ -27,18 +27,18 @@ export class ResourceRuleService {
       relations: {
         extra: true,
       },
-      select: {
-        id: true,
-        name: true,
-        host: true,
-        enableSearch: true,
-        enableDiscover: true,
-        author: true,
-        contentType: true,
-        extra: {
-          ping: true,
-        },
-      },
+      // select: {
+      //   id: true,
+      //   name: true,
+      //   host: true,
+      //   enableSearch: true,
+      //   enableDiscover: true,
+      //   author: true,
+      //   contentType: true,
+      //   extra: {
+      //     ping: true,
+      //   },
+      // },
       // take: 100,
     })
   }
@@ -50,10 +50,11 @@ export class ResourceRuleService {
   }
 
   // 删除一个记录
-  removeById(id: string) {
-    return this.repository.delete({
-      id,
-    })
+  removeById(id: string | string[]) {
+    return this.repository.createQueryBuilder()
+      .delete()
+      .where('id IN (:...ids)', { ids: Array.isArray(id) ? id : [id] })
+      .execute()
   }
 
   // 保存

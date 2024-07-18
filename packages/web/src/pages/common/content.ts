@@ -38,6 +38,7 @@ export function useContent(contentRef: Ref<HTMLElement>) {
   const settingStore = useSettingStore();
   const readStore = useReadStore();
   const options = computed(() => route.query);
+  const loading = ref(false);
 
   useSaveHistory(contentRef, options);
 
@@ -73,7 +74,9 @@ export function useContent(contentRef: Ref<HTMLElement>) {
   async function init() {
     const { chapterPath: _chapterPath, filePath, ruleId, percentage } = route.query as Record<string, string>;
     content.value = '';
+    loading.value = true;
     const res = await getContent(route.query).catch(() => {});
+    loading.value = false;
     chapterPath.value = _chapterPath as string;
     chaptersStore.getChapters(filePath as string, ruleId as string).then(() => {
       const chapterInfo = chaptersStore.chapters.find((e) => e.chapterPath === route.query.chapterPath);
@@ -176,6 +179,7 @@ export function useContent(contentRef: Ref<HTMLElement>) {
     onPageUp,
     onPageDown,
     onPrevChapter,
-    onNextChapter
+    onNextChapter,
+    loading
   };
 }
