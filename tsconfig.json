@@ -1,14 +1,17 @@
 {
   "compilerOptions": {
-    // https://github.com/typeorm/typeorm
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-
+    "strict": true,
+    "strictNullChecks": true,
+    "lib": ["esnext"],
     "paths": {
       // "@any-reader/rule-utils": ["./packages/rule-utils/src/index.ts"],
       // "@any-reader/core": ["./packages/core/src/index.ts"],
       // "@any-reader/epub": ["./packages/epub/src/index.ts"],
       // "@any-reader/shared": ["./packages/shared/src/index.ts"]
     }
-  }
+  },
+
+  "exclude": ["**/dist/**", "**/node_modules/**"]
 }

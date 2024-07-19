@@ -2,35 +2,28 @@
  * webview 消息处理
  */
 
-import * as os from 'node:os';
 import * as path from 'node:path';
 import * as vscode from 'vscode';
-import * as EasyPostMessage from 'easy-post-message';
+import EasyPostMessage from 'easy-post-message';
 import { createApp } from '@any-reader/shared';
 import { createAdapter } from '../utils/easyPostMessage';
-export const ROOT_PATH = path.join(os.homedir(), '.any-reader');
-export const CONFIG_PATH = path.join(ROOT_PATH, 'config.vscode.json');
+import { CONFIG_PATH } from '../constants';
 
 export class WebviewEvent {
-  private _pm: any;
+  private _pm!: EasyPostMessage;
 
   get pm() {
     return this._pm;
   }
 
   constructor(webview: vscode.Webview, extensionPath: string) {
-    // @ts-ignore
     this._pm = new EasyPostMessage(createAdapter(webview));
-
-    // 消息通信, 为了以后兼容 XHR, 模板分离出独立可运行浏览器版本
-
-    // vsc
     this._pm.answer('post@vscode/executeCommand', this.executeCommand.bind(this));
-    const sql = require('sql.js/dist/sql-wasm');
+
     createApp({
       configPath: CONFIG_PATH,
       dataSourceOptions: {
-        driver: sql?.Module || sql,
+        driver: require('sql.js/dist/sql-wasm'),
         sqlJsConfig: {
           locateFile: (file: string) => {
             console.log('[locateFile]', path.join(extensionPath, 'dist', file));

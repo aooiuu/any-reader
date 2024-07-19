@@ -10,7 +10,9 @@ import 'uno.css';
 import './assets/main.scss';
 // vscode ui
 import './plugins/vsc-ui';
+import { PLATFORM } from './constants';
 import { addHistory } from '@/api';
+import { saveRoute } from '@/api/modules/vsc';
 import { saveChapterHistory } from '@/api/modules/chapter-history';
 
 import { createPinia } from 'pinia';
@@ -39,6 +41,10 @@ router.beforeEach((to, _from, next) => {
   } else {
     next();
   }
+});
+
+router.afterEach((to) => {
+  if (PLATFORM === 'vscode') saveRoute({ fullPath: to.fullPath });
 });
 
 app.mount('#app');

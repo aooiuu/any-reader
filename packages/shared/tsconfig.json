@@ -1,17 +1,11 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    // https://github.com/typeorm/typeorm
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-
     "target": "es2018",
     "module": "esnext",
     "lib": ["esnext"],
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "strict": true,
-    "strictNullChecks": true,
     "resolveJsonModule": true,
     "skipLibCheck": true
   }

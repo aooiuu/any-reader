@@ -7,6 +7,7 @@ export class WebviewProvider implements vscode.WebviewViewProvider {
   private _webviewView!: vscode.WebviewView;
   private _extensionPath!: string;
   private _event!: WebviewEvent;
+  private route?: string;
 
   setExtensionPath(extensionPath: string) {
     this._extensionPath = extensionPath;
@@ -17,8 +18,22 @@ export class WebviewProvider implements vscode.WebviewViewProvider {
     this.webview.options = {
       enableScripts: true
     };
+
     this.webview.html = getWebViewContent(path.join('template-dist', 'index.html'), this._extensionPath, this.webview);
     this._event = useWebviewEvent(this.webview, this._extensionPath);
+
+    // 保存上下文
+    this._event.pm.answer('post@vscode/saveRoute', async (data) => {
+      this.route = data.fullPath;
+      return true;
+    });
+
+    webviewView.onDidChangeVisibility(() => {
+      if (webviewView.visible && this.route) {
+        let injectScript = `window.__vscode$initialize_page = '${this.route}';`;
+        this.webview.html = getWebViewContent(path.join('template-dist', 'index.html'), this._extensionPath, this.webview, injectScript);
+      }
+    });
   }
 
   get webviewView() {

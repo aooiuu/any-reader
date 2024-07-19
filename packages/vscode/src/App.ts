@@ -3,7 +3,7 @@ import { stringify } from 'qs';
 import { ensureDirSync } from 'fs-extra';
 import { openExplorer } from 'explorer-opener';
 import { CONSTANTS } from '@any-reader/shared';
-import { COMMANDS, BOOK_SOURCE_PATH } from './constants';
+import { COMMANDS } from './constants';
 import { webviewProvider } from './sidebar/webviewProvider';
 import { WebView } from './webview';
 import { getConfig } from './utils/config';
@@ -18,7 +18,6 @@ class App {
     // 注册命令
     const registerCommand = vscode.commands.registerCommand;
     [
-      registerCommand(COMMANDS.editBookSource, this.editBookSource, this),
       registerCommand(COMMANDS.searchBook, this.searchBook, this),
       registerCommand(COMMANDS.getChapter, this.getChapter, this),
       registerCommand(COMMANDS.discover, this.discover, this),
@@ -32,13 +31,6 @@ class App {
     webviewProvider.setExtensionPath(context.extensionPath);
     vscode.window.registerCustomEditorProvider('any-reader.customEditor.epub', new CustomEditorProvider(context));
     vscode.window.registerWebviewViewProvider('any-reader-webview', webviewProvider);
-  }
-
-  // 书源编辑
-  editBookSource() {
-    vscode.workspace.openTextDocument(vscode.Uri.file(BOOK_SOURCE_PATH)).then((doc) => {
-      vscode.window.showTextDocument(doc);
-    });
   }
 
   // 搜索

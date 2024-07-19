@@ -31,11 +31,11 @@
     </div>
     <div class="flex justify-between">
       <TreeItem @click="executeCommand({ command: 'any-reader.home' })">
-        <div class="flex items-center"><i class="codicon codicon-surround-with mr-2"></i>编辑</div>
+        <div class="flex items-center"><i class="codicon codicon-surround-with mr-2"></i>编辑规则</div>
       </TreeItem>
-      <TreeItem @click="executeCommand({ command: 'any-reader.editBookSource' })">
+      <!-- <TreeItem @click="executeCommand({ command: 'any-reader.editBookSource' })">
         <div class="flex items-center justify-end"><i class="codicon codicon-folder-opened mr-2"></i>打开</div>
-      </TreeItem>
+      </TreeItem> -->
     </div>
   </div>
 </template>

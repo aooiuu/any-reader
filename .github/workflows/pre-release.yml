@@ -50,10 +50,6 @@ jobs:
       - run: pnpm install
       - run: pnpm run build
       - run: pnpm run vscode:build-tpl
-      - name: rename vscode vsx
-        # working-directory 用于指定在哪个目录下执行命令
-        working-directory: ./packages/vscode
-        run: pnpm run build:rename
 
       # https://github.com/HaaLeo/publish-vscode-extension
       - name: build vscode vsx

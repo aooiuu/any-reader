@@ -1,9 +1,7 @@
 import * as os from 'node:os';
 import * as path from 'node:path';
 import * as fs from 'fs-extra';
-
-export const ROOT_PATH = path.join(os.homedir(), '.any-reader');
-export const CONFIG_PATH = path.join(ROOT_PATH, 'config.vscode.json');
+import { CONFIG_PATH } from '../constants';
 
 fs.ensureFileSync(CONFIG_PATH);
 

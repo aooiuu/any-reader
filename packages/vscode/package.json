@@ -35,18 +35,10 @@
   ],
   "main": "./dist/extension.js",
   "scripts": {
-    "build:rename": "tsx ./scripts/publish.cjs",
-    "build:vsce": "vsce package --no-dependencies",
-    "build": "npm-run-all build:rename build:vsce",
-    "vscode:prepublish": "pnpm run package",
-    "compile": "webpack",
-    "watch": "webpack --watch",
-    "package": "webpack --mode production --devtool hidden-source-map",
-    "compile-tests": "tsc -p . --outDir out",
-    "watch-tests": "tsc -p . -w --outDir out",
-    "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
-    "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
+    "build": "tsup",
+    "dev": "tsx ./scripts/publish.cjs && tsup --watch src",
+    "vscode:prepublish": "tsx ./scripts/publish.cjs",
+    "pack": "vsce package --no-dependencies"
   },
   "contributes": {
     "commands": [
