@@ -49,8 +49,8 @@ jobs:
 
       - run: pnpm install
       - run: pnpm run build
-      - run: pnpm run vscode:build-tpl
 
+      - run: pnpm run vscode:build
       # https://github.com/HaaLeo/publish-vscode-extension
       - name: build vscode vsx
         if: matrix.os == 'windows-latest'

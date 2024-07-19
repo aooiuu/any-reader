@@ -35,9 +35,11 @@
   ],
   "main": "./dist/extension.js",
   "scripts": {
-    "build": "tsup",
-    "dev": "tsx ./scripts/publish.cjs && tsup --watch src",
+    "compile": "tsup",
+    "compile-watch": "tsup --watch src",
     "vscode:prepublish": "tsx ./scripts/publish.cjs",
+    "dev": "npm-run-all vscode:prepublish compile-watch",
+    "build": "npm-run-all vscode:prepublish compile",
     "pack": "vsce package --no-dependencies"
   },
   "contributes": {

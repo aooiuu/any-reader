@@ -52,7 +52,7 @@ jobs:
 
       - name: build vscode template
         if: matrix.os == 'windows-latest'
-        run: pnpm run vscode:build-tpl
+        run: pnpm run vscode:build
 
       # https://github.com/HaaLeo/publish-vscode-extension
       - name: build vscode vsx

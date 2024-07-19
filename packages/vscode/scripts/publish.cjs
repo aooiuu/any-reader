@@ -32,8 +32,13 @@ async function publish() {
     pkg.version = pkg.version.replace(/\.\d+\-.*?$/, '.' + (10000 + version.build));
   }
 
+  const outputDir = path.join(root, 'dist');
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir);
+  }
+
   // sql-wasm.wasm
-  fs.copyFileSync(path.resolve(root, '../../node_modules/sql.js/dist/sql-wasm.wasm'), path.join(root, 'dist', 'sql-wasm.wasm'));
+  fs.copyFileSync(path.resolve(root, '../../node_modules/sql.js/dist/sql-wasm.wasm'), path.join(outputDir, 'sql-wasm.wasm'));
 
   pkg.devDependencies = {};
   await fs.writeJSON(pkgPath, pkg, { spaces: 2 });
