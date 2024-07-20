@@ -49,18 +49,19 @@ export default class TXTBookParser extends BookParser {
     ])
   }
 
-  getContent(item: BookChapter): Promise<string> {
+  getContent(item: BookChapter): Promise<string[]> {
     const text = this._getText(this._filePath)
     const lines = text.split(/\r?\n/)
     if (item.chapterPath === '')
-      return Promise.resolve(text)
-    let result = ''
+      return Promise.resolve([text])
+    const result = []
 
     for (let i = +item.chapterPath + 1; i < lines.length; i++) {
       const line = lines[i]
       if (this.chapterPattern.test(line))
         break
-      result += `${lines[i]}\n`
+
+      result.push(lines[i])
     }
     return Promise.resolve(result)
   }

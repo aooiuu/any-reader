@@ -1,6 +1,6 @@
 <template>
   <ARRuleEmpty v-if="!rulesStore.list.length" />
-  <div v-else class="px-10 py-10 h-full flex flex-col">
+  <div v-else class="px-10 py-10 h-full flex flex-col text-[--ar-color-text] bg-[--ar-main-background]">
     <div class="mb-10 flex gap-10">
       <div class="flex-1 flex items-center gap-10">
         <a-input-group compact class="!flex">
@@ -12,12 +12,12 @@
       </div>
     </div>
     <!-- 搜索进度 -->
-    <div v-if="loading" class="flex items-center text-[--foreground]">
+    <div v-if="loading" class="flex items-center text-[--ar-color-text]">
       <a-button class="mr-5" @click="cancelSearch">取消</a-button>
       <ASpin />
       <div v-if="runCount > 0" class="ml-2">搜索进度: {{ runCount }}/{{ total }} {{ ((runCount / total) * 100).toFixed(0) }}%</div>
     </div>
-    <div class="flex-1 overflow-auto text-[--foreground]">
+    <div class="flex-1 overflow-auto text-[--ar-color-text]">
       <!-- 规则列表 -->
       <template v-for="item in list" :key="item.id">
         <div v-if="item.list.length" class="pt-20">

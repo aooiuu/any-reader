@@ -1,13 +1,13 @@
 <template>
   <div class="w-full h-full overflow-hidden flex flex-col sm:flex-row">
     <div
-      class="w-full flex sm:block sm:w-120 text-[--ar-color-text-secondary] bg-[--activityBar-background] p-10 border-r-1 border-r-solid border-r-[--titleBar-border-bottom]"
+      class="w-full flex sm:block sm:w-120 text-[--ar-color-text-secondary] bg-[--ar-left-bar-bg-secondary] p-10 border-r-1 border-r-solid border-r-[--ar-top-bar-border-bottom]"
     >
       <div v-for="(nav, idx) in navs" :key="nav.title" class="" @click="activeNavIdx = idx">
         <div
           :class="[
-            'h-32 lh-32 px-10 rounded-10 mb-5 cursor-pointer hover:bg-[--ar-color-primary-bg]',
-            activeNavIdx === idx ? ' bg-[--ar-color-primary-bg] text-[--ar-color-primary-text]' : ''
+            'h-32 lh-32 px-10 rounded-10 mb-5 cursor-pointer hover:bg-[--ar-left-bar-active-bg-secondary]',
+            activeNavIdx === idx ? ' bg-[--ar-left-bar-active-bg-secondary] text-[--ar-color-primary-text]' : ''
           ]"
         >
           {{ nav.title }}

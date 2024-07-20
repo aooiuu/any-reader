@@ -10,7 +10,7 @@
     class="node mr-10 mb-10"
   >
     <div
-      class="star invisible absolute top-5 right-5 px-2 py-2 rounded-10 flex items-center justify-center text-[--foreground]"
+      class="star invisible absolute top-5 right-5 px-2 py-2 rounded-10 flex items-center justify-center text-[--ar-color-text]"
       @click.stop="favoritesStore.unstar({ url: item.url, ruleId: item.ruleId })"
     >
       <StarFilled v-if="favoritesStore.starred(item)" :size="14" />

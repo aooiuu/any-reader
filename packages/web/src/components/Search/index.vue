@@ -2,7 +2,7 @@
   <div
     v-if="searchVisible"
     ref="searchRef"
-    class="fixed top-5 left-50% translate-x--50% rounded-4 overflow-hidden w-400 flex flex-col bg-[--main-background] p-10"
+    class="fixed top-5 left-50% translate-x--50% rounded-4 overflow-hidden w-400 flex flex-col bg-[--ar-main-background] p-10"
     :style="{
       boxShadow: '0px 0px 5px 5px rgba(0, 0, 0, 0.2)'
     }"

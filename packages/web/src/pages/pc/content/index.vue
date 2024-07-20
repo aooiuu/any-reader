@@ -12,7 +12,10 @@
         backgroundColor: settingStore.data.readStyle.backgroundColor
       }"
     >
-      <div class="md:mx-60" v-html="content"></div>
+      <a-spin v-if="loading" :spinning="loading" class="w-full h-full !flex items-center justify-center" />
+      <div class="md:mx-60 indent-2em">
+        <div v-for="(row, idx) in content" :key="idx" class="" :data-idx="idx" v-html="row"></div>
+      </div>
 
       <div class="flex justify-center">
         <a-button-group>
@@ -85,7 +88,7 @@ const topTarget = () => document.querySelector('#text-container') as HTMLElement
 
 onClickOutside(chaptersRef, () => (chaptersVisible.value = false));
 
-const { settingStore, content, toChapter, lastChapter, nextChapter, onPrevChapter, onNextChapter } = useContent(contentRef);
+const { settingStore, content, toChapter, lastChapter, nextChapter, onPrevChapter, onNextChapter, loading } = useContent(contentRef);
 
 function scrollIntoViewChapter() {
   const el = chaptersRef.value.querySelector(`[title="${readStore.title}"]`);

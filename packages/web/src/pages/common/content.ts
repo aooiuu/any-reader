@@ -31,7 +31,7 @@ function useSaveHistory(contentRef: Ref<HTMLElement>, options: Ref<any>) {
 }
 
 export function useContent(contentRef: Ref<HTMLElement>) {
-  const content = ref<string>('');
+  const content = ref<string[]>([]);
   const route = useRoute();
   const router = useRouter();
   const chaptersStore = useChaptersStore();
@@ -73,7 +73,7 @@ export function useContent(contentRef: Ref<HTMLElement>) {
   // 初始化
   async function init() {
     const { chapterPath: _chapterPath, filePath, ruleId, percentage } = route.query as Record<string, string>;
-    content.value = '';
+    content.value = [];
     loading.value = true;
     const res = await getContent(route.query).catch(() => {});
     loading.value = false;
@@ -91,7 +91,7 @@ export function useContent(contentRef: Ref<HTMLElement>) {
       }
     });
     if (res?.code === 0) {
-      content.value = res?.data?.content || '';
+      content.value = res?.data?.content || [];
     }
     nextTick(() => {
       let scrollTop = 0;

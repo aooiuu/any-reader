@@ -5,14 +5,15 @@
     </div>
     <div
       ref="contentRef"
-      class="flex-1 p-10 whitespace-pre-wrap overflow-y-auto lh-1.5em break-words"
+      class="flex-1 p-10 whitespace-pre-wrap overflow-y-auto lh-1.5em break-words indent-2em"
       :style="{
         fontSize: settingStore.data.readStyle.fontSize + 'px',
         lineHeight: settingStore.data.readStyle.lineHeight,
         letterSpacing: settingStore.data.readStyle.letterSpacing + 'px'
       }"
-      v-html="content"
-    />
+    >
+      <div v-for="(row, idx) in content" :key="idx" class="" :data-idx="idx" v-html="row"></div>
+    </div>
 
     <div class="topbar absolute top-0 left-0 h-30 w-full px-10">
       <div class="topbar__menu flex justify-end bg-[--vscode-sideBar-background]">

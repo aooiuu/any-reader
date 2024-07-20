@@ -4,8 +4,8 @@
       <ARCover :src="props.cover" :preview="false" alt="" srcset="" class="cover w-102 h-136" width="100%" height="100%" fit="cover" />
       <slot />
     </div>
-    <div class="overflow-hidden whitespace-nowrap text-ellipsis mb-2 text-[--foreground]">{{ props.name }}</div>
-    <div class="overflow-hidden whitespace-nowrap text-ellipsis text-12 op-70 text-[--foreground]">{{ props.author }}</div>
+    <div class="overflow-hidden whitespace-nowrap text-ellipsis mb-2 text-[--ar-color-text]">{{ props.name }}</div>
+    <div class="overflow-hidden whitespace-nowrap text-ellipsis text-12 op-70 text-[--ar-color-text]">{{ props.author }}</div>
   </div>
 </template>
 

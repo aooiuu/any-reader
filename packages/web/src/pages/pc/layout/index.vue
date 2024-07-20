@@ -2,10 +2,7 @@
   <BaseLayout>
     <div class="w-full h-full flex flex-col overflow-hidden text-[--ar-color-text]">
       <div
-        class="hidden sm:flex text-12 justify-center items-center h-34 lh-34 bg-[--titleBar-inactiveBackground] border-b-1 border-b-solid border-b-[--titleBar-border-bottom] pr-2"
-        :style="{
-          '-webkit-app-region': 'drag'
-        }"
+        class="app-region-drag hidden sm:flex text-12 justify-center items-center h-34 lh-34 border-b-1 border-b-solid border-b-[--ar-top-bar-border-bottom] pr-2 bg-[--ar-top-bar-bg] text-[--ar-top-bar-text]"
       >
         <div class="topbar__left w-20%" />
         <div class="w-60% flex gap-4 items-center justify-center flex-1">
@@ -17,7 +14,7 @@
           <span class="w-22 codicon codicon-arrow-left cursor-pointer hover:op-70 app-region-none" @click="router.back"></span>
           <span class="w-22 codicon codicon-arrow-right cursor-pointer hover:op-70 app-region-none" @click="router.forward"></span>
           <div
-            class="topbar__cmd app-region-none box-content flex items-center justify-center ml-6 w-38vw max-w-600 bg-[--commandCenter-background] border-1 border-solid rounded-6 h-22 border-[--ar-color-border-secondary] cursor-pointer hover:bg-[--commandCenter-activeBackground] px-6"
+            class="topbar__cmd app-region-none box-content flex items-center justify-center ml-6 w-38vw max-w-600 bg-[--ar-cmd-bg] border-1 border-solid rounded-6 h-22 border-[--ar-cmd-border] cursor-pointer hover:bg-[--ar-cmd-active-bg] px-6"
           >
             <div
               v-if="route.path === '/content'"
@@ -37,14 +34,14 @@
           <!-- 布局 -->
           <div
             v-if="PLATFORM === 'electron'"
-            class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--toolbar-hoverBackground] app-region-none"
+            class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--ar-top-bar-hover-background] app-region-none"
           >
             <span
               :class="['codicon', settingStore.data.pinned ? 'codicon-pinned-dirty' : 'codicon-pinned']"
               @click="settingStore.data.pinned = !settingStore.data.pinned"
             />
           </div>
-          <div class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--toolbar-hoverBackground] app-region-none">
+          <div class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--ar-top-bar-hover-background] app-region-none">
             <span
               :class="['codicon', settingStore.data.sidebar === 'hidden' ? 'codicon-layout-sidebar-left-off' : 'codicon-layout-sidebar-left']"
               @click="changeSidebar"
@@ -53,13 +50,13 @@
           <template v-if="PLATFORM === 'electron'">
             <!-- 窗口 -->
             <div
-              class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--toolbar-hoverBackground] app-region-none"
+              class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--ar-top-bar-hover-background] app-region-none"
               @click="minimize"
             >
               <span class="codicon codicon-chrome-minimize" />
             </div>
             <div
-              class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--toolbar-hoverBackground] fullscreen app-region-none"
+              class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--ar-top-bar-hover-background] fullscreen app-region-none"
               @click="maximize"
             >
               <span class="codicon codicon-chrome-maximize"></span>
@@ -68,7 +65,7 @@
           <div
             v-if="PLATFORM !== 'utools'"
             title="退出"
-            class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--toolbar-hoverBackground] app-region-none"
+            class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--ar-top-bar-hover-background] app-region-none"
             @click="onExit"
           >
             <span class="codicon codicon-chrome-close"></span>
@@ -79,7 +76,7 @@
         <!-- 侧边栏 -->
         <div
           v-if="settingStore.data.sidebar !== 'hidden'"
-          class="flex w-full flex flex-row sm:w-48 sm:flex-col py-10 text-[--ar-color-text-secondary] bg-[--activityBar-background] text-24 border-r-1 border-r-solid border-r-[--titleBar-border-bottom]"
+          class="flex w-full flex flex-row sm:w-48 sm:flex-col py-10 text-24 border-r-1 border-r-solid border-r-[--ar-top-bar-border-bottom] bg-[--ar-left-bar-bg] text-[--ar-left-bar-text]"
         >
           <!-- 收藏 -->
           <div
@@ -100,7 +97,7 @@
             <span :class="['codicon !text-24px codicon-settings-gear']"></span>
           </div>
         </div>
-        <div class="flex-1 overflow-hidden bg-[--main-background]">
+        <div class="flex-1 overflow-hidden bg-[--ar-main-background]">
           <RouterView v-slot="{ Component, route: _route }">
             <KeepAlive>
               <component :is="Component" v-if="_route.meta.keepAlive" :key="_route.path" />
@@ -114,7 +111,7 @@
   </BaseLayout>
 </template>
 
-<script setup lang="jsx">
+<script setup lang="tsx">
 import { App } from 'ant-design-vue';
 import { PLATFORM } from '@/constants';
 import { logout } from '@/api';
@@ -125,6 +122,7 @@ import { useReadStore } from '@/stores/read';
 import Setting from '@/components/Setting/index.vue';
 import Search from '@/components/Search/index.vue';
 import BaseLayout from './BaseLayout.vue';
+import { SettingOutlined } from '@ant-design/icons-vue';
 
 const { modal } = App.useApp();
 const route = useRoute();
@@ -150,15 +148,15 @@ const navs = [
 
 function openSetting() {
   modal.confirm({
-    icon: null,
+    icon: <SettingOutlined class="!text-[--ar-color-text]" />,
     closable: true,
-    draggable: true,
     mask: false,
     width: 600,
     footer: false,
     title: '设置',
-    bodyClass: '!p-0',
-    content: <Setting />
+    class: '!p-0',
+    wrapClassName: '!p-0',
+    content: <Setting class="pt-10" />
   });
 }
 

@@ -24,7 +24,7 @@ export default class EPubBookParser extends BookParser {
     })
   }
 
-  public getContent(item: BookChapter): Promise<string> {
+  public getContent(item: BookChapter): Promise<string[]> {
     return new Promise((resolve, reject) => {
       const book = new EPub(item.filePath)
       book.on('end', () => {
@@ -32,7 +32,7 @@ export default class EPubBookParser extends BookParser {
           if (error)
             reject(error)
 
-          resolve(text)
+          resolve([text])
         })
       })
       book.parse()

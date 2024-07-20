@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center md:block overflow-auto mb-5 select-none">
+  <div class="flex items-center md:block overflow-auto mb-5 select-none pr-0 md:pr-10">
     <div class="mx-2 hover:text-[--ar-color-primary-text] cursor-pointer md:hidden" @click="scrollToLeft">
       <LeftOutlined />
     </div>
@@ -7,8 +7,8 @@
       <div v-for="(option, idx) in props.options" :key="idx" class="flex-shrink-0" @click="changeTab(option)">
         <div
           :class="[
-            'h-32 lh-32 px-10 rounded-10  cursor-pointer hover:bg-[--main-background] overflow-hidden',
-            model === option[props.valueKey] ? ' bg-[--ar-color-primary-bg] text-[--ar-color-primary-text]' : ''
+            'h-32 lh-32 px-10 rounded-10  cursor-pointer hover:bg-[--ar-left-bar-active-bg-secondary] overflow-hidden',
+            model === option[props.valueKey] ? ' bg-[--ar-left-bar-active-bg-secondary] text-[--ar-color-primary-text]' : ''
           ]"
         >
           {{ option[props.labelKey] }}
@@ -25,7 +25,7 @@
 import { LeftOutlined, RightOutlined } from '@ant-design/icons-vue';
 import { useTabs } from './useTabs';
 
-const model = defineModel();
+const model = defineModel<string>();
 
 const props = defineProps<{
   options: any[];

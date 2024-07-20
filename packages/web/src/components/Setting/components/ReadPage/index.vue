@@ -10,12 +10,12 @@
       <a-input-number v-model:value="settingStore.data.readStyle.letterSpacing" class="!w-120px" mode="button" />
     </SettingRow>
     <SettingRow title="字体颜色">
-      <a-input v-model:value="settingStore.data.readStyle.textColor" class="!w-120px" />
+      <input v-model="settingStore.data.readStyle.textColor" type="color" style="border: solid 1px rgba(0, 0, 0, 0.1)" />
     </SettingRow>
     <SettingRow title="背景颜色">
-      <a-input v-model:value="settingStore.data.readStyle.backgroundColor" class="!w-120px" />
+      <input v-model="settingStore.data.readStyle.backgroundColor" type="color" style="border: solid 1px rgba(0, 0, 0, 0.1)" />
     </SettingRow>
-    <div class="flex items-center h-44 lh-44 px-10 b-b b-1 b-solid b-[--titleBar-border-bottom]">
+    <div class="flex items-center h-44 lh-44 px-10 b-b b-b-1 b-b-solid b-b-[--ar-color-border]">
       <div class="flex-1">推荐背景色</div>
       <div class="flex gap-4 flex-wrap">
         <div
@@ -25,7 +25,7 @@
             background: color.color
           }"
           :title="color.label"
-          class="w-30 h-30 rounded-4 cursor-pointer hover:b-2 b-0 b-solid b-[#006ab1]"
+          class="w-30 h-30 rounded-4 cursor-pointer hover:b-2 b-0"
           @click="changeTheme(color)"
         />
       </div>

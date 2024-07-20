@@ -38,7 +38,7 @@ export abstract class BookParser {
    * 获取内容
    * @param item
    */
-  public abstract getContent(item: BookChapter): Promise<string>
+  public abstract getContent(item: BookChapter): Promise<string[]>
 }
 
 export function path2bookFile(filePath: string): BookFile {

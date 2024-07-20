@@ -4,28 +4,14 @@
 
 <style lang="scss">
 body {
-  --titleBar-inactiveBackground: var(--ar-color-bg-container);
-  --titleBar-border-bottom: rgb(43, 43, 43);
-
-  --toolbar-hoverBackground: rgba(90, 93, 94, 0.31);
-  --commandCenter-background: rgba(255, 255, 255, 0.05);
-  --commandCenter-activeBackground: rgba(255, 255, 255, 0.08);
-
-  --foreground: var(--ar-color-text);
-  --activityBar-foreground: var(--ar-color-text-secondary);
-
-  --titleBar-inactiveForeground: var(--ar-color-text);
-  --commandCenter-inactiveBorder: var(--ar-color-text);
-
-  --activityBar-background: var(--ar-color-bg-container);
-  --main-background: var(--ar-color-bg-elevated);
   --scrollbarSlider-background: rgba(121, 121, 121, 0.4);
-  --editor-background: #1f1f1f;
+}
 
-  --color-bg-3: var(--ar-color-bg-container);
+.app-region-drag {
+  -webkit-app-region: drag;
 
-  &[arco-theme='dark'] {
-    --color-bg-3: var(--ar-color-bg-container);
+  * {
+    -webkit-app-region: drag;
   }
 }
 
@@ -34,14 +20,6 @@ body {
 
   * {
     -webkit-app-region: none;
-  }
-}
-
-.app-region-drag {
-  -webkit-app-region: drag;
-
-  * {
-    -webkit-app-region: drag;
   }
 }
 

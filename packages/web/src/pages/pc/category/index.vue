@@ -1,17 +1,17 @@
 <template>
   <ARRuleEmpty v-if="!rulesStore.list.length" />
-  <div v-else class="flex flex-col md:flex-row h-full px-10 py-10 overflow-hidden bg-[--activityBar-background] text-[--foreground]">
-    <div class="flex flex-col md:h-full md:w-120 overflow-hidden">
+  <div v-else class="flex flex-col md:flex-row h-full overflow-hidden text-[--ar-color-text] bg-[--ar-main-background]">
+    <div class="flex flex-col md:h-full md:w-140 overflow-hidden bg-[--ar-left-bar-bg-secondary] p-10">
       <a-select v-if="typeof route.params.contentType === 'undefined'" v-model:value="contentType" class="mb-10">
         <a-select-option v-for="o in CONTENT_TYPES" :key="o.value" :value="o.value">{{ o.label }}</a-select-option>
       </a-select>
-      <a-input-search v-model:value="searchText" class="mb-10" placeholder="过滤" />
+      <a-input v-model:value="searchText" class="mb-10" placeholder="过滤" />
 
       <!-- 分类 -->
       <ARTabs v-model="ruleId" :options="ruleListDisplay" value-key="id" label-key="name" @update:model-value="changeRule" />
     </div>
 
-    <div class="h-full flex flex-col flex-1 ml-5 overflow-hidden">
+    <div class="h-full flex flex-col flex-1 ml-5 overflow-hidden pt-10 mr-10">
       <ARCategory :list="categoryList" @change="changeCategory" />
       <div v-if="loading" class="flex-1 flex items-center justify-center">
         <a-spin />

@@ -46,7 +46,7 @@ export function createDB(params: { dataSourceOptions?: any } = { }) {
   const commonConfig = {
     entityPrefix: 'ar_',
     synchronize: true,
-    logging: true,
+    logging: false,
     entities: [ChapterHistory, ResourceHistory, ResourceFavorites, ResourceRule, RuleExtra],
   }
   if (params.dataSourceOptions) {

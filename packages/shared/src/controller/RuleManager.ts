@@ -57,7 +57,7 @@ export class RuleManager extends BaseController {
   @Cacheable({
     cacheKey({ args }) {
       const { filePath = '', chapterPath = '', ruleId = '' } = args[0]
-      return `content@${ruleId || '__local__'}@${md5(filePath)}@${md5(chapterPath)}`
+      return `content@${ruleId || '__local__'}@${md5(filePath)}@v2_${md5(chapterPath)}`
     },
   })
   async content({ filePath, chapterPath, ruleId }: any) {
@@ -66,13 +66,13 @@ export class RuleManager extends BaseController {
       const rule = await this.getRule(ruleId)
       const rm = new RM(rule)
       const content: string[] = await rm.getContent(chapterPath).catch(() => [])
-      let text = ''
+      let text: string | string[] = ''
       if (rule.contentType === ContentType.MANGA)
         text = content.map(src => `<img src="${src}"/>`).join('')
       else if (rule.contentType === ContentType.VIDEO)
         text = content?.[0] || ''
       else
-        text = content.join('\n')
+        text = content
 
       return {
         content: text,
