@@ -1,5 +1,5 @@
 import * as fs from 'node:fs'
-import * as iconv from 'iconv-lite'
+import iconv from 'iconv-lite'
 import chardet from 'chardet'
 import type { BookChapter } from './BookParser'
 import { BookParser } from './BookParser'
@@ -61,7 +61,8 @@ export default class TXTBookParser extends BookParser {
       if (this.chapterPattern.test(line))
         break
 
-      result.push(lines[i])
+      const text = lines[i].trim()
+      text && result.push(text)
     }
     return Promise.resolve(result)
   }

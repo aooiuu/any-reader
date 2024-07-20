@@ -4,10 +4,6 @@
     "target": "es2018",
     "module": "esnext",
     "lib": ["esnext", "DOM"],
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
     "paths": {}
   }
 }

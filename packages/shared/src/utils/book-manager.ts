@@ -28,7 +28,7 @@ class BookManager {
   }
 
   // 获取内容
-  async getContent(item: BookChapter): Promise<string> {
+  async getContent(item: BookChapter): Promise<string[]> {
     return getBookParser(item.filePath).getContent(item)
   }
 }

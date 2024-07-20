@@ -4,6 +4,10 @@
     "experimentalDecorators": true,
     "strict": true,
     "strictNullChecks": true,
+    "moduleResolution": "Bundler",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
     "lib": ["esnext"],
     "paths": {
       // "@any-reader/rule-utils": ["./packages/rule-utils/src/index.ts"],
