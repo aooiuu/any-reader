@@ -68,7 +68,7 @@ export class RuleManager extends BaseController {
       const content: string[] = await rm.getContent(chapterPath).catch(() => [])
       let text: string | string[] = ''
       if (rule.contentType === ContentType.MANGA)
-        text = content.map(src => `<img src="${src}"/>`).join('')
+        text = content.map(src => `<img src="${src}"/>`)
       else if (rule.contentType === ContentType.VIDEO)
         text = content?.[0] || ''
       else
