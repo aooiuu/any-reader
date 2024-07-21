@@ -22,15 +22,10 @@ export class AnalyzerXPath implements Analyzer {
   }
 
   async getElements(rule: string): Promise<string[]> {
-    try {
-      const doc = new DOMParser().parseFromString(this._content)
-      const node: any[] = xpath(doc, rule)
-      return node.map(e =>
-        typeof e.value === 'undefined' ? e.toString() : e.value,
-      )
-    }
-    catch (_) {
-      return []
-    }
+    const doc = new DOMParser().parseFromString(this._content)
+    const node: any[] = xpath(doc, rule)
+    return node.map(e =>
+      typeof e.value === 'undefined' ? e.toString() : e.value,
+    )
   }
 }

@@ -4,10 +4,14 @@ import { readConfig, updateConfig } from '@/api';
 export type ReadStyle = {
   // 字体大小
   fontSize: number;
+  // 字体粗细
+  fontWeight: number;
   // 行高
   lineHeight: number;
   // 文字间距
   letterSpacing: number;
+  // 段落间距
+  sectionSpacing: number;
 };
 
 // 快捷键
@@ -29,7 +33,9 @@ export const useSettingStore = defineStore('setting', () => {
     readStyle: {
       fontSize: 16,
       lineHeight: 1.5,
-      letterSpacing: 1
+      letterSpacing: 1,
+      fontWeight: 400,
+      sectionSpacing: 12
     },
     keyboardShortcuts: {
       prevChapter: '←',

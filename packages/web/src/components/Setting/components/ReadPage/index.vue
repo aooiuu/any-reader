@@ -1,13 +1,19 @@
 <template>
-  <div>
+  <div class="h-full overflow-auto">
     <SettingRow title="字体大小">
       <a-input-number v-model:value="settingStore.data.readStyle.fontSize" class="!w-120px" mode="button" />
+    </SettingRow>
+    <SettingRow title="字体粗细">
+      <a-input-number v-model:value="settingStore.data.readStyle.fontWeight" :step="100" class="!w-120px" mode="button" />
     </SettingRow>
     <SettingRow title="行高">
       <a-input-number v-model:value="settingStore.data.readStyle.lineHeight" class="!w-120px" mode="button" />
     </SettingRow>
-    <SettingRow title="间距">
+    <SettingRow title="文字间距">
       <a-input-number v-model:value="settingStore.data.readStyle.letterSpacing" class="!w-120px" mode="button" />
+    </SettingRow>
+    <SettingRow title="段落间距">
+      <a-input-number v-model:value="settingStore.data.readStyle.sectionSpacing" class="!w-120px" mode="button" />
     </SettingRow>
     <SettingRow title="字体颜色">
       <input v-model="settingStore.data.readStyle.textColor" type="color" style="border: solid 1px rgba(0, 0, 0, 0.1)" />

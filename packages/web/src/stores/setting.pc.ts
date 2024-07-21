@@ -5,10 +5,14 @@ import { alwaysOnTop } from '@/api/modules/electron';
 export type ReadStyle = {
   // 字体大小
   fontSize: number;
+  // 字体粗细
+  fontWeight: number;
   // 行高
   lineHeight: number;
   // 文字间距
   letterSpacing: number;
+  // 段落间距
+  sectionSpacing: number;
   // 文字颜色
   textColor: string;
   // 背景颜色
@@ -41,7 +45,9 @@ export const useSettingStore = defineStore('setting', () => {
       lineHeight: 1.5,
       letterSpacing: 1,
       textColor: '#ffffffb3',
-      backgroundColor: '#1f1f1f'
+      backgroundColor: '#1f1f1f',
+      fontWeight: 400,
+      sectionSpacing: 12
     },
     keyboardShortcuts: {
       prevChapter: '←',

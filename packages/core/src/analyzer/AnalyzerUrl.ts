@@ -36,7 +36,7 @@ export async function fetch(url: string, keyword = '', result = '', rule: Rule) 
     params = JSEngine.evaluate(url.substring(4), {
       ...vars,
       keyword,
-    }).catch(() => ({}))
+    })
   }
   else {
     params.url = params.url.replace(
@@ -103,10 +103,6 @@ export async function fetch(url: string, keyword = '', result = '', rule: Rule) 
 
       return str
     })
-    .catch((e) => {
-      console.error(e)
-      return ''
-    })
 
   return {
     params,
@@ -116,5 +112,5 @@ export async function fetch(url: string, keyword = '', result = '', rule: Rule) 
 
 // 在 eso 是返回字符串
 export async function __http__(url: string, rule: Rule): Promise<string> {
-  return (await fetch(url, '', '', rule).catch(() => ({ body: '' }))).body
+  return (await fetch(url, '', '', rule)).body
 }

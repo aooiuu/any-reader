@@ -12,7 +12,7 @@
         letterSpacing: settingStore.data.readStyle.letterSpacing + 'px'
       }"
     >
-      <div v-for="(row, idx) in content" :key="idx" class="" :data-idx="idx" v-html="row"></div>
+      <div v-for="(row, idx) in content" :key="idx" class="center-row" :data-idx="idx" v-html="row"></div>
     </div>
 
     <div class="topbar absolute top-0 left-0 h-30 w-full px-10">
@@ -31,7 +31,8 @@ import { useContent } from '@/pages/common/content';
 
 const contentRef = ref();
 
-const { content, settingStore, lastChapter, nextChapter, onPageUp, onPageDown, onPrevChapter, onNextChapter, loading } = useContent(contentRef);
+const { content, settingStore, lastChapter, nextChapter, onPageUp, onPageDown, onPrevChapter, onNextChapter, loading, sectionSpacing, fontWeight } =
+  useContent(contentRef);
 </script>
 
 <style scoped>
@@ -56,5 +57,10 @@ const { content, settingStore, lastChapter, nextChapter, onPageUp, onPageDown, o
       transform: translateY(0);
     }
   }
+}
+
+.center-row {
+  margin-bottom: v-bind(sectionSpacing);
+  font-weight: v-bind(fontWeight);
 }
 </style>

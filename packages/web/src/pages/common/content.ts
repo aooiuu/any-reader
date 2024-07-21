@@ -170,6 +170,9 @@ export function useContent(contentRef: Ref<HTMLElement>) {
     }
   );
 
+  const sectionSpacing = computed(() => settingStore.data.readStyle.sectionSpacing + 'px');
+  const fontWeight = computed(() => settingStore.data.readStyle.fontWeight);
+
   return {
     settingStore,
     content,
@@ -180,6 +183,8 @@ export function useContent(contentRef: Ref<HTMLElement>) {
     onPageDown,
     onPrevChapter,
     onNextChapter,
-    loading
+    loading,
+    sectionSpacing,
+    fontWeight
   };
 }

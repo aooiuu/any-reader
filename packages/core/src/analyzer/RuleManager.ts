@@ -152,62 +152,56 @@ export class RuleManager {
 
     let discoverUrl = this.rule.discoverUrl.trimStart()
 
-    try {
-      if (discoverUrl.startsWith('@js:')) {
-        JSEngine.setEnvironment({
-          page: 1,
-          rule: this.rule,
-          result: '',
-          baseUrl: this.rule.host,
-          keyword: '',
-          lastResult: '',
-        })
-        discoverUrl = await JSEngine.evaluate(
+    if (discoverUrl.startsWith('@js:')) {
+      JSEngine.setEnvironment({
+        page: 1,
+        rule: this.rule,
+        result: '',
+        baseUrl: this.rule.host,
+        keyword: '',
+        lastResult: '',
+      })
+      discoverUrl = JSEngine.evaluate(
           `${discoverUrl.substring(4)};`,
-        ).catch((e) => {
-          console.warn('[JSEngine.evaluate]', e)
-          return ''
-        })
+      )
+    }
+
+    const discovers = Array.isArray(discoverUrl)
+      ? discoverUrl.map(e => e.toString())
+      : typeof discoverUrl === 'string'
+        ? discoverUrl.split(/[\n\s*]|&&/)
+        : []
+
+    for (const url of discovers) {
+      if (url.trim().length === 0)
+        continue
+
+      const d = url.split('::')
+      const ruleValue = d[d.length - 1].trim()
+      let tab = '全部'
+      let className = '全部'
+
+      if (d.length === 2) {
+        tab = d[0].trim()
+        className = '全部'
+      }
+      else if (d.length === 3) {
+        tab = d[0].trim()
+        className = d[1].trim()
       }
 
-      const discovers = Array.isArray(discoverUrl)
-        ? discoverUrl.map(e => e.toString())
-        : typeof discoverUrl === 'string'
-          ? discoverUrl.split(/[\n\s*]|&&/)
-          : []
-
-      for (const url of discovers) {
-        if (url.trim().length === 0)
-          continue
-
-        const d = url.split('::')
-        const ruleValue = d[d.length - 1].trim()
-        let tab = '全部'
-        let className = '全部'
-
-        if (d.length === 2) {
-          tab = d[0].trim()
-          className = '全部'
-        }
-        else if (d.length === 3) {
-          tab = d[0].trim()
-          className = d[1].trim()
-        }
-
-        if (!table.has(tab)) {
-          table.set(tab, map.length)
-          map.push(
-            new DiscoverMap(tab, [new DiscoverPair(className, ruleValue)]),
-          )
-        }
-        else {
-          map[table.get(tab)].pairs.push(
-            new DiscoverPair(className, ruleValue),
-          )
-        }
+      if (!table.has(tab)) {
+        table.set(tab, map.length)
+        map.push(
+          new DiscoverMap(tab, [new DiscoverPair(className, ruleValue)]),
+        )
+      }
+      else {
+        map[table.get(tab)].pairs.push(
+          new DiscoverPair(className, ruleValue),
+        )
       }
     }
-    catch (error) {}
 
     if (map.length === 0) {
       if (this.rule.host.startsWith('http')) {

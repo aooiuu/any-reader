@@ -41,7 +41,7 @@ export class RuleManager extends BaseController {
     if (ruleId) {
       const rule = await this.getRule(ruleId)
       const rm = new RM(rule)
-      const list = await rm.getChapter(filePath).catch(() => [])
+      const list = await rm.getChapter(filePath)
       return list.map((e: any) => ({
         ...e,
         name: e.name,
@@ -65,7 +65,7 @@ export class RuleManager extends BaseController {
     if (ruleId) {
       const rule = await this.getRule(ruleId)
       const rm = new RM(rule)
-      const content: string[] = await rm.getContent(chapterPath).catch(() => [])
+      const content: string[] = await rm.getContent(chapterPath)
       let text: string | string[] = ''
       if (rule.contentType === ContentType.MANGA)
         text = content.map(src => `<img src="${src}"/>`)
