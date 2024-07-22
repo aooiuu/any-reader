@@ -13,6 +13,11 @@
       }"
     >
       <div v-for="(row, idx) in content" :key="idx" class="center-row" :data-idx="idx" v-html="row"></div>
+
+      <div class="my-10 flex justify-center cursor-pointer hover:op-70">
+        <div v-if="lastChapter" @click="onPrevChapter">上一章</div>
+        <div v-if="nextChapter" @click="onNextChapter">下一章</div>
+      </div>
     </div>
 
     <div class="topbar absolute top-0 left-0 h-30 w-full px-10">
