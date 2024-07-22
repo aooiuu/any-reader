@@ -8,7 +8,7 @@ import { request } from '@/utils/request';
 export function readConfig() {
   return request({
     method: 'post',
-    url: '/config/read'
+    url: 'config/read'
   });
 }
 
@@ -16,7 +16,7 @@ export function readConfig() {
 export function updateConfig(data: any) {
   return request({
     method: 'post',
-    url: '/config/save',
+    url: 'config/save',
     data
   });
 }
