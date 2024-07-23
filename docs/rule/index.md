@@ -6,7 +6,7 @@ outline: deep
 
 通过编写规则, 可以把不同网站的内容以相同的格式呈现, 以实现聚合搜索或阅读的功能。
 
-> 为了避免重复造轮子、重复制定规则规范, 目前 `any-reader` 的规则规范是按照 `eso` 的规则实现的, 所以规则的编写方法您可以参考 [eso 书源](https://github.com/mabDc/eso_source), 目前 `any-reader` 也支持少量 [eso 书源](https://github.com/mabDc/eso_source) 规则
+> 为了避免重复造轮子、重复制定规则规范, 目前 `any-reader` 的规则规范是按照 `eso` 的规则实现的, 所以规则的编写方法您可以参考 [eso 书源](https://github.com/mabDc/eso_source), 目前 `any-reader` 也支持 [eso 书源](https://github.com/mabDc/eso_source) 规则
 
 ## 规则结构
 
@@ -37,9 +37,8 @@ export interface Rule {
   chapterList: string; // 章节列表 - 列表
   chapterCover: string; // 章节列表 - 封面
   chapterTime: string; // 章节列表 - 时间
-  chapterResult: string; // 章节列表 - 结果
-
   contentItems: string; // 章节列表 - 内容
+  chapterResult: string; // 章节列表 - 结果 ? 暂未使用
 
   // 发现
   enableDiscover: boolean; // 发现页 - 是否启用
@@ -50,7 +49,7 @@ export interface Rule {
   discoverAuthor: string; // 发现页 - 作者
   discoverDescription: string; // 发现页 - 描述
   discoverResult: string; // 发现页 - 结果
-  discoverItems: string;
+  // discoverItems: string; // ? 暂未使用
   discoverTags: string;
   discoverChapter: string;
   discoverNextUrl?: string;
@@ -61,25 +60,34 @@ export interface Rule {
 }
 
 enum ContentType {
-  MANGA = 0,
-  NOVEL = 1,
-  VIDEO = 2,
-  AUDIO = 3,
+  MANGA = 0, // 漫画
+  NOVEL = 1, // 小说
+  VIDEO = 2, // 视频
+  AUDIO = 3, // 音频
   RSS = 4,
   NOVELMORE = 5,
 }
 ```
 
+## 规则字段类型
+
+规则字段通常分为以下几种：
+
+- **URL地址规则**, 这类规则通常后面有 `Url`, 比如 `searchUrl`。 这类规则通常用来请求网络获取数据
+- **取列表规则**, 这类规则通常后面有 `List`, 比如 `searchList`。 这类规则通常用来获取列表，比如搜索结果列表、章节列表，拿到的结果通常是一个数组
+- **取内容规则**, 比如 `searchName`。 这类规则通常用来获取具体的某项内容，比如书名、作者
+- **结果规则**, 这类规则通常后面有 `Result`, 比如 `searchResult`。 这类规则获取的结果一般用于供下一个流程的 `URL地址规则` 使用。比如搜索时，`searchResult` 拿到的结果将会给获取章节列表的流程使用，获取章节列表的URL规则里可以使用 `result` 变量拿到 `searchResult` 的结果。
+
 ## 解析流程
 
-### 搜索小说
+### 搜索
 
 1. 通过 `host` 和 `searchUrl` 字段获取请求地址、方式、参数等
 2. 通过 `searchList` 字段获取搜索结果列表数组
 3. 通过 `searchCover`、 `searchName`、 `searchAuthor`、 `searchChapter`、 `searchDescription` 字段获取每单个搜索结果的具体内容
 4. 通过 `searchResult` 字段匹配数据以用来给 `获取章节数据` 使用
 
-### 获取章节数据
+### 获取章节列表
 
 1. 通过 `host`、`chapterUrl`、`searchResult` 字段获取请求地址、方式、参数等
 2. 通过 `chapterList` 字段获取章节列表数组
@@ -99,27 +107,26 @@ enum ContentType {
 - ⚠️ 支持部分
 - ❌ 暂不支持
 
-### URL 规则
+### URL地址规则
 
-| 特性     | 支持情况 | 示例                                                                                                       |
-| -------- | :------: | ---------------------------------------------------------------------------------------------------------- |
-| URL      |    ✅    | `https://xxx.com/search?q=$keyword&pageSize=10`                                                            |
-| JSON     |    ✅    | `{"url":"https://xxx.com/search","method":"post","headers":{"token":"111"},"body":{"keyword":"$keyword"}}` |
-| @js      |    ✅    | `@js:(() => { return {url, method, body, encoding, headers}; })();`                                        |
-| encoding |    ✅    |                                                                                                            |
+| 特性 | 支持情况 | 示例                                                                                                       |
+| ---- | :------: | ---------------------------------------------------------------------------------------------------------- |
+| URL  |    ✅    | `https://xxx.com/search?q=$keyword&pageSize=10`                                                            |
+| JSON |    ✅    | `{"url":"https://xxx.com/search","method":"post","headers":{"token":"111"},"body":{"keyword":"$keyword"}}` |
+| @js  |    ✅    | `@js:(() => { return {url, method, body, encoding, headers}; })();`                                        |
 
 #### 变量
 
-| 字段名     | 支持情况 | 说明              |
-| ---------- | :------: | ----------------- |
-| $keyword   |    ✅    | 搜索用的关键字    |
-| searchKey  |    ✅    | 同 `$keyword`     |
-| $host      |    ✅    | 替换规则的 `host` |
-| $result    |    ✅    |                   |
-| lastResult |    ⚠️    |                   |
-| searchPage |    ❌    |                   |
-| $page      |    ❌    |                   |
-| $pageSize  |    ❌    |                   |
+| 字段名     | 支持情况 | 说明                         |
+| ---------- | :------: | ---------------------------- |
+| $keyword   |    ✅    | 搜索用的关键字               |
+| searchKey  |    ✅    | 同 `$keyword`                |
+| $host      |    ✅    | 替换规则的 `host`            |
+| $result    |    ✅    | 上一个步骤 result 字段的结果 |
+| lastResult |    ⚠️    |                              |
+| searchPage |    ❌    |                              |
+| $page      |    ❌    |                              |
+| $pageSize  |    ❌    |                              |
 
 > 结果规则会成为下一条地址规则的 `result`，成为下一条除地址规则的 `lastResult`。地址规则的响应会成为其他规则的 `result`
 
@@ -150,7 +157,7 @@ enum ContentType {
 该类规则分为 2 部分，以 `@` 符号分割.
 
 > 前部分与 CSS 标准一致，可省略（表示取根节点）.
-> 后部分则是 APP 自定义行为, 包括 text、html、innerHtml、outerHtml 取文本，src、href、data-original、bid 等取属性。
+> 后部分则是软件自定义行为, 包括 text、html、innerHtml、outerHtml 取文本，src、href、data-original、bid 等取属性。
 
 ### XPath
 

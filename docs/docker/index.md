@@ -20,3 +20,13 @@ docker run -d --name any-reader -p 8899:8899 any-reader
 ```sh
 docker run -d --name any-reader -p 8899:8899 aooiu/any-reader
 ```
+
+## 持久化数据
+
+加上 `-v any-reader:/root/.any-reader`
+
+比如:
+
+```sh
+docker run -d --name any-reader -p 9900:8899 -v any-reader:/root/.any-reader aooiu/any-reader
+```

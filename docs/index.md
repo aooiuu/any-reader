@@ -16,8 +16,6 @@ outline: deep
 
 ## 参与开发
 
-### VSCode
-
 ```sh
 # 克隆项目
 git clone git@github.com:aooiuu/any-reader.git
@@ -34,8 +32,6 @@ pnpm i
 # 编译 解析库、工具库、前端模板
 pnpm run build
 ```
-
-用 `VSCode` 打开 `/packages/vscode` 目录, `F5` 即可运行调试插件!
 
 ### 源码目录结构
 
@@ -56,11 +52,42 @@ pnpm run build
 └── scripts
 ```
 
+### 模块调用关系
+
+```mermaid
+graph TB
+    electron --> web
+    electron --> shared
+    vscode --> web
+    vscode --> shared
+    server --> web
+    server --> shared
+    shared --> core
+    shared --> epub
+    shared --> rule-utils
+```
+
+- `electron` 代码也在 `web` 里面
+- `web` 包含了各端的前端模版代码
+- `shared` 是主要的逻辑代码、与平台无关
+- `core` 用于规则解析
+- `rule-utils` 用于规则转换、创建等规则工具
+- `epub` 用于 epub 书籍解析
+- `electron` 前端使用 `ipc` 和 `shared` 通信
+- `vscode` 前端使用 `postMessage` 和 `shared` 通信
+- `网页端` 前端使用 `axios` 和 `shared` 通信
+
 ## 常见问题
 
 ### 无法使用搜索功能
 
 需要配置规则
+
+### 搜索失败
+
+如果您是从网络上找到的源，那么可能是源过期了，也可能是规则部分没有支持。
+
+如果使用 `eso` 可以搜索， 那说明没过期。请提交 [issues](https://github.com/aooiuu/any-reader/issues)
 
 ### 本地书籍怎么导入
 
@@ -74,25 +101,9 @@ windows: `C:\Users\%USERNAME%\.any-reader\`
 
 对应的源码: `path.join(os.homedir(), '.any-reader')`
 
-### Docker 部署怎么持久化数据
-
-加上 `-v any-reader:/root/.any-reader`
-
-比如:
-
-```sh
-docker run -d --name any-reader -p 9900:8899 -v any-reader:/root/.any-reader aooiu/any-reader
-```
-
-### 搜索失败
-
-如果您是从网络上找到的源，那么可能是源过期了，也可能是规则部分没有支持。
-
-如果使用 `eso` 可以搜索， 那说明没过期。请提交 [issues](https://github.com/aooiuu/any-reader/issues)
-
 ### 导入 ZyPlayer 源
 
-`AnyReader` 会从 `tbl_site` 列表转换为可以使用的规则。
+`any-reader` 会从 `tbl_site` 列表转换为可以使用的规则。 目前仅支持 `type=0` 或者 `type=1` 的源
 
 `ZyPlayer` 配置一般长这样:
 
@@ -116,4 +127,4 @@ docker run -d --name any-reader -p 9900:8899 -v any-reader:/root/.any-reader aoo
 }
 ```
 
-> 转换后的规则不但 `AnyReader` 可以使用, `ESO` 一样可以使用哦
+> 转换后的规则不但 `any-reader` 可以使用, `ESO` 一样可以使用哦
