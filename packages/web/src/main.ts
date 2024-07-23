@@ -11,7 +11,7 @@ import './assets/main.scss';
 // vscode ui
 import './plugins/vsc-ui';
 import { PLATFORM } from './constants';
-import { addHistory } from '@/api';
+import { addHistory } from '@/api/modules/resource-history';
 import { saveRoute } from '@/api/modules/vsc';
 import { saveChapterHistory } from '@/api/modules/chapter-history';
 
@@ -44,6 +44,7 @@ router.beforeEach((to, _from, next) => {
 });
 
 router.afterEach((to) => {
+  // vscode 侧边栏关闭后状态会消失
   if (PLATFORM === 'vscode') saveRoute({ fullPath: to.fullPath });
 });
 

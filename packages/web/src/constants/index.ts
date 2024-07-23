@@ -1,15 +1,5 @@
 import { version } from '../../package.json';
 
-export enum CONTENT_TYPE {
-  MANGA = 0,
-  NOVEL = 1,
-  VIDEO = 2,
-  AUDIO = 3,
-  RSS = 4,
-  NOVELMORE = 5,
-  GAME = 101
-}
-
 export type TPlatform = 'browser' | 'vscode' | 'electron' | 'utools';
 
 export const PLATFORM: TPlatform = import.meta.env.VITE_APP_PLATFORM;

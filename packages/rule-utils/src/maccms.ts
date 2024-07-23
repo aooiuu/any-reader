@@ -34,7 +34,7 @@ export function cmsToRule(json: any, url: string) {
     discoverDescription: '$.vod_content##</?s?pa?n?.*?>',
     discoverResult: '$.vod_id',
     discoverAuthor: '',
-    discoverItems: '',
+    // discoverItems: '',
     enableSearch: true,
     searchUrl: '/api.php/provide/vod?ac=detail&pg=$page&wd=$keyword',
     searchAuthor: '',

@@ -19,7 +19,7 @@
         <template v-if="expand">
           <!-- 规则类型 -->
           <vscode-dropdown class="w-full" :value="'' + contentType" @input="(event:any) => (contentType = +event.target.value)">
-            <vscode-option v-for="item in CONTENT_TYPES.filter((e) => e.value !== CONTENT_TYPE.GAME)" :key="item.value" :value="item.value">
+            <vscode-option v-for="item in CONTENT_TYPES.filter((e) => e.value !== ContentType.GAME)" :key="item.value" :value="item.value">
               {{ item.label }}
             </vscode-option>
           </vscode-dropdown>
@@ -63,7 +63,8 @@
 <script setup lang="tsx">
 import { v4 as uuidV4 } from 'uuid';
 import pLimit from 'p-limit';
-import { CONTENT_TYPES, CONTENT_TYPE } from '@/constants';
+import { ContentType } from '@any-reader/rule-utils';
+import { CONTENT_TYPES } from '@/constants';
 import { searchByRuleId } from '@/api';
 import { useRulesStore } from '@/stores/rules';
 import TreeItem from '@/components/vsc/TreeItem.vue';
@@ -76,7 +77,7 @@ const runPromise = pLimit(5);
 let uuid: string = '';
 const searchText = ref('');
 const expand = ref(false);
-const contentType = ref(CONTENT_TYPE.NOVEL);
+const contentType = ref(ContentType.NOVEL);
 const filterType = ref(1);
 const loading = ref(false);
 const total = ref(0);

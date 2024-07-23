@@ -1,6 +1,6 @@
 import { stringify } from 'qs';
 import { App } from 'ant-design-vue';
-import { CONTENT_TYPE } from '@/constants';
+import { ContentType } from '@any-reader/rule-utils';
 import { getChapter, getContent } from '@/api';
 import { getChapterHistorys } from '@/api/modules/chapter-history';
 import { openWindow } from '@/api/modules/electron';
@@ -95,7 +95,7 @@ export function useChapter() {
       percentage: history?.percentage ?? 0
     };
 
-    if (rule?.contentType === CONTENT_TYPE.VIDEO) {
+    if (rule?.contentType === ContentType.VIDEO) {
       loading.value = true;
       const res = await getContent({
         filePath,
@@ -118,7 +118,7 @@ export function useChapter() {
         message.warning('获取地址失败！');
       }
       return;
-    } else if (rule?.contentType === CONTENT_TYPE.AUDIO) {
+    } else if (rule?.contentType === ContentType.AUDIO) {
       // TODO: 音频规则, 待优化
       const res = await getContent({
         filePath,

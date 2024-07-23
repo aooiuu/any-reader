@@ -15,11 +15,27 @@ export function discoverMap(ruleId: string) {
   });
 }
 
+export function discoverMapByRule(data: any) {
+  return request({
+    method: 'post',
+    url: 'rule-manager/discover-map-by-rule',
+    data
+  });
+}
+
 // 发现页分类下内容
 export function discover(data: any) {
   return request({
     method: 'post',
     url: 'rule-manager/discover',
+    data
+  });
+}
+
+export function discoverByRule(data: any) {
+  return request({
+    method: 'post',
+    url: 'rule-manager/discover-by-rule',
     data
   });
 }
@@ -34,11 +50,29 @@ export function searchByRuleId(data: { ruleId: string; keyword: string }) {
   });
 }
 
+// 根据规则搜索内容
+export function searchByRule(data: any) {
+  return request({
+    method: 'post',
+    url: 'rule-manager/search-by-rule',
+    data
+  });
+}
+
 // 获取内容
 export function getContent(data: any) {
   return request({
     method: 'post',
     url: 'rule-manager/content',
+    data
+  });
+}
+
+// 获取内容
+export function getContentByRule(data: any) {
+  return request({
+    method: 'post',
+    url: 'rule-manager/content-by-rule',
     data
   });
 }
@@ -52,5 +86,30 @@ export function getChapter(filePath: string, ruleId?: string) {
       filePath,
       ruleId
     }
+  });
+}
+
+// 获取章节
+export function getChapterByRule(data: any) {
+  return request({
+    method: 'post',
+    url: 'rule-manager/chapter-by-rule',
+    data
+  });
+}
+
+export function analyzerText(data: any) {
+  return request({
+    method: 'post',
+    url: 'rule-manager/analyzer-text',
+    data
+  });
+}
+
+export function analyzerUrl(data: any) {
+  return request({
+    method: 'post',
+    url: 'rule-manager/analyzer-url',
+    data
   });
 }

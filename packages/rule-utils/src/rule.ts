@@ -51,7 +51,7 @@ export interface Rule {
   discoverAuthor: string // 发现页 - 作者
   discoverDescription: string // 发现页 - 描述
   discoverResult: string // 发现页 - 结果
-  discoverItems: string
+  // discoverItems: string
   discoverTags: string
   discoverChapter: string
   discoverNextUrl?: string
@@ -82,7 +82,7 @@ export interface Rule {
   viewStyle?: number
 }
 
-export function createRule(rule: Rule | any): Rule {
+export function createRule(rule: Partial<Rule>): Rule {
   const now = Date.now() * 1000
 
   return Object.assign({
@@ -114,7 +114,7 @@ export function createRule(rule: Rule | any): Rule {
     chapterCover: '',
     chapterTime: '',
     discoverAuthor: '',
-    discoverItems: '',
+    // discoverItems: '',
     searchList: '',
     searchTags: '',
     searchName: '',

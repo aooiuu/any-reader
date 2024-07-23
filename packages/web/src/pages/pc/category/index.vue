@@ -70,7 +70,8 @@
 
 <script setup>
 import { StarOutlined, StarFilled } from '@ant-design/icons-vue';
-import { CONTENT_TYPES, CONTENT_TYPE } from '@/constants';
+import { CONTENT_TYPES } from '@/constants';
+import { ContentType } from '@any-reader/rule-utils';
 import { discover, discoverMap } from '@/api';
 import { useFavoritesStore } from '@/stores/favorites';
 import { useRulesStore } from '@/stores/rules';
@@ -81,7 +82,7 @@ const favoritesStore = useFavoritesStore();
 const rulesStore = useRulesStore();
 
 const list = ref([]);
-const contentType = ref(CONTENT_TYPE.NOVEL);
+const contentType = ref(ContentType.NOVEL);
 const ruleId = ref('');
 const rule = ref({});
 const categoryList = ref([]);

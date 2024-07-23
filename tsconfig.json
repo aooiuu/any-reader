@@ -5,6 +5,7 @@
     "strict": true,
     "strictNullChecks": true,
     "moduleResolution": "Bundler",
+    "module": "ESNext",
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,

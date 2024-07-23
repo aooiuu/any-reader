@@ -89,7 +89,8 @@
 import { v4 as uuidV4 } from 'uuid';
 import pLimit from 'p-limit';
 import { StarOutlined, StarFilled } from '@ant-design/icons-vue';
-import { CONTENT_TYPES, CONTENT_TYPE } from '@/constants';
+import { ContentType } from '@any-reader/rule-utils';
+import { CONTENT_TYPES } from '@/constants';
 import { searchByRuleId } from '@/api';
 import { useFavoritesStore } from '@/stores/favorites';
 import { useRulesStore } from '@/stores/rules';
@@ -103,7 +104,7 @@ const runPromise = pLimit(10);
 
 let uuid: string = '';
 const searchText = ref('');
-const contentType = ref(CONTENT_TYPE.NOVEL);
+const contentType = ref(ContentType.NOVEL);
 const contentTypes = computed(() => [contentType.value]);
 const loading = ref(false);
 const total = ref(0);

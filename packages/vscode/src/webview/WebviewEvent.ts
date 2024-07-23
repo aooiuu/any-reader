@@ -20,7 +20,7 @@ export class WebviewEvent {
     this._pm = new EasyPostMessage(createAdapter(webview));
     this._pm.answer('post@vscode/executeCommand', this.executeCommand.bind(this));
 
-    createApp({
+    const app = createApp({
       configPath: CONFIG_PATH,
       dataSourceOptions: {
         driver: require('sql.js/dist/sql-wasm'),
@@ -31,7 +31,9 @@ export class WebviewEvent {
           }
         }
       }
-    }).useApi(this._pm.answer.bind(this._pm));
+    });
+
+    app.useApi(this._pm.answer.bind(this._pm));
   }
 
   private executeCommand({ command, data }: any) {

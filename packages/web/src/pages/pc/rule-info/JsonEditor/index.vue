@@ -1,18 +1,21 @@
 <template>
-  <div ref="monacoEl" class="w-full h-full"></div>
+  <div class="flex-1 overflow-auto">
+    <div ref="monacoEl" class="w-full h-full"></div>
+  </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { monaco } from '@/utils/monaco';
+import type { editor as Editor } from 'monaco-editor';
 
-const modelValue = defineModel();
+const modelValue = defineModel<string>();
 let lastValue = '';
 
-const monacoEl = ref();
-let editor;
+const monacoEl = ref<HTMLElement>();
+let editor!: Editor.IStandaloneCodeEditor;
 
 onMounted(() => {
-  editor = monaco.editor.create(monacoEl.value, {
+  editor = monaco.editor.create(monacoEl.value!, {
     value: modelValue.value,
     language: 'json',
     theme: 'vs-dark',
@@ -35,7 +38,7 @@ onMounted(() => {
 });
 
 watch(modelValue, (value) => {
-  if (value !== lastValue) editor?.setValue(value);
+  if (value !== lastValue) editor?.setValue(value as string);
 });
 
 onUnmounted(() => {
