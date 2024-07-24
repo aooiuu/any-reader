@@ -298,6 +298,8 @@ export class AnalyzerManager {
 
   async getUrl(rule: string, host: string): Promise<string> {
     let url = await this.getString(rule)
+    if (typeof url !== 'string')
+      return url
 
     if (url.startsWith('//')) {
       if (host.startsWith('https'))
