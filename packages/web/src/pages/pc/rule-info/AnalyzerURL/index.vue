@@ -1,6 +1,11 @@
 <template>
   <AForm :auto-label-width="true" class="flex-1 overflow-auto pr-10" layout="vertical">
-    <AFormItem label="URL规则">
+    <AFormItem>
+      <template #label>
+        <span>URL规则</span>
+        <CopyOutlined class="ml-10 cursor-pointer hover:op-70" @click="copy(inputText)" />
+      </template>
+
       <a-textarea v-model:value="inputText" placeholder="" :auto-size="{ minRows: 2, maxRows: 5 }" />
     </AFormItem>
     <AFormItem label="keyword">
@@ -11,10 +16,19 @@
     </AFormItem>
     <a-divider>结果</a-divider>
     <a-spin :spinning="loading" class="w-full">
-      <AFormItem label="请求参数">
+      <AFormItem>
+        <template #label>
+          <span>请求参数</span>
+          <CopyOutlined class="ml-10 cursor-pointer hover:op-70" @click="copy(params)" />
+        </template>
         <a-textarea v-model:value="params" placeholder="点击测试后输出的结果" readonly :auto-size="{ minRows: 2, maxRows: 5 }" />
       </AFormItem>
-      <AFormItem label="请求结果">
+      <AFormItem>
+        <template #label>
+          <span>请求结果</span>
+          <CopyOutlined class="ml-10 cursor-pointer hover:op-70" @click="copy(body)" />
+          <BugOutlined class="ml-10 cursor-pointer hover:op-70" @click="emit('debug', body)" />
+        </template>
         <a-textarea v-model:value="body" placeholder="点击测试后输出的结果" readonly :auto-size="{ minRows: 2, maxRows: 5 }" />
       </AFormItem>
     </a-spin>
@@ -22,8 +36,12 @@
 </template>
 
 <script setup lang="ts">
+import { useClipboard } from '@vueuse/core';
+import { BugOutlined, CopyOutlined } from '@ant-design/icons-vue';
 import type { Rule } from '@any-reader/rule-utils';
 import { analyzerUrl } from '@/api/modules/rule-manager';
+
+const { copy } = useClipboard();
 
 const props = defineProps<{
   rule: Rule;
@@ -49,4 +67,12 @@ async function analyzer() {
     body.value = res.data.body;
   }
 }
+
+defineExpose({
+  setUrl: (text: string) => {
+    inputText.value = text;
+  }
+});
+
+const emit = defineEmits(['debug']);
 </script>

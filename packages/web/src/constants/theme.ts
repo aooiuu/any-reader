@@ -159,7 +159,7 @@ export const THEME = [
       cmdBorder: '#303030',
       cmdBg: '#ffffff0d',
 
-      mainBackground: '#1F1F1F',
+      mainBackground: '#181818',
       colorBgContainer: '#1F1F1F',
       colorBgLayout: '#1F1F1F',
       colorBgSpotlight: '#1F1F1F',
@@ -168,7 +168,7 @@ export const THEME = [
       colorPrimaryBg: '#1f1f1f',
       settingColorBorder: '#E3EDCD',
 
-      colorBorder: 'rgba(0,0,0,0.4)',
+      colorBorder: '#313131',
 
       colorText: 'rgba(255,255,255, 0.65)',
       colorTextSecondary: 'rgba(255,255,255, 0.65)',
