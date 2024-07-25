@@ -1,6 +1,6 @@
-import { defineConfig } from "vitepress";
+import { withMermaid } from "vitepress-plugin-mermaid";
 
-export default defineConfig({
+export default withMermaid({
   base: '/any-reader/',
   lang: "zh-cn",
   title: "any-reader",
@@ -12,7 +12,8 @@ export default defineConfig({
   cleanUrls: true,
 
   markdown: {
-   
+  },
+  mermaid:{
   },
 
   themeConfig: {
