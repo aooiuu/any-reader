@@ -1,15 +1,6 @@
 # any-reader
 
-开源的多平台自定义源资源聚合工具。支持小说、漫画阅读、视频播放、聚合搜索等, 也支持本地资源TXT、EPUB
-
-- [JS 解析库](https://aooiuu.github.io/any-reader/core/)
-- [VSCode 插件](https://aooiuu.github.io/any-reader/vsc/)
-- [桌面端](https://aooiuu.github.io/any-reader/desktop/)
-- [网页端](https://aooiuu.github.io/any-reader/browser/)
-- [Docker](https://aooiuu.github.io/any-reader/docker/)
-- uTools 插件
-
-> 软件不提供内容, 也不提供任何规则, 但你可以通过编写 [规则](https://aooiuu.github.io/any-reader/rule/), 控制呈现内容, [查看文档](https://aooiuu.github.io/any-reader/)
+开源的多平台自定义源资源聚合工具。支持小说、漫画阅读、视频播放、聚合搜索等, 也支持本地资源 TXT、EPUB
 
 <p align="center">
   <a href="https://github.com/aooiuu/any-reader">
@@ -40,6 +31,19 @@
     <img src="https://img.shields.io/github/issues/aooiuu/any-reader" alt="" />
   </a>
 </p>
+
+## 功能亮点
+
+- **跨平台**: Windows、Mac、Linux
+- **多应用**: 桌面端、网页端、Docker、VSCode 插件、 uTools 插件、rubick 插件
+- **多类型**：小说、漫画、视频、~~音频~~
+- **自定义源**：通过 XPath、JSONPath、CSS 选择器、正则、JS 等轻松编写规则
+- **生态兼容**：兼容 [eso](https://github.com/mabDc/eso) 源
+- **资源站接入**：支持导入苹果 CMS、ZyPlayer
+- **开放解析库**：规则解析库分离, 你可以使用解析库开发自己的程序
+- **本地资源支持**：支持本地小说格式 TXT、Epub
+
+> 软件不提供内容, 也不提供任何规则, 但你可以通过编写 [规则](https://aooiuu.github.io/any-reader/rule/), 控制呈现内容, [查看文档](https://aooiuu.github.io/any-reader/)
 
 QQ 群: 50057637
 
@@ -84,12 +88,16 @@ XPath、JSONPath、CSS 选择器、正则让规则编写更简洁, 而 JS 脚本
 - [x] 自定义书源规则
 - [x] 自定义热键
 - [x] 漫画
+- [x] 游戏
 - [x] 聚合搜索
 - [x] 发现页分类排行榜
 - [x] 侧边栏阅读
 - [x] 收藏
 - [x] 历史记录
 - [x] 支持编辑器直接打开 epub 文件
+- [x] 小说朗读
+- [x] 阅读进度保存
+- [x] 在线小说缓存
 
 ## 预览
 
@@ -145,10 +153,14 @@ XPath、JSONPath、CSS 选择器、正则让规则编写更简洁, 而 JS 脚本
 
 [文档](https://aooiuu.github.io/any-reader/desktop/)
 
-|                                                  -                                                  |                                                  -                                                  |
-| :-------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------: |
-| ![image](https://github.com/aooiuu/any-reader/assets/28108111/bf5b9edf-8b1e-4db5-adfb-1b1300f57a4a) | ![image](https://github.com/aooiuu/any-reader/assets/28108111/3d001367-ff2d-4339-a617-0700b492f601) |
-| ![image](https://github.com/aooiuu/any-reader/assets/28108111/1e8fcb4e-2ca5-49a9-ba7e-d5c7ac19856b) | ![image](https://github.com/aooiuu/any-reader/assets/28108111/a732f2ce-452e-4525-8059-7e1938fcbe01) |
+|                                              漫画                                               |                                              小说                                               |                                              视频                                               |
+| :---------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------: |
+| ![1](https://github.com/aooiuu/any-reader/assets/28108111/60098f86-222e-471f-a542-52e10394192c) | ![2](https://github.com/aooiuu/any-reader/assets/28108111/1b4f9c60-cada-432b-9a1d-f7d80bffa570) | ![3](https://github.com/aooiuu/any-reader/assets/28108111/ecd65276-ed1c-4577-b066-d788a322d1f4) |
+| ![4](https://github.com/aooiuu/any-reader/assets/28108111/e0a9ec10-e72e-49ed-8610-588f0af17a55) | ![5](https://github.com/aooiuu/any-reader/assets/28108111/997582a4-b69a-4bd9-8cc0-1b661688de4f) | ![6](https://github.com/aooiuu/any-reader/assets/28108111/afebc6dd-16d5-4521-9b9f-72432ad9cb13) |
+|                                            聚合搜索                                             |                                            规则列表                                             |                                            规则编辑                                             |
+| ![7](https://github.com/aooiuu/any-reader/assets/28108111/aa66ad97-2ce4-4533-b4b5-c4d9c36dccbb) | ![8](https://github.com/aooiuu/any-reader/assets/28108111/11f011e3-af9e-4921-9459-11094e8554c3) | ![9](https://github.com/aooiuu/any-reader/assets/28108111/dc53bb59-9d72-4594-8d3f-2dea5f208998) |
+
+> 图片仅供参考, 内容来源自网络, 本软件不提供任何内容
 
 ## Star History
 

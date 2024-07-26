@@ -86,6 +86,9 @@ XPath、JSONPath、CSS选择器、正则让规则编写更简洁, 而 JS 脚本�
 - [x] 发现页分类排行榜
 - [x] 收藏
 - [x] 历史记录
+- [x] 小说朗读
+- [x] 阅读进度保存
+- [x] 在线小说缓存
 
 </details>
 
@@ -121,8 +124,6 @@ XPath、JSONPath、CSS选择器、正则让规则编写更简洁, 而 JS 脚本�
   </a>
 </p>
 
-> 融入 VSCode, 鱼码合一
-
 [文档](https://aooiuu.github.io/any-reader/vsc/)
 
 <details>
@@ -139,10 +140,13 @@ XPath、JSONPath、CSS选择器、正则让规则编写更简洁, 而 JS 脚本�
 - [x] 游戏
 - [x] 聚合搜索
 - [x] 发现页分类排行榜
-- [x] 侧边栏阅读(可拖动到底部)
+- [x] 侧边栏阅读
 - [x] 收藏
 - [x] 历史记录
 - [x] 支持编辑器直接打开 epub 文件
+- [x] 小说朗读
+- [x] 阅读进度保存
+- [x] 在线小说缓存
 
 </details>
 
