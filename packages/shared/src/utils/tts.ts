@@ -2,16 +2,9 @@
  * 功能实现参考: https://github.com/SchneeHertz/node-edge-tts/blob/master/src/edge-tts.ts
  */
 
-import { createWriteStream, readFileSync } from 'node:fs'
 import { Buffer } from 'node:buffer'
 import { WebSocket } from 'ws'
 import { v4 } from 'uuid'
-
-interface subLine {
-  part: string
-  start: number
-  end: number
-}
 
 interface configure {
   outputFormat?: string
@@ -62,7 +55,6 @@ class EdgeTTS {
 
   async ttsPromise(
     text: string,
-    audioPath: string,
     {
       volume = 'default',
       pitch = 'default',
@@ -72,41 +64,19 @@ class EdgeTTS {
     } = {},
   ) {
     const _wsConnect = await this._connectWebSocket()
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    return new Promise((resolve: Function) => {
-      const audioStream = createWriteStream(audioPath!)
-      const subFile: subLine[] = []
+    return new Promise((resolve) => {
+      let buf = Buffer.alloc(0)
       _wsConnect.on('message', async (data: Buffer, isBinary: boolean) => {
         if (isBinary) {
           const separator = 'Path:audio\r\n'
           const index = data.indexOf(separator) + separator.length
           const audioData = data.subarray(index)
-          audioStream.write(audioData)
+          buf = Buffer.concat([buf, audioData])
         }
         else {
           const message = data.toString()
-          if (message.includes('Path:turn.end')) {
-            audioStream.end()
-            resolve(
-              resolve(Buffer.from(readFileSync(audioPath!)).toString('base64')),
-            )
-          }
-          else if (message.includes('Path:audio.metadata')) {
-            const splitTexts = message.split('\r\n')
-            try {
-              const metadata = JSON.parse(splitTexts[splitTexts.length - 1])
-              metadata.Metadata.forEach((element: any) => {
-                subFile.push({
-                  part: element.Data.text.Text,
-                  start: Math.floor(element.Data.Offset / 10000),
-                  end: Math.floor(
-                    (element.Data.Offset + element.Data.Duration) / 10000,
-                  ),
-                })
-              })
-            }
-            catch {}
-          }
+          if (message.includes('Path:turn.end'))
+            resolve(buf.toString('base64'))
         }
       })
       const data = `X-RequestId:${v4()}\r\n`

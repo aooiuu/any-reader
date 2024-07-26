@@ -1,7 +1,4 @@
-import path from 'node:path'
-import os from 'node:os'
 import md5 from 'blueimp-md5'
-import { v4 } from 'uuid'
 import { Cacheable, Controller, Post } from '../decorators'
 import { tts } from '../utils/tts'
 import { BaseController } from './BaseController'
@@ -16,6 +13,6 @@ export class TTS extends BaseController {
     },
   })
   async base64({ text }: { text: string }) {
-    return tts.ttsPromise(text, path.join(os.tmpdir(), v4()))
+    return tts.ttsPromise(text)
   }
 }

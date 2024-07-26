@@ -14,7 +14,7 @@
     >
       <a-spin v-if="loading" :spinning="loading" class="w-full h-full !flex items-center justify-center" />
       <div class="md:mx-60 indent-2em">
-        <div v-for="(row, idx) in content" :key="idx" class="center-row" :data-idx="idx" v-html="row"></div>
+        <div v-for="(row, idx) in content" :key="idx" class="center-row ease transition-300 transition-color" :data-idx="idx" v-html="row"></div>
       </div>
 
       <div class="flex justify-center">

@@ -13,16 +13,19 @@ export class TTS {
   private audioEl!: HTMLMediaElement;
   private _ended: () => void;
   container: HTMLElement;
+  private _onEnd: () => void;
 
-  constructor(selector: string | HTMLElement, speakText: (text: string) => Promise<string>) {
+  constructor(selector: string | HTMLElement, speakText: (text: string) => Promise<string>, onEnd: () => void) {
     this._ended = this.ended.bind(this);
+    this._onEnd = onEnd;
     this.createAudio();
     this.speakText = speakText;
     this.speakData = [];
     this.container = typeof selector === 'string' ? (document.querySelector(selector) as HTMLElement) : selector;
     this.parseNodes(this.container);
-    this.getTTS(0);
+    // this.idx = this.speakData.length - 2;
     this.idx = 0;
+    this.getTTS(this.idx);
     this.start();
   }
 
@@ -31,16 +34,17 @@ export class TTS {
     let el = document.getElementById(id) as HTMLMediaElement;
     if (!el) {
       el = document.createElement('audio');
-      el.autoplay = true;
       el.id = id;
       document.body.append(el);
     }
+    el.autoplay = true;
     this.audioEl = el;
     this.audioEl.addEventListener('ended', this._ended);
   }
 
   // 销毁
   destroy() {
+    this.idx = -1;
     this.audioEl.removeEventListener('ended', this._ended);
     this.audioEl.parentElement?.removeChild(this.audioEl);
   }
@@ -51,6 +55,7 @@ export class TTS {
     } else {
       this.audioEl.pause();
     }
+    return !this.audioEl.paused;
   }
 
   ended() {
@@ -64,6 +69,9 @@ export class TTS {
   }
 
   parseNodes(el: HTMLElement) {
+    if (['BUTTON'].includes(el.tagName)) {
+      return;
+    }
     if (el.childNodes.length) {
       if (el.childNodes.length === 1 && el.childNodes[0].nodeType === Node.TEXT_NODE) {
         this.parseNode(el);
@@ -95,7 +103,7 @@ export class TTS {
       return;
     }
 
-    if (idx <= this.speakData.length) {
+    if (idx < this.speakData.length) {
       const row = this.speakData[idx];
       row.base64 = await this.speakText(row.text);
       this.getTTS(idx + 1);
@@ -104,9 +112,13 @@ export class TTS {
 
   start() {
     const row = this.speakData[this.idx];
-    if (!row) return;
+    if (!row) {
+      this._onEnd();
+      return;
+    }
+
     const { base64 } = row;
-    if (!base64) {
+    if (typeof base64 === 'undefined') {
       setTimeout(() => {
         this.start();
       }, 1000);
@@ -114,7 +126,14 @@ export class TTS {
     }
     this.idx++;
     row.node.classList.add('color-red');
+    if (!row.base64) {
+      this.ended();
+      return;
+    }
     this.audioEl.src = ('data:audio/mp3;base64,' + row.base64) as string;
+    if (this.audioEl.paused) {
+      this.audioEl.play();
+    }
     this.container.scrollTo({
       top: row.node.offsetTop - this.container.getBoundingClientRect().height / 2,
       behavior: 'smooth'

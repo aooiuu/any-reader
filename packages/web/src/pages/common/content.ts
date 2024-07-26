@@ -43,7 +43,8 @@ export function useContent(contentRef: Ref<HTMLElement>) {
   const loading = ref(false);
 
   useSaveHistory(contentRef, options);
-  const tts = useTTS(contentRef);
+  const tts = useTTS(contentRef, onNextChapter);
+  let ttsStatus = false;
 
   const chapterPath = ref<string>('');
 
@@ -102,6 +103,10 @@ export function useContent(contentRef: Ref<HTMLElement>) {
         scrollTop = contentRef.value.scrollHeight * (+percentage / 100000);
       }
       contentRef.value.scrollTop = scrollTop;
+
+      if (ttsStatus) {
+        tts.start();
+      }
     });
   }
 
@@ -168,7 +173,9 @@ export function useContent(contentRef: Ref<HTMLElement>) {
         nextChapter: onNextChapter,
         pageUp: onPageUp,
         pageDown: onPageDown,
-        tts: tts.startOrStop
+        tts: () => {
+          ttsStatus = tts.startOrStop();
+        }
       };
       cmdMap[cmd] && cmdMap[cmd]();
     }
@@ -193,7 +200,7 @@ export function useContent(contentRef: Ref<HTMLElement>) {
   };
 }
 
-export function useTTS(contentRef: Ref<HTMLElement>) {
+export function useTTS(contentRef: Ref<HTMLElement>, ended: () => void) {
   let tts: TTS | null;
 
   const route = useRoute();
@@ -206,20 +213,33 @@ export function useTTS(contentRef: Ref<HTMLElement>) {
   }
 
   watch(
-    () => route.query,
+    () => route.fullPath,
     () => {
       destroy();
     }
   );
 
+  onDeactivated(destroy);
+  onUnmounted(destroy);
+
+  function start() {
+    tts = new TTS(
+      contentRef.value,
+      (text: string) => {
+        return base64({ text }).then((e) => e.data);
+      },
+      ended
+    );
+  }
+
   return {
+    start,
     startOrStop() {
       if (!tts) {
-        tts = new TTS(contentRef.value, (text: string) => {
-          return base64({ text }).then((e) => e.data);
-        });
+        start();
+        return true;
       } else {
-        tts.startOrStop();
+        return tts.startOrStop();
       }
     }
   };
