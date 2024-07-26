@@ -25,6 +25,7 @@ export type KeyboardShortcuts = {
   nextChapter: string;
   pageUp: string;
   pageDown: string;
+  tts: string;
 };
 
 // 侧边栏
@@ -53,7 +54,8 @@ export const useSettingStore = defineStore('setting', () => {
       prevChapter: '←',
       nextChapter: '→',
       pageUp: '↑',
-      pageDown: '↓'
+      pageDown: '↓',
+      tts: ''
     },
     sidebar: 'left',
     pinned: false,

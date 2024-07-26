@@ -20,6 +20,7 @@ export type KeyboardShortcuts = {
   nextChapter: string;
   pageUp: string;
   pageDown: string;
+  tts: string;
 };
 
 export type Setting = {
@@ -41,7 +42,8 @@ export const useSettingStore = defineStore('setting', () => {
       prevChapter: '←',
       nextChapter: '→',
       pageUp: '↑',
-      pageDown: '↓'
+      pageDown: '↓',
+      tts: ''
     },
     bookDir: ''
   });

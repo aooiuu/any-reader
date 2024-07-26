@@ -12,6 +12,7 @@ import { ResourceRule } from './controller/ResourceRule'
 import { RuleManager } from './controller/RuleManager'
 import { Bookshelf } from './controller/Bookshelf'
 import { Config } from './controller/Config'
+import { TTS } from './controller/TTS'
 import { mapRoute } from './decorators'
 
 export interface App {
@@ -43,6 +44,7 @@ export function createApp(params: { configPath: string; defaultConfig?: any; dat
       RuleManager,
       Bookshelf,
       Config,
+      TTS,
     ],
 
     updateConfig(data: any) {

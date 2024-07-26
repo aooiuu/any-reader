@@ -7,6 +7,8 @@ import { useChaptersStore } from '@/stores/chapters';
 import { useSettingStore } from '@/stores/setting';
 import { useReadStore } from '@/stores/read';
 import { useKeyboardShortcuts } from '@/hooks/useMagicKeys';
+import { TTS } from '@/utils/tts';
+import { base64 } from '@/api/modules/tts';
 
 function useSaveHistory(contentRef: Ref<HTMLElement>, options: Ref<any>) {
   const savePercentage = debounce(
@@ -41,6 +43,7 @@ export function useContent(contentRef: Ref<HTMLElement>) {
   const loading = ref(false);
 
   useSaveHistory(contentRef, options);
+  const tts = useTTS(contentRef);
 
   const chapterPath = ref<string>('');
 
@@ -164,7 +167,8 @@ export function useContent(contentRef: Ref<HTMLElement>) {
         prevChapter: onPrevChapter,
         nextChapter: onNextChapter,
         pageUp: onPageUp,
-        pageDown: onPageDown
+        pageDown: onPageDown,
+        tts: tts.startOrStop
       };
       cmdMap[cmd] && cmdMap[cmd]();
     }
@@ -186,5 +190,37 @@ export function useContent(contentRef: Ref<HTMLElement>) {
     loading,
     sectionSpacing,
     fontWeight
+  };
+}
+
+export function useTTS(contentRef: Ref<HTMLElement>) {
+  let tts: TTS | null;
+
+  const route = useRoute();
+
+  function destroy() {
+    if (tts) {
+      tts.destroy();
+      tts = null;
+    }
+  }
+
+  watch(
+    () => route.query,
+    () => {
+      destroy();
+    }
+  );
+
+  return {
+    startOrStop() {
+      if (!tts) {
+        tts = new TTS(contentRef.value, (text: string) => {
+          return base64({ text }).then((e) => e.data);
+        });
+      } else {
+        tts.startOrStop();
+      }
+    }
   };
 }
