@@ -72,6 +72,7 @@
   },
   "devDependencies": {
     "@types/mime": "3.0.4",
+    "@types/node": "^20.14.12",
     "@types/uuid": "^9.0.8",
     "bumpp": "^9.4.1",
     "cross-env": "^7.0.3",
