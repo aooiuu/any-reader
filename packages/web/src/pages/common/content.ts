@@ -1,6 +1,7 @@
 import type { Ref } from 'vue';
 import { useEventListener } from '@vueuse/core';
 import { debounce } from 'lodash-es';
+import { ContentType } from '@any-reader/rule-utils';
 import { getContent } from '@/api';
 import { saveChapterHistory } from '@/api/modules/chapter-history';
 import { useChaptersStore } from '@/stores/chapters';
@@ -34,6 +35,7 @@ function useSaveHistory(contentRef: Ref<HTMLElement>, options: Ref<any>) {
 
 export function useContent(contentRef: Ref<HTMLElement>) {
   const content = ref<string[]>([]);
+  const contentType = ref<ContentType>(ContentType.NOVEL);
   const route = useRoute();
   const router = useRouter();
   const chaptersStore = useChaptersStore();
@@ -95,6 +97,7 @@ export function useContent(contentRef: Ref<HTMLElement>) {
       }
     });
     if (res?.code === 0) {
+      contentType.value = res?.data?.contentType;
       content.value = res?.data?.content || [];
     }
     nextTick(() => {
@@ -187,6 +190,7 @@ export function useContent(contentRef: Ref<HTMLElement>) {
   return {
     settingStore,
     content,
+    contentType,
     toChapter,
     lastChapter,
     nextChapter,

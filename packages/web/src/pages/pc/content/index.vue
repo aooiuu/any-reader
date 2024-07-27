@@ -2,8 +2,7 @@
   <div class="w-full h-full flex flex-col overflow-hidden">
     <div
       id="text-container"
-      ref="contentRef"
-      class="flex-1 p-10 whitespace-pre-wrap overflow-y-auto lh-1.5em text-[#b3b3b3] break-words"
+      class="flex-1 p-10 whitespace-pre-wrap lh-1.5em text-[#b3b3b3] break-words flex flex-col overflow-hidden"
       :style="{
         fontSize: settingStore.data.readStyle.fontSize + 'px',
         lineHeight: settingStore.data.readStyle.lineHeight,
@@ -12,23 +11,33 @@
         backgroundColor: settingStore.data.readStyle.backgroundColor
       }"
     >
+      <!-- 加载 -->
       <a-spin v-if="loading" :spinning="loading" class="w-full h-full !flex items-center justify-center" />
-      <div class="md:mx-60 indent-2em">
-        <div v-for="(row, idx) in content" :key="idx" class="center-row ease transition-300 transition-color" :data-idx="idx" v-html="row"></div>
-      </div>
+      <!-- 阅读区域 -->
+      <div ref="contentRef" class="md:mx-60 indent-2em h-full flex-1 flex flex-col overflow-y-auto relative">
+        <!-- 漫画 -->
+        <template v-if="contentType === ContentType.MANGA">
+          <img v-for="(row, idx) in content" :key="idx" :src="row" />
+        </template>
+        <!-- 小说 -->
+        <template v-else>
+          <div v-for="(row, idx) in content" :key="idx" class="center-row ease transition-300 transition-color" :data-idx="idx" v-html="row"></div>
+        </template>
 
-      <div class="flex justify-center">
-        <a-button-group>
-          <a-button type="text" :disabled="!lastChapter" :style="{ color: settingStore.data.readStyle.textColor }" @click="onPrevChapter">
-            <icon-left />
-            上一章
-          </a-button>
-          <a-button type="text" :style="{ color: settingStore.data.readStyle.textColor }" @click="showChapters">目录</a-button>
-          <a-button type="text" :disabled="!nextChapter" :style="{ color: settingStore.data.readStyle.textColor }" @click="onNextChapter">
-            下一章
-            <icon-right />
-          </a-button>
-        </a-button-group>
+        <!-- 上下章节按钮 -->
+        <div class="flex justify-center">
+          <a-button-group>
+            <a-button type="text" :disabled="!lastChapter" :style="{ color: settingStore.data.readStyle.textColor }" @click="onPrevChapter">
+              <icon-left />
+              上一章
+            </a-button>
+            <a-button type="text" :style="{ color: settingStore.data.readStyle.textColor }" @click="showChapters">目录</a-button>
+            <a-button type="text" :disabled="!nextChapter" :style="{ color: settingStore.data.readStyle.textColor }" @click="onNextChapter">
+              下一章
+              <icon-right />
+            </a-button>
+          </a-button-group>
+        </div>
       </div>
       <a-back-top class="hidden md:block" :visibility-height="100" :target="topTarget" />
     </div>
@@ -71,6 +80,7 @@
 </template>
 
 <script setup lang="ts">
+import { ContentType } from '@any-reader/rule-utils';
 import { onClickOutside } from '@vueuse/core';
 import { useChaptersStore } from '@/stores/chapters';
 import { useReadStore } from '@/stores/read';
@@ -84,11 +94,11 @@ const chaptersVisible = ref(false);
 const contentRef = ref();
 const chaptersRef = ref();
 
-const topTarget = () => document.querySelector('#text-container') as HTMLElement;
+const topTarget = () => contentRef.value as HTMLElement;
 
 onClickOutside(chaptersRef, () => (chaptersVisible.value = false));
 
-const { settingStore, content, toChapter, lastChapter, nextChapter, onPrevChapter, onNextChapter, loading, sectionSpacing, fontWeight } =
+const { settingStore, content, contentType, toChapter, lastChapter, nextChapter, onPrevChapter, onNextChapter, loading, sectionSpacing, fontWeight } =
   useContent(contentRef);
 
 function scrollIntoViewChapter() {

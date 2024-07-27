@@ -22,7 +22,8 @@ export class ResourceHistory extends BaseController {
 
   // 添加一个记录
   @Post('add')
-  create(data: any) {
-    return this.db.getResourceHistory().create(data)
+  async create(data: any) {
+    await this.del(data)
+    return await this.db.getResourceHistory().create(data)
   }
 }

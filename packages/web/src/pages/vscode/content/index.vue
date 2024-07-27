@@ -12,7 +12,12 @@
         letterSpacing: settingStore.data.readStyle.letterSpacing + 'px'
       }"
     >
-      <div v-for="(row, idx) in content" :key="idx" class="center-row" :data-idx="idx" v-html="row"></div>
+      <template v-if="contentType === ContentType.MANGA">
+        <img v-for="(row, idx) in content" :key="idx" class="center-row" :data-idx="idx" :src="row" />
+      </template>
+      <template v-else>
+        <div v-for="(row, idx) in content" :key="idx" class="center-row" :data-idx="idx" v-html="row"></div>
+      </template>
 
       <div class="my-10 flex justify-center">
         <div v-if="lastChapter" class="cursor-pointer hover:op-70" @click="onPrevChapter">上一章</div>
@@ -32,12 +37,25 @@
 </template>
 
 <script setup lang="ts">
+import { ContentType } from '@any-reader/rule-utils';
 import { useContent } from '@/pages/common/content';
 
 const contentRef = ref();
 
-const { content, settingStore, lastChapter, nextChapter, onPageUp, onPageDown, onPrevChapter, onNextChapter, loading, sectionSpacing, fontWeight } =
-  useContent(contentRef);
+const {
+  content,
+  contentType,
+  settingStore,
+  lastChapter,
+  nextChapter,
+  onPageUp,
+  onPageDown,
+  onPrevChapter,
+  onNextChapter,
+  loading,
+  sectionSpacing,
+  fontWeight
+} = useContent(contentRef);
 </script>
 
 <style scoped>

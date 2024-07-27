@@ -229,7 +229,7 @@ export class AnalyzerManager {
   async getString(rule: string): Promise<string> {
     if (!rule)
       return ''
-    const expressionPattern = /\{\{(.*?)\}\}/gd
+    const expressionPattern = /\{\{(.*?)\}\}/g
 
     const pLeft = rule.lastIndexOf('{{')
     const pRight = rule.lastIndexOf('}}')
@@ -267,7 +267,7 @@ export class AnalyzerManager {
   async getStringList(rule: string): Promise<string[]> {
     if (!rule)
       return []
-    const expressionPattern = /\{\{(.*?)\}\}/gd
+    const expressionPattern = /\{\{(.*?)\}\}/g
 
     const pLeft = rule.lastIndexOf('{{')
     const pRight = rule.lastIndexOf('}}')

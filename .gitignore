@@ -82,3 +82,4 @@ dist
 
 packages/core/index.d.ts
 packages/server/index.d.ts
+*.rule.json
