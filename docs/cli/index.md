@@ -7,5 +7,5 @@ outline: deep
 快速体验：
 
 ```sh
-npx any-reader
+npx any-reader@latest
 ```

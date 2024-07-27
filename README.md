@@ -169,7 +169,13 @@ XPath、JSONPath、CSS选择器、正则让规则编写更简洁, 而 JS 脚本�
 
 [文档](https://aooiuu.github.io/any-reader/browser/)
 
- <img src="https://github.com/aooiuu/any-reader/assets/28108111/6166cc3e-f5e5-42ca-a616-5e30157f6c89" width="400"/>
+ <img src="https://github.com/user-attachments/assets/c0f073fa-0f97-48ce-a6dd-ed352e46c4b0" width="400"/>
+
+```sh
+# 快速体验网页版, node >= 20
+# 建议从源码构建
+npx any-reader@latest
+```
 
 ### Docker
 

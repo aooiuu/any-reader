@@ -19,4 +19,4 @@ pnpm i
 pnpm run web:dev
 ```
 
-![image](https://github.com/aooiuu/any-reader/assets/28108111/6166cc3e-f5e5-42ca-a616-5e30157f6c89)
+![image](https://github.com/user-attachments/assets/c0f073fa-0f97-48ce-a6dd-ed352e46c4b0)
