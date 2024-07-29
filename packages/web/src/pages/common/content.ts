@@ -33,6 +33,37 @@ function useSaveHistory(contentRef: Ref<HTMLElement>, options: Ref<any>) {
   });
 }
 
+export function useTheme(contentRef: Ref<HTMLElement>) {
+  const settingStore = useSettingStore();
+
+  watchEffect(
+    () => {
+      if (!contentRef.value) return;
+      if (settingStore.data.readStyle.textColor) {
+        contentRef.value.style.color = settingStore.data.readStyle.textColor;
+      }
+
+      if (settingStore.data.readStyle.backgroundColor) {
+        contentRef.value.style.backgroundColor = settingStore.data.readStyle.backgroundColor;
+      }
+
+      if (settingStore.data.readStyle.textOpacity) {
+        contentRef.value.style.setProperty('--text-opacity', String(settingStore.data.readStyle.textOpacity));
+      }
+
+      if (settingStore.data.readStyle.sectionSpacing) {
+        contentRef.value.style.setProperty('--section-spacing', String(settingStore.data.readStyle.sectionSpacing));
+      }
+      if (settingStore.data.readStyle.fontWeight) {
+        contentRef.value.style.setProperty('--font-weight', String(settingStore.data.readStyle.fontWeight));
+      }
+    },
+    {
+      flush: 'post'
+    }
+  );
+}
+
 export function useContent(contentRef: Ref<HTMLElement>) {
   const content = ref<string[]>([]);
   const contentType = ref<ContentType>(ContentType.NOVEL);
@@ -184,9 +215,6 @@ export function useContent(contentRef: Ref<HTMLElement>) {
     }
   );
 
-  const sectionSpacing = computed(() => settingStore.data.readStyle.sectionSpacing + 'px');
-  const fontWeight = computed(() => settingStore.data.readStyle.fontWeight);
-
   return {
     settingStore,
     content,
@@ -198,9 +226,7 @@ export function useContent(contentRef: Ref<HTMLElement>) {
     onPageDown,
     onPrevChapter,
     onNextChapter,
-    loading,
-    sectionSpacing,
-    fontWeight
+    loading
   };
 }
 

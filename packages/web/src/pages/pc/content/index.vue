@@ -85,7 +85,7 @@ import { onClickOutside } from '@vueuse/core';
 import { useChaptersStore } from '@/stores/chapters';
 import { useReadStore } from '@/stores/read';
 import { useBus, EVENT_CHAPTERS_BOX } from '@/utils/bus';
-import { useContent } from '@/pages/common/content';
+import { useContent, useTheme } from '@/pages/common/content';
 
 const chaptersStore = useChaptersStore();
 const readStore = useReadStore();
@@ -98,8 +98,8 @@ const topTarget = () => contentRef.value as HTMLElement;
 
 onClickOutside(chaptersRef, () => (chaptersVisible.value = false));
 
-const { settingStore, content, contentType, toChapter, lastChapter, nextChapter, onPrevChapter, onNextChapter, loading, sectionSpacing, fontWeight } =
-  useContent(contentRef);
+const { settingStore, content, contentType, toChapter, lastChapter, nextChapter, onPrevChapter, onNextChapter, loading } = useContent(contentRef);
+useTheme(contentRef);
 
 function scrollIntoViewChapter() {
   const el = chaptersRef.value.querySelector(`[title="${readStore.title}"]`);
@@ -126,7 +126,8 @@ useBus(EVENT_CHAPTERS_BOX).on(showChapters);
 }
 
 .center-row {
-  margin-bottom: v-bind(sectionSpacing);
-  font-weight: v-bind(fontWeight);
+  margin-bottom: var(--section-spacing);
+  font-weight: var(--font-weight);
+  opacity: var(--text-opacity);
 }
 </style>

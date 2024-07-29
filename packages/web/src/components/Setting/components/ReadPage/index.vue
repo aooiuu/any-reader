@@ -15,7 +15,7 @@
     <SettingRow title="段落间距">
       <a-input-number v-model:value="settingStore.data.readStyle.sectionSpacing" class="!w-120px" mode="button" />
     </SettingRow>
-    <SettingRow title="字体颜色">
+    <SettingRow title="文字颜色">
       <input v-model="settingStore.data.readStyle.textColor" type="color" style="border: solid 1px rgba(0, 0, 0, 0.1)" />
     </SettingRow>
     <SettingRow title="背景颜色">

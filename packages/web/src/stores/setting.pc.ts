@@ -17,6 +17,8 @@ export type ReadStyle = {
   textColor: string;
   // 背景颜色
   backgroundColor: string;
+  // 文字透明度
+  textOpacity: number;
 };
 
 // 快捷键
@@ -48,7 +50,8 @@ export const useSettingStore = defineStore('setting', () => {
       textColor: '#ffffffb3',
       backgroundColor: '#1f1f1f',
       fontWeight: 400,
-      sectionSpacing: 12
+      sectionSpacing: 12,
+      textOpacity: 1
     },
     keyboardShortcuts: {
       prevChapter: '←',

@@ -12,6 +12,12 @@ export type ReadStyle = {
   letterSpacing: number;
   // 段落间距
   sectionSpacing: number;
+  // 文字颜色
+  textColor: string;
+  // 背景颜色
+  backgroundColor: string;
+  // 文字透明度
+  textOpacity: 1;
 };
 
 // 快捷键
@@ -36,7 +42,10 @@ export const useSettingStore = defineStore('setting', () => {
       lineHeight: 1.5,
       letterSpacing: 1,
       fontWeight: 400,
-      sectionSpacing: 12
+      sectionSpacing: 12,
+      textColor: '',
+      backgroundColor: '',
+      textOpacity: 1
     },
     keyboardShortcuts: {
       prevChapter: '←',

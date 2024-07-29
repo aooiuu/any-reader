@@ -38,24 +38,14 @@
 
 <script setup lang="ts">
 import { ContentType } from '@any-reader/rule-utils';
-import { useContent } from '@/pages/common/content';
+import { useContent, useTheme } from '@/pages/common/content';
 
 const contentRef = ref();
 
-const {
-  content,
-  contentType,
-  settingStore,
-  lastChapter,
-  nextChapter,
-  onPageUp,
-  onPageDown,
-  onPrevChapter,
-  onNextChapter,
-  loading,
-  sectionSpacing,
-  fontWeight
-} = useContent(contentRef);
+const { content, contentType, settingStore, lastChapter, nextChapter, onPageUp, onPageDown, onPrevChapter, onNextChapter, loading } =
+  useContent(contentRef);
+
+useTheme(contentRef);
 </script>
 
 <style scoped>
@@ -83,7 +73,8 @@ const {
 }
 
 .center-row {
-  margin-bottom: v-bind(sectionSpacing);
-  font-weight: v-bind(fontWeight);
+  margin-bottom: var(--section-spacing);
+  font-weight: var(--font-weight);
+  opacity: var(--text-opacity);
 }
 </style>
