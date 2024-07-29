@@ -32,6 +32,7 @@ export class ResourceHistoryService {
     const now = Date.now()
     const entity = this.repository.create({
       ...data,
+      id: undefined,
       createTime: now,
       updateTime: now,
     })

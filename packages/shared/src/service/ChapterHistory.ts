@@ -16,7 +16,10 @@ export class ChapterHistoryService {
       chapterPath: data.chapterPath,
     })
     if (!row) {
-      row = this.repository.create(data)
+      row = this.repository.create({
+        ...data,
+        id: undefined,
+      })
       row.createTime = Date.now()
     }
     row.updateTime = Date.now()

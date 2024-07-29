@@ -32,6 +32,7 @@ export class ResourceFavoritesService {
     const now = Date.now()
     const entity = this.repository.create({
       ...data,
+      id: undefined,
       createTime: now,
       updateTime: now,
     })
