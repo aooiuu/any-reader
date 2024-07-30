@@ -47,24 +47,28 @@ class SingleRule {
   }
 }
 
-export class AnalyzerManager {
-  analyzers: typeof Analyzer[]
+export interface Analyzers {
+  // 匹配则使用此解析程序
+  pattern: RegExp
+  // 清除字符串
+  replace?: RegExp
+  // 解析程序
+  Analyzer: typeof Analyzer
+}
 
-  constructor(analyzers: typeof Analyzer[]) {
+export class AnalyzerManager {
+  analyzers: Analyzers[]
+
+  constructor(analyzers: Analyzers[]) {
     this.analyzers = analyzers || []
   }
 
-  useAnalyzer(analyzer: typeof Analyzer) {
-    this.analyzers.push(analyzer)
-    return this
-  }
-
-  getAnalyzer(rule: string): Analyzer {
-    for (const Analy of this.analyzers) {
-      if (Analy.pattern.test(rule))
-        return new Analy()
+  getAnalyzer(rule: string) {
+    for (const analyzer of this.analyzers) {
+      if (analyzer.pattern.test(rule))
+        return analyzer
     }
-    return new this.analyzers[0]()
+    return this.analyzers[0]
   }
 
   // 规则从后往前解析
@@ -73,19 +77,18 @@ export class AnalyzerManager {
     const ruleList: SingleRule[] = []
     let end = rule.length
     for (const m of ruleMath) {
-      // let analyzer: Analyzer = new AnalyzerHtml()
       const start = m.index as number
       let r = rule.substring(start, end)
       end = start as number
       const analyzer = this.getAnalyzer(r)
-      r = r.replace(/^@js:|^@css:|^@json:|^@xpath:|^@regexp:|^@regex:|^@filter:|^@replace:|^:/i, '')
+      r = r.replace(analyzer.replace || analyzer.pattern, '')
       const position = r.indexOf('##')
       if (position > -1) {
         ruleList.push(
-          new SingleRule(analyzer, r.substring(0, position), r.substring(position + 2)))
+          new SingleRule(new analyzer.Analyzer(), r.substring(0, position), r.substring(position + 2)))
       }
       else {
-        ruleList.push(new SingleRule(analyzer, r, ''))
+        ruleList.push(new SingleRule(new analyzer.Analyzer(), r, ''))
       }
     }
     return ruleList.reverse()
