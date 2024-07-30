@@ -29,7 +29,7 @@ async function publish() {
   if (pkg.version.includes('-')) {
     // 非正式版
     const version = parseVersion(pkg.version);
-    pkg.version = pkg.version.replace(/\.\d+\-.*?$/, '.' + (10000 + version.build));
+    pkg.version = pkg.version.replace(/\.\d+\-.*?$/, '.' + (10000 * version.patch + version.build));
   }
 
   const outputDir = path.join(root, 'dist');
