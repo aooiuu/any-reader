@@ -4,6 +4,7 @@ import type { Analyzer } from './Analyzer'
 export class AnalyzerFilter implements Analyzer {
   private _content!: string
   private _url!: string
+  static pattern: RegExp = /^@filter:/i
 
   parse(content: string | string[]) {
     if (Array.isArray(content))

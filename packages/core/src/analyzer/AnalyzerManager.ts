@@ -1,11 +1,5 @@
 import type { Analyzer } from './Analyzer'
-import { AnalyzerHtml } from './AnalyzerHtml'
-import { AnalyzerJSONPath } from './AnalyzerJSONPath'
-import { AnalyzerXPath } from './AnalyzerXPath'
-import { AnalyzerRegExp } from './AnalyzerRegExp'
 import { AnalyzerJS } from './AnalyzerJS'
-import { AnalyzerFilter } from './AnalyzerFilter'
-import { AnalyzerReplace } from './AnalyzerReplace'
 
 const ruleTypePattern
   = new RegExp([
@@ -54,10 +48,23 @@ class SingleRule {
 }
 
 export class AnalyzerManager {
-  private _content: string
+  analyzers: typeof Analyzer[]
 
-  constructor(content: string) {
-    this._content = content
+  constructor(analyzers: typeof Analyzer[]) {
+    this.analyzers = analyzers || []
+  }
+
+  useAnalyzer(analyzer: typeof Analyzer) {
+    this.analyzers.push(analyzer)
+    return this
+  }
+
+  getAnalyzer(rule: string): Analyzer {
+    for (const Analy of this.analyzers) {
+      if (Analy.pattern.test(rule))
+        return new Analy()
+    }
+    return new this.analyzers[0]()
   }
 
   // 规则从后往前解析
@@ -66,77 +73,12 @@ export class AnalyzerManager {
     const ruleList: SingleRule[] = []
     let end = rule.length
     for (const m of ruleMath) {
-      let analyzer: Analyzer = new AnalyzerHtml()
+      // let analyzer: Analyzer = new AnalyzerHtml()
       const start = m.index as number
       let r = rule.substring(start, end)
-      const rLowerCase = r.toLowerCase()
       end = start as number
-
-      switch (r[0]) {
-        case '$':
-          analyzer = new AnalyzerJSONPath()
-          break
-        case '@': {
-          if (rLowerCase.startsWith('@js:')) {
-            r = r.substring(4)
-            analyzer = new AnalyzerJS()
-          }
-          // else if (rLowerCase.startsWith("@hetu:")) {
-          //   r = r.substring(6);
-          //   analyzer = new AnalyzerHetu();
-          // }
-          else if (rLowerCase.startsWith('@css:')) {
-            r = r.substring(5)
-            analyzer = new AnalyzerHtml()
-          }
-          else if (rLowerCase.startsWith('@json:')) {
-            r = r.substring(6)
-            analyzer = new AnalyzerJSONPath()
-          }
-          else if (rLowerCase.startsWith('@xpath:')) {
-            r = r.substring(7)
-            analyzer = new AnalyzerXPath()
-          }
-          // else if (rLowerCase.startsWith("@match:")) {
-          //   r = r.substring(7);
-          //   analyzer = new AnalyzerMatch();
-          // }
-          else if (rLowerCase.startsWith('@regex:')) {
-            r = r.substring(7)
-            analyzer = new AnalyzerRegExp()
-          }
-          else if (rLowerCase.startsWith('@regexp:')) {
-            r = r.substring(8)
-            analyzer = new AnalyzerRegExp()
-          }
-          else if (rLowerCase.startsWith('@filter:')) {
-            r = r.substring(8)
-            analyzer = new AnalyzerFilter()
-          }
-          else if (rLowerCase.startsWith('@replace:')) {
-            r = r.substring(9)
-            analyzer = new AnalyzerReplace()
-          }
-          // else if (rLowerCase.startsWith("@webview:")) {
-          //   r = r.substring(9);
-          //   analyzer = new AnalyzerWebview();
-          // } else if (rLowerCase.startsWith("@web:")) {
-          //   r = r.substring(5);
-          //   analyzer = new AnalyzerWebview();
-          // }
-          break
-        }
-        case ':':
-          r = r.substring(1)
-          analyzer = new AnalyzerRegExp()
-          break
-        case '/':
-          analyzer = new AnalyzerXPath()
-          break
-        default:
-          analyzer = new AnalyzerHtml()
-      }
-
+      const analyzer = this.getAnalyzer(r)
+      r = r.replace(/^@js:|^@css:|^@json:|^@xpath:|^@regexp:|^@regex:|^@filter:|^@replace:|^:/i, '')
       const position = r.indexOf('##')
       if (position > -1) {
         ruleList.push(
@@ -175,8 +117,8 @@ export class AnalyzerManager {
     return r.analyzer.getElements(rule)
   }
 
-  async getElements(rule: string): Promise<any[]> {
-    let temp: string | string [] = this._content
+  async getElements(rule: string, body: string): Promise<any[]> {
+    let temp: string | string [] = body
 
     for (const r of this.splitRuleReversed(rule)) {
       r.analyzer.parse(temp as string)
@@ -226,7 +168,7 @@ export class AnalyzerManager {
     return Array.isArray(res) ? res.join('').trim() : res
   }
 
-  async getString(rule: string): Promise<string> {
+  async getString(rule: string, body: string): Promise<string> {
     if (!rule)
       return ''
     const expressionPattern = /\{\{(.*?)\}\}/g
@@ -239,7 +181,7 @@ export class AnalyzerManager {
       for (const match of rule.matchAll(expressionPattern)) {
         rs.push(rule.substring(position, match.index))
         position = (match.index as number) + match[0].length
-        rs.push(await this.getString(match[1]))
+        rs.push(await this.getString(match[1], body))
       }
 
       if (position < rule.length)
@@ -248,7 +190,7 @@ export class AnalyzerManager {
       return rs.join('')
     }
 
-    let temp: string = this._content
+    let temp: string = body
     for (const r of this.splitRuleReversed(rule)) {
       r.analyzer.parse(temp as string)
       temp = await this._getString(r)
@@ -264,7 +206,7 @@ export class AnalyzerManager {
     return res
   }
 
-  async getStringList(rule: string): Promise<string[]> {
+  async getStringList(rule: string, body: string): Promise<string[]> {
     if (!rule)
       return []
     const expressionPattern = /\{\{(.*?)\}\}/g
@@ -277,7 +219,7 @@ export class AnalyzerManager {
       for (const match of rule.matchAll(expressionPattern)) {
         rs.push(rule.substring(position, match.index))
         position = (match.index as number) + match[0].length
-        rs.push(await this.getString(match[1]))
+        rs.push(await this.getString(match[1], body))
       }
 
       if (position < rule.length)
@@ -286,7 +228,7 @@ export class AnalyzerManager {
       return rs.filter(e => e)
     }
 
-    let temp: string | string[] = this._content
+    let temp: string | string[] = body
     for (const r of this.splitRuleReversed(rule)) {
       r.analyzer.parse(temp as string)
       temp = await this._getStringList(r)
@@ -296,8 +238,8 @@ export class AnalyzerManager {
     return Array.isArray(temp) ? temp : [temp]
   }
 
-  async getUrl(rule: string, host: string): Promise<string> {
-    let url = await this.getString(rule)
+  async getUrl(rule: string, host: string, body: string): Promise<string> {
+    let url = await this.getString(rule, body)
     if (typeof url !== 'string')
       return url
 

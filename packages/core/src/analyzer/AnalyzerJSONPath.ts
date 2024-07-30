@@ -3,6 +3,7 @@ import type { Analyzer } from './Analyzer'
 
 export class AnalyzerJSONPath implements Analyzer {
   _content!: any
+  static pattern: RegExp = /^@json:|^\$/i
 
   parse(content: string | any) {
     if (typeof content === 'string')

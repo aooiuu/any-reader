@@ -1,5 +1,5 @@
 import md5 from 'blueimp-md5'
-import { AnalyzerManager, RuleManager as RM, analyzerUrl } from '@any-reader/core'
+import { analyzerUrl, createAnalyzerManager, createRuleManager } from '@any-reader/core'
 import type { Rule } from '@any-reader/rule-utils'
 import { ContentType } from '@any-reader/rule-utils'
 import { Cacheable, Controller, Post } from '../decorators'
@@ -88,13 +88,13 @@ export class RuleManager extends BaseController {
 
   @Post('search-by-rule')
   async searchByRule({ rule, keyword }: { rule: Rule; keyword: string }) {
-    const analyzer = new RM(rule)
+    const analyzer = createRuleManager(rule)
     return await analyzer.search(keyword)
   }
 
   @Post('chapter-by-rule')
   async chapterByRule({ rule, filePath }: { rule: Rule; filePath: string }) {
-    const rm = new RM(rule)
+    const rm = createRuleManager(rule)
     const list = await rm.getChapter(filePath)
     return list.map((e: any) => ({
       ...e,
@@ -111,7 +111,7 @@ export class RuleManager extends BaseController {
     rule: Rule
     chapterPath: string
   }) {
-    const rm = new RM(rule)
+    const rm = createRuleManager(rule)
     const content: string[] = await rm.getContent(chapterPath)
     let text: string | string[] = ''
     if (rule.contentType === ContentType.VIDEO)
@@ -126,13 +126,13 @@ export class RuleManager extends BaseController {
 
   @Post('discover-map-by-rule')
   async discoverMapByRule({ rule }: { rule: Rule }) {
-    const ruleManager = new RM(rule)
+    const ruleManager = createRuleManager(rule)
     return await ruleManager.discoverMap()
   }
 
   @Post('discover-by-rule')
   async discoverByRule({ rule, data }: { rule: Rule; data: any }) {
-    const ruleManager = new RM(rule)
+    const ruleManager = createRuleManager(rule)
     return await ruleManager.discover(data.value)
   }
 
@@ -146,8 +146,7 @@ export class RuleManager extends BaseController {
     ruleText: string
     isArray: boolean
   }) {
-    const analyzerManager = new AnalyzerManager(inputText)
-    return isArray ? await analyzerManager.getElements(ruleText) : await analyzerManager.getString(ruleText)
+    return isArray ? await createAnalyzerManager().getElements(ruleText, inputText) : await createAnalyzerManager().getString(ruleText, inputText)
   }
 
   @Post('analyzer-url')

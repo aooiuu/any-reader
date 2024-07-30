@@ -4,6 +4,8 @@ import type { Analyzer } from './Analyzer'
 export class AnalyzerJS implements Analyzer {
   _content!: string
 
+  static pattern: RegExp = /^@js:/i
+
   parse(content: string | string[]) {
     if (Array.isArray(content))
       this._content = content.join('\n')

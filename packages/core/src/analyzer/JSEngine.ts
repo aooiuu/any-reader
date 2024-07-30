@@ -6,33 +6,8 @@ import { __http__ } from './AnalyzerUrl'
 export class JSEngine {
   static environment: any = {}
 
-  static setEnvironment(env: {
-    page: number
-    rule: Rule
-    result: string
-    baseUrl: string
-    keyword: string
-    lastResult: string
-  }) {
-    const {
-      page = 1,
-      rule,
-      result = '',
-      baseUrl = '',
-      keyword = '',
-      lastResult = '',
-    } = env
-
-    JSEngine.environment = {
-      page,
-      rule,
-      result,
-      baseUrl,
-      keyword,
-      lastResult,
-      host: rule.host,
-      cookie: rule.cookies,
-    }
+  static setEnvironment(env: Record<string, any>) {
+    Object.assign(JSEngine.environment || { }, env)
   }
 
   static evaluate(command: string, context: any = {}) {

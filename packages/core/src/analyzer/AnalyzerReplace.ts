@@ -2,7 +2,7 @@ import type { Analyzer } from './Analyzer'
 
 export class AnalyzerReplace implements Analyzer {
   private _content!: string
-  private _url!: string
+  static pattern: RegExp = /^@replace:/i
 
   replaceSmart(replace: string) {
     function _replacement(pattern: string) {
@@ -41,8 +41,6 @@ export class AnalyzerReplace implements Analyzer {
       this._content = content.join('\n')
     else
       this._content = content
-
-    this._url = this._content
   }
 
   async getString(rule: string): Promise<string> {

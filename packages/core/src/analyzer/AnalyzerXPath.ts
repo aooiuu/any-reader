@@ -4,6 +4,7 @@ import type { Analyzer } from './Analyzer'
 
 export class AnalyzerXPath implements Analyzer {
   _content!: string
+  static pattern: RegExp = /^@xpath:|^\//i
 
   parse(content: string | string[]) {
     if (Array.isArray(content))

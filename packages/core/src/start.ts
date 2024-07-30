@@ -1,5 +1,5 @@
 import type { Rule } from '@any-reader/rule-utils'
-import { RuleManager } from './index'
+import { createRuleManager } from './index'
 
 const rule = {
   host: '', // 根域名
@@ -20,7 +20,7 @@ const rule = {
   contentItems: '', // 内容
 }
 
-const analyzer = new RuleManager(rule as unknown as Rule)
+const analyzer = createRuleManager(rule as unknown as Rule)
 
 async function search() {
   const list = await analyzer.search('1')

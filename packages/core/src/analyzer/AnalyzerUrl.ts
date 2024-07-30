@@ -4,7 +4,6 @@ import iconv from 'iconv-lite'
 import contentType from 'content-type'
 import chardet from 'chardet'
 import type { Rule } from '@any-reader/rule-utils'
-import { JSEngine } from './JSEngine'
 
 const http = axios.create()
 
@@ -15,7 +14,7 @@ const http = axios.create()
 * @param result
 * @returns
 */
-export async function fetch(url: string, keyword = '', result = '', rule: Rule) {
+export async function fetch(url: string | object, keyword = '', result = '', rule: Rule) {
   const vars: any = {
     $keyword: keyword,
     searchKey: keyword,
@@ -32,11 +31,8 @@ export async function fetch(url: string, keyword = '', result = '', rule: Rule) 
   }
 
   // TODO: 编码 encoding
-  if (params.url.startsWith('@js:')) {
-    params = JSEngine.evaluate(url.substring(4), {
-      ...vars,
-      keyword,
-    })
+  if (typeof url === 'object') {
+    params = url
   }
   else {
     params.url = params.url.replace(

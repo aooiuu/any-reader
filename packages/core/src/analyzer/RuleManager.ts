@@ -1,24 +1,12 @@
 import { ContentType } from '@any-reader/rule-utils'
 import type { Rule } from '@any-reader/rule-utils'
 import { JSEngine } from './JSEngine'
-import { AnalyzerManager } from './AnalyzerManager'
+import type { AnalyzerManager } from './AnalyzerManager'
 import { fetch } from './AnalyzerUrl'
 
-export const CONTENT_TYPE_TEXT: {
-  [k: number]: string
-} = {
-  0: '漫画',
-  1: '小说',
-  2: '视频',
-  3: '音频',
-  4: 'RSS',
-  5: '图文',
-  101: '游戏',
-}
-
 export interface SearchItem {
-  cover: string
   name: string
+  cover: string
   author: string
   chapter: string
   description: string
@@ -28,36 +16,56 @@ export interface SearchItem {
 export interface ChapterItem {
   url: string
   name: string
-  contentUrl?: string
   cover?: string
+  contentUrl?: string
   time?: string
 }
 
 export class RuleManager {
   rule: Rule
   _nextUrl: Map<string, string>
+  analyzerManager: AnalyzerManager
 
-  constructor(rule: Rule) {
+  constructor(rule: Rule, analyzerManager: AnalyzerManager) {
     this.rule = rule
     this._nextUrl = new Map()
+    JSEngine.setEnvironment({
+      host: this.rule.host,
+      $host: this.rule.host,
+      cookie: this.rule.cookies,
+      rule,
+      page: 1,
+      $page: 1,
+      $pageSize: 20,
+      searchPage: 1,
+    })
+    this.analyzerManager = analyzerManager
+  }
+
+  private parseUrl(url: string) {
+    if (url.startsWith('@js:'))
+      url = JSEngine.evaluate(url.substring(4))
+    return url
   }
 
   async search(keyword: string) {
-    const { body } = await fetch(this.rule.searchUrl, keyword, '', this.rule)
-    const bodyAnalyzer = new AnalyzerManager(body)
-    const list = await bodyAnalyzer.getElements(this.rule.searchList)
+    const { searchUrl } = this.rule
+    JSEngine.setEnvironment({
+      $keyword: keyword,
+      searchKey: keyword,
+    })
+    const { body } = await fetch(this.parseUrl(searchUrl), keyword, '', this.rule)
+    const list = await this.analyzerManager.getElements(this.rule.searchList, body)
 
     const result: SearchItem[] = []
     for (const row of list) {
-      const analyzer = new AnalyzerManager(row)
-
       result.push({
-        cover: await analyzer.getString(this.rule.searchCover),
-        name: (await analyzer.getString(this.rule.searchName)).trim(),
-        author: await analyzer.getString(this.rule.searchAuthor),
-        chapter: await analyzer.getString(this.rule.searchChapter),
-        description: await analyzer.getString(this.rule.searchDescription),
-        url: await analyzer.getUrl(this.rule.searchResult, this.rule.host),
+        cover: await this.analyzerManager.getString(this.rule.searchCover, row),
+        name: (await this.analyzerManager.getString(this.rule.searchName, row)).trim(),
+        author: await this.analyzerManager.getString(this.rule.searchAuthor, row),
+        chapter: await this.analyzerManager.getString(this.rule.searchChapter, row),
+        description: await this.analyzerManager.getString(this.rule.searchDescription, row),
+        url: await this.analyzerManager.getUrl(this.rule.searchResult, this.rule.host, row),
       })
     }
 
@@ -74,39 +82,33 @@ export class RuleManager {
       ]
     }
     const chapterUrl = this.rule.chapterUrl || result
-    const { body } = await fetch(chapterUrl, '', result, this.rule)
+    const { body } = await fetch(this.parseUrl(chapterUrl), '', result, this.rule)
 
     JSEngine.setEnvironment({
       page: 1,
-      rule: this.rule,
-      result: '',
       baseUrl: chapterUrl,
-      keyword: '',
       lastResult: result,
     })
-    const bodyAnalyzer = new AnalyzerManager(body)
 
     let list = []
     if (this.rule.enableMultiRoads) {
       // TODO: 多线路
-      const roads = await bodyAnalyzer.getElements(this.rule.chapterRoads)
+      const roads = await this.analyzerManager.getElements(this.rule.chapterRoads, body)
       // for (const road of roads) {
       const road = roads[0]
-      const roadAnalyzer = new AnalyzerManager(road)
-      list = await roadAnalyzer.getElements(this.rule.chapterList)
+      list = await this.analyzerManager.getElements(this.rule.chapterList, road)
       // }
     }
     else {
-      list = await bodyAnalyzer.getElements(this.rule.chapterList)
+      list = await this.analyzerManager.getElements(this.rule.chapterList, body)
     }
     const chapterItems: ChapterItem[] = []
     for (const row of list) {
-      const analyzer = new AnalyzerManager(row)
       chapterItems.push({
-        cover: await analyzer.getString(this.rule.chapterCover),
-        name: (await analyzer.getString(this.rule.chapterName)).trim(),
-        time: await analyzer.getString(this.rule.chapterTime),
-        url: await analyzer.getUrl(this.rule.chapterResult, this.rule.host),
+        cover: await this.analyzerManager.getString(this.rule.chapterCover, row),
+        name: (await this.analyzerManager.getString(this.rule.chapterName, row)).trim(),
+        time: await this.analyzerManager.getString(this.rule.chapterTime, row),
+        url: await this.analyzerManager.getUrl(this.rule.chapterResult, this.rule.host, row),
       })
     }
     return chapterItems
@@ -116,24 +118,17 @@ export class RuleManager {
     if (lastResult) {
       JSEngine.setEnvironment({
         page: 1,
-        rule: this.rule,
         result: lastResult,
-        baseUrl: '',
-        keyword: '',
         lastResult,
       })
     }
-    const { body, params } = await fetch(result, '', '', this.rule)
+    const { body, params } = await fetch(this.parseUrl(result), '', '', this.rule)
     JSEngine.setEnvironment({
       page: 1,
-      rule: this.rule,
-      result: '',
       baseUrl: params.url,
-      keyword: '',
       lastResult: result,
     })
-    const bodyAnalyzer = new AnalyzerManager(body)
-    let list = await bodyAnalyzer.getStringList(this.rule.contentItems)
+    let list = await this.analyzerManager.getStringList(this.rule.contentItems, body)
     if (this.rule.contentType === ContentType.NOVEL) {
       list = list
         .join('\n')
@@ -147,7 +142,7 @@ export class RuleManager {
 
   // 获取获取分类
   async discoverMap() {
-    const map = []
+    const map: DiscoverList[] = []
     const table = new Map()
 
     let discoverUrl = this.rule.discoverUrl.trimStart()
@@ -155,11 +150,7 @@ export class RuleManager {
     if (discoverUrl.startsWith('@js:')) {
       JSEngine.setEnvironment({
         page: 1,
-        rule: this.rule,
-        result: '',
         baseUrl: this.rule.host,
-        keyword: '',
-        lastResult: '',
       })
       discoverUrl = JSEngine.evaluate(
           `${discoverUrl.substring(4)};`,
@@ -193,27 +184,45 @@ export class RuleManager {
       if (!table.has(tab)) {
         table.set(tab, map.length)
         map.push(
-          new DiscoverMap(tab, [new DiscoverPair(className, ruleValue)]),
+          {
+            name: tab,
+            pairs: [{
+              name: className,
+              value: ruleValue,
+            }],
+          },
         )
       }
       else {
-        map[table.get(tab)].pairs.push(
-          new DiscoverPair(className, ruleValue),
+        map[table.get(tab)].pairs.push({
+          name: className,
+          value: ruleValue,
+        },
         )
       }
     }
 
     if (map.length === 0) {
       if (this.rule.host.startsWith('http')) {
-        map.push(
-          new DiscoverMap('全部', [new DiscoverPair('全部', this.rule.host)]),
+        map.push({
+          name: '全部',
+          pairs: [
+            {
+              name: '全部',
+              value: this.rule.host,
+            },
+          ],
+        },
         )
       }
       else {
-        map.push(
-          new DiscoverMap('example', [
-            new DiscoverPair('example', 'http://example.com/'),
-          ]),
+        map.push({
+          name: 'example',
+          pairs: [{
+            name: 'example',
+            value: 'http://example.com/',
+          }],
+        },
         )
       }
     }
@@ -249,7 +258,7 @@ export class RuleManager {
     let body = ''
 
     if (discoverRule !== 'null') {
-      const { body: res } = await fetch(discoverRule, '', '', this.rule)
+      const { body: res } = await fetch(this.parseUrl(discoverRule), '', '', this.rule)
       body = res
     }
 
@@ -258,25 +267,21 @@ export class RuleManager {
       rule: this.rule,
       result: discoverUrl,
       baseUrl: this.rule.host,
-      keyword: '',
-      lastResult: '',
     })
 
-    const bodyAnalyzer = new AnalyzerManager(body)
     if (hasNextUrlRule) {
       this._nextUrl.set(
         url,
-        await bodyAnalyzer.getString(this.rule.discoverNextUrl as string),
+        await this.analyzerManager.getString(this.rule.discoverNextUrl as string, body),
       )
     }
     else { this._nextUrl.delete(url) }
 
-    const list = await bodyAnalyzer.getElements(this.rule.discoverList)
+    const list = await this.analyzerManager.getElements(this.rule.discoverList, body)
     const result = []
 
     for (const item of list) {
-      const analyzer = new AnalyzerManager(item)
-      const tag = await analyzer.getString(this.rule.discoverTags)
+      const tag = await this.analyzerManager.getString(this.rule.discoverTags, item)
 
       let tags: string[] = []
       if (tag !== undefined && tag.trim() !== '')
@@ -284,12 +289,12 @@ export class RuleManager {
 
       result.push({
         searchUrl: discoverUrl,
-        cover: await analyzer.getString(this.rule.discoverCover),
-        name: await analyzer.getString(this.rule.discoverName),
-        author: await analyzer.getString(this.rule.discoverAuthor),
-        chapter: await analyzer.getString(this.rule.discoverChapter),
-        description: await analyzer.getString(this.rule.discoverDescription),
-        url: await analyzer.getString(this.rule.discoverResult),
+        cover: await this.analyzerManager.getString(this.rule.discoverCover, item),
+        name: await this.analyzerManager.getString(this.rule.discoverName, item),
+        author: await this.analyzerManager.getString(this.rule.discoverAuthor, item),
+        chapter: await this.analyzerManager.getString(this.rule.discoverChapter, item),
+        description: await this.analyzerManager.getString(this.rule.discoverDescription, item),
+        url: await this.analyzerManager.getString(this.rule.discoverResult, item),
         tags,
       })
     }
@@ -298,22 +303,14 @@ export class RuleManager {
   }
 }
 
-class DiscoverMap {
+// 分类列表
+export interface DiscoverList {
   name: string
-  pairs: DiscoverPair[]
+  pairs: Discover[]
 
-  constructor(name: string, pairs: DiscoverPair[]) {
-    this.name = name
-    this.pairs = pairs
-  }
 }
 
-class DiscoverPair {
+export interface Discover {
   name: string
   value: string
-
-  constructor(name: string, value: string) {
-    this.name = name
-    this.value = value
-  }
 }

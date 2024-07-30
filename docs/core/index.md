@@ -15,9 +15,9 @@ npm install @any-reader/core
 ```
 
 ```typescript
-import { RuleManager } from '@any-reader/core';
+import { createRuleManager } from '@any-reader/core';
 
-const ruleManager = new RuleManager(rule: Rule);
+const ruleManager = createRuleManager(rule: Rule);
 ruleManager.search(keyword: string): SearchItem[]; // 搜索
 ruleManager.getChapter(url: string): ChapterItem[]; // 获取章节列表
 ruleManager.getContent(url: string): string[]; // 获取内容
