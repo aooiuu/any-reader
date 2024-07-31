@@ -123,7 +123,8 @@ export class RuleManager {
         lastResult,
       })
     }
-    const { body, params } = await fetch(this.parseUrl(result), '', '', this.rule)
+    const contentUrl = this.rule.contentUrl !== 'null' ? this.rule.contentUrl : null
+    const { body, params } = await fetch(this.parseUrl(contentUrl || result), '', result, this.rule)
     JSEngine.setEnvironment({
       page: 1,
       baseUrl: params.url,

@@ -120,10 +120,10 @@ enum ContentType {
 | 字段名     | 支持情况 | 说明                         |
 | ---------- | :------: | ---------------------------- |
 | $keyword   |    ✅    | 搜索用的关键字               |
-| searchKey  |    ✅    | 同 `$keyword`                |
+| searchKey  |    ✅    | 同 `$keyword` , ⚠️不推荐使用 |
 | $host      |    ✅    | 替换规则的 `host`            |
 | $result    |    ✅    | 上一个步骤 result 字段的结果 |
-| lastResult |    ⚠️    |                              |
+| lastResult |    ❌    |                              |
 | searchPage |    ❌    |                              |
 | $page      |    ❌    |                              |
 | $pageSize  |    ❌    |                              |
