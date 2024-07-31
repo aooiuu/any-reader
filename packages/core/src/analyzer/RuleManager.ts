@@ -74,6 +74,9 @@ export class RuleManager {
   }
 
   async getChapter(result: string): Promise<ChapterItem[]> {
+    JSEngine.setEnvironment({
+      result,
+    })
     if (this.rule.chapterUrl === '正文') {
       return [
         {
@@ -87,8 +90,9 @@ export class RuleManager {
 
     JSEngine.setEnvironment({
       page: 1,
-      baseUrl: chapterUrl,
       lastResult: result,
+      result: body,
+      baseUrl: chapterUrl,
     })
 
     let list = []
@@ -115,20 +119,17 @@ export class RuleManager {
     return chapterItems
   }
 
-  async getContent(result: string, lastResult?: string): Promise<string[]> {
-    if (lastResult) {
-      JSEngine.setEnvironment({
-        page: 1,
-        result: lastResult,
-        lastResult,
-      })
-    }
+  async getContent(result: string): Promise<string[]> {
+    JSEngine.setEnvironment({
+      result,
+    })
     const contentUrl = this.rule.contentUrl !== 'null' ? this.rule.contentUrl : null
     const { body, params } = await fetch(this.parseUrl(contentUrl || result), '', result, this.rule)
     JSEngine.setEnvironment({
       page: 1,
-      baseUrl: params.url,
       lastResult: result,
+      result: body,
+      baseUrl: params.url,
     })
     let list = await this.analyzerManager.getStringList(this.rule.contentItems, body)
     if (this.rule.contentType === ContentType.NOVEL) {
@@ -234,6 +235,9 @@ export class RuleManager {
 
   // 获取分类下内容
   async discover(url: string, page = 1) {
+    JSEngine.setEnvironment({
+      result: url,
+    })
     const hasNextUrlRule
       = this.rule.discoverNextUrl !== undefined
       && this.rule.discoverNextUrl.length > 0
@@ -265,9 +269,9 @@ export class RuleManager {
     }
 
     JSEngine.setEnvironment({
-      page,
-      rule: this.rule,
-      result: discoverUrl,
+      page: 1,
+      lastResult: url,
+      result: body,
       baseUrl: this.rule.host,
     })
 

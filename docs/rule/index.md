@@ -123,7 +123,7 @@ enum ContentType {
 | searchKey  |    ✅    | 同 `$keyword` , ⚠️不推荐使用 |
 | $host      |    ✅    | 替换规则的 `host`            |
 | $result    |    ✅    | 上一个步骤 result 字段的结果 |
-| lastResult |    ❌    |                              |
+| lastResult |    ✅    |                              |
 | searchPage |    ❌    |                              |
 | $page      |    ❌    |                              |
 | $pageSize  |    ❌    |                              |
