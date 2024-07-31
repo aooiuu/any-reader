@@ -2,6 +2,7 @@ import { merge } from 'lodash-es'
 
 // @ts-expect-error
 import { ensureFileSync, readJSONSync, writeJSONSync } from 'fs-extra/esm'
+import { AnalyzerException, FetchException, JsVmException } from '@any-reader/core'
 import { LOCAL_BOOK_DIR } from './constants'
 import type { DB } from './data-source'
 import { createDB } from './data-source'
@@ -14,6 +15,7 @@ import { Bookshelf } from './controller/Bookshelf'
 import { Config } from './controller/Config'
 import { TTS } from './controller/TTS'
 import { mapRoute } from './decorators'
+import { logger } from './utils/logger'
 
 export interface App {
   db: DB
@@ -85,14 +87,25 @@ async function runApp(app: App, register: any) {
       register([route.method.toLowerCase(), route.route].join('@'), async (...arg: any) => {
         const instance: any = new Controller(app)
         return await instance[route.methodName](...arg)
-          .then((res: any) => success(res))
-          .catch((res: Error) => success([], res?.message || 'error', -1))
+          .then((res: any) => result(res))
+          .catch((err: Error) => {
+            err.message && logger.error(err.message)
+
+            let message = err?.message || 'error'
+            if (err instanceof FetchException)
+              message = '网络请求异常'
+            else if (err instanceof JsVmException)
+              message = '网络请求异常'
+            else if (err instanceof AnalyzerException)
+              message = '规则解析异常'
+            return result([], message, -1)
+          })
       })
     }
   }
 }
 
-function success(data: any, msg = '', code = 0) {
+function result(data: any, msg = '', code = 0) {
   return {
     code,
     data,

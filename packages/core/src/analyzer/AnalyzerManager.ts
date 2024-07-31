@@ -1,39 +1,9 @@
+import { AnalyzerException } from '../exception/AnalyzerException'
 import type { Analyzer } from './Analyzer'
 import { AnalyzerJS } from './AnalyzerJS'
 
-const ruleTypePattern
-  = new RegExp([
-    '@js:', // @js: code
-    '|',
-    '@hetu:', // @hetu: code
-    '|',
-    '@web:', // @web:[(baseUrl|result)@@]script0[\n\s*@@\s*\nscript1]
-    '|',
-    '@webview:', // @webview:[(baseUrl|result)@@]script0[\n\s*@@\s*\nscript1]
-    '|',
-    '@css:', // @css:a, @css:a@href, @css:a@text
-    '|',
-    '@json:', // @json:$.books.*, @json:$.name
-    '|',
-    '@http:', // @http:, @http:/api/$result
-    '|',
-    '@xpath:', // @xpath://a, @xpath:/a/@href, @xpath: /a/text()
-    '|',
-    '@match:', // @match:http.*?jpg， @match:url\("?(.*?jpg)@@1
-    '|',
-    '@regex:', // @regexp:h3[\s\S]*?h3
-    '|',
-    '@regexp:', // @regexp:h3[\s\S]*?h3
-    '|',
-    '@filter:', // @filter:lrc, @filter:m3u8, @filter:mp3
-    '|',
-    '@replace:', // @replace:</?em>, @replace:(?=\d+)@@播放量
-    '|',
-    '@encode:', // @encode:utf8|gbk|md5|base64|hmac|sha|sha256|aes
-    '|',
-    '@decode:', // @decode:utf8|gbk|base64|hmac|sha|sha256|aes
-    '|',
-    '^'].join(''), 'g')
+const RULE_TYPE_PATTERN
+  = /@js:|@hetu:|@web:|@webview:|@css:|@json:|@http:|@xpath:|@match:|@regex:|@regexp:|@filter:|@replace:|@encode:|@decode:|^/gi
 
 class SingleRule {
   analyzer: Analyzer
@@ -73,7 +43,7 @@ export class AnalyzerManager {
 
   // 规则从后往前解析
   splitRuleReversed(rule: string) {
-    const ruleMath = Array.from(rule.matchAll(ruleTypePattern)).reverse()
+    const ruleMath = Array.from(rule.matchAll(RULE_TYPE_PATTERN)).reverse()
     const ruleList: SingleRule[] = []
     let end = rule.length
     for (const m of ruleMath) {
@@ -94,12 +64,18 @@ export class AnalyzerManager {
     return ruleList.reverse()
   }
 
-  private async _getElements(r: SingleRule, rule?: string) {
+  async _getElements(r: SingleRule, rule?: string) {
     if (!rule)
       rule = r.rule
 
-    if (r.analyzer instanceof AnalyzerJS)
-      return r.analyzer.getElements(rule)
+    if (r.analyzer instanceof AnalyzerJS) {
+      try {
+        return await r.analyzer.getElements(rule)
+      }
+      catch (error: any) {
+        throw new AnalyzerException(error?.message || '', rule)
+      }
+    }
 
     if (rule.includes('&&')) {
       const result = []
@@ -117,7 +93,12 @@ export class AnalyzerManager {
           return temp
       }
     }
-    return r.analyzer.getElements(rule)
+    try {
+      return await r.analyzer.getElements(rule)
+    }
+    catch (error: any) {
+      throw new AnalyzerException(error?.message || '', rule)
+    }
   }
 
   async getElements(rule: string, body: string): Promise<any[]> {
@@ -166,9 +147,15 @@ export class AnalyzerManager {
     }
   }
 
-  private async _getString(r: SingleRule, rule?: string): Promise<string> {
-    const res = r.analyzer.getString(rule || r.rule)
-    return Array.isArray(res) ? res.join('').trim() : res
+  async _getString(r: SingleRule, rule?: string): Promise<string> {
+    const _rule = rule || r.rule
+    try {
+      const res = await r.analyzer.getString(_rule)
+      return Array.isArray(res) ? res.join('').trim() : res
+    }
+    catch (error: any) {
+      throw new AnalyzerException(error?.message || '', _rule)
+    }
   }
 
   async getString(rule: string, body: string): Promise<string> {
@@ -204,9 +191,14 @@ export class AnalyzerManager {
     return temp
   }
 
-  private async _getStringList(r: SingleRule, rule?: string): Promise<string[]> {
-    const res = await r.analyzer.getStringList(rule || r.rule)
-    return res
+  async _getStringList(r: SingleRule, rule?: string): Promise<string[]> {
+    const _rule = rule || r.rule
+    try {
+      return await r.analyzer.getStringList(rule || r.rule)
+    }
+    catch (error: any) {
+      throw new AnalyzerException(error?.message || '', _rule)
+    }
   }
 
   async getStringList(rule: string, body: string): Promise<string[]> {

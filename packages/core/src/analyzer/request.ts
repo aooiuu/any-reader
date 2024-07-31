@@ -4,6 +4,7 @@ import iconv from 'iconv-lite'
 import contentType from 'content-type'
 import chardet from 'chardet'
 import type { Rule } from '@any-reader/rule-utils'
+import { FetchException } from '../exception/FetchException'
 
 const http = axios.create()
 
@@ -98,6 +99,8 @@ export async function fetch(url: string | object, keyword = '', result = '', rul
         str = load(str, null, true).html()
 
       return str
+    }).catch((err) => {
+      throw new FetchException(err.message, params)
     })
 
   return {

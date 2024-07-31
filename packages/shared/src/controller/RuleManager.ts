@@ -1,7 +1,7 @@
 import md5 from 'blueimp-md5'
-import { analyzerUrl, createAnalyzerManager, createRuleManager } from '@any-reader/core'
 import type { Rule } from '@any-reader/rule-utils'
 import { ContentType } from '@any-reader/rule-utils'
+import { analyzerUrl, createAnalyzerManager, createRuleManager } from '../utils/rule-parse'
 import { Cacheable, Controller, Post } from '../decorators'
 import type { BookChapter } from '../utils/book-manager'
 import bookManager from '../utils/book-manager'

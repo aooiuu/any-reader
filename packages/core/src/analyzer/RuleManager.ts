@@ -2,7 +2,7 @@ import { ContentType } from '@any-reader/rule-utils'
 import type { Rule } from '@any-reader/rule-utils'
 import { JSEngine } from './JSEngine'
 import type { AnalyzerManager } from './AnalyzerManager'
-import { fetch } from './AnalyzerUrl'
+import { fetch } from './request'
 
 export interface SearchItem {
   name: string
@@ -22,9 +22,9 @@ export interface ChapterItem {
 }
 
 export class RuleManager {
-  rule: Rule
-  _nextUrl: Map<string, string>
-  analyzerManager: AnalyzerManager
+  private rule: Rule
+  private _nextUrl: Map<string, string>
+  private analyzerManager: AnalyzerManager
 
   constructor(rule: Rule, analyzerManager: AnalyzerManager) {
     this.rule = rule
@@ -52,6 +52,7 @@ export class RuleManager {
     const { searchUrl } = this.rule
     JSEngine.setEnvironment({
       $keyword: keyword,
+      keyword,
       searchKey: keyword,
     })
     const { body } = await fetch(this.parseUrl(searchUrl), keyword, '', this.rule)
