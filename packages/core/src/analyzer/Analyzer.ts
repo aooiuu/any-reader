@@ -1,5 +1,4 @@
 export abstract class IAnalyzer {
-  static pattern: RegExp
   abstract parse(content: string): void
   abstract getString(rule: string): Promise<string>
   abstract getStringList(rule: string): Promise<string[]>
@@ -7,8 +6,6 @@ export abstract class IAnalyzer {
 }
 
 export class Analyzer implements IAnalyzer {
-  static pattern = /^_____$/
-
   parse(_: string): void {
     throw new Error('Method not implemented.')
   }

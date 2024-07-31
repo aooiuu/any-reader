@@ -138,6 +138,13 @@ export const FORM_ITEMS: FormItem[] = [
   },
 
   {
+    prop: 'contentUrl',
+    label: '地址',
+    show: (item: Rule) => [ContentType.NOVEL, ContentType.VIDEO, ContentType.MANGA].includes(item.contentType),
+    formStep: 4,
+    debug: true
+  },
+  {
     prop: 'contentItems',
     label: '内容',
     show: (item: Rule) => [ContentType.NOVEL, ContentType.VIDEO, ContentType.MANGA].includes(item.contentType),

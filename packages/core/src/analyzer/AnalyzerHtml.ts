@@ -23,7 +23,6 @@ function getHtmlString(html: string) {
 
 export class AnalyzerHtml implements Analyzer {
   _content!: string
-  static pattern: RegExp = /^@css:/i
 
   parse(content: string | string[]) {
     if (Array.isArray(content))

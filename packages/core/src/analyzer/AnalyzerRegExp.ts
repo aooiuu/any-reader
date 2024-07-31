@@ -2,7 +2,6 @@ import type { Analyzer } from './Analyzer'
 
 export class AnalyzerRegExp implements Analyzer {
   _content!: string
-  static pattern: RegExp = /^@regexp:|^@regex:|^:/i
 
   parse(content: string) {
     this._content = content

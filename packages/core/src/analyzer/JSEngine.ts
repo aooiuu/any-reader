@@ -1,7 +1,8 @@
 import vm from 'node:vm'
 import type { Rule } from '@any-reader/rule-utils'
 import { AnalyzerXPath } from '../analyzer/AnalyzerXPath'
-import { __http__ } from './AnalyzerUrl'
+import { JsVmException } from '../exception/JsVmException'
+import { __http__ } from './request'
 
 export class JSEngine {
   static environment: any = {}
@@ -33,9 +34,8 @@ export class JSEngine {
         },
       }))
     }
-    catch (error: any) {
-      console.warn('[vm] 执行JS异常')
-      throw error
+    catch (error) {
+      throw new JsVmException(String(error))
     }
   }
 }

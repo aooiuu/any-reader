@@ -2,7 +2,6 @@ import type { Analyzer } from './Analyzer'
 
 export class AnalyzerReplace implements Analyzer {
   private _content!: string
-  static pattern: RegExp = /^@replace:/i
 
   replaceSmart(replace: string) {
     function _replacement(pattern: string) {

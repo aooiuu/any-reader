@@ -3,7 +3,8 @@
   "version": "1.9.9-beta.1",
   "description": "",
   "scripts": {
-    "build": "unbuild"
+    "build": "unbuild",
+    "stub": "unbuild --stub"
   },
   "type": "module",
   "exports": {
@@ -25,7 +26,7 @@
   "dependencies": {
     "adm-zip": "^0.4.11",
     "base64-js": "^1.5.1",
-    "xml2js": "^0.4.23"
+    "xml2js": "^0.6.2"
   },
   "devDependencies": {
     "@types/adm-zip": "^0.5.5",

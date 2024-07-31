@@ -12,8 +12,10 @@ export const FAVORITES_PATH = path.join(ROOT_PATH, 'favorites.json')
 // 本地文件目录
 export const LOCAL_BOOK_DIR = path.join(ROOT_PATH, 'local-book')
 // 缓存目录
-export const CACHE_DIR = path.join(ROOT_PATH, '.cache')
+export const CACHE_DIR = path.join(ROOT_PATH, 'cache')
 // 规则扩展数据
 export const RULE_EXTRA_PATH = path.join(ROOT_PATH, 'source.extra.json')
 // 数据库路径
 export const DB_PATH = path.join(ROOT_PATH, 'data.db')
+// 日志目录
+export const LOG_DIR = path.join(ROOT_PATH, 'log')
