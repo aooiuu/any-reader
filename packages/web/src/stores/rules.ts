@@ -2,12 +2,18 @@ import { getRules, updateRule } from '@/api';
 import type { Rule } from '@any-reader/rule-utils';
 import { useStorage } from '@vueuse/core';
 
+type RuleFull = {
+  extra: {
+    ping: number;
+  };
+} & Rule;
+
 /**
  * 收藏数据
  */
 export const useRulesStore = defineStore('rules', () => {
   // 已收藏列表
-  const _rows = ref<Rule[]>([]);
+  const _rows = ref<RuleFull[]>([]);
 
   const pindStore = useStorage<string[]>('rule-pind', []);
   function pindRule(rule: Rule) {
