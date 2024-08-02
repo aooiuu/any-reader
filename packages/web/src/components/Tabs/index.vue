@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center md:block overflow-auto mb-5 select-none pr-0 md:pr-10">
+  <div class="ar-tabs relative flex items-center md:block overflow-auto mb-5 select-none pr-0 md:pr-10">
     <div class="mx-2 hover:text-[--ar-color-primary-text] cursor-pointer md:hidden" @click="scrollToLeft">
       <LeftOutlined />
     </div>
@@ -11,7 +11,7 @@
             model === option[props.valueKey] ? ' bg-[--ar-left-bar-active-bg-secondary] text-[--ar-color-primary-text]' : ''
           ]"
         >
-          {{ option[props.labelKey] }}
+          <slot :label="option[props.labelKey]" :item="option">{{ option[props.labelKey] }}</slot>
         </div>
       </div>
     </div>
@@ -44,3 +44,17 @@ function changeTab(option: any) {
   model.value = option[props.valueKey];
 }
 </script>
+
+<style scoped lang="scss">
+.ar-tabs {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &:hover {
+    &::-webkit-scrollbar {
+      display: initial;
+    }
+  }
+}
+</style>

@@ -1,14 +1,27 @@
 <template>
   <ARRuleEmpty v-if="!rulesStore.list.length" />
   <div v-else class="flex flex-col md:flex-row h-full overflow-hidden text-[--ar-color-text] bg-[--ar-main-background]">
-    <div class="flex flex-col md:h-full md:w-140 overflow-hidden bg-[--ar-left-bar-bg-secondary] p-10">
+    <div class="rules-panel relative flex flex-col md:h-full md:w-140 overflow-hidden bg-[--ar-left-bar-bg-secondary] p-10">
       <a-select v-if="typeof route.params.contentType === 'undefined'" v-model:value="contentType" class="mb-10">
         <a-select-option v-for="o in CONTENT_TYPES" :key="o.value" :value="o.value">{{ o.label }}</a-select-option>
       </a-select>
       <a-input v-model:value="searchText" class="mb-10" placeholder="过滤" />
 
       <!-- 分类 -->
-      <ARTabs v-model="ruleId" :options="ruleListDisplay" value-key="id" label-key="name" @update:model-value="changeRule" />
+      <ARTabs v-model="ruleId" :options="ruleListDisplay" value-key="id" label-key="name" @update:model-value="changeRule">
+        <template #default="{ label, item }">
+          <div class="rule-item flex items-center">
+            <div class="flex-1 overflow-hidden whitespace-nowrap text-ellipsis">{{ label }}</div>
+            <PushpinOutlined
+              class="rule-item__pind"
+              :class="{
+                'rule-item__pind--active': rulesStore.pindStore.includes(item.id)
+              }"
+              @click.stop="rulesStore.pindRule(item)"
+            />
+          </div>
+        </template>
+      </ARTabs>
     </div>
 
     <div class="h-full flex flex-col flex-1 ml-5 overflow-hidden pt-10 mr-10">
@@ -68,8 +81,8 @@
   </div>
 </template>
 
-<script setup>
-import { StarOutlined, StarFilled } from '@ant-design/icons-vue';
+<script setup lang="ts">
+import { StarOutlined, StarFilled, PushpinOutlined } from '@ant-design/icons-vue';
 import { CONTENT_TYPES } from '@/constants';
 import { ContentType } from '@any-reader/rule-utils';
 import { discover, discoverMap } from '@/api';
@@ -81,19 +94,13 @@ const router = useRouter();
 const favoritesStore = useFavoritesStore();
 const rulesStore = useRulesStore();
 
-const list = ref([]);
+const list = ref<any[]>([]);
 const contentType = ref(ContentType.NOVEL);
 const ruleId = ref('');
 const rule = ref({});
-const categoryList = ref([]);
+const categoryList = ref<any[]>([]);
 const loading = ref(false);
 const searchText = ref('');
-
-onMounted(() => {
-  if (typeof route.params.contentType !== 'undefined') {
-    contentType.value = +route.params.contentType;
-  }
-});
 
 const ruleListDisplay = computed(() => {
   const filterContentType = rulesStore.list.filter((e) => e.enableDiscover && e.contentType === contentType.value);
@@ -102,7 +109,7 @@ const ruleListDisplay = computed(() => {
 });
 
 // 分类被修改
-async function changeCategory(row) {
+async function changeCategory(row: any) {
   loading.value = true;
   list.value = [];
   loading.value = true;
@@ -115,7 +122,7 @@ async function changeCategory(row) {
 }
 
 // 规则被修改
-async function changeRule(id) {
+async function changeRule(id: string) {
   ruleId.value = id;
   loading.value = true;
   rule.value = categoryList.value.find((e) => e.id === id);
@@ -126,10 +133,11 @@ async function changeRule(id) {
   loading.value = false;
 }
 
+let activated = true;
 watch(
   ruleListDisplay,
   (data) => {
-    if (data.length > 0) {
+    if (data.length > 0 && activated) {
       changeRule(data[0].id);
     }
   },
@@ -137,4 +145,49 @@ watch(
     immediate: true
   }
 );
+
+onMounted(() => {
+  activated = true;
+  if (typeof route.params.contentType !== 'undefined') {
+    contentType.value = +route.params.contentType;
+  }
+});
+
+onActivated(() => {
+  activated = true;
+});
+onDeactivated(() => {
+  activated = false;
+});
 </script>
+
+<style scoped lang="scss">
+.rules-panel {
+  &::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background-color: var(--ar-top-bar-border-bottom);
+  }
+}
+
+.rule-item {
+  &__pind {
+    display: none !important;
+    color: var(--ar-color-text);
+
+    &--active {
+      color: var(--ar-color-primary);
+    }
+  }
+
+  &:hover {
+    .rule-item__pind {
+      display: inline-block !important;
+    }
+  }
+}
+</style>

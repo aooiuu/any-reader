@@ -1,4 +1,3 @@
-import NProgress from 'nprogress';
 import { createRouter, createWebHashHistory } from 'vue-router';
 
 const router = createRouter({
@@ -87,10 +86,6 @@ const router = createRouter({
       ]
     }
   ]
-});
-
-router.afterEach(() => {
-  NProgress.done();
 });
 
 export default router;

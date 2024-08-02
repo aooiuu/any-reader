@@ -9,12 +9,26 @@ import { BaseController } from './BaseController'
 @Controller('/rule-manager')
 export class RuleManager extends BaseController {
   @Post('discover-map')
+  @Cacheable({
+    ttl: 1000 * 60 * 60,
+    cacheKey({ args }) {
+      const { ruleId = '' } = args[0]
+      return `discoverMap@${ruleId}`
+    },
+  })
   async discoverMap({ ruleId }: { ruleId: string }) {
     const rule = await this.getRule(ruleId)
     return await this.discoverMapByRule({ rule })
   }
 
   @Post('discover')
+  @Cacheable({
+    ttl: 1000 * 60 * 60,
+    cacheKey({ args }) {
+      const { ruleId = '', data } = args[0]
+      return `discover@${ruleId}@${md5(data.value)}`
+    },
+  })
   async discover({ ruleId, data }: { ruleId: string; data: any }) {
     const rule = await this.getRule(ruleId)
     return await this.discoverByRule({ rule, data })

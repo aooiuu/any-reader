@@ -227,6 +227,22 @@ const tableColumns = ref<ColumnsType<any>>([
     )
   },
   {
+    title: '置顶',
+    width: 120,
+    align: 'center',
+    filters: [
+      {
+        text: '启用',
+        value: true
+      },
+      {
+        text: '禁用',
+        value: false
+      }
+    ],
+    customRender: ({ record }) => <a-switch checked={rulesStore.pindStore.includes(record.id)} onUpdate:checked={() => rulesStore.pindRule(record)} />
+  },
+  {
     title: '作者',
     dataIndex: 'author',
     align: 'center',
