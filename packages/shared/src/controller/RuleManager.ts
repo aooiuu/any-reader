@@ -3,8 +3,7 @@ import type { Rule } from '@any-reader/rule-utils'
 import { ContentType } from '@any-reader/rule-utils'
 import { analyzerUrl, createAnalyzerManager, createRuleManager } from '../utils/rule-parse'
 import { Cacheable, Controller, Post } from '../decorators'
-import type { BookChapter } from '../utils/book-manager'
-import bookManager from '../utils/book-manager'
+import { createBookParser } from '../utils/book-manager'
 import { BaseController } from './BaseController'
 
 @Controller('/rule-manager')
@@ -38,7 +37,7 @@ export class RuleManager extends BaseController {
     ttl: 1000 * 60 * 60,
     cacheKey({ args }) {
       const { ruleId = '', filePath = '' } = args[0]
-      return `chapter@${ruleId || '__local__'}@${md5(filePath)}`
+      return `chapter@${ruleId || '__local__'}@v2_${md5(filePath)}`
     },
   })
   async getChapter({
@@ -53,7 +52,7 @@ export class RuleManager extends BaseController {
       return await this.chapterByRule({ rule, filePath })
     }
     // 本地
-    return bookManager.getChapter(filePath)
+    return await createBookParser(filePath).getChapter()
   }
 
   @Post('content')
@@ -78,9 +77,7 @@ export class RuleManager extends BaseController {
       return await this.contentByRule({ rule, chapterPath })
     }
     // 本地
-    const content = await bookManager.getContent(
-      toBookChapter(filePath, chapterPath),
-    )
+    const content = await createBookParser(filePath).getContent(chapterPath)
     return {
       content,
     }
@@ -167,19 +164,5 @@ export class RuleManager extends BaseController {
     if (!rule)
       throw new Error('规则不存在')
     return rule
-  }
-}
-
-/**
- * 转换为 BookChapter
- * @param filePath 文件路径
- * @param chapterPath 章节路径
- * @returns
- */
-function toBookChapter(filePath: string, chapterPath: string): BookChapter {
-  return {
-    name: '',
-    chapterPath,
-    filePath,
   }
 }

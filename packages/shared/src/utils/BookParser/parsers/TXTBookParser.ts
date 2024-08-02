@@ -1,38 +1,43 @@
 import * as fs from 'node:fs'
 import iconv from 'iconv-lite'
 import chardet from 'chardet'
-import type { BookChapter } from './BookParser'
-import { BookParser } from './BookParser'
+import type { BookChapter, IBookParser } from '../types'
+import { BaseBookParser } from './BaseBookParser'
 
-// 缓存最后一个文件
-const mCache = new Map<string, string>()
-export default class TXTBookParser extends BookParser {
+export default class TXTBookParser extends BaseBookParser implements IBookParser {
   private chapterPattern = /^第\s{0,4}[\d〇零一二两三四五六七八九十百千万壹贰叁肆伍陆柒捌玖拾佰仟]+?\s{0,4}(?:章|节(?!课)|卷|页|集|部|篇(?!张)).{0,40}$/
 
   private _getText(filePath: string): string {
-    if (mCache.has(filePath))
-      return mCache.get(filePath) as string
-    mCache.clear()
-
     const sourceFile = fs.readFileSync(filePath)
     const encoding = chardet.detect(sourceFile)
     const text = iconv.decode(sourceFile, encoding as string)
-    mCache.set(filePath, text)
     return text
   }
 
   getChapter(): Promise<BookChapter[]> {
-    const text = this._getText(this._filePath)
+    const text = this._getText(this.filePath)
     const lines = text.split(/\r?\n/)
     const result: BookChapter[] = []
+    let firstText: string = ''
 
     for (let i = 0; i < lines.length; i++) {
-      const line = lines[i]
+      const line = lines[i].trim()
+      if (!firstText && line)
+        firstText = line
+
       if (this.chapterPattern.test(line)) {
+        if (result.length === 0 && i > 0) {
+          result.push({
+            name: firstText,
+            chapterPath: '0',
+            filePath: this.filePath,
+          })
+        }
+
         result.push({
-          name: line.trim(),
+          name: line,
           chapterPath: i.toString(),
-          filePath: this._filePath,
+          filePath: this.filePath,
         })
       }
     }
@@ -44,19 +49,19 @@ export default class TXTBookParser extends BookParser {
       {
         name: '正文',
         chapterPath: '',
-        filePath: this._filePath,
+        filePath: this.filePath,
       },
     ])
   }
 
-  getContent(item: BookChapter): Promise<string[]> {
-    const text = this._getText(this._filePath)
+  getContent(chapterPath: string): Promise<string[]> {
+    const text = this._getText(this.filePath)
     const lines = text.split(/\r?\n/)
-    if (item.chapterPath === '')
+    if (chapterPath === '')
       return Promise.resolve([text])
     const result = []
 
-    for (let i = +item.chapterPath + 1; i < lines.length; i++) {
+    for (let i = +chapterPath + 1; i < lines.length; i++) {
       const line = lines[i]
       if (this.chapterPattern.test(line))
         break

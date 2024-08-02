@@ -1,17 +1,9 @@
-import * as path from 'node:path'
-import type { BookParser } from './BookParser'
-import EPubBookParser from './EPubBookParser'
-import TXTBookParser from './TXTBookParser'
+import path from 'node:path'
+import EPubBookParser from './parsers/EPubBookParser'
+import TXTBookParser from './parsers/TXTBookParser'
 
-export * from './BookParser'
+export * from './types'
 
-export {
-  EPubBookParser,
-  TXTBookParser,
-}
-
-export function getBookParser(filePath: string): BookParser {
-  if (path.extname(filePath) === '.txt')
-    return new TXTBookParser(filePath)
-  return new EPubBookParser(filePath)
+export function createBookParser(filePath: string) {
+  return path.extname(filePath) === '.txt' ? new TXTBookParser(filePath) : new EPubBookParser(filePath)
 }

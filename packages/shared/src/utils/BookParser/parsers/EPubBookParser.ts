@@ -1,34 +1,34 @@
 import EPub from '@any-reader/epub'
-import type { BookChapter } from './BookParser'
-import { BookParser } from './BookParser'
+import type { BookChapter, IBookParser } from '../types'
+import { BaseBookParser } from './BaseBookParser'
 
-export default class EPubBookParser extends BookParser {
+export default class EPubBookParser extends BaseBookParser implements IBookParser {
   public getChapter(): Promise<BookChapter[]> {
     return new Promise((resolve, reject) => {
-      const book = new EPub(this._filePath)
+      const book = new EPub(this.filePath)
       book.on('end', () => {
         resolve(
-          book.flow.map((e) => {
+          book.flow.map((e: any) => {
             return {
               name: e.title || e.id,
               chapterPath: e.id,
-              filePath: this._filePath,
+              filePath: this.filePath,
             }
           }),
         )
       })
-      book.on('error', (err) => {
+      book.on('error', (err: any) => {
         reject(err)
       })
       book.parse()
     })
   }
 
-  public getContent(item: BookChapter): Promise<string[]> {
+  public getContent(chapterPath: string): Promise<string[]> {
     return new Promise((resolve, reject) => {
-      const book = new EPub(item.filePath)
+      const book = new EPub(this.filePath)
       book.on('end', () => {
-        book.getChapter(item.chapterPath, (error: any, text: string) => {
+        book.getChapter(chapterPath, (error: any, text: string) => {
           if (error)
             reject(error)
 
