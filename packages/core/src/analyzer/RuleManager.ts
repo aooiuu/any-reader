@@ -56,7 +56,7 @@ export class RuleManager {
       searchKey: keyword,
     })
     const { body } = await fetch(this.parseUrl(searchUrl), keyword, '', this.rule)
-    const list = await this.analyzerManager.getElements(this.rule.searchList, body)
+    const list = await this.getList(body, this.rule.searchList)
 
     const result: SearchItem[] = []
     for (const row of list) {
@@ -71,6 +71,13 @@ export class RuleManager {
     }
 
     return result
+  }
+
+  async getList(str: string, rule: string) {
+    const reversed = rule.startsWith('-')
+    const list = await this.analyzerManager.getElements(reversed ? rule.substring(1) : rule, str)
+    reversed && list.reverse()
+    return list
   }
 
   async getChapter(result: string): Promise<ChapterItem[]> {
@@ -101,11 +108,11 @@ export class RuleManager {
       const roads = await this.analyzerManager.getElements(this.rule.chapterRoads, body)
       // for (const road of roads) {
       const road = roads[0]
-      list = await this.analyzerManager.getElements(this.rule.chapterList, road)
+      list = await this.getList(road, this.rule.chapterList)
       // }
     }
     else {
-      list = await this.analyzerManager.getElements(this.rule.chapterList, body)
+      list = await this.getList(body, this.rule.chapterList)
     }
     const chapterItems: ChapterItem[] = []
     for (const row of list) {
@@ -283,7 +290,7 @@ export class RuleManager {
     }
     else { this._nextUrl.delete(url) }
 
-    const list = await this.analyzerManager.getElements(this.rule.discoverList, body)
+    const list = await this.getList(body, this.rule.discoverList)
     const result = []
 
     for (const item of list) {

@@ -89,6 +89,7 @@ async function runApp(app: App, register: any) {
         return await instance[route.methodName](...arg)
           .then((res: any) => result(res))
           .catch((err: Error) => {
+            logger.error({ arg, route: route.route })
             err.message && logger.error(err.message)
 
             let message = err?.message || 'error'

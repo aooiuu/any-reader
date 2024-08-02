@@ -9,6 +9,7 @@ import { AnalyzerRegExp } from './analyzer/AnalyzerRegExp'
 import { AnalyzerReplace } from './analyzer/AnalyzerReplace'
 import { AnalyzerXPath } from './analyzer/AnalyzerXPath'
 import { RuleManager } from './analyzer/RuleManager'
+import { AnalyzerWeb } from './analyzer/AnalyzerWeb'
 
 export * from './analyzer/RuleManager'
 export * from './analyzer/AnalyzerManager'
@@ -51,6 +52,10 @@ export function createAnalyzerManager(analyzers?: Analyzers[]) {
     {
       pattern: /^@replace:/i,
       Analyzer: AnalyzerReplace,
+    },
+    {
+      pattern: /^@web:|@webview:/i,
+      Analyzer: AnalyzerWeb,
     },
   ])
 }

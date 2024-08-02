@@ -34,7 +34,7 @@ log4js.configure({
       type: 'dateFile',
       filename: path.resolve(LOG_DIR, 'application.log'),
       encoding: 'utf-8',
-      pattern: '.yyyy-MM-dd',
+      pattern: 'yyyy-MM-dd',
       keepFileExt: true,
       alwaysIncludePattern: true,
       layout: {
