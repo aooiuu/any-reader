@@ -21,9 +21,9 @@
     <SettingRow title="背景颜色">
       <input v-model="settingStore.data.readStyle.backgroundColor" type="color" style="border: solid 1px rgba(0, 0, 0, 0.1)" />
     </SettingRow>
-    <div class="flex items-center h-44 lh-44 px-10 b-b b-b-1 b-b-solid b-b-[--ar-color-border]">
+    <div class="h-44 flex items-center b-b b-b-1 b-b-[--ar-color-border] b-b-solid px-10 lh-44">
       <div class="flex-1">推荐背景色</div>
-      <div class="flex gap-4 flex-wrap">
+      <div class="flex flex-wrap gap-4">
         <div
           v-for="color in THEME"
           :key="color.label"
@@ -31,7 +31,7 @@
             background: color.color
           }"
           :title="color.label"
-          class="w-30 h-30 rounded-4 cursor-pointer hover:b-2 b-0"
+          class="h-30 w-30 cursor-pointer b-0 rounded-4 hover:b-2"
           @click="changeTheme(color)"
         />
       </div>

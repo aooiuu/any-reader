@@ -1,7 +1,7 @@
 <template>
   <ARRuleEmpty v-if="!rulesStore.list.length" />
-  <div v-else class="flex flex-col md:flex-row h-full overflow-hidden text-[--ar-color-text] bg-[--ar-main-background]">
-    <div class="rules-panel relative flex flex-col md:h-full md:w-140 overflow-hidden bg-[--ar-left-bar-bg-secondary] p-10">
+  <div v-else class="h-full flex flex-col overflow-hidden bg-[--ar-main-background] text-[--ar-color-text] sm:flex-row">
+    <div class="rules-panel relative flex flex-col overflow-hidden bg-[--ar-left-bar-bg-secondary] p-10 pb-0 sm:h-full sm:w-140 sm:pb-10">
       <a-select v-if="typeof route.params.contentType === 'undefined'" v-model:value="contentType" class="mb-10">
         <a-select-option v-for="o in CONTENT_TYPES" :key="o.value" :value="o.value">{{ o.label }}</a-select-option>
       </a-select>
@@ -11,30 +11,32 @@
       <ARTabs v-model="ruleId" :options="ruleListDisplay" value-key="id" label-key="name" @update:model-value="changeRule">
         <template #default="{ label, item }">
           <div class="rule-item flex items-center">
-            <div class="flex-1 overflow-hidden whitespace-nowrap text-ellipsis">{{ label }}</div>
-            <PushpinOutlined
-              class="rule-item__pind"
-              :class="{
-                'rule-item__pind--active': rulesStore.pindStore.includes(item.id)
-              }"
-              @click.stop="rulesStore.pindRule(item)"
-            />
+            <div class="flex-1 overflow-hidden text-ellipsis whitespace-nowrap pr-5">{{ label }}</div>
+            <div class="hidden sm:block">
+              <PushpinOutlined
+                class="rule-item__pind"
+                :class="{
+                  'rule-item__pind--active': rulesStore.pindStore.includes(item.id)
+                }"
+                @click.stop="rulesStore.pindRule(item)"
+              />
+            </div>
           </div>
         </template>
       </ARTabs>
     </div>
 
-    <div class="h-full flex flex-col flex-1 ml-5 overflow-hidden pt-10 mr-10">
+    <div class="mx-10 h-full flex flex-1 flex-col overflow-hidden pt-0 sm:pt-10">
       <ARCategory :list="categoryList" @change="changeCategory" />
-      <div v-if="loading" class="flex-1 flex items-center justify-center">
+      <div v-if="loading" class="flex flex-1 items-center justify-center">
         <a-spin />
       </div>
       <div v-else-if="list.length" class="mt-10 flex-1 overflow-auto">
-        <div class="flex overflow-auto justify-center flex-wrap gap-6">
+        <div class="flex flex-wrap justify-center gap-6 overflow-auto">
           <div
             v-for="(row, idx) in list"
             :key="idx"
-            class="node relative flex flex-col flex-shrink-0 w-102 cursor-pointer hover:op-70"
+            class="node relative w-102 flex flex-shrink-0 flex-col cursor-pointer hover:op-70"
             @click="
               router.push({
                 path: '/chapter',
@@ -47,14 +49,14 @@
               })
             "
           >
-            <div class="w-102 h-136 mb-5 rounded-5 overflow-hidden">
-              <ARCover :src="row.cover" :preview="false" alt="" srcset="" class="w-102 h-136" width="100%" height="100%" fit="cover" />
+            <div class="mb-5 h-136 w-102 overflow-hidden rounded-5">
+              <ARCover :src="row.cover" :preview="false" alt="" srcset="" class="h-136 w-102" width="100%" height="100%" fit="cover" />
             </div>
-            <div class="overflow-hidden whitespace-nowrap text-ellipsis mb-2">{{ row.name }}</div>
-            <div class="overflow-hidden whitespace-nowrap text-ellipsis text-12 op-70">{{ row.author }}</div>
+            <div class="mb-2 overflow-hidden text-ellipsis whitespace-nowrap">{{ row.name }}</div>
+            <div class="overflow-hidden text-ellipsis whitespace-nowrap text-12 op-70">{{ row.author }}</div>
 
             <div
-              class="star invisible absolute top-5 right-5 px-2 py-2 rounded-10 bg-[#000000cc] flex items-center justify-center"
+              class="star invisible absolute right-5 top-5 flex items-center justify-center rounded-10 bg-[#000000cc] px-2 py-2"
               @click.stop="
                 favoritesStore.star({
                   ...row,
@@ -74,7 +76,7 @@
               <StarOutlined v-else :size="14" />
             </div>
           </div>
-          <div v-for="i in 10" :key="i" class="w-102 invisible" />
+          <div v-for="i in 10" :key="i" class="invisible w-102" />
         </div>
       </div>
     </div>

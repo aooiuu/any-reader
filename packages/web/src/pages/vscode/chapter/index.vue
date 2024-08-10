@@ -1,13 +1,13 @@
 <template>
-  <div class="w-full h-full flex flex-col overflow-hidden">
-    <div v-if="loading" class="flex flex-1 justify-center items-center">
+  <div class="h-full w-full flex flex-col overflow-hidden">
+    <div v-if="loading" class="flex flex-1 items-center justify-center">
       <vscode-progress-ring></vscode-progress-ring>
     </div>
     <template v-else>
       <TreeItem v-if="ruleId" class="flex items-center" @click="star">
         <StarFilled v-if="isStarred" :size="14" />
         <StarOutlined v-else :size="14" />
-        <span class="ml-2 mb-2">{{ isStarred ? '移出收藏' : '加入收藏' }}</span>
+        <span class="mb-2 ml-2">{{ isStarred ? '移出收藏' : '加入收藏' }}</span>
       </TreeItem>
       <div ref="chaptersRef" class="flex-1 overflow-auto">
         <TreeItem

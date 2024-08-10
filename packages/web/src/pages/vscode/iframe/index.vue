@@ -1,5 +1,5 @@
 <template>
-  <iframe class="w-full h-full border-none" :src="url" />
+  <iframe class="h-full w-full border-none" :src="url" />
 </template>
 
 <script setup>

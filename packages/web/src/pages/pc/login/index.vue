@@ -1,7 +1,7 @@
 <template>
   <div class="h-full w-full overflow-hidden bg-[#1f1f1f] text-16">
-    <div class="max-w-400 mt-20vh mx-a bg-[#252526] p-20 rounded-4">
-      <div class="text-[#cccccc] mb-20 b-b-1 b-b-solid b-b-[#333333] pb-20">登录</div>
+    <div class="mx-a mt-20vh max-w-400 rounded-4 bg-[#252526] p-20">
+      <div class="mb-20 b-b-1 b-b-[#333333] b-b-solid pb-20 text-[#cccccc]">登录</div>
       <div class="flex gap-6">
         <a-input v-model:value="inputText" type="password"></a-input>
         <a-button :loading="loading" @click="submit">确定</a-button>

@@ -1,11 +1,11 @@
 <template>
-  <div class="flex-1 overflow-hidden flex flex-col">
-    <div class="flex item-center">
-      <a-input v-model:value="keyword" class="flex-1 max-w-200" />
+  <div class="flex flex-1 flex-col overflow-hidden">
+    <div class="item-center flex">
+      <a-input v-model:value="keyword" class="max-w-200 flex-1" />
       <a-button class="ml-5" @click="search">搜索</a-button>
     </div>
 
-    <div class="flex-1 overflow-auto my-20">
+    <div class="my-20 flex-1 overflow-auto">
       <a-spin :spinning="loading" class="w-full">
         <div v-if="searchList.length">搜索结果:</div>
         <a-button v-for="item in searchList" :key="item.id" class="block" type="link" @click="chapterByRule(item)">

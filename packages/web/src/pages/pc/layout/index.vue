@@ -1,47 +1,47 @@
 <template>
   <BaseLayout>
-    <div class="w-full h-full flex flex-col overflow-hidden text-[--ar-color-text]">
+    <div class="h-full w-full flex flex-col overflow-hidden text-[--ar-color-text]">
       <div
-        class="app-region-drag hidden sm:flex text-12 justify-center items-center h-34 lh-34 border-b-1 border-b-solid border-b-[--ar-top-bar-border-bottom] pr-2 bg-[--ar-top-bar-bg] text-[--ar-top-bar-text]"
+        class="app-region-drag hidden h-34 items-center justify-center border-b-1 border-b-[--ar-top-bar-border-bottom] border-b-solid bg-[--ar-top-bar-bg] pr-2 text-12 text-[--ar-top-bar-text] lh-34 sm:flex"
       >
         <div class="topbar__left w-20%" />
-        <div class="w-60% flex gap-4 items-center justify-center flex-1">
+        <div class="w-60% flex flex-1 items-center justify-center gap-4">
           <span
             v-if="route.path !== '/books'"
-            class="w-22 codicon codicon-home cursor-pointer hover:op-70 app-region-none"
+            class="codicon codicon-home app-region-none w-22 cursor-pointer hover:op-70"
             @click="router.push('/books')"
           ></span>
-          <span class="w-22 codicon codicon-arrow-left cursor-pointer hover:op-70 app-region-none" @click="router.back"></span>
-          <span class="w-22 codicon codicon-arrow-right cursor-pointer hover:op-70 app-region-none" @click="router.forward"></span>
+          <span class="codicon app-region-none codicon-arrow-left w-22 cursor-pointer hover:op-70" @click="router.back"></span>
+          <span class="codicon app-region-none codicon-arrow-right w-22 cursor-pointer hover:op-70" @click="router.forward"></span>
           <div
-            class="topbar__cmd app-region-none box-content flex items-center justify-center ml-6 w-38vw max-w-600 bg-[--ar-cmd-bg] border-1 border-solid rounded-6 h-22 border-[--ar-cmd-border] cursor-pointer hover:bg-[--ar-cmd-active-bg] px-6"
+            class="app-region-none topbar__cmd ml-6 box-content h-22 max-w-600 w-38vw flex cursor-pointer items-center justify-center border-1 border-[--ar-cmd-border] rounded-6 border-solid bg-[--ar-cmd-bg] px-6 hover:bg-[--ar-cmd-active-bg]"
           >
             <div
               v-if="route.path === '/content'"
-              class="w-full h-full flex items-center justify-center"
+              class="h-full w-full flex items-center justify-center"
               :title="readStore.title"
               @click.stop="openChaptersBox.emit"
             >
-              <span class="overflow-hidden whitespace-nowrap text-ellipsis">{{ readStore.title }}</span>
+              <span class="overflow-hidden text-ellipsis whitespace-nowrap">{{ readStore.title }}</span>
             </div>
-            <div v-else class="w-full h-full flex items-center justify-center" @click.stop="searchBox.emit">
+            <div v-else class="h-full w-full flex items-center justify-center" @click.stop="searchBox.emit">
               <span class="codicon codicon-search mr-10"></span>
-              <span class="overflow-hidden whitespace-nowrap text-ellipsis">搜索</span>
+              <span class="overflow-hidden text-ellipsis whitespace-nowrap">搜索</span>
             </div>
           </div>
         </div>
-        <div class="w-20% h-full flex gap-4 items-center justify-end">
+        <div class="h-full w-20% flex items-center justify-end gap-4">
           <!-- 布局 -->
           <div
             v-if="PLATFORM === 'electron'"
-            class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--ar-top-bar-hover-background] app-region-none"
+            class="app-region-none h-full w-40 flex cursor-pointer items-center justify-center hover:bg-[--ar-top-bar-hover-background]"
           >
             <span
               :class="['codicon', settingStore.data.pinned ? 'codicon-pinned-dirty' : 'codicon-pinned']"
               @click="settingStore.data.pinned = !settingStore.data.pinned"
             />
           </div>
-          <div class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--ar-top-bar-hover-background] app-region-none">
+          <div class="app-region-none h-full w-40 flex cursor-pointer items-center justify-center hover:bg-[--ar-top-bar-hover-background]">
             <span
               :class="['codicon', settingStore.data.sidebar === 'hidden' ? 'codicon-layout-sidebar-left-off' : 'codicon-layout-sidebar-left']"
               @click="changeSidebar"
@@ -50,13 +50,13 @@
           <template v-if="PLATFORM === 'electron'">
             <!-- 窗口 -->
             <div
-              class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--ar-top-bar-hover-background] app-region-none"
+              class="app-region-none h-full w-40 flex cursor-pointer items-center justify-center hover:bg-[--ar-top-bar-hover-background]"
               @click="minimize"
             >
               <span class="codicon codicon-chrome-minimize" />
             </div>
             <div
-              class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--ar-top-bar-hover-background] fullscreen app-region-none"
+              class="app-region-none fullscreen h-full w-40 flex cursor-pointer items-center justify-center hover:bg-[--ar-top-bar-hover-background]"
               @click="maximize"
             >
               <span class="codicon codicon-chrome-maximize"></span>
@@ -65,18 +65,24 @@
           <div
             v-if="PLATFORM !== 'utools'"
             title="退出"
-            class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--ar-top-bar-hover-background] app-region-none"
+            class="app-region-none h-full w-40 flex cursor-pointer items-center justify-center hover:bg-[--ar-top-bar-hover-background]"
             @click="onExit"
           >
             <span class="codicon codicon-chrome-close"></span>
           </div>
         </div>
       </div>
-      <div class="flex flex-1 overflow-auto flex-col-reverse sm:flex-row">
-        <!-- 侧边栏 -->
+      <div class="relative flex flex-1 flex-col overflow-auto sm:flex-row">
+        <!-- 侧边栏 - 小屏 -->
+        <div class="h-34 flex items-center bg-[--ar-main-background] px-10 lh-34 sm:hidden">
+          <div @click="navsShow = true"><MenuOutlined class="mr-5" /></div>
+          <div class="flex flex-1 items-center justify-center">any-reader</div>
+          <SearchOutlined @click="navTo('/search')" />
+        </div>
+        <!-- 侧边栏 - 大屏 -->
         <div
           v-if="settingStore.data.sidebar !== 'hidden'"
-          class="flex w-full flex flex-row sm:w-48 sm:flex-col py-10 text-24 border-r-1 border-r-solid border-r-[--ar-top-bar-border-bottom] bg-[--ar-left-bar-bg] text-[--ar-left-bar-text]"
+          class="hidden w-full flex-row border-r-1 border-r-[--ar-top-bar-border-bottom] border-r-solid bg-[--ar-left-bar-bg] py-10 text-24 text-[--ar-left-bar-text] sm:w-48 sm:flex sm:flex-col"
         >
           <!-- 收藏 -->
           <div
@@ -97,6 +103,7 @@
             <span :class="['codicon !text-24px codicon-settings-gear']"></span>
           </div>
         </div>
+        <!-- 路由 -->
         <div class="flex-1 overflow-hidden bg-[--ar-main-background]">
           <RouterView v-slot="{ Component, route: _route }">
             <KeepAlive>
@@ -105,6 +112,44 @@
             <component :is="Component" v-if="!_route.meta.keepAlive" :key="_route.path" />
           </RouterView>
         </div>
+        <!-- 移动端菜单 -->
+        <div
+          v-if="navsShow"
+          class="absolute bottom-0 left-0 right-0 top-0 z-10 bg-[#00000066] text-[--ar-left-bar-text]"
+          @click="navsShow = false"
+        ></div>
+        <Transition
+          :duration="3000"
+          enter-from-class="op-0 translate-x--100"
+          enter-to-class="op-100 translate-x-0"
+          leave-from-class="op-100 translate-x-0"
+          leave-to-class="op-0 translate-x--100"
+        >
+          <div
+            v-if="navsShow"
+            class="absolute bottom-0 left-0 right-0 top-0 z-11 h-full w-fit flex flex-col bg-[--ar-left-bar-bg] px-20 py-20 transition-all ease"
+          >
+            <div
+              v-for="nav in navs"
+              :key="nav.path"
+              :title="nav.title"
+              :class="[
+                'h-34 lh-34 flex items-center justify-center hover:text-[--ar-color-primary] cursor-pointer',
+                route.path === nav.path ? 'text-[--ar-color-primary]' : ''
+              ]"
+              @click="navTo(nav.path)"
+            >
+              <span :class="['codicon !text-24px mr-10', nav.icon]"></span>
+              {{ nav.title }}
+            </div>
+            <div class="flex-1"></div>
+
+            <div :class="['h-34 lh-34 flex items-center justify-center hover:text-[--ar-color-text] cursor-pointer']" @click="openSetting">
+              <span :class="['codicon !text-24px codicon-settings-gear mr-10']"></span>
+              设置
+            </div>
+          </div>
+        </Transition>
       </div>
     </div>
     <Search />
@@ -122,7 +167,7 @@ import { useReadStore } from '@/stores/read';
 import Setting from '@/components/Setting/index.vue';
 import Search from '@/components/Search/index.vue';
 import BaseLayout from './BaseLayout.vue';
-import { SettingOutlined } from '@ant-design/icons-vue';
+import { SettingOutlined, MenuOutlined, SearchOutlined } from '@ant-design/icons-vue';
 
 const { modal } = App.useApp();
 const route = useRoute();
@@ -145,6 +190,7 @@ const navs = [
   { icon: 'codicon-music', path: '/category/3', title: '音频' },
   { icon: 'codicon-extensions', path: '/rules', title: '规则' }
 ];
+const navsShow = ref(false);
 
 function openSetting() {
   modal.confirm({
@@ -167,5 +213,10 @@ async function onExit() {
     await logout();
     window.location.reload();
   }
+}
+
+function navTo(path: string) {
+  navsShow.value = false;
+  router.push(path);
 }
 </script>

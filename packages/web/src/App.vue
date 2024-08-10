@@ -6,7 +6,7 @@
     }"
     :locale="zhCN"
   >
-    <a-app class="flex flex-col h-full overflow-hidden">
+    <a-app class="h-full flex flex-col overflow-hidden">
       <div class="flex-1 overflow-auto">
         <RouterView />
       </div>

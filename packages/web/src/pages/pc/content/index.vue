@@ -1,8 +1,8 @@
 <template>
-  <div class="w-full h-full flex flex-col overflow-hidden">
+  <div class="h-full w-full flex flex-col overflow-hidden">
     <div
       id="text-container"
-      class="flex-1 p-10 whitespace-pre-wrap lh-1.5em text-[#b3b3b3] break-words flex flex-col overflow-hidden"
+      class="flex flex-1 flex-col overflow-hidden whitespace-pre-wrap break-words p-10 text-[#b3b3b3] lh-1.5em"
       :style="{
         fontSize: settingStore.data.readStyle.fontSize + 'px',
         lineHeight: settingStore.data.readStyle.lineHeight,
@@ -12,16 +12,16 @@
       }"
     >
       <!-- 加载 -->
-      <a-spin v-if="loading" :spinning="loading" class="w-full h-full !flex items-center justify-center" />
+      <a-spin v-if="loading" :spinning="loading" class="h-full w-full items-center justify-center !flex" />
       <!-- 阅读区域 -->
-      <div ref="contentRef" class="md:mx-60 indent-2em h-full flex-1 flex flex-col overflow-y-auto relative">
+      <div ref="contentRef" class="relative h-full flex flex-1 flex-col overflow-y-auto indent-2em sm:mx-60">
         <!-- 漫画 -->
         <template v-if="contentType === ContentType.MANGA">
           <img v-for="(row, idx) in content" :key="idx" :src="row" />
         </template>
         <!-- 小说 -->
         <template v-else>
-          <div v-for="(row, idx) in content" :key="idx" class="center-row ease transition-300 transition-color" :data-idx="idx" v-html="row"></div>
+          <div v-for="(row, idx) in content" :key="idx" class="center-row transition-300 transition-color ease" :data-idx="idx" v-html="row"></div>
         </template>
 
         <!-- 上下章节按钮 -->
@@ -39,15 +39,15 @@
           </a-button-group>
         </div>
       </div>
-      <a-back-top class="hidden md:block" :visibility-height="100" :target="topTarget" />
+      <a-back-top class="hidden sm:block" :visibility-height="100" :target="topTarget" />
     </div>
   </div>
 
   <!-- 目录 -->
-  <div v-if="chaptersVisible" class="z-10 fixed top-0 left-0 right-0 bottom-0 bg-[#000000cc]">
+  <div v-if="chaptersVisible" class="fixed bottom-0 left-0 right-0 top-0 z-10 bg-[#000000cc]">
     <div
       ref="chaptersRef"
-      class="fixed top-0 left-0 right-0 md:top-5 md:left-50% md:translate-x--50% md:rounded-4 md:w-400 overflow-hidden h-400 flex flex-col"
+      class="fixed left-0 right-0 top-0 h-400 flex flex-col overflow-hidden sm:left-50% sm:top-5 sm:w-400 sm:translate-x--50% sm:rounded-4"
       :style="{
         boxShadow: '0px 0px 5px 5px rgba(0, 0, 0, 0.2)',
         color: settingStore.data.readStyle.textColor,
@@ -55,7 +55,7 @@
       }"
     >
       <div
-        class="app-region-drag p-10 cursor-pointer text-center overflow-hidden whitespace-nowrap text-ellipsis b-b-1 b-b-solid b-b-[#00000033] pb-4 mb-4"
+        class="app-region-drag mb-4 cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap b-b-1 b-b-[#00000033] b-b-solid p-10 pb-4 text-center"
         @click="scrollIntoViewChapter"
       >
         {{ readStore.title || '-' }}

@@ -1,32 +1,32 @@
 <template>
   <BaseLayout>
-    <div class="w-full h-full flex flex-col overflow-hidden">
+    <div class="h-full w-full flex flex-col overflow-hidden">
       <div
-        class="app-region-drag hidden sm:flex text-12 justify-center items-center h-34 lh-34 border-b-1 border-b-solid border-b-[--ar-top-bar-border-bottom] pr-2 bg-[--ar-top-bar-bg] text-[--ar-top-bar-text]"
+        class="app-region-drag hidden h-34 items-center justify-center border-b-1 border-b-[--ar-top-bar-border-bottom] border-b-solid bg-[--ar-top-bar-bg] pr-2 text-12 text-[--ar-top-bar-text] lh-34 sm:flex"
       >
         <div class="topbar__left w-20%" />
-        <div class="w-60% flex gap-4 items-center justify-center flex-1 text-[--ar-color-text]"></div>
-        <div class="w-20% h-full flex gap-4 items-center justify-end text-[--ar-color-text]">
+        <div class="w-60% flex flex-1 items-center justify-center gap-4 text-[--ar-color-text]"></div>
+        <div class="h-full w-20% flex items-center justify-end gap-4 text-[--ar-color-text]">
           <template v-if="PLATFORM === 'electron'">
             <!-- 布局 -->
-            <div class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--ar-top-bar-hover-background] app-region-none">
+            <div class="app-region-none h-full w-40 flex cursor-pointer items-center justify-center hover:bg-[--ar-top-bar-hover-background]">
               <span :class="['codicon', pinned ? 'codicon-pinned-dirty' : 'codicon-pinned']" @click="changePinned" />
             </div>
             <!-- 窗口 -->
             <div
-              class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--ar-top-bar-hover-background] app-region-none"
+              class="app-region-none h-full w-40 flex cursor-pointer items-center justify-center hover:bg-[--ar-top-bar-hover-background]"
               @click="minimize"
             >
               <span class="codicon codicon-chrome-minimize" />
             </div>
             <div
-              class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--ar-top-bar-hover-background] fullscreen app-region-none"
+              class="fullscreen app-region-none h-full w-40 flex cursor-pointer items-center justify-center hover:bg-[--ar-top-bar-hover-background]"
               @click="maximize"
             >
               <span class="codicon codicon-chrome-maximize"></span>
             </div>
             <div
-              class="w-40 h-full flex justify-center items-center cursor-pointer hover:bg-[--ar-top-bar-hover-background] app-region-none"
+              class="app-region-none h-full w-40 flex cursor-pointer items-center justify-center hover:bg-[--ar-top-bar-hover-background]"
               @click="exit"
             >
               <span class="codicon codicon-chrome-close"></span>

@@ -1,6 +1,6 @@
 <template>
   <div class="flex-1 overflow-auto">
-    <div ref="monacoEl" class="w-full h-full"></div>
+    <div ref="monacoEl" class="h-full w-full"></div>
   </div>
 </template>
 

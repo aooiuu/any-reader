@@ -7,10 +7,10 @@
     :file-path="item.url"
     :rule-id="item.ruleId"
     :author="item.author"
-    class="node mr-10 mb-10"
+    class="node mb-10 mr-10"
   >
     <div
-      class="star invisible absolute top-5 right-5 px-2 py-2 rounded-10 flex items-center justify-center text-[--ar-color-text]"
+      class="star invisible absolute right-5 top-5 flex items-center justify-center rounded-10 px-2 py-2 text-[--ar-color-text]"
       @click.stop="favoritesStore.unstar({ url: item.url, ruleId: item.ruleId })"
     >
       <StarFilled v-if="favoritesStore.starred(item)" :size="14" />

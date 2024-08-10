@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full flex flex-col">
+  <div class="h-full w-full flex flex-col">
     <vscode-panels>
       <vscode-panel-tab v-for="(nav, idx) in navs" :id="nav.title" :key="nav.title" @click="activeNavIdx = idx">{{ nav.title }}</vscode-panel-tab>
       <vscode-panel-view v-for="nav in navs" :id="nav.title" :key="nav.title" class="hidden"></vscode-panel-view>

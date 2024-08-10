@@ -13,7 +13,7 @@
       :cover="item.cover"
       :name="item.name"
       :author="item.author"
-      class="mr-10 mb-10"
+      class="mb-10 mr-10"
       :file-path="item.path"
     />
   </template>

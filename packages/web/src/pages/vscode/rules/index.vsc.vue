@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full flex flex-col overflow-hidden">
+  <div class="h-full w-full flex flex-col overflow-hidden">
     <div class="p-10">
       <vscode-dropdown placeholder="全部规则" class="w-full" :value="'' + contentType" @input="(event) => (contentType = +event.target.value)">
         <vscode-option v-for="item in CONTENT_TYPES" :key="item.value" :value="item.value">
@@ -12,7 +12,7 @@
       <template v-if="rulesStore.list.length">
         <TreeItem v-for="item in rules" :key="item.id">
           <div class="reader-node flex items-center">
-            <div class="flex-1 overflow-hidden whitespace-nowrap text-ellipsis">{{ item.name }}</div>
+            <div class="flex-1 overflow-hidden text-ellipsis whitespace-nowrap">{{ item.name }}</div>
             <div
               class="codicon codicon-link-external"
               @click.stop="executeCommand({ command: 'any-reader.openUrl', data: ['/iframe?url=' + item.host] })"
@@ -20,7 +20,7 @@
           </div>
         </TreeItem>
       </template>
-      <div v-else class="my-10 h-full flex flex-col justify-center items-center px-10" @drop="dropRules.drop" @dragover.prevent @dragenter.prevent>
+      <div v-else class="my-10 h-full flex flex-col items-center justify-center px-10" @drop="dropRules.drop" @dragover.prevent @dragenter.prevent>
         <div v-if="dropRules.loading.value">导入中...</div>
         <div v-else>
           您还没有配置规则

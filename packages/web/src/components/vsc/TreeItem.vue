@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-full text-[--foreground] h-22 lh-22 hover:bg-[--list-hoverBackground] cursor-pointer px-8 overflow-hidden whitespace-nowrap text-ellipsis"
+    class="h-22 w-full cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap px-8 text-[--foreground] lh-22 hover:bg-[--list-hoverBackground]"
   >
     <slot />
   </div>

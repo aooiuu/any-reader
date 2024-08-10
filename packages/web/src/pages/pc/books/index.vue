@@ -1,7 +1,7 @@
 <template>
-  <div class="w-full h-full overflow-hidden flex flex-col sm:flex-row">
+  <div class="h-full w-full flex flex-col overflow-hidden sm:flex-row">
     <div
-      class="w-full flex sm:block sm:w-120 text-[--ar-color-text-secondary] bg-[--ar-left-bar-bg-secondary] p-10 border-r-1 border-r-solid border-r-[--ar-top-bar-border-bottom]"
+      class="w-full flex border-r-1 border-r-[--ar-top-bar-border-bottom] border-r-solid bg-[--ar-left-bar-bg-secondary] p-10 text-[--ar-color-text-secondary] sm:block sm:w-120"
     >
       <div v-for="(nav, idx) in navs" :key="nav.title" class="" @click="activeNavIdx = idx">
         <div
@@ -14,9 +14,9 @@
         </div>
       </div>
     </div>
-    <div class="flex-1 overflow-auto p-10 flex flex-wrap justify-center items-start content-start">
+    <div class="flex flex-1 flex-wrap content-start items-start justify-center overflow-auto p-10">
       <component :is="navs[activeNavIdx].component" />
-      <div v-for="i in 10" :key="i" class="w-102 invisible mr-10 mb-10" />
+      <div v-for="i in 10" :key="i" class="invisible mb-10 mr-10 w-102" />
     </div>
   </div>
 </template>
