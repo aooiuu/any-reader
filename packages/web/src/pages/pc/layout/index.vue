@@ -76,7 +76,7 @@
         <!-- 侧边栏 - 小屏 -->
         <div class="h-34 flex items-center bg-[--ar-main-background] px-10 lh-34 sm:hidden">
           <div @click="navsShow = true"><MenuOutlined class="mr-5" /></div>
-          <div class="flex flex-1 items-center justify-center">any-reader</div>
+          <div class="app-region-drag flex flex-1 items-center justify-center">any-reader</div>
           <SearchOutlined @click="navTo('/search')" />
         </div>
         <!-- 侧边栏 - 大屏 -->

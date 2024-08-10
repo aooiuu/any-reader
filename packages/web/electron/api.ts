@@ -4,6 +4,7 @@ import { BrowserWindow, app } from 'electron';
 import EasyPostMessage from 'easy-post-message';
 import Adapter from 'easy-post-message/electron-adapter';
 import { createApp } from '@any-reader/shared';
+import { useDevTools } from './useDevTools';
 
 export const ROOT_PATH = path.join(os.homedir(), '.any-reader');
 export const CONFIG_PATH = path.join(ROOT_PATH, 'config.desktop.json');
@@ -60,6 +61,8 @@ export function createAPI() {
         webSecurity: false
       }
     });
+
+    useDevTools(window);
 
     if (process.env.VITE_DEV_SERVER_URL) {
       window.loadURL(process.env.VITE_DEV_SERVER_URL + '/#' + data.url);
