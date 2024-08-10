@@ -1,6 +1,11 @@
 import { app, BrowserWindow, Menu } from 'electron';
 import { createAPI } from './api';
 import { useAutoUpdater } from './updater';
+import { useDevTools } from './useDevTools';
+
+app.commandLine.appendSwitch('enable-features', 'PlatformHEVCDecoderSupport');
+app.commandLine.appendSwitch('ignore-certificate-errors');
+app.commandLine.appendSwitch('disable-web-security');
 
 app.whenReady().then(async () => {
   const win = new BrowserWindow({
@@ -14,6 +19,7 @@ app.whenReady().then(async () => {
   });
 
   createAPI();
+  useDevTools(win);
 
   // You can use `process.env.VITE_DEV_SERVER_URL` when the vite command is called `serve`
   if (process.env.VITE_DEV_SERVER_URL) {
