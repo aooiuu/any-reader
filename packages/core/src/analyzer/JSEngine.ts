@@ -17,6 +17,9 @@ export class JSEngine {
       command = `${rule.loadJs};${command}`
     try {
       return vm.runInNewContext(command, vm.createContext({
+        // 暂时不考虑使用了 `window` 方法的规则, 理论上规则不应该使用 `window` 变量
+        window: {},
+
         ...JSEngine.environment,
         ...context,
 
