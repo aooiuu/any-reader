@@ -1,14 +1,12 @@
 <template>
   <BaseLayout>
-    <div class="h-full w-full flex flex-col overflow-hidden text-[--ar-color-text]">
-      <div
-        class="app-region-drag hidden h-34 items-center justify-center border-b-1 border-b-[--ar-top-bar-border-bottom] border-b-solid bg-[--ar-top-bar-bg] pr-2 text-12 text-[--ar-top-bar-text] lh-34 sm:flex"
-      >
+    <div class="relative h-full w-full flex flex-col overflow-hidden text-[--ar-color-text]">
+      <TopContainer>
         <div class="topbar__left w-20%" />
         <div class="w-60% flex flex-1 items-center justify-center gap-4">
           <span
             v-if="route.path !== '/books'"
-            class="codicon codicon-home app-region-none w-22 cursor-pointer hover:op-70"
+            class="codicon app-region-none codicon-home w-22 cursor-pointer hover:op-70"
             @click="router.push('/books')"
           ></span>
           <span class="codicon app-region-none codicon-arrow-left w-22 cursor-pointer hover:op-70" @click="router.back"></span>
@@ -30,48 +28,8 @@
             </div>
           </div>
         </div>
-        <div class="h-full w-20% flex items-center justify-end gap-4">
-          <!-- 布局 -->
-          <div
-            v-if="PLATFORM === 'electron'"
-            class="app-region-none h-full w-40 flex cursor-pointer items-center justify-center hover:bg-[--ar-top-bar-hover-background]"
-          >
-            <span
-              :class="['codicon', settingStore.data.pinned ? 'codicon-pinned-dirty' : 'codicon-pinned']"
-              @click="settingStore.data.pinned = !settingStore.data.pinned"
-            />
-          </div>
-          <div class="app-region-none h-full w-40 flex cursor-pointer items-center justify-center hover:bg-[--ar-top-bar-hover-background]">
-            <span
-              :class="['codicon', settingStore.data.sidebar === 'hidden' ? 'codicon-layout-sidebar-left-off' : 'codicon-layout-sidebar-left']"
-              @click="changeSidebar"
-            />
-          </div>
-          <template v-if="PLATFORM === 'electron'">
-            <!-- 窗口 -->
-            <div
-              class="app-region-none h-full w-40 flex cursor-pointer items-center justify-center hover:bg-[--ar-top-bar-hover-background]"
-              @click="minimize"
-            >
-              <span class="codicon codicon-chrome-minimize" />
-            </div>
-            <div
-              class="app-region-none fullscreen h-full w-40 flex cursor-pointer items-center justify-center hover:bg-[--ar-top-bar-hover-background]"
-              @click="maximize"
-            >
-              <span class="codicon codicon-chrome-maximize"></span>
-            </div>
-          </template>
-          <div
-            v-if="PLATFORM !== 'utools'"
-            title="退出"
-            class="app-region-none h-full w-40 flex cursor-pointer items-center justify-center hover:bg-[--ar-top-bar-hover-background]"
-            @click="onExit"
-          >
-            <span class="codicon codicon-chrome-close"></span>
-          </div>
-        </div>
-      </div>
+        <TitleBarRight :sidebar="true" />
+      </TopContainer>
       <div class="relative flex flex-1 flex-col overflow-auto sm:flex-row">
         <!-- 侧边栏 - 小屏 -->
         <div class="h-34 flex items-center bg-[--ar-main-background] px-10 lh-34 sm:hidden">
@@ -158,16 +116,15 @@
 
 <script setup lang="tsx">
 import { App } from 'ant-design-vue';
-import { PLATFORM } from '@/constants';
-import { logout } from '@/api';
-import { minimize, maximize, exit } from '@/api/modules/electron';
+import { SettingOutlined, MenuOutlined, SearchOutlined } from '@ant-design/icons-vue';
 import { useBus, EVENT_CHAPTERS_BOX, EVENT_SEARCH_BOX } from '@/utils/bus';
 import { useSettingStore } from '@/stores/setting';
 import { useReadStore } from '@/stores/read';
 import Setting from '@/components/Setting/index.vue';
 import Search from '@/components/Search/index.vue';
-import BaseLayout from './BaseLayout.vue';
-import { SettingOutlined, MenuOutlined, SearchOutlined } from '@ant-design/icons-vue';
+import BaseLayout from './components/BaseLayout.vue';
+import TitleBarRight from './components/TitleBarRight.vue';
+import TopContainer from './components/TopContainer.vue';
 
 const { modal } = App.useApp();
 const route = useRoute();
@@ -176,10 +133,6 @@ const settingStore = useSettingStore();
 const readStore = useReadStore();
 const openChaptersBox = useBus(EVENT_CHAPTERS_BOX);
 const searchBox = useBus(EVENT_SEARCH_BOX);
-
-function changeSidebar() {
-  settingStore.data.sidebar = settingStore.data.sidebar === 'hidden' ? 'left' : 'hidden';
-}
 
 const navs = [
   { icon: 'codicon-home', path: '/books', title: '首页' },
@@ -204,15 +157,6 @@ function openSetting() {
     wrapClassName: '!p-0',
     content: <Setting class="pt-10" />
   });
-}
-
-async function onExit() {
-  if (PLATFORM === 'electron') {
-    exit();
-  } else if (PLATFORM === 'browser') {
-    await logout();
-    window.location.reload();
-  }
 }
 
 function navTo(path: string) {

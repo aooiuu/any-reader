@@ -1,7 +1,11 @@
 import md5 from 'blueimp-md5'
 import type { Rule } from '@any-reader/rule-utils'
 import { ContentType } from '@any-reader/rule-utils'
-import { analyzerUrl, createAnalyzerManager, createRuleManager } from '../utils/rule-parse'
+import {
+  analyzerUrl,
+  createAnalyzerManager,
+  createRuleManager,
+} from '../utils/rule-parse'
 import { Cacheable, Controller, Post } from '../decorators'
 import { createBookParser } from '../utils/book-manager'
 import { BaseController } from './BaseController'
@@ -35,6 +39,13 @@ export class RuleManager extends BaseController {
   }
 
   @Post('search-by-rule-id')
+  // @Cacheable({
+  //   ttl: 1000 * 60 * 5,
+  //   cacheKey({ args }) {
+  //     const { ruleId = '', keyword = '' } = args[0]
+  //     return `searchByRuleId@${ruleId || '__local__'}@v2_${md5(keyword)}`
+  //   },
+  // })
   async searchByRuleId({
     ruleId,
     keyword,
@@ -157,7 +168,9 @@ export class RuleManager extends BaseController {
     ruleText: string
     isArray: boolean
   }) {
-    return isArray ? await createAnalyzerManager().getElements(ruleText, inputText) : await createAnalyzerManager().getString(ruleText, inputText)
+    return isArray
+      ? await createAnalyzerManager().getElements(ruleText, inputText)
+      : await createAnalyzerManager().getString(ruleText, inputText)
   }
 
   @Post('analyzer-url')

@@ -49,6 +49,5 @@ export type Setting = {
   readStyle: ReadStyle;
   keyboardShortcuts: KeyboardShortcuts;
   sidebar: Sidebar;
-  pinned: boolean;
   bookDir: string;
 };

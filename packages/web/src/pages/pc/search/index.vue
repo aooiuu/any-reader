@@ -123,18 +123,23 @@ async function onSearch(uid?: string) {
   total.value = rules.length;
 
   const tasks = rules.map((rule) =>
-    runPromise(async () => {
-      if (lastUuid !== uuid) return;
-      runCount.value++;
-      const res = await searchByRuleId({ ruleId: rule.id, keyword: searchText.value });
-      if (res.code === 0) {
-        const rows = res.data;
-        if (!rows.length) return;
-        list.value.push({
-          rule: rule,
-          list: rows
-        });
-      }
+    runPromise(() => {
+      return new Promise((c) => {
+        if (lastUuid !== uuid) return;
+        runCount.value++;
+        searchByRuleId({ ruleId: rule.id, keyword: searchText.value })
+          .then((res) => {
+            if (res.code === 0) {
+              const rows = res.data;
+              if (!rows.length) return;
+              list.value.push({
+                rule: rule,
+                list: rows
+              });
+            }
+          })
+          .finally(() => c(true));
+      });
     })
   );
   await Promise.all(tasks).catch(() => {});

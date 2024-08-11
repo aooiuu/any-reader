@@ -6,7 +6,9 @@ import chardet from 'chardet'
 import type { Rule } from '@any-reader/rule-utils'
 import { FetchException } from '../exception/FetchException'
 
-const http = axios.create()
+const http = axios.create({
+  timeout: 6000,
+})
 
 /**
 *

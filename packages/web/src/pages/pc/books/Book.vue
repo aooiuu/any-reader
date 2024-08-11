@@ -19,7 +19,8 @@ function showChapter() {
     path: '/chapter',
     query: {
       filePath: props.filePath,
-      ruleId: props.ruleId
+      ruleId: props.ruleId,
+      name: props.name
     }
   });
 }
