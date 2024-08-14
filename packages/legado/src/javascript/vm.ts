@@ -1,3 +1,3 @@
-import ivm from "isolated-vm"
+import ivm from 'isolated-vm';
 
-export const isolate = new ivm.Isolate()
+export const isolate = new ivm.Isolate();

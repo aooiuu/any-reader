@@ -12,44 +12,44 @@ export class Fmt {
   private static scriptStyleRegex: RegExp = /<script[^>]*>[\s\S]*?<\/script>|<style[^>]*>[\s\S]*?<\/style>/g;
 
   public static bookName(text: string): string {
-      return text.replace(this.bookNameRegex, '').trim();
+    return text.replace(this.bookNameRegex, '').trim();
   }
 
   public static author(text: string): string {
-      return text.replace(this.authorRegex, '').trim();
+    return text.replace(this.authorRegex, '').trim();
   }
 
   public static wordCount(text: string): string {
-      if (!text) {
-          return '';
+    if (!text) {
+      return '';
+    }
+
+    let words: number;
+    try {
+      words = parseInt(text, 10);
+      if (words > 10000) {
+        return `${(words / 10000.0).toFixed(1)}万字`;
+      } else {
+        return `${words}字`;
       }
-      
-      let words: number;
-      try {
-          words = parseInt(text, 10);
-          if (words > 10000) {
-              return `${(words / 10000.0).toFixed(1)}万字`;
-          } else {
-              return `${words}字`;
-          }
-      } catch {
-          return text;
-      }
+    } catch {
+      return text;
+    }
   }
 
   public static html(text: string, otherRegex: RegExp = this.otherHtmlRegex): string {
-      text = text.normalize('NFC');
-      text = text.replace(/\ufeff/g, '');
-      text = text.replace(/\u200b/g, '');
-      text = text.replace(this.spaceRegex, ' ');
-      text = text.replace(this.noPrintRegex, '');
-      text = text.replace(this.wrapHtmlRegex, '\n');
-      text = text.replace(this.commentRegex, '');
-      text = text.replace(otherRegex, '');
-      text = text.replace(this.indent1Regex, '\n　　');
-      text = text.replace(this.indent2Regex, '　　');
-      text = text.replace(this.lastRegex, '');
+    text = text.normalize('NFC');
+    text = text.replace(/\ufeff/g, '');
+    text = text.replace(/\u200b/g, '');
+    text = text.replace(this.spaceRegex, ' ');
+    text = text.replace(this.noPrintRegex, '');
+    text = text.replace(this.wrapHtmlRegex, '\n');
+    text = text.replace(this.commentRegex, '');
+    text = text.replace(otherRegex, '');
+    text = text.replace(this.indent1Regex, '\n　　');
+    text = text.replace(this.indent2Regex, '　　');
+    text = text.replace(this.lastRegex, '');
 
-      return text;
+    return text;
   }
 }

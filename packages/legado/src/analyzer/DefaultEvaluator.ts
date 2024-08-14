@@ -1,8 +1,8 @@
-import { Elements } from "../javascript/jsoup/Elements";
-import { Element } from "../javascript/jsoup/Element";
-import { Jsoup } from "../javascript/jsoup/Jsoup";
-import { AnalyzerManager } from "./AnalyzerManager";
-import { RuleEvaluator } from "./common";
+import { Elements } from '../javascript/jsoup/Elements';
+import { Element } from '../javascript/jsoup/Element';
+import { Jsoup } from '../javascript/jsoup/Jsoup';
+import { AnalyzerManager } from './AnalyzerManager';
+import { RuleEvaluator } from './common';
 
 export class DefaultEvaluator extends RuleEvaluator {
   private evals: RuleEvaluator[];
@@ -13,13 +13,13 @@ export class DefaultEvaluator extends RuleEvaluator {
   }
 
   override getString0(context: AnalyzerManager, value: any): string {
-    return this.getStrings(context, value)?.[0] || "";
+    return this.getStrings(context, value)?.[0] || '';
   }
 
   override getStrings(context: AnalyzerManager, value: any): string[] | null {
     if (!value) return [];
     const doc = value as Elements;
-    let elements = new Elements(doc);
+    const elements = new Elements(doc);
 
     for (const _eval of this.evals) {
       if (_eval instanceof Last) {
@@ -36,7 +36,7 @@ export class DefaultEvaluator extends RuleEvaluator {
       elements.push(...els);
     }
 
-    throw new Error("缺少获取文本规则");
+    throw new Error('缺少获取文本规则');
   }
 
   override getElement(context: AnalyzerManager, value: any): any {
@@ -46,11 +46,11 @@ export class DefaultEvaluator extends RuleEvaluator {
   override getElements(context: AnalyzerManager, value: any): any[] {
     if (!value) return [];
     const doc = value as Elements;
-    let elements = new Elements(doc);
+    const elements = new Elements(doc);
 
     for (const _eval of this.evals) {
       if (_eval instanceof Last) {
-        throw new Error("不应存在获取文本规则");
+        throw new Error('不应存在获取文本规则');
       }
       const els = new Elements();
 
@@ -67,44 +67,33 @@ export class DefaultEvaluator extends RuleEvaluator {
   }
 
   toString(): string {
-    return this.evals.map((_eval) => _eval.toString()).join("@");
+    return this.evals.map((_eval) => _eval.toString()).join('@');
   }
 
   static Adapter = class extends RuleEvaluator {
     private defaultEvaluator: RuleEvaluator;
     private jsonPathEvaluator: RuleEvaluator;
 
-    constructor(
-      defaultEvaluator: RuleEvaluator,
-      jsonPathEvaluator: RuleEvaluator,
-    ) {
+    constructor(defaultEvaluator: RuleEvaluator, jsonPathEvaluator: RuleEvaluator) {
       super();
       this.defaultEvaluator = defaultEvaluator;
       this.jsonPathEvaluator = jsonPathEvaluator;
     }
 
     override getStrings(context: AnalyzerManager, value: any): string[] | null {
-      return context.isJSON
-        ? this.jsonPathEvaluator.getStrings(context, value)
-        : this.defaultEvaluator.getStrings(context, value);
+      return context.isJSON ? this.jsonPathEvaluator.getStrings(context, value) : this.defaultEvaluator.getStrings(context, value);
     }
 
     override getElements(context: AnalyzerManager, value: any): any[] {
-      return context.isJSON
-        ? this.jsonPathEvaluator.getElements(context, value)
-        : this.defaultEvaluator.getElements(context, value);
+      return context.isJSON ? this.jsonPathEvaluator.getElements(context, value) : this.defaultEvaluator.getElements(context, value);
     }
 
     override getString0(context: AnalyzerManager, value: any): string {
-      return context.isJSON
-        ? this.jsonPathEvaluator.getString(context, value)
-        : this.defaultEvaluator.getString0(context, value);
+      return context.isJSON ? this.jsonPathEvaluator.getString(context, value) : this.defaultEvaluator.getString0(context, value);
     }
 
     override getElement(context: AnalyzerManager, value: any): any {
-      return context.isJSON
-        ? this.jsonPathEvaluator.getElement(context, value)
-        : this.defaultEvaluator.getElement(context, value);
+      return context.isJSON ? this.jsonPathEvaluator.getElement(context, value) : this.defaultEvaluator.getElement(context, value);
     }
 
     toString(): string {
@@ -126,7 +115,7 @@ export class DefaultEvaluator extends RuleEvaluator {
       }
 
       if (doc instanceof Element) {
-        return doc
+        return doc;
       }
       // if (doc instanceof JXNode) {
       //     return doc.isElement() ? doc.asElement() : Jsoup.parse(doc.toString());
@@ -154,7 +143,7 @@ export class DefaultEvaluator extends RuleEvaluator {
     }
 
     override getString0(context: AnalyzerManager, value: any): string {
-      if (!value) return "";
+      if (!value) return '';
       return this._eval.getString0(context, this.parse(value));
     }
 
@@ -171,7 +160,7 @@ export class DefaultEvaluator extends RuleEvaluator {
   static Children = class extends RuleEvaluator {
     constructor(
       private explicit: boolean,
-      public index: RuleEvaluator | null,
+      public index: RuleEvaluator | null
     ) {
       super();
     }
@@ -183,7 +172,7 @@ export class DefaultEvaluator extends RuleEvaluator {
     }
 
     override toString(): string {
-      return `${this.explicit ? "children" : ""}${this.index ? this.index.toString() : ""}`;
+      return `${this.explicit ? 'children' : ''}${this.index ? this.index.toString() : ''}`;
     }
   };
 
@@ -194,11 +183,7 @@ export class DefaultEvaluator extends RuleEvaluator {
 
     private static nullSet = new Set([null]);
 
-    constructor(
-      exclude: boolean,
-      indexDefault: number[],
-      indexes: Array<number | [number | null, number | null, number]>,
-    ) {
+    constructor(exclude: boolean, indexDefault: number[], indexes: Array<number | [number | null, number | null, number]>) {
       super();
       this.exclude = exclude;
       this.indexDefault = indexDefault;
@@ -208,10 +193,7 @@ export class DefaultEvaluator extends RuleEvaluator {
     getElements(context: AnalyzerManager, value: any): Elements {
       const elements: Elements = value as Elements;
       const len = elements.length;
-      const lastIndexes =
-        this.indexDefault.length > 0
-          ? this.indexDefault.length - 1
-          : this.indexes.length - 1;
+      const lastIndexes = this.indexDefault.length > 0 ? this.indexDefault.length - 1 : this.indexes.length - 1;
       const indexSet = new Set<number>();
 
       if (this.indexes.length === 0) {
@@ -230,25 +212,15 @@ export class DefaultEvaluator extends RuleEvaluator {
           if (Array.isArray(index) && index.length === 3) {
             const [startX, endX, stepX] = index;
 
-            let start =
-              startX === null
-                ? 0
-                : Math.max(
-                    0,
-                    startX >= 0 ? Math.min(startX, len - 1) : len + startX,
-                  );
-            let end =
-              endX === null
-                ? len - 1
-                : Math.max(0, endX >= 0 ? Math.min(endX, len - 1) : len + endX);
+            const start = startX === null ? 0 : Math.max(0, startX >= 0 ? Math.min(startX, len - 1) : len + startX);
+            const end = endX === null ? len - 1 : Math.max(0, endX >= 0 ? Math.min(endX, len - 1) : len + endX);
 
             if (start === end || Math.abs(stepX) >= len) {
               indexSet.add(start);
               continue;
             }
 
-            const step =
-              stepX > 0 ? stepX : Math.abs(stepX) < len ? stepX + len : 1;
+            const step = stepX > 0 ? stepX : Math.abs(stepX) < len ? stepX + len : 1;
 
             if (end > start) {
               for (let i = start; i <= end; i += step) {
@@ -294,29 +266,29 @@ export class DefaultEvaluator extends RuleEvaluator {
     toString(): string {
       const result: string[] = [];
       if (this.indexDefault.length > 0) {
-        result.push(this.exclude ? "!" : ".");
-        result.push(this.indexDefault.reverse().join(":"));
+        result.push(this.exclude ? '!' : '.');
+        result.push(this.indexDefault.reverse().join(':'));
       } else {
-        result.push("[");
-        if (this.exclude) result.push("!");
+        result.push('[');
+        if (this.exclude) result.push('!');
         this.indexes.reverse().forEach((index, i) => {
-          if (i > 0) result.push(",");
+          if (i > 0) result.push(',');
           if (Array.isArray(index) && index.length === 3) {
             const [start, end, step] = index;
             if (start !== null) result.push(`${start}`);
-            result.push(":");
+            result.push(':');
             if (end !== null) result.push(`${end}`);
             if (step !== 1) {
-              result.push(":");
+              result.push(':');
               result.push(`${step}`);
             }
           } else {
             result.push(`${index}`);
           }
         });
-        result.push("]");
+        result.push(']');
       }
-      return result.join("");
+      return result.join('');
     }
   };
 }
@@ -353,7 +325,7 @@ export abstract class Select extends RuleEvaluator {
     }
 
     toString(): string {
-      return `class.${this.name}${this.index ? this.index.toString() : ""}`;
+      return `class.${this.name}${this.index ? this.index.toString() : ''}`;
     }
   };
 
@@ -370,7 +342,7 @@ export abstract class Select extends RuleEvaluator {
     }
 
     toString(): string {
-      return `tag.${this.name}${this.index ? this.index.toString() : ""}`;
+      return `tag.${this.name}${this.index ? this.index.toString() : ''}`;
     }
   };
 
@@ -387,7 +359,7 @@ export abstract class Select extends RuleEvaluator {
     }
 
     toString(): string {
-      return `id.${this.name}${this.index ? this.index.toString() : ""}`;
+      return `id.${this.name}${this.index ? this.index.toString() : ''}`;
     }
   };
 
@@ -401,11 +373,11 @@ export abstract class Select extends RuleEvaluator {
 
     override evaluator(value: Elements): Elements {
       // cheerio 没有实现 containsOwn ，需要自己扩展 cheerio 实现，先用 contains 代替
-      return value.select(`:contains(${this.searchText})`)
+      return value.select(`:contains(${this.searchText})`);
     }
 
     toString(): string {
-      return `text.${this.searchText}${this.index ? this.index.toString() : ""}`;
+      return `text.${this.searchText}${this.index ? this.index.toString() : ''}`;
     }
   };
 
@@ -424,8 +396,8 @@ export abstract class Select extends RuleEvaluator {
     }
 
     toString(): string {
-      let result = "";
-      if (this.prefix) result += "@css:";
+      let result = '';
+      if (this.prefix) result += '@css:';
       result += this.query;
       if (this.index) result += this.index.toString();
       return result;
@@ -452,7 +424,7 @@ export abstract class Last extends RuleEvaluator {
     }
 
     toString(): string {
-      return "text";
+      return 'text';
     }
   })();
 
@@ -470,13 +442,13 @@ export abstract class Last extends RuleEvaluator {
           const text = item.text().trim();
 
           if (text) {
-            if (a > 0) sb.push("\n");
+            if (a > 0) sb.push('\n');
             sb.push(text);
           }
         }
 
         if (sb.length > 0) {
-          result.push(sb.join(""));
+          result.push(sb.join(''));
           sb.length = 0;
         }
       }
@@ -485,7 +457,7 @@ export abstract class Last extends RuleEvaluator {
     }
 
     toString(): string {
-      return "textNodes";
+      return 'textNodes';
     }
   })();
 
@@ -505,7 +477,7 @@ export abstract class Last extends RuleEvaluator {
     }
 
     toString(): string {
-      return "ownText";
+      return 'ownText';
     }
   })();
 
@@ -514,7 +486,7 @@ export abstract class Last extends RuleEvaluator {
       const result: string[] = [];
       const elements = value as Elements;
 
-      elements.select("script, style").remove(); // 移除 script 和 style 标签
+      elements.select('script, style').remove(); // 移除 script 和 style 标签
       const html = elements.outerHtml();
 
       if (html) {
@@ -525,7 +497,7 @@ export abstract class Last extends RuleEvaluator {
     }
 
     toString(): string {
-      return "html";
+      return 'html';
     }
   })();
 
@@ -538,7 +510,7 @@ export abstract class Last extends RuleEvaluator {
     }
 
     toString(): string {
-      return "all";
+      return 'all';
     }
   })();
 

@@ -1,12 +1,12 @@
-import { NetworkUtils } from "../utils/NetworkUtils";
-import { RuleEvaluator } from "./RuleEvaluator";
-import { SourceRuleParser } from "./SourceRuleParser";
+import { NetworkUtils } from '../utils/NetworkUtils';
+import { RuleEvaluator } from './RuleEvaluator';
+import { SourceRuleParser } from './SourceRuleParser';
 
 export class AnalyzerManager {
   content: any | null;
   isJSON: boolean = false;
-  baseUrl: string = ""
-  redirectUrl: URL | null = null
+  baseUrl: string = '';
+  redirectUrl: URL | null = null;
 
   constructor(content: string) {
     this.content = content;
@@ -17,18 +17,19 @@ export class AnalyzerManager {
   }
 
   setBaseUrl(baseUrl: string) {
-    this.baseUrl = baseUrl
+    this.baseUrl = baseUrl;
   }
 
   setRedirectUrl(redirectUrl: string) {
     try {
-      this.redirectUrl = new URL(redirectUrl)
+      this.redirectUrl = new URL(redirectUrl);
     } catch (error) {
+      console.error(error);
     }
   }
 
   getStringList(rule: string | RuleEvaluator) {
-    if (typeof rule === "string") {
+    if (typeof rule === 'string') {
       return SourceRuleParser.parseStrings(rule).getStrings(this, this.content);
     } else {
       return rule.getStrings(this, this.content);
@@ -38,16 +39,14 @@ export class AnalyzerManager {
   getString(
     rule: RuleEvaluator | null,
     content: any | null = null,
-    isUrl: boolean = false,
+    isUrl: boolean = false
     // unescape: boolean = true,
   ) {
-    let result = "";
+    let result = '';
     const currentContent = content ?? this.content;
 
     if (currentContent && rule) {
-      result = isUrl
-        ? rule.getString0(this, currentContent)
-        : rule.getString(this, currentContent);
+      result = isUrl ? rule.getString0(this, currentContent) : rule.getString(this, currentContent);
     }
 
     // const str =
@@ -55,23 +54,18 @@ export class AnalyzerManager {
     //     ? StringEscapeUtils.unescapeHtml4(result)
     //     : result;
 
-    const str = result
+    const str = result;
 
     if (isUrl) {
-      return str.trim() === ""
-        ? this.baseUrl
-        : NetworkUtils.getAbsoluteURL2(this.redirectUrl, str);
+      return str.trim() === '' ? this.baseUrl : NetworkUtils.getAbsoluteURL2(this.redirectUrl, str);
     }
 
     return str;
   }
 
   getElements(rule: string | RuleEvaluator) {
-    if (typeof rule === "string") {
-      return SourceRuleParser.parseElements(rule).getElements(
-        this,
-        this.content,
-      );
+    if (typeof rule === 'string') {
+      return SourceRuleParser.parseElements(rule).getElements(this, this.content);
     } else {
       return rule.getElements(this, this.content);
     }
@@ -81,14 +75,14 @@ export class AnalyzerManager {
     return SourceRuleParser.parseStrings(rule);
   }
 
-  put(key: string, value: any | null) {
-    throw new Error("未实现");
+  put(_key: string, _value: any | null) {
+    throw new Error('未实现');
   }
 
-  get(key: string): string {
-    throw new Error("未实现");
-    return "";
+  get(_key: string): string {
+    throw new Error('未实现');
+    return '';
   }
 
-  evalJS(script: string, result: any | null): any {}
+  evalJS(_script: string, _result: any | null): any {}
 }

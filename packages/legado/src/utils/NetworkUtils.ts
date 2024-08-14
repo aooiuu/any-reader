@@ -5,14 +5,14 @@ export class NetworkUtils {
    * 获取绝对地址
    */
   static getAbsoluteURL(baseURL: string | undefined, relativePath: string): string {
-    if (!baseURL || baseURL.trim() === "") {
+    if (!baseURL || baseURL.trim() === '') {
       return relativePath.trim();
     }
 
     let absoluteUrl: URL | null = null;
 
     try {
-      const trimmedBaseURL = baseURL.split(",")[0].trim();
+      const trimmedBaseURL = baseURL.split(',')[0].trim();
       absoluteUrl = new URL(trimmedBaseURL);
     } catch (e) {
       // console.error("Error in parsing base URL: ", e);
@@ -29,7 +29,7 @@ export class NetworkUtils {
     if (baseURL === null) return relativePathTrim;
     if (this.isAbsUrl(relativePathTrim)) return relativePathTrim;
     if (this.isDataUrl(relativePathTrim)) return relativePathTrim;
-    if (relativePathTrim.startsWith("javascript")) return "";
+    if (relativePathTrim.startsWith('javascript')) return '';
 
     let relativeUrl = relativePathTrim;
 
@@ -48,11 +48,8 @@ export class NetworkUtils {
     if (!url) return null;
 
     const lowerCaseUrl = url.toLowerCase();
-    if (
-      lowerCaseUrl.startsWith("http://") ||
-      lowerCaseUrl.startsWith("https://")
-    ) {
-      const index = url.indexOf("/", 9);
+    if (lowerCaseUrl.startsWith('http://') || lowerCaseUrl.startsWith('https://')) {
+      const index = url.indexOf('/', 9);
       return index === -1 ? url : url.substring(0, index);
     }
 
@@ -60,16 +57,16 @@ export class NetworkUtils {
   }
 
   private static initializeNotNeedEncoding(): void {
-    for (let i = "a".charCodeAt(0); i <= "z".charCodeAt(0); i++) {
+    for (let i = 'a'.charCodeAt(0); i <= 'z'.charCodeAt(0); i++) {
       this.notNeedEncoding.add(i);
     }
-    for (let i = "A".charCodeAt(0); i <= "Z".charCodeAt(0); i++) {
+    for (let i = 'A'.charCodeAt(0); i <= 'Z'.charCodeAt(0); i++) {
       this.notNeedEncoding.add(i);
     }
-    for (let i = "0".charCodeAt(0); i <= "9".charCodeAt(0); i++) {
+    for (let i = '0'.charCodeAt(0); i <= '9'.charCodeAt(0); i++) {
       this.notNeedEncoding.add(i);
     }
-    for (const char of "+-_.$:()!*@&#,[]") {
+    for (const char of '+-_.$:()!*@&#,[]') {
       this.notNeedEncoding.add(char.charCodeAt(0));
     }
   }
@@ -80,7 +77,7 @@ export class NetworkUtils {
 
   static hasUrlEncoded(str: string): boolean {
     if (!this.notNeedEncoding.size) {
-      this.initializeNotNeedEncoding()
+      this.initializeNotNeedEncoding();
     }
 
     let needEncode = false;
@@ -95,7 +92,7 @@ export class NetworkUtils {
       }
 
       // 检查是否为 URL 编码的格式
-      if (c === "%" && i + 2 < str.length) {
+      if (c === '%' && i + 2 < str.length) {
         const c1 = str[++i];
         const c2 = str[++i];
 
@@ -117,9 +114,7 @@ export class NetworkUtils {
    * 判断 c 是否是 16 进制的字符
    */
   static isDigit16Char(c: string): boolean {
-    return (
-      (c >= "0" && c <= "9") || (c >= "A" && c <= "F") || (c >= "a" && c <= "f")
-    );
+    return (c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f');
   }
 
   private static isAbsUrl(url: string): boolean {

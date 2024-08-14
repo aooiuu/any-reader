@@ -1,8 +1,6 @@
-import { AnyNode } from "domhandler";
-import { Elements } from "./Elements";
-import { Node } from "typescript";
-import * as cheerio from "cheerio";
-import { $ } from "./Jsoup";
+import { AnyNode } from 'domhandler';
+import { Elements } from './Elements';
+import { $ } from './Jsoup';
 
 export class Element {
   element: AnyNode;
@@ -11,7 +9,7 @@ export class Element {
   }
 
   attr(key: string) {
-    return $(this.element).attr(key)
+    return $(this.element).attr(key);
   }
 
   select(cssQuery: string): Elements {
@@ -23,21 +21,30 @@ export class Element {
   }
 
   ownText() {
-    return $(this.element).contents().filter((i, node) => {
-      return node.type === "text" || $(node).prop("tagName") === "br"
-    }).map((i ,el) => {
-      if (el.type === "text") {
-        return (el as unknown as Text).data
-      } else {
-        return " "
-      }
-    }).get().join("").replace(/\s+/g, " ")
+    return $(this.element)
+      .contents()
+      .filter((i, node) => {
+        return node.type === 'text' || $(node).prop('tagName') === 'br';
+      })
+      .map((i, el) => {
+        if (el.type === 'text') {
+          return (el as unknown as Text).data;
+        } else {
+          return ' ';
+        }
+      })
+      .get()
+      .join('')
+      .replace(/\s+/g, ' ');
   }
 
   textNodes() {
-    const textNodes =  $(this.element).contents().filter((i, node) => {
-      return node.type === "text"
-    }).get()
-    return new Elements(textNodes)
+    const textNodes = $(this.element)
+      .contents()
+      .filter((i, node) => {
+        return node.type === 'text';
+      })
+      .get();
+    return new Elements(textNodes);
   }
 }

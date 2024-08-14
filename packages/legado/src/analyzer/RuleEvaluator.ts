@@ -1,21 +1,21 @@
-import { AnalyzerManager } from "./AnalyzerManager";
-import { BaseRuleEvaluator } from "./BaseRuleEvaluator";
-import { isExplicitObject } from "./utils";
-import { FormatEvaluator, JsEvaluator, RegexEvaluator } from "./common";
+import { AnalyzerManager } from './AnalyzerManager';
+import { BaseRuleEvaluator } from './BaseRuleEvaluator';
+import { isExplicitObject } from './utils';
+import { FormatEvaluator, JsEvaluator, RegexEvaluator } from './common';
 
 export abstract class RuleEvaluator extends BaseRuleEvaluator {
   override getString(context: AnalyzerManager, value?: any): string {
     const list = this.getStrings(context, value);
 
     if (!list || list.length === 0) {
-      return "";
+      return '';
     }
 
     if (list.length === 1) {
       return list[0];
     }
 
-    return list.join("\n");
+    return list.join('\n');
   }
 
   override getString0(context: AnalyzerManager, value?: any): string {
@@ -34,7 +34,7 @@ export abstract class RuleEvaluator extends BaseRuleEvaluator {
       let lastResult = value;
       let result = value;
 
-      for (let _eval of this.evals) {
+      for (const _eval of this.evals) {
         if (_eval instanceof RuleEvaluator.Put) {
           result = _eval.eval(context, value);
         } else if (_eval instanceof JsEvaluator.Js) {
@@ -52,14 +52,14 @@ export abstract class RuleEvaluator extends BaseRuleEvaluator {
         if (isExplicitObject(value)) break;
       }
 
-      return result ? result.toString() : "";
+      return result ? result.toString() : '';
     }
 
     override getString(context: AnalyzerManager, value?: any): string {
       let lastResult = value;
       let result = value;
 
-      for (let _eval of this.evals) {
+      for (const _eval of this.evals) {
         if (_eval instanceof RuleEvaluator.Put) {
           result = _eval.eval(context, lastResult);
         } else if (_eval instanceof JsEvaluator.Js) {
@@ -77,17 +77,14 @@ export abstract class RuleEvaluator extends BaseRuleEvaluator {
         if (isExplicitObject(value)) break;
       }
 
-      return result ? result.toString() : "";
+      return result ? result.toString() : '';
     }
 
-    override getStrings(
-      context: AnalyzerManager,
-      value?: any,
-    ): string[] | null {
+    override getStrings(context: AnalyzerManager, value?: any): string[] | null {
       let lastResult = value;
       let result = value;
 
-      for (let _eval of this.evals) {
+      for (const _eval of this.evals) {
         if (_eval instanceof RuleEvaluator.Put) {
           result = _eval.eval(context, lastResult);
         } else if (_eval instanceof JsEvaluator.Js) {
@@ -109,8 +106,8 @@ export abstract class RuleEvaluator extends BaseRuleEvaluator {
         if (isExplicitObject(value)) break;
       }
 
-      if (typeof result === "string") {
-        result = result.split("\n");
+      if (typeof result === 'string') {
+        result = result.split('\n');
       }
 
       return result as string[] | null;
@@ -120,7 +117,7 @@ export abstract class RuleEvaluator extends BaseRuleEvaluator {
       let lastResult = value;
       let result = value;
 
-      for (let _eval of this.evals) {
+      for (const _eval of this.evals) {
         if (_eval instanceof RuleEvaluator.Put) {
           result = _eval.eval(context, lastResult);
         } else if (_eval instanceof JsEvaluator.Js) {
@@ -143,7 +140,7 @@ export abstract class RuleEvaluator extends BaseRuleEvaluator {
       let lastResult = value;
       let result = value;
 
-      for (let _eval of this.evals) {
+      for (const _eval of this.evals) {
         if (_eval instanceof RuleEvaluator.Put) {
           result = _eval.eval(context, lastResult);
         } else if (_eval instanceof JsEvaluator.Js) {
@@ -163,7 +160,7 @@ export abstract class RuleEvaluator extends BaseRuleEvaluator {
     }
 
     override toString(): string {
-      return this.evals.map((_eval) => _eval.toString()).join("");
+      return this.evals.map((_eval) => _eval.toString()).join('');
     }
   };
 
@@ -202,13 +199,10 @@ export abstract class RuleEvaluator extends BaseRuleEvaluator {
 
     override getString(context: AnalyzerManager, value?: any): string {
       const nativeObject = value;
-      return nativeObject[this.key]?.toString() || "";
+      return nativeObject[this.key]?.toString() || '';
     }
 
-    override getStrings(
-      context: AnalyzerManager,
-      value?: any,
-    ): string[] | null {
+    override getStrings(context: AnalyzerManager, value?: any): string[] | null {
       const nativeObject = value;
       const result = nativeObject[this.key];
 
@@ -219,7 +213,7 @@ export abstract class RuleEvaluator extends BaseRuleEvaluator {
       if (Array.isArray(result)) {
         return result.map((item) => item.toString());
       } else {
-        return result.toString().split("\n");
+        return result.toString().split('\n');
       }
     }
 
@@ -246,10 +240,7 @@ export abstract class RuleEvaluator extends BaseRuleEvaluator {
       }
     }
 
-    override getStrings(
-      context: AnalyzerManager,
-      value?: any,
-    ): string[] | null {
+    override getStrings(context: AnalyzerManager, value?: any): string[] | null {
       if (this.isExplicitObject(value)) {
         return this.nativeObjectEvaluator.getStrings(context, value);
       } else {
@@ -270,11 +261,7 @@ export abstract class RuleEvaluator extends BaseRuleEvaluator {
     }
 
     private isExplicitObject(value: any) {
-      return (
-        typeof value === "object" &&
-        value !== null &&
-        value.constructor === Object
-      );
+      return typeof value === 'object' && value !== null && value.constructor === Object;
     }
   };
 }

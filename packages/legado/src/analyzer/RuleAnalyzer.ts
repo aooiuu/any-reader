@@ -18,15 +18,15 @@ export class RuleAnalyzer {
 
     this.rule = []; // 初始化规则列表
     this.step = 0; // 初始化分割字符的长度
-    this.elementsType = ""; // 初始化当前分割字符串
+    this.elementsType = ''; // 初始化当前分割字符串
     this.chompBalanced = code ? this.chompCodeBalanced : this.chompRuleBalanced;
   }
 
   // 修剪当前规则之前的"@"或者空白符
   trim(): void {
-    if (this.queue[this.pos] === "@" || this.queue[this.pos] < "!") {
+    if (this.queue[this.pos] === '@' || this.queue[this.pos] < '!') {
       this.pos++;
-      while (this.queue[this.pos] === "@" || this.queue[this.pos] < "!") {
+      while (this.queue[this.pos] === '@' || this.queue[this.pos] < '!') {
         this.pos++;
       }
       this.start = this.pos; // 开始点推移
@@ -117,8 +117,10 @@ export class RuleAnalyzer {
 
         if (inSingleQuote || inDoubleQuote) continue; // 语法单元未匹配结束，直接进入下个循环
 
-        if (c === "[") depth++; // 开始嵌套一层
-        else if (c === "]") depth--; // 闭合一层嵌套
+        if (c === '[')
+          depth++; // 开始嵌套一层
+        else if (c === ']')
+          depth--; // 闭合一层嵌套
         else if (depth === 0) {
           // 处于默认嵌套中的非默认字符不需要平衡，仅depth为0时默认嵌套全部闭合，此字符才进行嵌套
           if (c === open) otherDepth++;
@@ -148,13 +150,14 @@ export class RuleAnalyzer {
       else if (c === '"' && !inSingleQuote) inDoubleQuote = !inDoubleQuote; // 匹配具有语法功能的双引号
 
       if (inSingleQuote || inDoubleQuote) continue;
-      else if (c === "\\") {
+      else if (c === '\\') {
         // 不在引号中的转义字符才将下个字符转义
         pos++;
         continue;
       }
 
-      if (c === open) depth++; // 开始嵌套一层
+      if (c === open)
+        depth++; // 开始嵌套一层
       else if (c === close) depth--; // 闭合一层嵌套
     } while (depth > 0); // 拉出一个平衡字串
 
@@ -185,7 +188,7 @@ export class RuleAnalyzer {
     this.pos = this.start; // 重回开始，启动另一种查找
 
     do {
-      const st = this.findToAny("[", "("); // 查找筛选器位置
+      const st = this.findToAny('[', '('); // 查找筛选器位置
 
       if (st === -1) {
         this.rule = [this.queue.substring(this.startX, end)]; // 压入分隔的首段规则到数组
@@ -225,10 +228,10 @@ export class RuleAnalyzer {
       }
 
       this.pos = st; // 位置推移到筛选器处
-      const next = this.queue[this.pos] === "[" ? "]" : ")"; // 平衡组末尾字符
+      const next = this.queue[this.pos] === '[' ? ']' : ')'; // 平衡组末尾字符
 
       if (!this.chompBalanced(this.queue[this.pos], next)) {
-        throw new Error(this.queue.substring(0, this.start) + "后未平衡"); // 拉出一个筛选器,不平衡则报错
+        throw new Error(this.queue.substring(0, this.start) + '后未平衡'); // 拉出一个筛选器,不平衡则报错
       }
     } while (end > this.pos);
 
@@ -243,7 +246,7 @@ export class RuleAnalyzer {
     this.pos = this.start; // 重回开始，启动另一种查找
 
     do {
-      const st = this.findToAny("[", "("); // 查找筛选器位置
+      const st = this.findToAny('[', '('); // 查找筛选器位置
 
       if (st === -1) {
         this.rule.push(this.queue.substring(this.startX, end)); // 压入分隔的首段规则到数组
@@ -281,18 +284,16 @@ export class RuleAnalyzer {
       }
 
       this.pos = st; // 位置推移到筛选器处
-      const next = this.queue[this.pos] === "[" ? "]" : ")"; // 平衡组末尾字符
+      const next = this.queue[this.pos] === '[' ? ']' : ')'; // 平衡组末尾字符
 
       if (!this.chompBalanced(this.queue[this.pos], next)) {
-        throw new Error(this.queue.substring(0, this.start) + "后未平衡"); // 拉出一个筛选器,不平衡则报错
+        throw new Error(this.queue.substring(0, this.start) + '后未平衡'); // 拉出一个筛选器,不平衡则报错
       }
     } while (end > this.pos);
 
     this.start = this.pos; // 设置开始查找筛选器位置的起始位置
 
-    return !this.consumeTo(this.elementsType)
-      ? (this.rule.push(this.queue.substring(this.startX)), this.rule)
-      : this.splitRule2(); // 递归匹配
+    return !this.consumeTo(this.elementsType) ? (this.rule.push(this.queue.substring(this.startX)), this.rule) : this.splitRule2(); // 递归匹配
   }
 
   /**
@@ -302,21 +303,14 @@ export class RuleAnalyzer {
    * @param endStep 不属于规则部分的后置字符长度
    * @param fr 查找到内嵌规则时，用于解析的函数
    */
-  innerRule(
-    inner: string,
-    startStep: number = 1,
-    endStep: number = 1,
-    fr: (input: string) => string | null
-  ): string {
-    let st = "";
+  innerRule(inner: string, startStep: number = 1, endStep: number = 1, fr: (input: string) => string | null): string {
+    let st = '';
 
     while (this.consumeTo(inner)) {
       // 拉取成功返回 true
       const posPre = this.pos; // 记录 consumeTo 匹配位置
-      if (this.chompCodeBalanced("{", "}")) {
-        const frv = fr(
-          this.queue.substring(posPre + startStep, this.pos - endStep)
-        );
+      if (this.chompCodeBalanced('{', '}')) {
+        const frv = fr(this.queue.substring(posPre + startStep, this.pos - endStep));
         if (frv && frv.length > 0) {
           st += this.queue.substring(this.startX, posPre) + frv; // 压入内嵌规则前的内容
           this.startX = this.pos; // 记录下次规则起点
@@ -326,7 +320,7 @@ export class RuleAnalyzer {
       this.pos += inner.length; // 拉出字段不平衡，跳到此 inner 后继续匹配
     }
 
-    return this.startX === 0 ? "" : (st += this.queue.substring(this.startX));
+    return this.startX === 0 ? '' : (st += this.queue.substring(this.startX));
   }
 
   /**
@@ -338,7 +332,7 @@ export class RuleAnalyzer {
     while (this.consumeTo(inner)) {
       // 拉取成功返回 true
       const posPre = this.pos; // 记录 consumeTo 匹配位置
-      if (this.chompCodeBalanced("{", "}")) {
+      if (this.chompCodeBalanced('{', '}')) {
         const tmp = this.queue.substring(this.startX, posPre);
         if (tmp.length > 0) {
           result.push(tmp);
@@ -363,11 +357,7 @@ export class RuleAnalyzer {
    * @param endStr 结束字符串
    * @param fr 查找到内嵌规则时，用于解析的函数
    */
-  async innerRule2(
-    startStr: string,
-    endStr: string,
-    fr: (input: string) => Promise<string | null>
-  ): Promise<string> {
+  async innerRule2(startStr: string, endStr: string, fr: (input: string) => Promise<string | null>): Promise<string> {
     const st = []; // 使用数组来构建字符串
 
     while (this.consumeTo(startStr)) {
@@ -377,20 +367,15 @@ export class RuleAnalyzer {
 
       if (this.consumeTo(endStr)) {
         const frv = await fr(this.queue.substring(posPre, this.pos));
-        st.push(
-          this.queue.substring(this.startX, posPre - startStr.length) +
-            (frv || "")
-        ); // 压入内嵌规则前的内容及解析得到的字符串
+        st.push(this.queue.substring(this.startX, posPre - startStr.length) + (frv || '')); // 压入内嵌规则前的内容及解析得到的字符串
         this.pos += endStr.length; // 跳过结束字符串
         this.startX = this.pos; // 记录下次规则起点
       }
     }
 
-    return this.startX === 0
-      ? this.queue
-      : st.join("") + this.queue.substring(this.startX);
+    return this.startX === 0 ? this.queue : st.join('') + this.queue.substring(this.startX);
   }
 
   // 转义字符
-  private static readonly ESC: string = "\\";
+  private static readonly ESC: string = '\\';
 }

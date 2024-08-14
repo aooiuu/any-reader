@@ -1,22 +1,22 @@
-import { isolate } from "../javascript/vm";
-import { parseJson } from "./utils";
-import { RuleAnalyzer } from "./RuleAnalyzer";
-import { NetworkUtils } from "../utils/NetworkUtils";
-import axios, { AxiosRequestConfig } from "axios";
-import { load } from "cheerio";
-import contentType from "content-type";
-import iconv from "iconv-lite";
-import chardet from "chardet";
-import { encode } from "urlencode";
+import { isolate } from '../javascript/vm';
+import { parseJson } from './utils';
+import { RuleAnalyzer } from './RuleAnalyzer';
+import { NetworkUtils } from '../utils/NetworkUtils';
+import axios, { AxiosRequestConfig } from 'axios';
+import { load } from 'cheerio';
+import contentType from 'content-type';
+import iconv from 'iconv-lite';
+import chardet from 'chardet';
+import { encode } from 'urlencode';
 
 const http = axios.create();
 
 export class AnalyzeUrl {
-  ruleUrl: string = "";
-  private JS_PATTERN: RegExp = /<js>([\s\S]*?)<\/js>|@js:([\s\S]*)/ig;
+  ruleUrl: string = '';
+  private JS_PATTERN: RegExp = /<js>([\s\S]*?)<\/js>|@js:([\s\S]*)/gi;
   private pagePattern: RegExp = /<(.*?)>/;
   private paramPattern: RegExp = /\s*,\s*(?=\{)/;
-  private baseUrl = "";
+  private baseUrl = '';
   private method: RequestMethod = RequestMethod.GET;
   headerMap: Record<string, string> = {};
   body: string | null = null;
@@ -26,25 +26,20 @@ export class AnalyzeUrl {
   useWebView: boolean = false;
   webJs: string | null = null;
   serverID: number | null = null;
-  urlNoQuery: string = "";
+  urlNoQuery: string = '';
   fieldMap: Record<string, string> = {};
 
   constructor(url: string);
   constructor(url: string, key?: string | null);
   constructor(url: string, key?: string | null, page?: number | null);
-  constructor(
-    url: string,
-    key?: string | null,
-    page?: number | null,
-    baseUrl?: string,
-  );
+  constructor(url: string, key?: string | null, page?: number | null, baseUrl?: string);
   constructor(
     public url: string,
     public key?: string | null,
     public page?: number | null,
-    baseUrl?: string,
+    baseUrl?: string
   ) {
-    baseUrl ??= "";
+    baseUrl ??= '';
     const urlMatcher = this.paramPattern.exec(baseUrl);
     if (urlMatcher) {
       this.baseUrl = baseUrl.substring(0, urlMatcher.index);
@@ -53,8 +48,7 @@ export class AnalyzeUrl {
       this.baseUrl = baseUrl;
     }
 
-    this.headerMap["User-Agent"] =
-      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36";
+    this.headerMap['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36';
   }
 
   async init() {
@@ -81,7 +75,7 @@ export class AnalyzeUrl {
       if (match.index > start) {
         const substring = this.ruleUrl.substring(start, match.index).trim();
         if (substring.length > 0) {
-          result = substring.replace("@result", result);
+          result = substring.replace('@result', result);
         }
       }
 
@@ -92,7 +86,7 @@ export class AnalyzeUrl {
     if (this.ruleUrl.length > start) {
       const substring = this.ruleUrl.substring(start).trim();
       if (substring.length > 0) {
-        result = substring.replace("@result", result);
+        result = substring.replace('@result', result);
       }
     }
 
@@ -106,12 +100,12 @@ export class AnalyzeUrl {
     // 此方法没有返回值
     // 先替换内嵌规则再替换页数规则，避免内嵌规则中存在大于小于号时，规则被切错
     // js
-    if (this.ruleUrl.includes("{{") && this.ruleUrl.includes("}}")) {
+    if (this.ruleUrl.includes('{{') && this.ruleUrl.includes('}}')) {
       const analyze = new RuleAnalyzer(this.ruleUrl); // 创建解析
       // 替换所有内嵌 {{js}}
-      const url = await analyze.innerRule2("{{", "}}", async (it: string) => {
-        const jsEval = (await this.evalJS(it)) ?? "";
-        if (typeof jsEval === "string") {
+      const url = await analyze.innerRule2('{{', '}}', async (it: string) => {
+        const jsEval = (await this.evalJS(it)) ?? '';
+        if (typeof jsEval === 'string') {
           return jsEval;
         } else {
           return String(jsEval);
@@ -127,7 +121,7 @@ export class AnalyzeUrl {
     if (this.page) {
       let match = this.pagePattern.exec(this.ruleUrl);
       while (match) {
-        const pages = match[1].split(","); // 获取匹配组
+        const pages = match[1].split(','); // 获取匹配组
         this.ruleUrl =
           this.page < pages.length
             ? this.ruleUrl.replace(match[0], pages[this.page - 1].trim())
@@ -145,9 +139,7 @@ export class AnalyzeUrl {
   private async analyzeUrl(): Promise<void> {
     // 使用正则表达式查找第一个 ',' 前的部分
     const urlMatcher = this.paramPattern.exec(this.ruleUrl);
-    const urlNoOption = urlMatcher
-      ? this.ruleUrl.substring(0, urlMatcher.index)
-      : this.ruleUrl;
+    const urlNoOption = urlMatcher ? this.ruleUrl.substring(0, urlMatcher.index) : this.ruleUrl;
 
     this.url = NetworkUtils.getAbsoluteURL(this.baseUrl, urlNoOption);
     const baseUrlResult = NetworkUtils.getBaseUrl(this.url);
@@ -156,17 +148,13 @@ export class AnalyzeUrl {
     }
 
     if (urlNoOption.length !== this.ruleUrl.length) {
-      const optionJson = this.ruleUrl.substring(
-        urlMatcher!.index + urlMatcher![0].length,
-      ); // 获取选项 JSON 部分
+      const optionJson = this.ruleUrl.substring(urlMatcher!.index + urlMatcher![0].length); // 获取选项 JSON 部分
       const obj = parseJson<any>(optionJson);
-      const option: UrlOption = obj
-        ? Object.assign(new UrlOption(), obj)
-        : null;
+      const option: UrlOption = obj ? Object.assign(new UrlOption(), obj) : null;
 
       if (option) {
         const method = option.getMethod();
-        if (method && method.toUpperCase() === "POST") {
+        if (method && method.toUpperCase() === 'POST') {
           this.method = RequestMethod.POST;
         }
 
@@ -202,20 +190,17 @@ export class AnalyzeUrl {
 
     this.urlNoQuery = this.url;
     switch (this.method) {
-      case RequestMethod.GET:
-        const pos = this.url.indexOf("?");
+      case RequestMethod.GET: {
+        const pos = this.url.indexOf('?');
         if (pos !== -1) {
           this.analyzeFields(this.url.substring(pos + 1));
           this.urlNoQuery = this.url.substring(0, pos);
         }
         break;
+      }
       case RequestMethod.POST:
         if (this.body) {
-          if (
-            !this.isJson(this.body) &&
-            !this.isXml(this.body) &&
-            !this.headerMap["Content-Type"]
-          ) {
+          if (!this.isJson(this.body) && !this.isXml(this.body) && !this.headerMap['Content-Type']) {
             this.analyzeFields(this.body);
           }
         }
@@ -223,12 +208,12 @@ export class AnalyzeUrl {
     }
   }
   analyzeFields(fieldsTxt: string): void {
-    const queryS = fieldsTxt.split("&").filter((s) => !!s.trim());
+    const queryS = fieldsTxt.split('&').filter((s) => !!s.trim());
 
     for (const query of queryS) {
-      const queryPair = query.split("=", 2).filter((s) => !!s.trim());
+      const queryPair = query.split('=', 2).filter((s) => !!s.trim());
       const key = queryPair[0];
-      const value = queryPair[1] || "";
+      const value = queryPair[1] || '';
 
       if (!this.charset) {
         if (NetworkUtils.hasUrlEncoded(value)) {
@@ -236,7 +221,7 @@ export class AnalyzeUrl {
         } else {
           this.fieldMap[key] = encodeURIComponent(value);
         }
-      } else if (this.charset === "escape") {
+      } else if (this.charset === 'escape') {
         this.fieldMap[key] = escape(value);
       } else {
         this.fieldMap[key] = encode(value, this.charset);
@@ -246,16 +231,16 @@ export class AnalyzeUrl {
 
   async getStrResponseAwait() {
     const requestConfig: AxiosRequestConfig<any> = {
-      responseType: "arraybuffer",
+      responseType: 'arraybuffer',
       responseEncoding: undefined,
-      validateStatus(status: number) {
+      validateStatus(_status: number) {
         return true;
       },
       paramsSerializer(params) {
         return Object.keys(params)
           .map((key) => `${key}=${params[key]}`)
-          .join("&");
-      },
+          .join('&');
+      }
     };
     requestConfig.url = this.urlNoQuery;
     requestConfig.method = this.method;
@@ -264,27 +249,22 @@ export class AnalyzeUrl {
     if (this.method === RequestMethod.GET) {
       requestConfig.params = this.fieldMap;
     } else if (this.method === RequestMethod.POST) {
-      if (
-        Object.keys(this.fieldMap).length > 0 ||
-        !this.body ||
-        !this.body.trim()
-      ) {
+      if (Object.keys(this.fieldMap).length > 0 || !this.body || !this.body.trim()) {
         requestConfig.data = Object.keys(this.fieldMap)
           .map((key) => `${key}=${this.fieldMap[key]}`)
-          .join("&");
+          .join('&');
       } else {
         requestConfig.data = this.body;
       }
     }
     const resp = await http(requestConfig);
-    const ct = contentType.parse(resp.headers["content-type"] || "");
+    const ct = contentType.parse(resp.headers['content-type'] || '');
     const charset = ct.parameters.charset;
     let encoding = charset || this.charset;
     if (!encoding) encoding = chardet.detect(resp.data);
 
-    let str = iconv.decode(resp.data, encoding || "utf8");
-    if (ct.type === "text/html" && /<!doctype html>/i.test(str))
-      str = load(str, null, true).html();
+    let str = iconv.decode(resp.data, encoding || 'utf8');
+    if (ct.type === 'text/html' && /<!doctype html>/i.test(str)) str = load(str, null, true).html();
     return {
       raw: resp,
       body: str
@@ -294,16 +274,13 @@ export class AnalyzeUrl {
   isJson(text: string | null): boolean {
     if (!text) return false;
     const str = text.trim();
-    return (
-      (str.startsWith("{") && str.endsWith("}")) ||
-      (str.startsWith("[") && str.endsWith("]"))
-    );
+    return (str.startsWith('{') && str.endsWith('}')) || (str.startsWith('[') && str.endsWith(']'));
   }
 
   isXml(text: string | null) {
     if (!text) return false;
     const str = text.trim();
-    return str.startsWith("<") && str.endsWith(">");
+    return str.startsWith('<') && str.endsWith('>');
   }
 
   /**
@@ -313,16 +290,16 @@ export class AnalyzeUrl {
     const context = await isolate.createContext();
     const bindings = context.global;
     // await bindings.set("java", new ivm.Reference(this));
-    await bindings.set("key", this.key);
-    await bindings.set("page", this.page);
-    await bindings.set("result", result);
+    await bindings.set('key', this.key);
+    await bindings.set('page', this.page);
+    await bindings.set('result', result);
     return context.eval(jsStr);
   }
 }
 
 enum RequestMethod {
-  GET = "GET",
-  POST = "POST",
+  GET = 'GET',
+  POST = 'POST'
 }
 
 class UrlOption {
@@ -379,12 +356,7 @@ class UrlOption {
   }
 
   useWebView(): boolean {
-    return (
-      this.webView !== null &&
-      this.webView !== "" &&
-      this.webView !== false &&
-      this.webView !== "false"
-    );
+    return this.webView !== null && this.webView !== '' && this.webView !== false && this.webView !== 'false';
   }
 
   setWebView(boolean: boolean): void {
@@ -399,7 +371,7 @@ class UrlOption {
     if (this.headers instanceof Object) {
       return this.headers;
     }
-    if (typeof this.headers === "string") {
+    if (typeof this.headers === 'string') {
       return JSON.parse(this.headers);
     }
     return null;
@@ -409,7 +381,7 @@ class UrlOption {
     if (value?.trim()) {
       try {
         const parsedValue = JSON.parse(value);
-        if (Array.isArray(parsedValue) || typeof parsedValue === "object") {
+        if (Array.isArray(parsedValue) || typeof parsedValue === 'object') {
           this.body = parsedValue;
         } else {
           this.body = value;
@@ -423,9 +395,7 @@ class UrlOption {
   }
 
   getBody(): string | null {
-    return typeof this.body === "string"
-      ? this.body
-      : JSON.stringify(this.body);
+    return typeof this.body === 'string' ? this.body : JSON.stringify(this.body);
   }
 
   setWebJs(value: string | null): void {

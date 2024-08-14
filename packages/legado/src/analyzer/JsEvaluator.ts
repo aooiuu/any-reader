@@ -1,101 +1,101 @@
-import { AnalyzerManager } from "./AnalyzerManager";
-import { RuleEvaluator } from "./common";
+import { AnalyzerManager } from './AnalyzerManager';
+import { RuleEvaluator } from './common';
 
 export abstract class JsEvaluator extends RuleEvaluator {
-    abstract evalElements(context: AnalyzerManager, value?: any): any;
+  abstract evalElements(context: AnalyzerManager, value?: any): any;
 
-    static Js = class extends JsEvaluator {
-        private script: JsEvaluator;
-        private prefix: string;
+  static Js = class extends JsEvaluator {
+    private script: JsEvaluator;
+    private prefix: string;
 
-        constructor(script: JsEvaluator, prefix: string) {
-            super();
-            this.script = script;
-            this.prefix = prefix;
-        }
-
-        override getString(context: AnalyzerManager, value?: any): string {
-            return this.eval(context, value).toString();
-        }
-
-        override getStrings(context: AnalyzerManager, value?: any): string[] | null {
-            return this.eval(context, value) as string[] | null;
-        }
-
-        override getElement(context: AnalyzerManager, value?: any): any {
-            return this.eval(context, value);
-        }
-
-        override getElements(context: AnalyzerManager, value?: any): any[] {
-            const script = this.script.evalElements(context, value)
-            return context.evalJS(script, value)
-        }
-
-        override eval(context: AnalyzerManager, value?: any): any {
-            const script = this.script.eval(context, value)
-            return context.evalJS(script, value);
-        }
-
-        override evalElements(context: AnalyzerManager, value?: any): any {
-            const script = this.script.evalElements(context, value)
-            return context.evalJS(script, value);
-        }
-
-        override toString(): string {
-            switch (this.prefix) {
-                case "<js>":
-                    return `<js>${this.script}</js>`;
-                case "@js:":
-                    return `@js:${this.script}`;
-                default:
-                    return this.script.toString();
-            }
-        }
+    constructor(script: JsEvaluator, prefix: string) {
+      super();
+      this.script = script;
+      this.prefix = prefix;
     }
 
-    static ScriptLiteral = class extends JsEvaluator {
-        private script: string;
-        private compiledScript: CompiledScript;
+    override getString(context: AnalyzerManager, value?: any): string {
+      return this.eval(context, value).toString();
+    }
 
-        constructor(script: string) {
-            super();
-            this.script = script
-            this.compiledScript = RhinoScriptEngine.compile(script);
-        }
+    override getStrings(context: AnalyzerManager, value?: any): string[] | null {
+      return this.eval(context, value) as string[] | null;
+    }
 
-        override eval(context: AnalyzerManager, value?: any): any {
-            return this.compiledScript;
-        }
+    override getElement(context: AnalyzerManager, value?: any): any {
+      return this.eval(context, value);
+    }
 
-        override evalElements(context: AnalyzerManager, value?: any): any {
-            return this.compiledScript;
-        }
+    override getElements(context: AnalyzerManager, value?: any): any[] {
+      const script = this.script.evalElements(context, value);
+      return context.evalJS(script, value);
+    }
 
-        override toString(): string {
-            return this.script;
-        }
-    };
+    override eval(context: AnalyzerManager, value?: any): any {
+      const script = this.script.eval(context, value);
+      return context.evalJS(script, value);
+    }
 
-    static ScriptEval = class extends JsEvaluator {
-        private script: RuleEvaluator;
-        private compiledScript: CompiledScript;
+    override evalElements(context: AnalyzerManager, value?: any): any {
+      const script = this.script.evalElements(context, value);
+      return context.evalJS(script, value);
+    }
 
-        constructor(script: RuleEvaluator) {
-            super();
-            this.script = script;
-            this.compiledScript = RhinoScriptEngine.compile(script.toString());
-        }
+    override toString(): string {
+      switch (this.prefix) {
+        case '<js>':
+          return `<js>${this.script}</js>`;
+        case '@js:':
+          return `@js:${this.script}`;
+        default:
+          return this.script.toString();
+      }
+    }
+  };
 
-        override eval(context: AnalyzerManager, value?: any): any {
-            return RhinoScriptEngine.compile(this.script.getString(context, value));
-        }
+  static ScriptLiteral = class extends JsEvaluator {
+    private script: string;
+    private compiledScript: CompiledScript;
 
-        override evalElements(context: AnalyzerManager, value?: any): any {
-            return this.compiledScript;
-        }
+    constructor(script: string) {
+      super();
+      this.script = script;
+      this.compiledScript = RhinoScriptEngine.compile(script);
+    }
 
-        override toString(): string {
-            return this.script.toString();
-        }
-    };
+    override eval(_context: AnalyzerManager, _value?: any): any {
+      return this.compiledScript;
+    }
+
+    override evalElements(_context: AnalyzerManager, _value?: any): any {
+      return this.compiledScript;
+    }
+
+    override toString(): string {
+      return this.script;
+    }
+  };
+
+  static ScriptEval = class extends JsEvaluator {
+    private script: RuleEvaluator;
+    private compiledScript: CompiledScript;
+
+    constructor(script: RuleEvaluator) {
+      super();
+      this.script = script;
+      this.compiledScript = RhinoScriptEngine.compile(script.toString());
+    }
+
+    override eval(context: AnalyzerManager, value?: any): any {
+      return RhinoScriptEngine.compile(this.script.getString(context, value));
+    }
+
+    override evalElements(_context: AnalyzerManager, _value?: any): any {
+      return this.compiledScript;
+    }
+
+    override toString(): string {
+      return this.script.toString();
+    }
+  };
 }

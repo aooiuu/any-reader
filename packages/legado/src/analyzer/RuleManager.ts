@@ -1,10 +1,9 @@
-import type { LegadoRule } from "../types";
-import { AnalyzerManager } from "./AnalyzerManager";
-import { AnalyzeUrl } from "./AnalyzeUrl";
-import * as cheerio from "cheerio";
-import { RuleEvaluator } from "./common";
-import { Fmt } from "../utils/FormatUtils";
-import { NetworkUtils } from "../utils/NetworkUtils";
+import type { LegadoRule } from '../types';
+import { AnalyzerManager } from './AnalyzerManager';
+import { AnalyzeUrl } from './AnalyzeUrl';
+import { RuleEvaluator } from './common';
+import { Fmt } from '../utils/FormatUtils';
+import { NetworkUtils } from '../utils/NetworkUtils';
 
 abstract class RuleManager {
   rule: LegadoRule;
@@ -44,12 +43,7 @@ export class LegadoRuleManager implements RuleManager {
   }
 
   async search(keyword: string): Promise<unknown[]> {
-    const analyzeUrl = new AnalyzeUrl(
-      this.rule.searchUrl,
-      keyword,
-      null,
-      this.rule.bookSourceUrl,
-    );
+    const analyzeUrl = new AnalyzeUrl(this.rule.searchUrl, keyword, null, this.rule.bookSourceUrl);
     await analyzeUrl.init();
     const resp = await analyzeUrl.getStrResponseAwait();
     const body = resp.body;
@@ -72,19 +66,7 @@ export class LegadoRuleManager implements RuleManager {
 
     for (const item of list) {
       bookList.push(
-        this.getSearchItem(
-          analyzeRule,
-          item,
-          baseUrl,
-          ruleName,
-          ruleBookUrl,
-          ruleAuthor,
-          ruleCoverUrl,
-          ruleIntro,
-          null,
-          ruleLastChapter,
-          null,
-        ),
+        this.getSearchItem(analyzeRule, item, baseUrl, ruleName, ruleBookUrl, ruleAuthor, ruleCoverUrl, ruleIntro, null, ruleLastChapter, null)
       );
     }
 
@@ -100,19 +82,16 @@ export class LegadoRuleManager implements RuleManager {
     ruleAuthor: RuleEvaluator | null,
     ruleCoverUrl: RuleEvaluator | null,
     ruleIntro: RuleEvaluator | null,
-    ruleKind: RuleEvaluator | null,
+    _ruleKind: RuleEvaluator | null,
     ruleLastChapter: RuleEvaluator | null,
-    ruleWordCount: RuleEvaluator | null,
+    _ruleWordCount: RuleEvaluator | null
   ): SearchItem {
     analyzeRule.setContent(item);
     const name = Fmt.bookName(analyzeRule.getString(ruleName));
     const author = Fmt.author(analyzeRule.getString(ruleAuthor));
     const chapter = analyzeRule.getString(ruleLastChapter);
     const description = Fmt.html(analyzeRule.getString(ruleIntro));
-    const cover = NetworkUtils.getAbsoluteURL(
-      baseUrl,
-      analyzeRule.getString(ruleCoverUrl),
-    );
+    const cover = NetworkUtils.getAbsoluteURL(baseUrl, analyzeRule.getString(ruleCoverUrl));
     const url = analyzeRule.getString(ruleBookUrl, null, true);
 
     return { name, author, chapter, description, cover, url };

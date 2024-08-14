@@ -1,6 +1,6 @@
-import { Element } from "./Element";
-import { $ } from "./Jsoup";
-import * as cheerio from 'cheerio'
+import { Element } from './Element';
+import { $ } from './Jsoup';
+import * as cheerio from 'cheerio';
 
 export class Elements extends Array {
   constructor(elements?: cheerio.AnyNode[] | Elements | Element) {
@@ -21,7 +21,7 @@ export class Elements extends Array {
   }
 
   attr(key: string): string {
-    return $(this.getAnyNodes()).attr(key) ?? "";
+    return $(this.getAnyNodes()).attr(key) ?? '';
   }
 
   children() {
@@ -49,6 +49,6 @@ export class Elements extends Array {
   }
 
   outerHtml(): string {
-    return $(this.getAnyNodes()).prop("outerHTML")!!;
+    return $(this.getAnyNodes()).prop('outerHTML')!!;
   }
 }
