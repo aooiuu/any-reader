@@ -35,7 +35,7 @@ export class CombineEvaluator {
     }
 
     toString(): string {
-      return this.evals.map((_eval) => _eval.toString()).join(' && ');
+      return this.evals.map((_eval) => _eval.toString()).join('&&');
     }
   };
 
@@ -72,7 +72,7 @@ export class CombineEvaluator {
     }
 
     toString(): string {
-      return this.evals.map((_eval) => _eval.toString()).join(' || ');
+      return this.evals.map((_eval) => _eval.toString()).join('||');
     }
   };
 
@@ -124,7 +124,7 @@ export class CombineEvaluator {
     }
 
     toString(): string {
-      return this.evals.map((_eval) => _eval.toString()).join(' %% ');
+      return this.evals.map((_eval) => _eval.toString()).join('%%');
     }
   };
 }
