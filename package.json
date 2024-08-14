@@ -30,6 +30,7 @@
     "clean": "rimraf packages/*/dist --glob",
     "clean:npm": "rimraf packages/*/node_modules --glob && rimraf node_modules",
     "run:core": "pnpm --filter=@any-reader/core start",
+    "run:legado": "pnpm --filter=@any-reader/legado start",
     "rule-utils:build": "pnpm --filter=@any-reader/rule-utils build",
     "core:build": "pnpm --filter=@any-reader/core build",
     "shared:build": "pnpm --filter=@any-reader/shared build",

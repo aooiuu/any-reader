@@ -15,9 +15,11 @@ interface RuleSearch {
   bookList: string
   name: string
   author: string
+  intro: string
   kind: string
   lastChapter: string
   bookUrl: string
+  coverUrl: string
 }
 
 interface RuleToc {
