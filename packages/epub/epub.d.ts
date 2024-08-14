@@ -30,67 +30,55 @@
  *
  *      /images/logo_img/OPT/logo.jpg
  **/
-import { EventEmitter } from 'events'
+import { EventEmitter } from 'events';
 
 declare class EPub extends EventEmitter {
-  constructor(epubfile: string, imagewebroot?: string, chapterwebroot?: string)
+  constructor(epubfile: string, imagewebroot?: string, chapterwebroot?: string);
 
-  metadata: EPub.Metadata
-  manifest: Object
+  metadata: EPub.Metadata;
+  manifest: Object;
   spine: {
-    toc: { href: string; id: string }
-    contents: Array<EPub.TocElement>
-  }
-  flow: Array<EPub.TocElement>
-  toc: Array<EPub.TocElement>
+    toc: { href: string; id: string };
+    contents: Array<EPub.TocElement>;
+  };
+  flow: Array<EPub.TocElement>;
+  toc: Array<EPub.TocElement>;
 
-  parse(options?: EPub.parseOptions): void
+  parse(options?: EPub.parseOptions): void;
 
-  getChapter(
-    chapterId: string,
-    callback: (error: Error, text: string) => void
-  ): void
+  getChapter(chapterId: string, callback: (error: Error, text: string) => void): void;
 
-  getChapterRaw(
-    chapterId: string,
-    callback: (error: Error, text: string) => void
-  ): void
+  getChapterRaw(chapterId: string, callback: (error: Error, text: string) => void): void;
 
-  getImage(
-    id: string,
-    callback: (error: Error, data: Buffer, mimeType: string) => void
-  ): void
+  getImage(id: string, callback: (error: Error, data: Buffer, mimeType: string) => void): void;
 
-  getFile(
-    id: string,
-    callback: (error: Error, data: Buffer, mimeType: string) => void
-  ): void
+  getFile(id: string, callback: (error: Error, data: Buffer, mimeType: string) => void): void;
 
-  hasDRM(): boolean
+  hasDRM(): boolean;
 }
 
-export = EPub
+export = EPub;
 
 declare namespace EPub {
   export interface TocElement {
-    level: number
-    order: number
-    title: string
-    id: string
-    href: string
+    level: number;
+    order: number;
+    title: string;
+    id: string;
+    href: string;
   }
 
   export interface Metadata {
-    creator: string
-    creatorFileAs: string
-    title: string
-    language: string
-    subject: string
-    date: string
-    description: string
+    creator: string;
+    creatorFileAs: string;
+    title: string;
+    language: string;
+    subject: string;
+    date: string;
+    description: string;
   }
 
   export interface parseOptions {
-    xml2jsOptions: object
+    xml2jsOptions: object;
   }
 }

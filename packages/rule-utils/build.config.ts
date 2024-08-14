@@ -1,4 +1,4 @@
-import { defineBuildConfig } from 'unbuild'
+import { defineBuildConfig } from 'unbuild';
 
 export default defineBuildConfig({
   entries: ['src/index'],
@@ -8,7 +8,7 @@ export default defineBuildConfig({
     inlineDependencies: true,
     emitCJS: true,
     esbuild: {
-      minify: true,
-    },
-  },
-})
+      minify: true
+    }
+  }
+});

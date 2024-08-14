@@ -2,4 +2,3 @@ node_modules
 *.d.ts
 /docs
 /dist
-packages/epub/

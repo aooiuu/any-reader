@@ -1,5 +1,5 @@
-import type { Rule } from '@any-reader/rule-utils'
-import { createRuleManager } from './index'
+import type { Rule } from '@any-reader/rule-utils';
+import { createRuleManager } from './index';
 
 const rule = {
   host: '', // 根域名
@@ -17,27 +17,27 @@ const rule = {
   chapterCover: '', // 封面
   chapterTime: '', // 时间
   chapterResult: '', // 结果
-  contentItems: '', // 内容
-}
+  contentItems: '' // 内容
+};
 
-const analyzer = createRuleManager(rule as unknown as Rule)
+const analyzer = createRuleManager(rule as unknown as Rule);
 
 async function search() {
-  const list = await analyzer.search('1')
-  const chapters = await analyzer.getChapter(list[0].url)
-  const content = await analyzer.getContent(chapters[0].url)
+  const list = await analyzer.search('1');
+  const chapters = await analyzer.getChapter(list[0].url);
+  const content = await analyzer.getContent(chapters[0].url);
   // eslint-disable-next-line no-console
-  console.log(content)
+  console.log(content);
 }
 
 async function discover() {
-  const discoverMap = await analyzer.discoverMap()
-  const discover = await analyzer.discover(discoverMap[0].pairs[0].value)
-  const chapters = await analyzer.getChapter(discover[0].url)
-  const content = await analyzer.getContent(chapters[0].url)
+  const discoverMap = await analyzer.discoverMap();
+  const discover = await analyzer.discover(discoverMap[0].pairs[0].value);
+  const chapters = await analyzer.getChapter(discover[0].url);
+  const content = await analyzer.getContent(chapters[0].url);
   // eslint-disable-next-line no-console
-  console.log(content)
+  console.log(content);
 }
 
-search()
-discover()
+search();
+discover();

@@ -61,7 +61,7 @@
     "utools:build": "pnpm --filter=@any-reader/web utools:build && pnpm --filter=@any-reader/utools build",
     "rubick:build": "pnpm --filter=@any-reader/rubick build",
     "build": "npm-run-all rule-utils:build core:build epub:build shared:build server:build cli:build",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore --cache"
   },
   "dependencies": {
     "sql.js": "^1.10.3",

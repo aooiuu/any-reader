@@ -20,7 +20,7 @@ export class CustomEditorProvider implements vscode.CustomReadonlyEditorProvider
     return new CustomEditorDocument(uri);
   }
 
-  resolveCustomEditor(document: vscode.CustomDocument, webviewPanel: vscode.WebviewPanel, token: vscode.CancellationToken): void | Thenable<void> {
+  resolveCustomEditor(document: vscode.CustomDocument, webviewPanel: vscode.WebviewPanel, _token: vscode.CancellationToken): void | Thenable<void> {
     this.webviewPanel = webviewPanel;
     this.webviewPanel.webview.options = {
       enableScripts: true

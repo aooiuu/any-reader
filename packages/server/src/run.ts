@@ -1,3 +1,3 @@
-import { start } from '.'
+import { start } from '.';
 
-start(8899)
+start(8899);

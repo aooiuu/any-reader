@@ -1,32 +1,31 @@
-import fs from 'node:fs'
-import path from 'node:path'
-import log4js from 'log4js'
-import { LOG_DIR } from '../constants'
+import fs from 'node:fs';
+import path from 'node:path';
+import log4js from 'log4js';
+import { LOG_DIR } from '../constants';
 
-if (!fs.existsSync(LOG_DIR))
-  fs.mkdirSync(LOG_DIR, { recursive: true })
+if (!fs.existsSync(LOG_DIR)) fs.mkdirSync(LOG_DIR, { recursive: true });
 
 log4js.addLayout('json', (config) => {
   return function (logEvent) {
-    let data = logEvent.data
-    if (Array.isArray(data) && data.length === 1)
-      data = data[0]
+    let data = logEvent.data;
+    if (Array.isArray(data) && data.length === 1) data = data[0];
     if (typeof data === 'string' && /^\{.*?\}$/.test(data)) {
       try {
-        data = JSON.parse(data)
-      }
-      catch (error) {
-        console.warn(error)
+        data = JSON.parse(data);
+      } catch (error) {
+        console.warn(error);
       }
     }
 
-    return JSON.stringify({
-      startTime: logEvent.startTime,
-      pid: logEvent.pid,
-      data,
-    }) + config.separator
-  }
-})
+    return (
+      JSON.stringify({
+        startTime: logEvent.startTime,
+        pid: logEvent.pid,
+        data
+      }) + config.separator
+    );
+  };
+});
 
 log4js.configure({
   appenders: {
@@ -39,13 +38,13 @@ log4js.configure({
       alwaysIncludePattern: true,
       layout: {
         type: 'json',
-        separator: ',',
-      },
-    },
+        separator: ','
+      }
+    }
   },
   categories: {
-    default: { appenders: ['app'], level: 'all' },
-  },
-})
+    default: { appenders: ['app'], level: 'all' }
+  }
+});
 
-export const logger = log4js.getLogger()
+export const logger = log4js.getLogger();
