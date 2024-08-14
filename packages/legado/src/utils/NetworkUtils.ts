@@ -71,10 +71,6 @@ export class NetworkUtils {
     }
   }
 
-  static needsEncoding(char: string): boolean {
-    return !this.notNeedEncoding.has(char.charCodeAt(0));
-  }
-
   static hasUrlEncoded(str: string): boolean {
     if (!this.notNeedEncoding.size) {
       this.initializeNotNeedEncoding();
@@ -113,7 +109,7 @@ export class NetworkUtils {
   /**
    * 判断 c 是否是 16 进制的字符
    */
-  static isDigit16Char(c: string): boolean {
+  private static isDigit16Char(c: string): boolean {
     return (c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f');
   }
 
@@ -121,7 +117,7 @@ export class NetworkUtils {
     return /^(http|https):\/\/.+/.test(url);
   }
 
-  static isDataUrl(str: string | null): boolean {
+  private static isDataUrl(str: string | null): boolean {
     return str !== null && this.dataUriRegex.test(str);
   }
 
