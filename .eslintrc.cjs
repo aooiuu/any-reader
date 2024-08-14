@@ -4,8 +4,8 @@ require('@rushstack/eslint-patch/modern-module-resolution');
 module.exports = {
   root: true,
   extends: [
+    './packages/web/.eslintrc-auto-import.json',
     '@unocss',
-    './.eslintrc-auto-import.json',
     'plugin:vue/vue3-recommended',
     'eslint:recommended',
     '@vue/eslint-config-typescript',
