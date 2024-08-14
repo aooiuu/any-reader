@@ -1,11 +1,11 @@
 <template>
-  <div class="flex flex-col w-102 overflow-hidden cursor-pointer" @click="showChapter">
-    <div class="w-102 h-136 mb-5 rounded-6 overflow-hidden relative">
-      <ARCover :src="props.cover" :preview="false" alt="" srcset="" class="cover w-102 h-136" width="100%" height="100%" fit="cover" />
+  <div class="w-102 flex flex-col cursor-pointer overflow-hidden" @click="showChapter">
+    <div class="relative mb-5 h-136 w-102 overflow-hidden rounded-6">
+      <ARCover :src="props.cover" :preview="false" alt="" srcset="" class="cover h-136 w-102" width="100%" height="100%" fit="cover" />
       <slot />
     </div>
-    <div class="overflow-hidden whitespace-nowrap text-ellipsis mb-2 text-[--ar-color-text]">{{ props.name }}</div>
-    <div class="overflow-hidden whitespace-nowrap text-ellipsis text-12 op-70 text-[--ar-color-text]">{{ props.author }}</div>
+    <div class="mb-2 overflow-hidden text-ellipsis whitespace-nowrap text-[--ar-color-text]">{{ props.name }}</div>
+    <div class="overflow-hidden text-ellipsis whitespace-nowrap text-12 text-[--ar-color-text] op-70">{{ props.author }}</div>
   </div>
 </template>
 
@@ -19,7 +19,8 @@ function showChapter() {
     path: '/chapter',
     query: {
       filePath: props.filePath,
-      ruleId: props.ruleId
+      ruleId: props.ruleId,
+      name: props.name
     }
   });
 }

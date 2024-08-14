@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full flex items-center justify-center bg-[--activityBar-background]">
+  <div class="h-full w-full flex items-center justify-center bg-[--activityBar-background]">
     <a-empty>
       <template #description>
         <p>您还没有配置规则！</p>

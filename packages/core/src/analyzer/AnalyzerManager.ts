@@ -1,317 +1,220 @@
-import type { Analyzer } from './Analyzer'
-import { AnalyzerHtml } from './AnalyzerHtml'
-import { AnalyzerJSONPath } from './AnalyzerJSONPath'
-import { AnalyzerXPath } from './AnalyzerXPath'
-import { AnalyzerRegExp } from './AnalyzerRegExp'
-import { AnalyzerJS } from './AnalyzerJS'
-import { AnalyzerFilter } from './AnalyzerFilter'
-import { AnalyzerReplace } from './AnalyzerReplace'
+import { AnalyzerException } from '../exception/AnalyzerException';
+import type { Analyzer } from './Analyzer';
+import { AnalyzerJS } from './AnalyzerJS';
 
-const ruleTypePattern
-  = new RegExp([
-    '@js:', // @js: code
-    '|',
-    '@hetu:', // @hetu: code
-    '|',
-    '@web:', // @web:[(baseUrl|result)@@]script0[\n\s*@@\s*\nscript1]
-    '|',
-    '@webview:', // @webview:[(baseUrl|result)@@]script0[\n\s*@@\s*\nscript1]
-    '|',
-    '@css:', // @css:a, @css:a@href, @css:a@text
-    '|',
-    '@json:', // @json:$.books.*, @json:$.name
-    '|',
-    '@http:', // @http:, @http:/api/$result
-    '|',
-    '@xpath:', // @xpath://a, @xpath:/a/@href, @xpath: /a/text()
-    '|',
-    '@match:', // @match:http.*?jpg， @match:url\("?(.*?jpg)@@1
-    '|',
-    '@regex:', // @regexp:h3[\s\S]*?h3
-    '|',
-    '@regexp:', // @regexp:h3[\s\S]*?h3
-    '|',
-    '@filter:', // @filter:lrc, @filter:m3u8, @filter:mp3
-    '|',
-    '@replace:', // @replace:</?em>, @replace:(?=\d+)@@播放量
-    '|',
-    '@encode:', // @encode:utf8|gbk|md5|base64|hmac|sha|sha256|aes
-    '|',
-    '@decode:', // @decode:utf8|gbk|base64|hmac|sha|sha256|aes
-    '|',
-    '^'].join(''), 'g')
+const RULE_TYPE_PATTERN = /@js:|@hetu:|@web:|@webview:|@css:|@json:|@http:|@xpath:|@match:|@regex:|@regexp:|@filter:|@replace:|@encode:|@decode:|^/gi;
 
 class SingleRule {
-  analyzer: Analyzer
-  rule: string
-  replace: string
+  analyzer: Analyzer;
+  rule: string;
+  replace: string;
 
   constructor(analyzer: Analyzer, rule: string, replace = '') {
-    this.analyzer = analyzer
-    this.rule = rule
-    this.replace = replace
+    this.analyzer = analyzer;
+    this.rule = rule;
+    this.replace = replace;
   }
 }
 
-export class AnalyzerManager {
-  private _content: string
+export interface Analyzers {
+  // 匹配则使用此解析程序
+  pattern: RegExp;
+  // 清除字符串
+  replace?: RegExp;
+  // 解析程序
+  Analyzer: typeof Analyzer;
+}
 
-  constructor(content: string) {
-    this._content = content
+export class AnalyzerManager {
+  analyzers: Analyzers[];
+
+  constructor(analyzers: Analyzers[]) {
+    this.analyzers = analyzers || [];
+  }
+
+  getAnalyzer(rule: string) {
+    for (const analyzer of this.analyzers) {
+      if (analyzer.pattern.test(rule)) return analyzer;
+    }
+    return this.analyzers[0];
   }
 
   // 规则从后往前解析
   splitRuleReversed(rule: string) {
-    const ruleMath = Array.from(rule.matchAll(ruleTypePattern)).reverse()
-    const ruleList: SingleRule[] = []
-    let end = rule.length
+    const ruleMath = Array.from(rule.matchAll(RULE_TYPE_PATTERN)).reverse();
+    const ruleList: SingleRule[] = [];
+    let end = rule.length;
     for (const m of ruleMath) {
-      let analyzer: Analyzer = new AnalyzerHtml()
-      const start = m.index as number
-      let r = rule.substring(start, end)
-      const rLowerCase = r.toLowerCase()
-      end = start as number
-
-      switch (r[0]) {
-        case '$':
-          analyzer = new AnalyzerJSONPath()
-          break
-        case '@': {
-          if (rLowerCase.startsWith('@js:')) {
-            r = r.substring(4)
-            analyzer = new AnalyzerJS()
-          }
-          // else if (rLowerCase.startsWith("@hetu:")) {
-          //   r = r.substring(6);
-          //   analyzer = new AnalyzerHetu();
-          // }
-          else if (rLowerCase.startsWith('@css:')) {
-            r = r.substring(5)
-            analyzer = new AnalyzerHtml()
-          }
-          else if (rLowerCase.startsWith('@json:')) {
-            r = r.substring(6)
-            analyzer = new AnalyzerJSONPath()
-          }
-          else if (rLowerCase.startsWith('@xpath:')) {
-            r = r.substring(7)
-            analyzer = new AnalyzerXPath()
-          }
-          // else if (rLowerCase.startsWith("@match:")) {
-          //   r = r.substring(7);
-          //   analyzer = new AnalyzerMatch();
-          // }
-          else if (rLowerCase.startsWith('@regex:')) {
-            r = r.substring(7)
-            analyzer = new AnalyzerRegExp()
-          }
-          else if (rLowerCase.startsWith('@regexp:')) {
-            r = r.substring(8)
-            analyzer = new AnalyzerRegExp()
-          }
-          else if (rLowerCase.startsWith('@filter:')) {
-            r = r.substring(8)
-            analyzer = new AnalyzerFilter()
-          }
-          else if (rLowerCase.startsWith('@replace:')) {
-            r = r.substring(9)
-            analyzer = new AnalyzerReplace()
-          }
-          // else if (rLowerCase.startsWith("@webview:")) {
-          //   r = r.substring(9);
-          //   analyzer = new AnalyzerWebview();
-          // } else if (rLowerCase.startsWith("@web:")) {
-          //   r = r.substring(5);
-          //   analyzer = new AnalyzerWebview();
-          // }
-          break
-        }
-        case ':':
-          r = r.substring(1)
-          analyzer = new AnalyzerRegExp()
-          break
-        case '/':
-          analyzer = new AnalyzerXPath()
-          break
-        default:
-          analyzer = new AnalyzerHtml()
-      }
-
-      const position = r.indexOf('##')
+      const start = m.index as number;
+      let r = rule.substring(start, end);
+      end = start as number;
+      const analyzer = this.getAnalyzer(r);
+      r = r.replace(analyzer.replace || analyzer.pattern, '');
+      const position = r.indexOf('##');
       if (position > -1) {
-        ruleList.push(
-          new SingleRule(analyzer, r.substring(0, position), r.substring(position + 2)))
-      }
-      else {
-        ruleList.push(new SingleRule(analyzer, r, ''))
+        ruleList.push(new SingleRule(new analyzer.Analyzer(), r.substring(0, position), r.substring(position + 2)));
+      } else {
+        ruleList.push(new SingleRule(new analyzer.Analyzer(), r, ''));
       }
     }
-    return ruleList.reverse()
+    return ruleList.reverse();
   }
 
-  private async _getElements(r: SingleRule, rule?: string) {
-    if (!rule)
-      rule = r.rule
+  async _getElements(r: SingleRule, rule?: string) {
+    if (!rule) rule = r.rule;
 
-    if (r.analyzer instanceof AnalyzerJS)
-      return r.analyzer.getElements(rule)
+    if (r.analyzer instanceof AnalyzerJS) {
+      try {
+        return await r.analyzer.getElements(rule);
+      } catch (error: any) {
+        throw new AnalyzerException(error?.message || '', rule);
+      }
+    }
 
     if (rule.includes('&&')) {
-      const result = []
+      const result = [];
       for (const rSimple in rule.split('&&')) {
-        const temp: any = await this._getElements(r, rSimple)
-        if (temp)
-          result.push(temp)
+        const temp: any = await this._getElements(r, rSimple);
+        if (temp) result.push(temp);
       }
-      return result
-    }
-    else if (rule.includes('||')) {
+      return result;
+    } else if (rule.includes('||')) {
       for (const rSimple in rule.split('||')) {
-        const temp: any = await this._getElements(r, rSimple)
-        if (temp)
-          return temp
+        const temp: any = await this._getElements(r, rSimple);
+        if (temp) return temp;
       }
     }
-    return r.analyzer.getElements(rule)
+    try {
+      return await r.analyzer.getElements(rule);
+    } catch (error: any) {
+      throw new AnalyzerException(error?.message || '', rule);
+    }
   }
 
-  async getElements(rule: string): Promise<any[]> {
-    let temp: string | string [] = this._content
+  async getElements(rule: string, body: string): Promise<any[]> {
+    let temp: string | string[] = body;
 
     for (const r of this.splitRuleReversed(rule)) {
-      r.analyzer.parse(temp as string)
-      temp = await this._getElements(r)
+      r.analyzer.parse(temp as string);
+      temp = await this._getElements(r);
     }
 
-    if (Array.isArray(temp))
-      return temp
-    else
-      return [temp]
+    if (Array.isArray(temp)) return temp;
+    else return [temp];
   }
 
   replaceSmart(replace: string) {
     function _replacement(pattern: string) {
-      return (...match: string[]) => pattern.replace(/\$(\d+)/, (...m: string[]) => match[+m[1]])
+      return (...match: string[]) => pattern.replace(/\$(\d+)/, (...m: string[]) => match[+m[1]]);
     }
 
-    if (!replace)
-      return (s: string) => s
+    if (!replace) return (s: string) => s;
 
-    const r = replace.split('##')
-    const match = RegExp(r[0], 'g')
+    const r = replace.split('##');
+    const match = RegExp(r[0], 'g');
     if (r.length === 1) {
-      return (s: string) => s.replaceAll(match, '')
-    }
-    else {
-      const pattern = r[1]
-      if (pattern.includes('\$')) {
-        if (r.length === 2)
-          return (s: string) => s.replace(match, _replacement(pattern))
-
-        else
-          return (s: string) => s.replace(match, _replacement(pattern))
-      }
-      else {
-        if (r.length === 2)
-          return (s: string) => s.replaceAll(match, pattern)
-
-        else
-          return (s: string) => s.replace(match, pattern)
+      return (s: string) => s.replaceAll(match, '');
+    } else {
+      const pattern = r[1];
+      if (pattern.includes('$')) {
+        if (r.length === 2) return (s: string) => s.replace(match, _replacement(pattern));
+        else return (s: string) => s.replace(match, _replacement(pattern));
+      } else {
+        if (r.length === 2) return (s: string) => s.replaceAll(match, pattern);
+        else return (s: string) => s.replace(match, pattern);
       }
     }
   }
 
-  private async _getString(r: SingleRule, rule?: string): Promise<string> {
-    const res = r.analyzer.getString(rule || r.rule)
-    return Array.isArray(res) ? res.join('').trim() : res
+  async _getString(r: SingleRule, rule?: string): Promise<string> {
+    const _rule = rule || r.rule;
+    try {
+      const res = await r.analyzer.getString(_rule);
+      return Array.isArray(res) ? res.join('').trim() : res;
+    } catch (error: any) {
+      throw new AnalyzerException(error?.message || '', _rule);
+    }
   }
 
-  async getString(rule: string): Promise<string> {
-    if (!rule)
-      return ''
-    const expressionPattern = /\{\{(.*?)\}\}/gd
+  async getString(rule: string, body: string): Promise<string> {
+    if (!rule) return '';
+    const expressionPattern = /\{\{(.*?)\}\}/g;
 
-    const pLeft = rule.lastIndexOf('{{')
-    const pRight = rule.lastIndexOf('}}')
+    const pLeft = rule.lastIndexOf('{{');
+    const pRight = rule.lastIndexOf('}}');
     if (pLeft > -1 && pLeft < pRight) {
-      let position = 0
-      const rs: string[] = []
+      let position = 0;
+      const rs: string[] = [];
       for (const match of rule.matchAll(expressionPattern)) {
-        rs.push(rule.substring(position, match.index))
-        position = (match.index as number) + match[0].length
-        rs.push(await this.getString(match[1]))
+        rs.push(rule.substring(position, match.index));
+        position = (match.index as number) + match[0].length;
+        rs.push(await this.getString(match[1], body));
       }
 
-      if (position < rule.length)
-        rs.push(rule.substring(position))
+      if (position < rule.length) rs.push(rule.substring(position));
 
-      return rs.join('')
+      return rs.join('');
     }
 
-    let temp: string = this._content
+    let temp: string = body;
     for (const r of this.splitRuleReversed(rule)) {
-      r.analyzer.parse(temp as string)
-      temp = await this._getString(r)
+      r.analyzer.parse(temp as string);
+      temp = await this._getString(r);
 
-      if (r.replace)
-        temp = this.replaceSmart(r.replace)(temp)
+      if (r.replace) temp = this.replaceSmart(r.replace)(temp);
     }
-    return temp
+    return temp;
   }
 
-  private async _getStringList(r: SingleRule, rule?: string): Promise<string[]> {
-    const res = await r.analyzer.getStringList(rule || r.rule)
-    return res
+  async _getStringList(r: SingleRule, rule?: string): Promise<string[]> {
+    const _rule = rule || r.rule;
+    try {
+      return await r.analyzer.getStringList(rule || r.rule);
+    } catch (error: any) {
+      throw new AnalyzerException(error?.message || '', _rule);
+    }
   }
 
-  async getStringList(rule: string): Promise<string[]> {
-    if (!rule)
-      return []
-    const expressionPattern = /\{\{(.*?)\}\}/gd
+  async getStringList(rule: string, body: string): Promise<string[]> {
+    if (!rule) return [];
+    const expressionPattern = /\{\{(.*?)\}\}/g;
 
-    const pLeft = rule.lastIndexOf('{{')
-    const pRight = rule.lastIndexOf('}}')
+    const pLeft = rule.lastIndexOf('{{');
+    const pRight = rule.lastIndexOf('}}');
     if (pLeft > -1 && pLeft < pRight) {
-      let position = 0
-      const rs: string[] = []
+      let position = 0;
+      const rs: string[] = [];
       for (const match of rule.matchAll(expressionPattern)) {
-        rs.push(rule.substring(position, match.index))
-        position = (match.index as number) + match[0].length
-        rs.push(await this.getString(match[1]))
+        rs.push(rule.substring(position, match.index));
+        position = (match.index as number) + match[0].length;
+        rs.push(await this.getString(match[1], body));
       }
 
-      if (position < rule.length)
-        rs.push(rule.substring(position))
+      if (position < rule.length) rs.push(rule.substring(position));
 
-      return rs.filter(e => e)
+      return rs.filter((e) => e);
     }
 
-    let temp: string | string[] = this._content
+    let temp: string | string[] = body;
     for (const r of this.splitRuleReversed(rule)) {
-      r.analyzer.parse(temp as string)
-      temp = await this._getStringList(r)
-      if (r.replace)
-        temp = this.replaceSmart(r.replace)(Array.isArray(temp) ? temp.join('\n') : temp)
+      r.analyzer.parse(temp as string);
+      temp = await this._getStringList(r);
+      if (r.replace) temp = this.replaceSmart(r.replace)(Array.isArray(temp) ? temp.join('\n') : temp);
     }
-    return Array.isArray(temp) ? temp : [temp]
+    return Array.isArray(temp) ? temp : [temp];
   }
 
-  async getUrl(rule: string, host: string): Promise<string> {
-    let url = await this.getString(rule)
-    if (typeof url !== 'string')
-      return url
+  async getUrl(rule: string, host: string, body: string): Promise<string> {
+    let url = await this.getString(rule, body);
+    if (typeof url !== 'string') return url;
 
     if (url.startsWith('//')) {
-      if (host.startsWith('https'))
-        url = `https:${url}`
-
-      else
-        url = `http:${url}`
-    }
-    else if (url.startsWith('/')) {
-      url = host + url
+      if (host.startsWith('https')) url = `https:${url}`;
+      else url = `http:${url}`;
+    } else if (url.startsWith('/')) {
+      url = host + url;
     }
 
-    return url
+    return url;
   }
 }

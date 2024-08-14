@@ -1,10 +1,10 @@
 <template>
-  <div class="w-full h-full">
-    <div v-if="loading" class="w-full h-full flex items-center justify-center">
+  <div class="h-full w-full">
+    <div v-if="loading" class="h-full w-full flex items-center justify-center">
       <a-spin />
     </div>
-    <div v-else class="px-10 py-10 h-full flex flex-col overflow-hidden">
-      <div class="flex-1 overflow-hidden flex flex-col">
+    <div v-else class="h-full flex flex-col overflow-hidden px-10 py-10">
+      <div class="flex flex-1 flex-col overflow-hidden">
         <div class="mb-10 flex">
           <a-radio-group v-model:value="formType" type="button">
             <a-radio-button value="Form">表单</a-radio-button>
@@ -18,7 +18,7 @@
           </a-radio-group>
         </div>
 
-        <div class="flex-1 flex overflow-hidden">
+        <div class="flex flex-1 overflow-hidden">
           <AForm v-show="formType === 'Form'" :model="formData" :label-col="{ class: 'w-full' }" class="flex-1 overflow-auto pr-10" layout="vertical">
             <a-radio-group v-model:value="formStep" type="button" direction="vertical" class="mb-10">
               <a-radio-button :value="1">基础信息</a-radio-button>
@@ -32,9 +32,9 @@
               <AFormItem v-if="item.formStep === formStep && (!item.show || item.show(formData))">
                 <template #label>
                   <div class="w-full flex items-center">
-                    <div class="flex-1 flex">
+                    <div class="flex flex-1">
                       <span>{{ item.label }}</span>
-                      <span class="op-70 ml-10 text-12">{{ item.prop }}</span>
+                      <span class="ml-10 text-12 op-70">{{ item.prop }}</span>
                     </div>
                     <BugOutlined v-if="item.debug" class="ml-10 cursor-pointer hover:op-70" @click="debugField(item)" />
                   </div>
@@ -70,7 +70,7 @@
         </div>
       </div>
 
-      <div class="flex mt-10 justify-end gap-5">
+      <div class="mt-10 flex justify-end gap-5">
         <a-button @click="router.back">返回</a-button>
         <a-button type="primary" @click="submit">确定</a-button>
       </div>

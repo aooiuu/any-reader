@@ -2,14 +2,9 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
 import { useComponent } from './components';
-
-import 'nprogress/nprogress.css';
-// import '@unocss/reset/sanitize/sanitize.css';
-// import '@unocss/reset/sanitize/assets.css';
-import 'uno.css';
-import './assets/main.scss';
-// vscode ui
+import './assets';
 import './plugins/vsc-ui';
+import './plugins/antd';
 import { PLATFORM } from './constants';
 import { addHistory } from '@/api/modules/resource-history';
 import { saveRoute } from '@/api/modules/vsc';

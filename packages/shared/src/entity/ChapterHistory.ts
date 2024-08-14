@@ -1,29 +1,29 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'chapter_history' })
 @Index(['uid', 'ruleId', 'filePath', 'chapterPath'], { unique: true })
 export class ChapterHistory {
   @PrimaryGeneratedColumn()
-  id!: number
+  id!: number;
 
   @Column({ name: 'uid', type: 'integer', default: 0 })
-  uid!: number
+  uid!: number;
 
   @Column({ name: 'rule_id', type: 'text', default: '' })
-  ruleId!: string
+  ruleId!: string;
 
   @Column({ name: 'file_path', type: 'text', default: '' })
-  filePath!: string
+  filePath!: string;
 
   @Column({ name: 'chapter_path', type: 'text', default: '' })
-  chapterPath!: string
+  chapterPath!: string;
 
   @Column({ name: 'percentage', type: 'integer', default: 0 })
-  percentage!: number
+  percentage!: number;
 
   @Column({ name: 'create_time', type: 'integer', default: 0 })
-  createTime!: number
+  createTime!: number;
 
   @Column({ name: 'update_time', type: 'integer', default: 0 })
-  updateTime!: number
+  updateTime!: number;
 }

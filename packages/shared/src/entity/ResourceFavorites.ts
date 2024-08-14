@@ -1,42 +1,42 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'resource_favorites' })
 @Index(['uid', 'ruleId', 'url'], { unique: true })
 export class ResourceFavorites {
   @PrimaryGeneratedColumn()
-  id!: number
+  id!: number;
 
   @Column({ name: 'uid', type: 'integer', default: 0 })
-  uid!: number
+  uid!: number;
 
   @Column({ name: 'rule_id', type: 'text', default: '' })
-  ruleId!: string
+  ruleId!: string;
 
   @Column({ name: 'url', type: 'text', default: '' })
-  url!: string
+  url!: string;
 
   // =====================================================
 
   @Column({ name: 'name', type: 'text', default: '' })
-  name!: string
+  name!: string;
 
   @Column({ name: 'cover', type: 'text', default: '' })
-  cover!: string
+  cover!: string;
 
   @Column({ name: 'author', type: 'text', default: '' })
-  author!: string
+  author!: string;
 
   @Column({ name: 'description', type: 'text', default: '' })
-  description!: string
+  description!: string;
 
   @Column({ name: 'chapter', type: 'text', default: '' })
-  chapter!: string
+  chapter!: string;
 
   // =====================================================
 
   @Column({ name: 'create_time', type: 'integer', default: 0 })
-  createTime!: number
+  createTime!: number;
 
   @Column({ name: 'update_time', type: 'integer', default: 0 })
-  updateTime!: number
+  updateTime!: number;
 }

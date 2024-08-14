@@ -1,9 +1,9 @@
 <template>
-  <div class="flex items-center overflow-hidden mb-5 select-none">
-    <div class="mx-2 hover:text-[--ar-color-primary-text] cursor-pointer" @click="scrollToLeft">
+  <div class="mb-5 flex select-none items-center overflow-hidden">
+    <div class="mx-2 cursor-pointer hover:text-[--ar-color-primary-text]" @click="scrollToLeft">
       <LeftOutlined />
     </div>
-    <div ref="navsRef" class="w-full flex overflow-x-auto overflow-y-hidden ar-scrollbar-none" @wheel="onWheel($event)">
+    <div ref="navsRef" class="ar-scrollbar-none w-full flex overflow-x-auto overflow-y-hidden" @wheel="onWheel($event)">
       <div
         v-for="item in props.list"
         :key="item.name"
@@ -16,7 +16,7 @@
         {{ item.name }}
       </div>
     </div>
-    <div class="mx-2 hover:text-[--ar-color-primary-text] cursor-pointer" @click="scrollToRight">
+    <div class="mx-2 cursor-pointer hover:text-[--ar-color-primary-text]" @click="scrollToRight">
       <RightOutlined />
     </div>
   </div>

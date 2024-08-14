@@ -1,9 +1,9 @@
 <template>
-  <div class="flex items-center md:block overflow-auto mb-5 select-none pr-0 md:pr-10">
-    <div class="mx-2 hover:text-[--ar-color-primary-text] cursor-pointer md:hidden" @click="scrollToLeft">
+  <div class="ar-tabs relative mb-5 flex select-none items-center overflow-auto pr-0 sm:block sm:pr-10">
+    <div class="mx-2 cursor-pointer sm:hidden hover:text-[--ar-color-primary-text]" @click="scrollToLeft">
       <LeftOutlined />
     </div>
-    <div ref="navsRef" class="flex-1 flex items-center md:block overflow-auto ar-scrollbar-none" @wheel="onWheel">
+    <div ref="navsRef" class="ar-scrollbar-none flex flex-1 items-center overflow-auto sm:block" @wheel="onWheel">
       <div v-for="(option, idx) in props.options" :key="idx" class="flex-shrink-0" @click="changeTab(option)">
         <div
           :class="[
@@ -11,11 +11,11 @@
             model === option[props.valueKey] ? ' bg-[--ar-left-bar-active-bg-secondary] text-[--ar-color-primary-text]' : ''
           ]"
         >
-          {{ option[props.labelKey] }}
+          <slot :label="option[props.labelKey]" :item="option">{{ option[props.labelKey] }}</slot>
         </div>
       </div>
     </div>
-    <div class="mx-2 hover:text-[--ar-color-primary-text] cursor-pointer md:hidden" @click="scrollToRight">
+    <div class="mx-2 cursor-pointer sm:hidden hover:text-[--ar-color-primary-text]" @click="scrollToRight">
       <RightOutlined />
     </div>
   </div>
@@ -44,3 +44,17 @@ function changeTab(option: any) {
   model.value = option[props.valueKey];
 }
 </script>
+
+<style scoped lang="scss">
+.ar-tabs {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &:hover {
+    &::-webkit-scrollbar {
+      display: initial;
+    }
+  }
+}
+</style>

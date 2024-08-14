@@ -1,16 +1,16 @@
-import type { App } from '../app'
+import type { App } from '../app';
 
 export class BaseController {
-  private _app: App
+  private _app: App;
   constructor(app: App) {
-    this._app = app
+    this._app = app;
   }
 
   get app() {
-    return this._app
+    return this._app;
   }
 
   get db() {
-    return this.app.db
+    return this.app.db;
   }
 }

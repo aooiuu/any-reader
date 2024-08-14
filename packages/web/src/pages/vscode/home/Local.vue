@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full flex flex-col">
+  <div class="h-full w-full flex flex-col">
     <div class="flex-1 overflow-auto">
       <TreeItem v-for="item in list" :key="item.path" @click="showChapter(item)">
         {{ item.name }}
@@ -8,7 +8,7 @@
 
     <vscode-divider />
     <div
-      class="my-4 mx-8 flex items-center"
+      class="mx-8 my-4 flex items-center"
       @click="
         executeCommand({
           command: 'any-reader.openLocalBookDir'

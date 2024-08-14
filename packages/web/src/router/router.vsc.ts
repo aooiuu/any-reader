@@ -1,4 +1,3 @@
-import NProgress from 'nprogress';
 import { createRouter, createWebHashHistory } from 'vue-router';
 
 const router = createRouter({
@@ -11,10 +10,7 @@ const router = createRouter({
       children: [
         {
           path: '/home',
-          component: () => import('@/pages/vscode/home/index.vue'),
-          meta: {
-            keepAlive: true
-          }
+          component: () => import('@/pages/vscode/home/index.vue')
         },
         {
           path: '/player',
@@ -80,10 +76,6 @@ const router = createRouter({
       ]
     }
   ]
-});
-
-router.afterEach(() => {
-  NProgress.done();
 });
 
 export default router;

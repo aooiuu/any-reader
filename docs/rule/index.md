@@ -6,9 +6,55 @@ outline: deep
 
 通过编写规则, 可以把不同网站的内容以相同的格式呈现, 以实现聚合搜索或阅读的功能。
 
-> 为了避免重复造轮子、重复制定规则规范, 目前 `any-reader` 的规则规范是按照 `eso` 的规则实现的, 所以规则的编写方法您可以参考 [eso 书源](https://github.com/mabDc/eso_source), 目前 `any-reader` 也支持 [eso 书源](https://github.com/mabDc/eso_source) 规则
+> 为了避免重复造轮子、重复制定规则规范, 目前 `any-reader` 的规则规范是按照 `eso` 的规则实现的, 所以规则的编写方法您可以参考 [eso](https://github.com/mabDc/eso), 目前 `any-reader` 也支持 [eso](https://github.com/mabDc/eso) 规则
 
 ## 规则结构
+
+::: code-group
+
+```json
+{
+  "id": "xxx-xxx-xxx-xxx-xxx",
+  "author": "",
+  "name": "",
+  "host": "",
+  "icon": "",
+  "contentType": 1,
+  "sort": 0,
+  "userAgent": "",
+  "enableDiscover": false,
+  "discoverUrl": "",
+  "discoverList": "",
+  "discoverTags": "",
+  "discoverName": "",
+  "discoverCover": "",
+  "discoverChapter": "",
+  "discoverDescription": "",
+  "discoverResult": "",
+  "enableSearch": false,
+  "searchUrl": "",
+  "searchAuthor": "",
+  "chapterCover": "",
+  "chapterTime": "",
+  "discoverAuthor": "",
+  "searchList": "",
+  "searchTags": "",
+  "searchName": "",
+  "searchCover": "",
+  "searchChapter": "",
+  "searchDescription": "",
+  "searchResult": "",
+  "enableMultiRoads": false,
+  "chapterRoads": "",
+  "chapterRoadName": "",
+  "chapterUrl": "",
+  "chapterList": "",
+  "chapterName": "",
+  "chapterResult": "",
+  "contentUrl": "",
+  "contentItems": ""
+}
+```
 
 ```typescript
 export interface Rule {
@@ -69,6 +115,14 @@ enum ContentType {
 }
 ```
 
+> [!TIP]
+> `eso://:xxxxx` 是压缩后的规则, 软件也会自动识别
+
+> [!IMPORTANT]
+> 并不是每个字段都是必填的, 按需填写既可。
+
+:::
+
 ## 规则字段类型
 
 规则字段通常分为以下几种：
@@ -120,10 +174,10 @@ enum ContentType {
 | 字段名     | 支持情况 | 说明                         |
 | ---------- | :------: | ---------------------------- |
 | $keyword   |    ✅    | 搜索用的关键字               |
-| searchKey  |    ✅    | 同 `$keyword`                |
+| searchKey  |    ✅    | 同 `$keyword` , ⚠️不推荐使用 |
 | $host      |    ✅    | 替换规则的 `host`            |
 | $result    |    ✅    | 上一个步骤 result 字段的结果 |
-| lastResult |    ⚠️    |                              |
+| lastResult |    ✅    |                              |
 | searchPage |    ❌    |                              |
 | $page      |    ❌    |                              |
 | $pageSize  |    ❌    |                              |

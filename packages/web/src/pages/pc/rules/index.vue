@@ -1,7 +1,7 @@
 <template>
-  <div class="px-10 py-10 h-full flex flex-col text-[--ar-color-text] bg-[--ar-main-background]">
+  <div class="h-full flex flex-col bg-[--ar-main-background] px-10 py-10 text-[--ar-color-text]">
     <div class="mb-10 flex gap-10">
-      <div class="flex-1 flex items-center gap-10">
+      <div class="flex flex-1 items-center gap-10">
         <a-input-search v-model:value="searchText" placeholder="搜索" class="!w-140px" />
         <a-checkbox-group v-model:value="contentTypes" :options="CONTENT_TYPES"> </a-checkbox-group>
       </div>
@@ -225,6 +225,22 @@ const tableColumns = ref<ColumnsType<any>>([
         }
       />
     )
+  },
+  {
+    title: '置顶',
+    width: 120,
+    align: 'center',
+    filters: [
+      {
+        text: '启用',
+        value: true
+      },
+      {
+        text: '禁用',
+        value: false
+      }
+    ],
+    customRender: ({ record }) => <a-switch checked={rulesStore.pindStore.includes(record.id)} onUpdate:checked={() => rulesStore.pindRule(record)} />
   },
   {
     title: '作者',

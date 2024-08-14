@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="flex mb-10">
-      <a-textarea v-model:value="url" :disabled="loading" :placeholder="placeholder" :auto-size="{ minRows: 8, maxRows: 10 }" class="flex-1 mr-5" />
+    <div class="mb-10 flex">
+      <a-textarea v-model:value="url" :disabled="loading" :placeholder="placeholder" :auto-size="{ minRows: 8, maxRows: 10 }" class="mr-5 flex-1" />
     </div>
     <div class="op-70">
       <icon-exclamation-circle-fill />

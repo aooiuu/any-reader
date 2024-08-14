@@ -8,13 +8,13 @@ export default {
       displayName: 'core',
       roots: ['<rootDir>/packages/core'],
       transform: {
-        '.+\\.(j|t)sx?$': 'ts-jest',
+        '.+\\.(j|t)sx?$': 'ts-jest'
       },
       globals: {
         'ts-jest': {
-          tsconfig: '<rootDir>/packages/core/tsconfig.json',
-        },
-      },
-    },
-  ],
-}
+          tsconfig: '<rootDir>/packages/core/tsconfig.json'
+        }
+      }
+    }
+  ]
+};

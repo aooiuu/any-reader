@@ -1,15 +1,15 @@
 <template>
-  <div class="h-full p-10 overflow-hidden">
+  <div class="h-full overflow-hidden p-10">
     <div
       ref="chaptersRef"
-      class="w-600 max-w-100% p-10 mx-a overflow-auto h-full p-10 text-[--ar-color-text-secondary] bg-[--ar-chapter-bg] rounded-10"
+      class="mx-a h-full max-w-100% w-600 overflow-auto rounded-10 bg-[--ar-chapter-bg] p-10 p-10 text-[--ar-color-text-secondary]"
     >
-      <a-spin v-if="loading" :spinning="loading" class="w-full h-full !flex items-center justify-center" />
+      <a-spin v-if="loading" :spinning="loading" class="h-full w-full items-center justify-center !flex" />
       <template v-else-if="list.length">
         <div
           v-for="item in list"
           :key="item.url"
-          class="w-full h-32 lh-32 hover:bg-[--ar-color-primary-bg] hover:text-[--ar-color-primary-text] cursor-pointer px-8 overflow-hidden whitespace-nowrap text-ellipsis rounded-2"
+          class="h-32 w-full cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap rounded-2 px-8 lh-32 hover:bg-[--ar-color-primary-bg] hover:text-[--ar-color-primary-text]"
           :class="[
             isLastRead(item) ? 'text-[--ar-color-primary-text]' : 'text-[--ar-color-text]',
             {
@@ -22,7 +22,7 @@
           {{ item.name }}
         </div>
       </template>
-      <div v-else class="flex justify-center items-center h-full">
+      <div v-else class="h-full flex items-center justify-center">
         <a-empty />
       </div>
     </div>

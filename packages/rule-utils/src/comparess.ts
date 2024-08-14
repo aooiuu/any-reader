@@ -1,5 +1,5 @@
-import { fromByteArray, toByteArray } from 'base64-js'
-import { deflate, inflate } from 'pako'
+import { fromByteArray, toByteArray } from 'base64-js';
+import { deflate, inflate } from 'pako';
 
 /**
  * 规则解码
@@ -7,9 +7,9 @@ import { deflate, inflate } from 'pako'
  * @returns
  */
 export function decodeRule(text: string) {
-  const lastIndex = text.lastIndexOf('@')
-  const gzipBytes = toByteArray(text.substring(lastIndex + 1))
-  return JSON.parse(inflate(gzipBytes, { to: 'string' }))
+  const lastIndex = text.lastIndexOf('@');
+  const gzipBytes = toByteArray(text.substring(lastIndex + 1));
+  return JSON.parse(inflate(gzipBytes, { to: 'string' }));
 }
 
 /**
@@ -18,9 +18,9 @@ export function decodeRule(text: string) {
  * @returns
  */
 export function encodeRule(text: any): string {
-  const rule = typeof text === 'string' ? JSON.parse(text) : text
-  const ruleText = typeof text === 'string' ? text : JSON.stringify(text)
-  const tag = 'eso://'
-  const encodeRuleText = fromByteArray(deflate(ruleText))
-  return `${tag}${rule.author || ''}:${rule.name || ''}@${encodeRuleText}`
+  const rule = typeof text === 'string' ? JSON.parse(text) : text;
+  const ruleText = typeof text === 'string' ? text : JSON.stringify(text);
+  const tag = 'eso://';
+  const encodeRuleText = fromByteArray(deflate(ruleText));
+  return `${tag}${rule.author || ''}:${rule.name || ''}@${encodeRuleText}`;
 }

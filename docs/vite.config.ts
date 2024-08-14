@@ -1,12 +1,12 @@
-import { defineConfig } from "vite";
+import { defineConfig } from 'vite';
 
 export default defineConfig({
   optimizeDeps: {
-    exclude: ["vitepress"],
+    exclude: ['vitepress']
   },
   server: {
     hmr: {
-      overlay: false,
-    },
-  },
+      overlay: false
+    }
+  }
 });

@@ -81,5 +81,17 @@ dist
 .idea
 
 packages/core/index.d.ts
+
 packages/server/index.d.ts
-packages/legado/src/rule.json
+packages/server/public
+
+packages/rubick/public
+
+packages/cli/public
+
+packages/utools/public/libs
+packages/utools/public/template
+
+packages/vscode/template-dist
+
+*.rule.json

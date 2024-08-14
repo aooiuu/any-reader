@@ -1,329 +1,329 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
-import { RuleExtra } from './RuleExtra'
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { RuleExtra } from './RuleExtra';
 
 @Entity({ name: 'resource_rule' })
 export class ResourceRule {
   @PrimaryGeneratedColumn('uuid')
-  id!: string
+  id!: string;
 
   @Column({
     name: 'enable_upload',
     type: 'integer',
     default: 0,
     transformer: {
-      to: v => (v ? 1 : 0),
-      from: v => !!v,
-    },
+      to: (v) => (v ? 1 : 0),
+      from: (v) => !!v
+    }
   })
-  enableUpload!: boolean
+  enableUpload!: boolean;
 
   @Column({
     name: 'author',
     type: 'text',
-    default: '',
+    default: ''
   })
-  author!: string
+  author!: string;
 
   @Column({
     name: 'name',
     type: 'text',
-    default: '',
+    default: ''
   })
-  name!: string
+  name!: string;
 
   @Column({
     name: 'host',
     type: 'text',
-    default: '',
+    default: ''
   })
-  host!: string
+  host!: string;
 
   @Column({
     name: 'icon',
     type: 'text',
-    default: '',
+    default: ''
   })
-  icon!: string
+  icon!: string;
 
   @Column({
     name: 'group',
     type: 'text',
-    default: '',
+    default: ''
   })
-  group!: string
+  group!: string;
 
   @Column({ name: 'content_type', type: 'integer', default: 0 })
-  contentType!: number
+  contentType!: number;
 
   @Column({ name: 'sort', type: 'integer', default: 0 })
-  sort!: number
+  sort!: number;
 
   @Column({
     name: 'use_crypto_js',
     type: 'integer',
     default: 0,
     transformer: {
-      to: v => (v ? 1 : 0),
-      from: v => !!v,
-    },
+      to: (v) => (v ? 1 : 0),
+      from: (v) => !!v
+    }
   })
-  useCryptoJS!: boolean
+  useCryptoJS!: boolean;
 
   @Column({
     name: 'user_agent',
     type: 'text',
-    default: '',
+    default: ''
   })
-  userAgent!: string
+  userAgent!: string;
 
   @Column({
     name: 'enable_discover',
     type: 'integer',
     default: 0,
     transformer: {
-      to: v => (v ? 1 : 0),
-      from: v => !!v,
-    },
+      to: (v) => (v ? 1 : 0),
+      from: (v) => !!v
+    }
   })
-  enableDiscover!: boolean
+  enableDiscover!: boolean;
 
   @Column({
     name: 'discover_url',
     type: 'text',
-    default: '',
+    default: ''
   })
-  discoverUrl!: string
+  discoverUrl!: string;
 
   @Column({
     name: 'discover_list',
     type: 'text',
-    default: '',
+    default: ''
   })
-  discoverList!: string
+  discoverList!: string;
 
   @Column({
     name: 'discover_tags',
     type: 'text',
-    default: '',
+    default: ''
   })
-  discoverTags!: string
+  discoverTags!: string;
 
   @Column({
     name: 'discover_name',
     type: 'text',
-    default: '',
+    default: ''
   })
-  discoverName!: string
+  discoverName!: string;
 
   @Column({
     name: 'discover_cover',
     type: 'text',
-    default: '',
+    default: ''
   })
-  discoverCover!: string
+  discoverCover!: string;
 
   @Column({
     name: 'discover_chapter',
     type: 'text',
-    default: '',
+    default: ''
   })
-  discoverChapter!: string
+  discoverChapter!: string;
 
   @Column({
     name: 'discover_description',
     type: 'text',
-    default: '',
+    default: ''
   })
-  discoverDescription!: string
+  discoverDescription!: string;
 
   @Column({
     name: 'discover_result',
     type: 'text',
-    default: '',
+    default: ''
   })
-  discoverResult!: string
+  discoverResult!: string;
 
   @Column({
     name: 'enable_search',
     type: 'integer',
     default: '',
     transformer: {
-      to: v => (v ? 1 : 0),
-      from: v => !!v,
-    },
+      to: (v) => (v ? 1 : 0),
+      from: (v) => !!v
+    }
   })
-  enableSearch!: boolean
+  enableSearch!: boolean;
 
   @Column({
     name: 'search_url',
     type: 'text',
-    default: '',
+    default: ''
   })
-  searchUrl!: string
+  searchUrl!: string;
 
   @Column({
     name: 'search_author',
     type: 'text',
-    default: '',
+    default: ''
   })
-  searchAuthor!: string
+  searchAuthor!: string;
 
   @Column({
     name: 'chapter_cover',
     type: 'text',
-    default: '',
+    default: ''
   })
-  chapterCover!: string
+  chapterCover!: string;
 
   @Column({
     name: 'chapter_time',
     type: 'text',
-    default: '',
+    default: ''
   })
-  chapterTime!: string
+  chapterTime!: string;
 
   @Column({
     name: 'discover_author',
     type: 'text',
-    default: '',
+    default: ''
   })
-  discoverAuthor!: string
+  discoverAuthor!: string;
 
   @Column({
     name: 'discover_items',
     type: 'text',
-    default: '',
+    default: ''
   })
-  discoverItems!: string
+  discoverItems!: string;
 
   @Column({
     name: 'search_list',
     type: 'text',
-    default: '',
+    default: ''
   })
-  searchList!: string
+  searchList!: string;
 
   @Column({
     name: 'search_tags',
     type: 'text',
-    default: '',
+    default: ''
   })
-  searchTags!: string
+  searchTags!: string;
 
   @Column({
     name: 'search_name',
     type: 'text',
-    default: '',
+    default: ''
   })
-  searchName!: string
+  searchName!: string;
 
   @Column({
     name: 'search_cover',
     type: 'text',
-    default: '',
+    default: ''
   })
-  searchCover!: string
+  searchCover!: string;
 
   @Column({
     name: 'search_chapter',
     type: 'text',
-    default: '',
+    default: ''
   })
-  searchChapter!: string
+  searchChapter!: string;
 
   @Column({
     name: 'search_description',
     type: 'text',
-    default: '',
+    default: ''
   })
-  searchDescription!: string
+  searchDescription!: string;
 
   @Column({
     name: 'search_result',
     type: 'text',
-    default: '',
+    default: ''
   })
-  searchResult!: string
+  searchResult!: string;
 
   @Column({
     name: 'enable_multi_roads',
     type: 'integer',
     default: 0,
     transformer: {
-      to: v => (v ? 1 : 0),
-      from: v => !!v,
-    },
+      to: (v) => (v ? 1 : 0),
+      from: (v) => !!v
+    }
   })
-  enableMultiRoads!: boolean
+  enableMultiRoads!: boolean;
 
   @Column({
     name: 'chapter_roads',
     type: 'text',
-    default: '',
+    default: ''
   })
-  chapterRoads!: string
+  chapterRoads!: string;
 
   @Column({
     name: 'chapter_road_name',
     type: 'text',
-    default: '',
+    default: ''
   })
-  chapterRoadName!: string
+  chapterRoadName!: string;
 
   @Column({
     name: 'chapter_url',
     type: 'text',
-    default: '',
+    default: ''
   })
-  chapterUrl!: string
+  chapterUrl!: string;
 
   @Column({
     name: 'chapter_list',
     type: 'text',
-    default: '',
+    default: ''
   })
-  chapterList!: string
+  chapterList!: string;
 
   @Column({
     name: 'chapter_name',
     type: 'text',
-    default: '',
+    default: ''
   })
-  chapterName!: string
+  chapterName!: string;
 
   @Column({
     name: 'chapter_result',
     type: 'text',
-    default: '',
+    default: ''
   })
-  chapterResult!: string
+  chapterResult!: string;
 
   @Column({
     name: 'content_url',
     type: 'text',
-    default: '',
+    default: ''
   })
-  contentUrl!: string
+  contentUrl!: string;
 
   @Column({
     name: 'content_items',
     type: 'text',
-    default: '',
+    default: ''
   })
-  contentItems!: string
+  contentItems!: string;
 
   @Column({ name: 'view_style', type: 'integer', default: 0 })
-  viewStyle!: number
+  viewStyle!: number;
 
   @Column({ name: 'create_time', type: 'integer', default: 0 })
-  createTime!: number
+  createTime!: number;
 
   @Column({ name: 'modified_time', type: 'integer', default: 0 })
-  modifiedTime!: number
+  modifiedTime!: number;
 
-  @OneToOne(() => RuleExtra, e => e.ruleId, {
-    createForeignKeyConstraints: false,
+  @OneToOne(() => RuleExtra, (e) => e.ruleId, {
+    createForeignKeyConstraints: false
   })
   @JoinColumn({ name: 'id' })
-  extra!: RuleExtra
+  extra!: RuleExtra;
 }

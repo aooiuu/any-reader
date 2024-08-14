@@ -1,6 +1,6 @@
 <template>
-  <div class="w-full h-300 overflow-hidden flex text-[--ar-color-text-secondary] bg-[--activityBar-background]">
-    <div class="w-120 text-[--ar-color-text] h-full p-10 bg-[--ar-chapter-bg] rounded-8">
+  <div class="h-300 w-full flex overflow-hidden bg-[--activityBar-background] text-[--ar-color-text-secondary]">
+    <div class="h-full w-120 rounded-8 bg-[--ar-chapter-bg] p-10 text-[--ar-color-text]">
       <div v-for="(nav, idx) in navs" :key="nav.title" class="" @click="activeNavIdx = idx">
         <div
           :class="[
@@ -12,7 +12,7 @@
         </div>
       </div>
     </div>
-    <div class="flex-1 bg-[--ar-chapter-bg] rounded-8 ml-10">
+    <div class="ml-10 flex-1 rounded-8 bg-[--ar-chapter-bg]">
       <component :is="navs[activeNavIdx].component" />
     </div>
   </div>

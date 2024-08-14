@@ -1,7 +1,7 @@
 <template>
-  <div class="p-8 h-full overflow-hidden flex flex-col">
+  <div class="h-full flex flex-col overflow-hidden p-8">
     <div v-if="!loading" class="flex">
-      <div class="vsc-toolbar-btn mr-2 flex items-center h-full" @click="expand = !expand">
+      <div class="mr-2 h-full flex items-center vsc-toolbar-btn" @click="expand = !expand">
         <span class="codicon" :class="[expand ? 'codicon-chevron-down' : 'codicon-chevron-right']"></span>
       </div>
       <div class="flex-1">
@@ -24,7 +24,7 @@
             </vscode-option>
           </vscode-dropdown>
           <!-- filter -->
-          <vscode-dropdown class="w-full mt-2" :value="'' + filterType" @input="(event:any) => (filterType = +event.target.value)">
+          <vscode-dropdown class="mt-2 w-full" :value="'' + filterType" @input="(event:any) => (filterType = +event.target.value)">
             <vscode-option :value="1">默认</vscode-option>
             <vscode-option :value="2">包含关键字</vscode-option>
           </vscode-dropdown>
@@ -34,22 +34,22 @@
 
     <div v-else class="flex items-center">
       <div v-if="runCount > 0" class="flex-1">
-        <div class="op-70 text-12">搜索中: {{ runCount }}/{{ total }}</div>
+        <div class="text-12 op-70">搜索中: {{ runCount }}/{{ total }}</div>
       </div>
       <vscode-button appearance="Secondary" @click="cancelSearch">取消</vscode-button>
     </div>
 
-    <div class="flex-1 overflow-auto mt-10">
+    <div class="mt-10 flex-1 overflow-auto">
       <template v-for="item in displayList" :key="item.rule.id">
         <div
-          class="flex items-center text-[--foreground] h-22 lh-22 cursor-pointer hover:bg-[--list-hoverBackground]"
+          class="h-22 flex cursor-pointer items-center text-[--foreground] lh-22 hover:bg-[--list-hoverBackground]"
           @click="changeOpened(item.rule.id)"
         >
-          <div class="flex-1 overflow-hidden flex items-center">
+          <div class="flex flex-1 items-center overflow-hidden">
             <i class="codicon mr-6" :class="[item.opened ? 'codicon-chevron-down' : 'codicon-chevron-right']"></i>
-            <div class="flex-1 overflow-hidden whitespace-nowrap text-ellipsis">{{ item.rule.name }}</div>
+            <div class="flex-1 overflow-hidden text-ellipsis whitespace-nowrap">{{ item.rule.name }}</div>
           </div>
-          <span class="op-70 ml-6">{{ item.list.length }}</span>
+          <span class="ml-6 op-70">{{ item.list.length }}</span>
         </div>
         <template v-if="item.opened">
           <TreeItem v-for="(row, idx) in item.list" :key="idx" class="pl-22" :title="row.author" @click="getChapter(row, item.rule)">

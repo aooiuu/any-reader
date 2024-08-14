@@ -30,7 +30,7 @@ export class WebviewProvider implements vscode.WebviewViewProvider {
 
     webviewView.onDidChangeVisibility(() => {
       if (webviewView.visible && this.route) {
-        let injectScript = `window.__vscode$initialize_page = '${this.route}';`;
+        const injectScript = `window.__vscode$initialize_page = '${this.route}';`;
         this.webview.html = getWebViewContent(path.join('template-dist', 'index.html'), this._extensionPath, this.webview, injectScript);
       }
     });

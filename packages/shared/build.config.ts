@@ -1,4 +1,4 @@
-import { defineBuildConfig } from 'unbuild'
+import { defineBuildConfig } from 'unbuild';
 
 export default defineBuildConfig({
   entries: ['src/index'],
@@ -13,10 +13,10 @@ export default defineBuildConfig({
       tsconfigRaw: {
         compilerOptions: {
           // typeorm: https://github.com/unjs/unbuild/issues/309
-          experimentalDecorators: true,
-        },
+          experimentalDecorators: true
+        }
       },
-      minify: true,
-    },
-  },
-})
+      minify: true
+    }
+  }
+});

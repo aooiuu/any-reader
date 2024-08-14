@@ -1,14 +1,16 @@
 <template>
-  <div ref="contentRef" class="w-full h-full"></div>
+  <div ref="contentRef" class="h-full w-full"></div>
 </template>
 
 <script setup>
 import Hls from 'hls.js';
 import DPlayer from 'dplayer';
+import { useBus, EVENT_TITLE_CHANGE } from '@/utils/bus';
 
 const route = useRoute();
 
 const contentRef = ref();
+const eventTitleChange = useBus(EVENT_TITLE_CHANGE);
 
 onMounted(async () => {
   new DPlayer({
@@ -29,6 +31,7 @@ onMounted(async () => {
 
   const { name, chapterName } = route.query;
   document.title = [name, chapterName].filter((e) => e).join('-');
+  eventTitleChange.emit(document.title);
 });
 
 watch(
