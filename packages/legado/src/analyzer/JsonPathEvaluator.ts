@@ -1,35 +1,49 @@
+import { JSONPath } from 'jsonpath-plus';
 import { AnalyzerManager } from './AnalyzerManager';
 import { RuleEvaluator } from './common';
 
+class JsonPath {
+  static parse(content: any): ReadContext {
+    return new ReadContext(content);
+  }
+}
+class ReadContext {
+  private _content: any;
+
+  constructor(content: string) {
+    this._content = typeof content === 'string' ? JSON.parse(content) : content;
+  }
+
+  read(jsonPath: string) {
+    const rows = JSONPath({
+      path: jsonPath,
+      json: this._content
+    });
+    if (Array.isArray(rows) && rows.length === 1) return rows[0];
+
+    return rows;
+  }
+}
+
 export class JsonPathEvaluator extends RuleEvaluator {
   private jsonpath: string;
-  private compiledPath: JsonPath | null;
 
   constructor(jsonpath: string) {
     super();
     this.jsonpath = jsonpath;
-    this.compiledPath = this.compilePath(jsonpath);
-  }
-
-  private compilePath(path: string): JsonPath | null {
-    try {
-      return JsonPath.compile(path);
-    } catch (e) {
-      return null;
-    }
   }
 
   getString(context: AnalyzerManager, value: any): string {
-    if (!this.compiledPath) return '';
+    if (!this.jsonpath) return '';
     return this.getStrings(context, value).join('\n');
   }
 
-  getStrings(context: AnalyzerManager, value: any): string[] {
+  getStrings(_context: AnalyzerManager, value: any): string[] {
     const ctx = value as ReadContext;
-    if (!this.compiledPath) return [];
+    if (!this.jsonpath) return [];
     const result: string[] = [];
     try {
-      const obj = ctx.read<any>(this.compiledPath);
+      const obj = ctx.read(this.jsonpath);
       if (Array.isArray(obj)) {
         obj.forEach((item) => result.push(item.toString()));
       } else {
@@ -41,19 +55,19 @@ export class JsonPathEvaluator extends RuleEvaluator {
     return result;
   }
 
-  getElements(context: AnalyzerManager, value: any): any[] {
+  getElements(_context: AnalyzerManager, value: any): any[] {
     const ctx = value as ReadContext;
     try {
-      return ctx.read(this.compiledPath);
+      return ctx.read(this.jsonpath);
     } catch (e) {
       console.error(e);
     }
     return [];
   }
 
-  getElement(context: AnalyzerManager, value: any): any {
+  getElement(_context: AnalyzerManager, value: any): any {
     const ctx = value as ReadContext;
-    return ctx.read(this.compiledPath);
+    return ctx.read(this.jsonpath);
   }
 
   toString(): string {
@@ -72,9 +86,9 @@ export class JsonPathEvaluator extends RuleEvaluator {
       if (json instanceof ReadContext) {
         return json;
       } else if (typeof json === 'string') {
-        return JsonPath.parse<string>(json);
+        return JsonPath.parse(json);
       } else {
-        return JsonPath.parse<any>(json);
+        return JsonPath.parse(json);
       }
     }
 

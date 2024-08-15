@@ -72,6 +72,7 @@ export class AnalyzerManager {
   }
 
   parseStrings(rule: string) {
+    if (!rule) return null; // 没有规则, 返回空白, 不然后面会报错
     return SourceRuleParser.parseStrings(rule);
   }
 
