@@ -18,7 +18,7 @@ export class ResourceHistoryService {
   }
 
   // 删除一个记录
-  async remove(data: ResourceRow) {
+  async remove(data: any) {
     const { ruleId, url } = data;
     return await this.repository.delete({
       ruleId,
@@ -27,7 +27,8 @@ export class ResourceHistoryService {
   }
 
   // 添加一个记录
-  async create(data: ResourceRow) {
+  async create(data: any) {
+    data.url = data.url || data.filePath;
     await this.remove(data);
     const now = Date.now();
     const entity = this.repository.create({
@@ -38,9 +39,4 @@ export class ResourceHistoryService {
     });
     return await this.repository.save(entity);
   }
-}
-
-interface ResourceRow {
-  ruleId: string;
-  url: string;
 }

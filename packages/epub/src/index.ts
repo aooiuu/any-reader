@@ -3,6 +3,7 @@
  */
 
 import { EventEmitter } from 'events';
+import { join, dirname } from 'path';
 import { defaults as xml2js, Parser } from 'xml2js';
 import AdmZip from 'adm-zip';
 import { fromByteArray } from 'base64-js';
@@ -623,6 +624,7 @@ class EPub extends EventEmitter {
       const path = this.rootFile.split('/');
       const keys = Object.keys(this.manifest);
       path.pop();
+      const filePath = this.manifest[id].href; // html href
 
       // remove linebreaks (no multi line matches in JS regex!)
       str = str.replace(/\r?\n/g, '\u0000');
@@ -649,27 +651,14 @@ class EPub extends EventEmitter {
 
       // replace images
       str = str.replace(/(\ssrc\s*=\s*["']?)([^"'\s>]*?)(["'\s>])/g, (o: any, a: string, b: string, c: any) => {
-        const img = path.concat([b]).join('/').trim();
+        const imgPath = join(dirname(filePath), b).replace(/\\/g, '/');
         try {
-          const src = 'data:image/png;base64,' + fromByteArray(this.zip.readFile(img.replace('/../', '/')) as unknown as Uint8Array);
+          const src = 'data:image/png;base64,' + fromByteArray(this.zip.readFile(imgPath) as unknown as Uint8Array);
           return `${a}${src}${c}`;
         } catch (error) {
           console.warn(error);
         }
-
-        let element;
-
-        for (i = 0, len = keys.length; i < len; i++) {
-          if (this.manifest[keys[i]].href == img) {
-            element = this.manifest[keys[i]];
-            break;
-          }
-        }
-
-        // include only images from manifest
-        if (element) {
-          return `${a + this.imageroot + element.id}/${img}${c}`;
-        } else return '';
+        return '';
       });
 
       // replace links

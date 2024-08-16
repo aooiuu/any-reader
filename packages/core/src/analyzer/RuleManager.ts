@@ -42,8 +42,8 @@ export class RuleManager {
     this.analyzerManager = analyzerManager;
   }
 
-  private parseUrl(url: string) {
-    if (url.startsWith('@js:')) url = JSEngine.evaluate(url.substring(4));
+  private async parseUrl(url: string) {
+    if (url.startsWith('@js:')) url = await JSEngine.evaluate(url.substring(4));
     return url;
   }
 
@@ -54,7 +54,7 @@ export class RuleManager {
       keyword,
       searchKey: keyword
     });
-    const { body } = await fetch(this.parseUrl(searchUrl), keyword, '', this.rule);
+    const { body } = await fetch(await this.parseUrl(searchUrl), keyword, '', this.rule);
     const list = await this.getList(body, this.rule.searchList);
 
     const result: SearchItem[] = [];
@@ -92,7 +92,7 @@ export class RuleManager {
       ];
     }
     const chapterUrl = this.rule.chapterUrl || result;
-    const { body } = await fetch(this.parseUrl(chapterUrl), '', result, this.rule);
+    const { body } = await fetch(await this.parseUrl(chapterUrl), '', result, this.rule);
 
     JSEngine.setEnvironment({
       page: 1,
@@ -129,7 +129,7 @@ export class RuleManager {
       result
     });
     const contentUrl = this.rule.contentUrl !== 'null' ? this.rule.contentUrl : null;
-    const { body, params } = await fetch(this.parseUrl(contentUrl || result), '', result, this.rule);
+    const { body, params } = await fetch(await this.parseUrl(contentUrl || result), '', result, this.rule);
     JSEngine.setEnvironment({
       page: 1,
       lastResult: result,
@@ -160,13 +160,13 @@ export class RuleManager {
         page: 1,
         baseUrl: this.rule.host
       });
-      discoverUrl = JSEngine.evaluate(`${discoverUrl.substring(4)};`);
+      discoverUrl = await JSEngine.evaluate(`${discoverUrl.substring(4)};`);
     }
 
     const discovers = Array.isArray(discoverUrl)
       ? discoverUrl.map((e) => e.toString())
       : typeof discoverUrl === 'string'
-        ? discoverUrl.split(/[\n\s*]|&&/)
+        ? discoverUrl.split(/[\n*]|&&/)
         : [];
 
     for (const url of discovers) {
@@ -254,7 +254,7 @@ export class RuleManager {
     let body = '';
 
     if (discoverRule !== 'null') {
-      const { body: res } = await fetch(this.parseUrl(discoverRule), '', '', this.rule);
+      const { body: res } = await fetch(await this.parseUrl(discoverRule), '', '', this.rule);
       body = res;
     }
 

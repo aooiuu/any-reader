@@ -19,7 +19,7 @@ export class AnalyzerJS implements Analyzer {
   }
 
   async getElements(rule: string) {
-    return JSEngine.evaluate(rule, {
+    return await JSEngine.evaluate(rule, {
       result: this._content
     });
   }
