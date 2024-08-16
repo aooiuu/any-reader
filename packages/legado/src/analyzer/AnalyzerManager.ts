@@ -28,25 +28,66 @@ export class AnalyzerManager {
     }
   }
 
-  getStringList(rule: string | RuleEvaluator) {
+  getStringList(rule: string | RuleEvaluator | null, content: any | null = null, isUrl: boolean = false) {
+    if (!rule) {
+      return null;
+    }
+
     if (typeof rule === 'string') {
-      return SourceRuleParser.parseStrings(rule).getStrings(this, this.content);
+      if (!rule.trim()) {
+        return null;
+      }
+      rule = SourceRuleParser.parseStrings(rule);
     } else {
       return rule.getStrings(this, this.content);
     }
+
+    content ??= this.content;
+
+    if (!content) {
+      return null;
+    }
+
+    const result = rule.getStrings(this, content);
+
+    if (isUrl) {
+      if (Array.isArray(result)) {
+        const urlList: string[] = [];
+        for (const url of result) {
+          const absoluteURL = NetworkUtils.getAbsoluteURL2(this.redirectUrl, String(url));
+          if (absoluteURL && !urlList.includes(absoluteURL)) {
+            urlList.push(absoluteURL);
+          }
+        }
+      }
+      return [];
+    }
+    return result;
   }
 
   getString(
-    rule: RuleEvaluator | null,
+    rule: RuleEvaluator | string | null,
     content: any | null = null,
     isUrl: boolean = false
     // unescape: boolean = true,
   ) {
-    let result = '';
-    const currentContent = content ?? this.content;
+    if (!rule) {
+      return '';
+    }
 
-    if (currentContent && rule) {
-      result = isUrl ? rule.getString0(this, currentContent) : rule.getString(this, currentContent);
+    if (typeof rule === 'string') {
+      if (!rule.trim()) {
+        return '';
+      }
+      rule = SourceRuleParser.parseStrings(rule);
+    }
+
+    let result = '';
+
+    content ??= this.content;
+
+    if (content && rule) {
+      result = isUrl ? rule.getString0(this, content) : rule.getString(this, content);
     }
 
     // const str =
@@ -63,16 +104,18 @@ export class AnalyzerManager {
     return str;
   }
 
-  getElements(rule: string | RuleEvaluator) {
-    if (typeof rule === 'string') {
-      return SourceRuleParser.parseElements(rule).getElements(this, this.content);
-    } else {
-      return rule.getElements(this, this.content);
-    }
+  getElement(rule: string) {
+    if (!rule.trim()) return null;
+    return SourceRuleParser.parseElements(rule).getElement(this, this.content);
+  }
+
+  getElements(rule: string) {
+    if (!rule.trim()) return [];
+    return SourceRuleParser.parseElements(rule).getElements(this, this.content);
   }
 
   parseStrings(rule: string) {
-    if (!rule) return null; // 没有规则, 返回空白, 不然后面会报错
+    if (!rule.trim()) return null; // 没有规则, 返回空白, 不然后面会报错
     return SourceRuleParser.parseStrings(rule);
   }
 

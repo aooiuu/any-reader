@@ -74,22 +74,38 @@ export abstract class RegexEvaluator extends RuleEvaluator {
     }
 
     override replace(context: AnalyzerManager, beforeContent: any, content: any): string {
-      const result = beforeContent?.toString() || '';
+      const result = String(beforeContent);
       const replacement = this.replacementEval.getString(context, result);
       const regex = this.regexEval.eval(context, result) as RegExp;
 
-      const match = regex.exec(content?.toString() || '')?.[0] || '';
-      return match ? content.toString().replace(regex, replacement) : '';
+      if (!(regex instanceof RegExp)) {
+        return replacement;
+      }
+
+      const match = String(content).match(regex);
+
+      if (!match) {
+        return '';
+      }
+
+      return match[0].replace(regex, replacement);
     }
 
     override replaceList(context: AnalyzerManager, beforeContent: any, content: any): string[] {
       const resultList = beforeContent as any[];
       const replacement = this.replacementEval.getString(context, content);
-      const regex = this.regexEval.eval(context, content) as RegExp;
+      const regex = this.regexEval.eval(context, content);
 
       return resultList.map((result) => {
-        const match = regex.exec(result.toString())?.[0] || '';
-        return match ? result.toString().replace(regex, replacement) : replacement;
+        if (regex instanceof RegExp) {
+          const match = String(result).match(regex);
+          if (!match) {
+            return '';
+          }
+          return match[0].replace(regex, replacement);
+        } else {
+          return replacement;
+        }
       });
     }
 
