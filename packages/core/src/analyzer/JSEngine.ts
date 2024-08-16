@@ -11,11 +11,11 @@ export class JSEngine {
     Object.assign(JSEngine.environment || {}, env);
   }
 
-  static evaluate(command: string, context: any = {}) {
+  static async evaluate(command: string, context: any = {}) {
     const { rule } = JSEngine.environment;
     if (rule?.loadJs) command = `${rule.loadJs};${command}`;
     try {
-      return vm.runInNewContext(
+      const p = vm.runInNewContext(
         command,
         vm.createContext({
           // 暂时不考虑使用了 `window` 方法的规则, 理论上规则不应该使用 `window` 变量
@@ -38,6 +38,7 @@ export class JSEngine {
           }
         })
       );
+      return typeof p === 'object' && typeof p.then === 'function' ? await p : p;
     } catch (error) {
       throw new JsVmException(String(error));
     }

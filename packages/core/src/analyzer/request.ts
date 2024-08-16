@@ -10,6 +10,11 @@ const http = axios.create({
   timeout: 6000
 });
 
+// 替换变量
+function replaceUrl(url: string, vars: any) {
+  return url.replace(/\$keyword|\$page|\$host|\$result|\$pageSize|searchKey|searchPage/g, (m: string | number) => vars[m] || '');
+}
+
 /**
  *
  * @param url
@@ -36,24 +41,24 @@ export async function fetch(url: string | object, keyword = '', result = '', rul
   // TODO: 编码 encoding
   if (typeof url === 'object') {
     params = url;
-  } else {
-    params.url = params.url.replace(/\$keyword|\$page|\$host|\$result|\$pageSize|searchKey|searchPage/g, (m: string | number) => vars[m] || '');
-    if (params.url.startsWith('{')) Object.assign(params, JSON.parse(params.url));
+  }
 
-    const host = rule.host.trim();
-    if (params.url.startsWith('//')) {
-      if (host.startsWith('https')) params.url = `https:${params.url}`;
-      else params.url = `http:${params.url}`;
-    } else if (!params.url.startsWith('http') && !params.url.startsWith('ftp')) {
-      params.url = host + params.url;
-    }
+  params.url = replaceUrl(params.url, vars);
+  if (params.url.startsWith('{')) Object.assign(params, JSON.parse(params.url));
 
-    if (params.method === 'post' && typeof params.body === 'object') {
-      Object.assign(params, {
-        body: undefined,
-        data: params.body
-      });
-    }
+  const host = rule.host.trim();
+  if (params.url.startsWith('//')) {
+    if (host.startsWith('https')) params.url = `https:${params.url}`;
+    else params.url = `http:${params.url}`;
+  } else if (!params.url.startsWith('http') && !params.url.startsWith('ftp')) {
+    params.url = host + params.url;
+  }
+
+  if (params.method === 'post' && typeof params.body === 'object') {
+    Object.assign(params, {
+      body: undefined,
+      data: params.body
+    });
   }
 
   if (!params.headers) params.headers = {};

@@ -33,6 +33,18 @@ describe('analyzer', () => {
     expect(content).toEqual('c');
   });
 
+  it('JS async', async () => {
+    const body = '{"a": "c"}';
+    const content = await analyzerManager.getString('@js:(async () => JSON.parse(result).a)()', body);
+    expect(content).toEqual('c');
+  });
+
+  it('JS Promise', async () => {
+    const body = '{"a": "c"}';
+    const content = await analyzerManager.getString('@js:(() => new Promise(c =>{c(JSON.parse(result).a)}))()', body);
+    expect(content).toEqual('c');
+  });
+
   it('JSONPath + CSS', async () => {
     const body = JSON.stringify({
       info: {
