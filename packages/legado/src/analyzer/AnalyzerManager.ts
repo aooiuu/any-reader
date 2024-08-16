@@ -54,7 +54,7 @@ export class AnalyzerManager {
       if (Array.isArray(result)) {
         const urlList: string[] = [];
         for (const url of result) {
-          const absoluteURL = NetworkUtils.getAbsoluteURL2(this.redirectUrl, url.toString());
+          const absoluteURL = NetworkUtils.getAbsoluteURL2(this.redirectUrl, String(url));
           if (absoluteURL && !urlList.includes(absoluteURL)) {
             urlList.push(absoluteURL);
           }
