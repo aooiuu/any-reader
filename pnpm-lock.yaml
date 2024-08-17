@@ -181,6 +181,9 @@ importers:
 
   packages/legado:
     dependencies:
+      '@xmldom/xmldom':
+        specifier: ^0.8.10
+        version: 0.8.10
       axios:
         specifier: ^1.5.1
         version: 1.7.2
@@ -208,12 +211,9 @@ importers:
       urlencode:
         specifier: ^2.0.0
         version: 2.0.0
-      xmldom:
-        specifier: ^0.6.0
-        version: 0.6.0
-      xpath.js:
-        specifier: ^1.1.0
-        version: 1.1.0
+      xpath:
+        specifier: ^0.0.34
+        version: 0.0.34
     devDependencies:
       '@any-reader/rule-utils':
         specifier: workspace:^
@@ -7319,6 +7319,10 @@ packages:
   xpath.js@1.1.0:
     resolution: {integrity: sha512-jg+qkfS4K8E7965sqaUl8mRngXiKb3WZGfONgE18pr03FUQiuSV6G+Ej4tS55B+rIQSFEIw3phdVAQ4pPqNWfQ==}
     engines: {node: '>=0.4.0'}
+
+  xpath@0.0.34:
+    resolution: {integrity: sha512-FxF6+rkr1rNSQrhUNYrAFJpRXNzlDoMxeXN5qI84939ylEv3qqPFKa85Oxr6tDaJKqwW6KKyo2v26TSv3k6LeA==}
+    engines: {node: '>=0.6.0'}
 
   y18n@5.0.8:
     resolution: {integrity: sha512-0pfFzegeDWJHJIAmTLRP2DwHjdF5s7jo9tuztdQxAhINCdvS+3nGINqPd00AphqJR/0LhANUS6/+7SCb98YOfA==}
@@ -15259,6 +15263,8 @@ snapshots:
   xmldom@0.6.0: {}
 
   xpath.js@1.1.0: {}
+
+  xpath@0.0.34: {}
 
   y18n@5.0.8: {}
 

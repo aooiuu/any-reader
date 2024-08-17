@@ -1,3 +1,3 @@
-declare module "xpath.js" {
-  export default (...args: any): any[] => {};
+declare module 'xpath' {
+  export function parse(expression: string): any;
 }

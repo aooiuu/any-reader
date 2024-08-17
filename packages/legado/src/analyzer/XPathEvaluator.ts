@@ -1,4 +1,26 @@
+import xpath from 'xpath';
+import { DOMParser } from '@xmldom/xmldom';
+import { AnalyzerManager } from './AnalyzerManager';
 import { RuleEvaluator } from './common';
+
+class JXDocument {
+  static create(content: string) {
+    return new JXNode(content);
+  }
+}
+
+class JXNode {
+  private _content: string;
+  constructor(content: string) {
+    this._content = content;
+  }
+
+  sel(rule: string) {
+    const doc = new DOMParser().parseFromString(this._content, 'text/html');
+    const node: any[] = xpath.parse(rule).select({ node: doc, isHtml: true });
+    return node.map((e) => e.toString());
+  }
+}
 
 export class XPathEvaluator extends RuleEvaluator {
   constructor(private xpath: string) {
@@ -6,18 +28,13 @@ export class XPathEvaluator extends RuleEvaluator {
   }
 
   override getStrings(context: AnalyzerManager, value: any): string[] {
-    const result = this.getElements(context, value) as JXNode[];
-    return result.map((node) => node.asString());
+    const result = this.getElements(context, value);
+    return result;
   }
 
   override getElements(context: AnalyzerManager, value: any): any[] {
     if (!value) return [];
-    if (value instanceof JXNode) {
-      return value.sel(this.xpath);
-    } else if (value instanceof JXDocument) {
-      return value.selN(this.xpath);
-    }
-    return [];
+    return value.sel(this.xpath);
   }
 
   override getElement(context: AnalyzerManager, value: any): any {
@@ -33,37 +50,8 @@ export class XPathEvaluator extends RuleEvaluator {
       super();
     }
 
-    private parse(doc: any): any {
-      if (doc instanceof JXNode) {
-        return doc.isElement ? doc : this.strToJXDocument(doc.toString());
-      } else if (doc instanceof Document) {
-        return JXDocument.create(doc);
-      } else if (doc instanceof Element) {
-        return JXDocument.create(new Elements(doc));
-      } else if (doc instanceof Elements) {
-        return JXDocument.create(doc);
-      } else {
-        return this.strToJXDocument(doc.toString());
-      }
-    }
-
-    private strToJXDocument(html: string): JXDocument {
-      let html1 = html;
-      if (html1.endsWith('</td>')) {
-        html1 = `<tr>${html1}</tr>`;
-      }
-      if (html1.endsWith('</tr>') || html1.endsWith('</tbody>')) {
-        html1 = `<table>${html1}</table>`;
-      }
-
-      try {
-        if (html1.trim().startsWith('<?xml', true)) {
-          return JXDocument.create(Jsoup.parse(html1, Parser.xmlParser()));
-        }
-      } catch (error) {
-        // Handle parsing error if necessary
-      }
-      return JXDocument.create(html1);
+    private parse(doc: string): any {
+      return JXDocument.create(doc);
     }
 
     override getStrings(context: AnalyzerManager, value: any): string[] | null {
