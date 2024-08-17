@@ -125,8 +125,9 @@ export class AnalyzerManager {
 
   get(_key: string): string {
     throw new Error('未实现');
-    return '';
   }
 
-  evalJS(_script: string, _result: any | null): any {}
+  evalJS(_script: string, _result: any | null): any {
+    throw new Error('未实现');
+  }
 }

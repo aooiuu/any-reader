@@ -9,7 +9,7 @@ const dirname = path.dirname(fileURLToPath(import.meta.url), '..');
 const msgPath = path.resolve(dirname, '../.git/COMMIT_EDITMSG');
 const msg = readFileSync(msgPath, 'utf-8').trim();
 
-const commitRE = /^(revert: )?(feat|fix|docs|style|refactor|perf|test|ci|chore|types)(\(.+\))?: .{1,50}/;
+const commitRE = /^(revert: )?(feat|fix|docs|style|refactor|perf|test|ci|chore|types|wip)(\(.+\))?: .{1,50}/;
 
 if (!commitRE.test(msg)) {
   console.log();

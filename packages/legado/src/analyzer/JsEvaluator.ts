@@ -1,6 +1,19 @@
 import { AnalyzerManager } from './AnalyzerManager';
 import { RuleEvaluator } from './common';
 
+class RhinoScriptEngine {
+  static compile(js: string) {
+    return new CompiledScript(js);
+  }
+}
+class CompiledScript {
+  private _js: string;
+
+  constructor(js: string) {
+    this._js = js;
+  }
+}
+
 export abstract class JsEvaluator extends RuleEvaluator {
   abstract evalElements(context: AnalyzerManager, value?: any): any;
 
