@@ -22,6 +22,8 @@
   },
   "dependencies": {
     "@any-reader/server": "workspace:^",
+    "@any-reader/rule-utils": "workspace:^",
+    "commander": "^12.1.0",
     "open": "^10.1.0"
   },
   "devDependencies": {

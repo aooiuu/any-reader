@@ -1,11 +1,12 @@
-import path, { resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import open from 'open';
-import { start } from '@any-reader/server';
+import { Command } from 'commander';
+import useWeb from './command/web';
+import useRuleEncode from './command/rule-encode';
+import useRuleDecode from './command/rule-decode';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.resolve(path.dirname(__filename), '..');
+const program = new Command();
 
-const port = 8898;
-start(port, resolve(__dirname, 'public'));
-open(`http://localhost:${port}/`);
+useWeb(program);
+useRuleEncode(program);
+useRuleDecode(program);
+
+program.parse(process.argv);

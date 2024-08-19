@@ -85,9 +85,15 @@ importers:
 
   packages/cli:
     dependencies:
+      '@any-reader/rule-utils':
+        specifier: workspace:^
+        version: link:../rule-utils
       '@any-reader/server':
         specifier: workspace:^
         version: link:../server
+      commander:
+        specifier: ^12.1.0
+        version: 12.1.0
       open:
         specifier: ^10.1.0
         version: 10.1.0
