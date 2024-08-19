@@ -21,12 +21,15 @@
     "build": "tsx ./scripts/publish.cjs && unbuild"
   },
   "dependencies": {
-    "@any-reader/server": "workspace:^",
     "@any-reader/rule-utils": "workspace:^",
+    "@any-reader/server": "workspace:^",
+    "cli-progress": "^3.12.0",
     "commander": "^12.1.0",
-    "open": "^10.1.0"
+    "open": "^10.1.0",
+    "p-limit": "^5.0.0"
   },
   "devDependencies": {
+    "@types/cli-progress": "^3.11.6",
     "fs-extra": "^11.1.1"
   }
 }
