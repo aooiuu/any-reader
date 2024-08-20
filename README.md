@@ -174,7 +174,9 @@ XPath、JSONPath、CSS选择器、正则让规则编写更简洁, 而 JS 脚本�
 ```sh
 # 快速体验网页版, node >= 20
 # 建议从源码构建
-npx any-reader@latest
+
+npm install -g any-reader@latest
+any-reader web -p 9999
 ```
 
 ### Docker
