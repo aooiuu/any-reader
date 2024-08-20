@@ -35,12 +35,12 @@
 ## 功能亮点
 
 - **跨平台**: Windows、Mac、Linux
-- **多应用**: 桌面端、网页端、Docker、VSCode 插件、 uTools 插件、rubick 插件
+- **多应用**: 桌面端、网页端、Docker、VSCode插件
 - **多类型**：小说、漫画、视频、~~音频~~
-- **自定义源**：通过 XPath、JSONPath、CSS 选择器、正则、JS 等轻松编写规则
+- **自定义源**：通过 XPath、JSONPath、CSS选择器、正则、JS等轻松编写[规则](https://aooiuu.github.io/any-reader/rule/)
 - **生态兼容**：兼容 [eso](https://github.com/mabDc/eso) 源
-- **资源站接入**：支持导入苹果 CMS、ZyPlayer
-- **开放解析库**：规则解析库分离, 你可以使用解析库开发自己的程序
+- **资源站接入**：支持导入苹果CMS、ZyPlayer
+- **开放解析库**：[规则解析库](https://aooiuu.github.io/any-reader/core/)分离, 你可以使用解析库开发自己的程序
 - **本地资源支持**：支持本地小说格式 TXT、Epub
 
 > 软件不提供内容, 也不提供任何规则, 但你可以通过编写 [规则](https://aooiuu.github.io/any-reader/rule/), 控制呈现内容, [查看文档](https://aooiuu.github.io/any-reader/)

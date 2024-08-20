@@ -54,12 +54,12 @@ XPath、JSONPath、CSS选择器、正则让规则编写更简洁, 而 JS 脚本�
 ## 功能亮点
 
 - **跨平台**: Windows、Mac、Linux
-- **多应用**: 桌面端、网页端、Docker、VSCode插件、 uTools 插件、rubick 插件
+- **多应用**: 桌面端、网页端、Docker、VSCode插件
 - **多类型**：小说、漫画、视频、~~音频~~
-- **自定义源**：通过 XPath、JSONPath、CSS选择器、正则、JS等轻松编写规则
+- **自定义源**：通过 XPath、JSONPath、CSS选择器、正则、JS等轻松编写[规则](https://aooiuu.github.io/any-reader/rule/)
 - **生态兼容**：兼容 [eso](https://github.com/mabDc/eso) 源
 - **资源站接入**：支持导入苹果CMS、ZyPlayer
-- **开放解析库**：规则解析库分离, 你可以使用解析库开发自己的程序
+- **开放解析库**：[规则解析库](https://aooiuu.github.io/any-reader/core/)分离, 你可以使用解析库开发自己的程序
 - **本地资源支持**：支持本地小说格式 TXT、Epub
 
 ## 界面预览

@@ -36,7 +36,7 @@ Options:
   -p, --port <string>  端口 (default: "8898")
 ```
 
-## check
+### check
 
 ```sh
 any-reader check -i "xxx.json" -o "xxx.json"
@@ -49,16 +49,16 @@ Options:
   -c, --concurrency <number>  任务并发数 (default: "10")
 ```
 
-## rule-encode
+### rule-encode
 
 ```sh
 # any-reader rule-encode [规则json]
 any-reader rule-encode "{}"
 ```
 
-## rule-decode
+### rule-decode
 
 ```sh
-# any-reader rule-encode [编码后的规则]
-any-reader rule-encode "eso://xxxx"
+# any-reader rule-decode [编码后的规则]
+any-reader rule-decode "eso://xxxx"
 ```
