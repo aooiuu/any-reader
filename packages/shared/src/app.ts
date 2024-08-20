@@ -83,7 +83,7 @@ async function runApp(app: App, register: any) {
 
             let message = err?.message || 'error';
             if (err instanceof FetchException) message = '网络请求异常';
-            else if (err instanceof JsVmException) message = '网络请求异常';
+            else if (err instanceof JsVmException) message = '执行脚本异常';
             else if (err instanceof AnalyzerException) message = '规则解析异常';
             return result([], message, -1);
           });

@@ -39,6 +39,8 @@
       <vscode-button appearance="Secondary" @click="cancelSearch">取消</vscode-button>
     </div>
 
+    <div v-if="!rulesStore.list.length" class="py-20 text-center">您还没有配置规则！无法使用搜索功能！</div>
+
     <div class="mt-10 flex-1 overflow-auto">
       <template v-for="item in displayList" :key="item.rule.id">
         <div
@@ -61,36 +63,20 @@
   </div>
 </template>
 <script setup lang="tsx">
-import { v4 as uuidV4 } from 'uuid';
-import pLimit from 'p-limit';
 import { ContentType } from '@any-reader/rule-utils';
 import { CONTENT_TYPES } from '@/constants';
-import { searchByRuleId } from '@/api';
-import { useRulesStore } from '@/stores/rules';
 import TreeItem from '@/components/vsc/TreeItem.vue';
+import { useSearch } from '@/pages/common/search';
+import { useRulesStore } from '@/stores/rules';
 
 const rulesStore = useRulesStore();
-const router = useRouter();
 
-const runPromise = pLimit(5);
-
-let uuid: string = '';
-const searchText = ref('');
 const expand = ref(false);
-const contentType = ref(ContentType.NOVEL);
 const filterType = ref(1);
-const loading = ref(false);
-const total = ref(0);
-const runCount = ref(0);
 
-type List = {
-  opened: boolean;
-  rule: any;
-  list: any[];
-};
-const list = ref<List[]>([]);
+const { contentType, searchText, onSearch, cancelSearch, loading, runCount, total, list, getChapter } = useSearch();
 
-const displayList = computed<List[]>(() => {
+const displayList = computed<any[]>(() => {
   if (filterType.value === 1) {
     return list.value;
   }
@@ -104,63 +90,10 @@ const displayList = computed<List[]>(() => {
     .filter((ruleRow: any) => ruleRow.list.length);
 });
 
-async function onSearch() {
-  const lastUuid = uuidV4();
-  uuid = lastUuid;
-  list.value = [];
-  total.value = 0;
-  runCount.value = 0;
-  loading.value = true;
-
-  const rules = rulesStore.list.filter((e) => contentType.value === e.contentType && e.enableSearch);
-  total.value = rules.length;
-
-  const tasks = rules.map((rule) =>
-    runPromise(async () => {
-      if (lastUuid !== uuid) return;
-      runCount.value++;
-      const res = await searchByRuleId({ ruleId: rule.id, keyword: searchText.value });
-      if (res.code === 0) {
-        const rows = res.data;
-        if (!rows.length) return;
-        console.log({ rows });
-
-        list.value.push({
-          opened: true,
-          rule: rule,
-          list: rows
-        });
-      }
-    })
-  );
-  await Promise.all(tasks).catch(() => {});
-  loading.value = false;
-}
-
-function cancelSearch() {
-  uuid = uuidV4();
-  loading.value = false;
-}
-
-function getChapter(row: any, rule: any) {
-  router.push({
-    path: '/chapter',
-    query: {
-      ...row,
-      filePath: row.url,
-      ruleId: rule.id
-    }
-  });
-}
-
 function changeOpened(ruleId: string) {
   const row = list.value.find((e) => e.rule.id === ruleId);
   if (row) {
     row.opened = !row.opened;
   }
 }
-
-onDeactivated(() => {
-  cancelSearch();
-});
 </script>

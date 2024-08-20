@@ -28,17 +28,7 @@
                 v-for="(row, idx) in item.list"
                 :key="idx"
                 class="node relative w-102 flex flex-shrink-0 flex-col cursor-pointer hover:op-70"
-                @click="
-                  router.push({
-                    path: '/chapter',
-                    query: {
-                      ...row,
-                      ruleId: item.rule.id,
-                      name: row.name,
-                      filePath: row.url
-                    }
-                  })
-                "
+                @click="getChapter(row, item.rule)"
               >
                 <div class="mb-5 h-136 w-102 overflow-hidden rounded-5">
                   <ARCover
@@ -86,82 +76,16 @@
 </template>
 
 <script setup lang="tsx">
-import { v4 as uuidV4 } from 'uuid';
-import pLimit from 'p-limit';
 import { StarOutlined, StarFilled } from '@ant-design/icons-vue';
-import { ContentType } from '@any-reader/rule-utils';
 import { CONTENT_TYPES } from '@/constants';
-import { searchByRuleId } from '@/api';
-import { useFavoritesStore } from '@/stores/favorites';
 import { useRulesStore } from '@/stores/rules';
+import { useFavoritesStore } from '@/stores/favorites';
+import { useSearch } from '@/pages/common/search';
 
 const favoritesStore = useFavoritesStore();
 const rulesStore = useRulesStore();
 
-const router = useRouter();
-const route = useRoute();
-const runPromise = pLimit(10);
-
-let uuid: string = '';
-const searchText = ref('');
-const contentType = ref(ContentType.NOVEL);
-const contentTypes = computed(() => [contentType.value]);
-const loading = ref(false);
-const total = ref(0);
-const runCount = ref(0);
-
-const list = ref<any[]>([]);
-
-async function onSearch(uid?: string) {
-  const lastUuid = uid || uuidV4();
-  uuid = lastUuid;
-  list.value = [];
-  total.value = 0;
-  runCount.value = 0;
-  loading.value = true;
-  const rules = rulesStore.list.filter((e) => contentTypes.value.includes(e.contentType) && e.enableSearch);
-  total.value = rules.length;
-
-  const tasks = rules.map((rule) =>
-    runPromise(() => {
-      return new Promise((c) => {
-        if (lastUuid !== uuid) return;
-        runCount.value++;
-        searchByRuleId({ ruleId: rule.id, keyword: searchText.value })
-          .then((res) => {
-            if (res.code === 0) {
-              const rows = res.data;
-              if (!rows.length) return;
-              list.value.push({
-                rule: rule,
-                list: rows
-              });
-            }
-          })
-          .finally(() => c(true));
-      });
-    })
-  );
-  await Promise.all(tasks).catch(() => {});
-  loading.value = false;
-}
-
-function cancelSearch() {
-  uuid = uuidV4();
-  loading.value = false;
-}
-
-function init() {
-  const { keyword, _uuid } = route.query;
-  if (searchText.value === keyword && uuid === _uuid) return;
-  if (keyword) {
-    searchText.value = keyword as string;
-    onSearch(_uuid as string);
-  }
-}
-
-onActivated(init);
-onMounted(init);
+const { contentType, searchText, onSearch, cancelSearch, loading, runCount, total, list, getChapter } = useSearch();
 </script>
 
 <style scoped lang="scss">
