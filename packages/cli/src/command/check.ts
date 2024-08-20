@@ -38,24 +38,25 @@ async function checkRules(options: CheckOptions) {
   const limit = pLimit(+options.concurrency);
   const rows: Rule[] = JSON.parse(fs.readFileSync(input, 'utf-8'));
 
-  const progressBar = new SingleBar({});
+  const progressBar = new SingleBar({
+    format: '[检查规则] [{bar}] {percentage}% | {value}/{total}'
+  });
   progressBar.start(rows.length, 0);
   const validRules: Rule[] = [];
 
   await Promise.all(
     rows.map((row) =>
       limit(() =>
-        timeoutWith(
-          ping(row.host)
-            .then((ping: number) => {
-              if (ping && ping !== -1) {
-                validRules.push(row);
-              }
-            })
-            .catch(() => {})
-        ).finally(() => {
-          progressBar.increment();
-        })
+        timeoutWith(ping(row.host))
+          .then((ping: number) => {
+            if (ping && ping !== -1) {
+              validRules.push(row);
+            }
+          })
+          .catch(() => {})
+          .finally(() => {
+            progressBar.increment();
+          })
       )
     )
   )
