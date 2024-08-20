@@ -8,7 +8,7 @@ const __dirname = path.resolve(path.dirname(__filename), '..');
 
 export default (program: Command) => {
   program
-    .command('web')
+    .command('web', { isDefault: true })
     .description('启用一个 WEB 服务')
     .option('-p, --port <string>', '端口', '8898')
     .action((options: any) => {

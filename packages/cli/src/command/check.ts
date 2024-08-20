@@ -10,8 +10,8 @@ import { timeoutWith } from '../utils/promise';
 // TODO: 搜索校验 发现校验
 export default (program: Command) => {
   program
-    .description('规则校验')
     .command('check')
+    .description('规则校验')
     .option('-i, --input <string>', '规则文件路径(json)')
     .option('-o, --output <string>', '输出规则文件路径(json)')
     .option('-c, --concurrency <number>', '任务并发数', '10')
