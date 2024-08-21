@@ -127,10 +127,10 @@ enum ContentType {
 
 规则字段通常分为以下几种：
 
-- **URL地址规则**, 这类规则通常后面有 `Url`, 比如 `searchUrl`。 这类规则通常用来请求网络获取数据
-- **取列表规则**, 这类规则通常后面有 `List`, 比如 `searchList`。 这类规则通常用来获取列表，比如搜索结果列表、章节列表，拿到的结果通常是一个数组
-- **取内容规则**, 比如 `searchName`。 这类规则通常用来获取具体的某项内容，比如书名、作者
-- **结果规则**, 这类规则通常后面有 `Result`, 比如 `searchResult`。 这类规则获取的结果一般用于供下一个流程的 `URL地址规则` 使用。比如搜索时，`searchResult` 拿到的结果将会给获取章节列表的流程使用，获取章节列表的URL规则里可以使用 `result` 变量拿到 `searchResult` 的结果。
+- **URL地址规则**, 这类规则通常后面有 `Url`, 比如 `searchUrl` `chapterUrl`。 这类规则通常用来请求网络获取数据
+- **取列表规则**, 这类规则通常后面有 `List`, 比如 `searchList` `chapterList`。 这类规则通常用来获取列表，比如搜索结果列表、章节列表，拿到的结果通常是一个数组
+- **取内容规则**, 比如 `searchName` `chapterCover`。 这类规则通常用来获取具体的某项内容，比如书名、作者
+- **结果规则**, 这类规则通常后面有 `Result`, 比如 `searchResult` `chapterResult`。 这类规则获取的结果一般用于供下一个流程的 `URL地址规则` 使用。比如搜索时，`searchResult` 拿到的结果将会给获取章节列表的流程使用，获取章节列表的URL规则里可以使用 `result` 变量拿到 `searchResult` 的结果。
 
 > [!TIP]
 > **结果规则**的结果会成为下一个解析流程**URL地址规则**的 `result` 变量，成为下一个解析流程**URL地址规则**外其它规则的 `lastResult` 变量。
@@ -141,26 +141,65 @@ enum ContentType {
 
 ### 搜索
 
-1. 通过 `host` 和 `searchUrl` 字段获取请求地址、方式、参数等
+1. 通过 `host` 和 `searchUrl` 获取数据
 2. 通过 `searchList` 字段获取搜索结果列表数组
 3. 通过 `searchCover`、 `searchName`、 `searchAuthor`、 `searchChapter`、 `searchDescription` 字段获取每单个搜索结果的具体内容
-4. 通过 `searchResult` 字段匹配数据以用来给 `获取章节数据` 使用
+4. 通过 `searchResult` 字段匹配数据以用来给 `获取章节列表` 使用
 
 ### 获取章节列表
 
-1. 通过 `host`、`chapterUrl`、`searchResult` 字段获取请求地址、方式、参数等
+1. 通过 `host`、`chapterUrl`、`searchResult` 获取数据
 2. 通过 `chapterList` 字段获取章节列表数组
 3. 通过 `chapterName`、 `chapterCover`、 `chapterTime` 字段获取单个章节的具体内容
 4. 通过 `chapterResult` 字段匹配数据以用来给 `获取内容` 使用
 
 ### 获取内容
 
-1. 通过 `host`、`contentItems`、`chapterResult` 字段获取请求地址、方式、参数等
+1. 通过 `host`、`contentItems`、`chapterResult` 获取数据
 2. 通过 `contentType` 按类型解析内容
 
 ### 发现页分类
 
+通过 `discoverUrl` 处理, 例子:
+
+::: code-group
+
+```[简单例子]
+分类名1::url1
+分类名2::url2
+分类名3::url3
+```
+
+```[多级分类]
+分组1::分类名1::url1
+分组1::分类名2::url2
+分组1::分类名3::url3
+分组2::分类名1::url4
+分组2::分类名2::url5
+分组2::分类名3::url6
+```
+
+```javascript [javascript]
+@js:(() => {
+  return [
+    '分组1::分类名1::url1',
+    '分组1::分类名2::url2',
+    '分组1::分类名3::url3',
+    '分组2::分类名1::url4',
+    '分组2::分类名2::url5',
+    '分组2::分类名3::url6'
+  ];
+})();
+```
+
+:::
+
 ### 发现页列表
+
+1. 通过 发现页分类 的 url 获取数据
+2. 通过 `discoverList` 字段获取列表数组
+3. 通过 `discoverName`、 `discoverCover`、 `discoverAuthor` 等字段获取单个章节的具体内容
+4. 通过 `discoverResult` 字段匹配数据以用来给 `获取内容` 使用
 
 ## 规则支持情况
 
@@ -172,38 +211,38 @@ enum ContentType {
 
 | 特性 | 支持情况 | 示例                                                                                                       |
 | ---- | :------: | ---------------------------------------------------------------------------------------------------------- |
-| URL  |    ✅    | `https://xxx.com/search?q=$keyword&pageSize=10`                                                            |
-| JSON |    ✅    | `{"url":"https://xxx.com/search","method":"post","headers":{"token":"111"},"body":{"keyword":"$keyword"}}` |
-| @js  |    ✅    | `@js:(() => { return {url, method, body, encoding, headers}; })();`                                        |
+| URL  |    ✅     | `https://xxx.com/search?q=$keyword&pageSize=10`                                                            |
+| JSON |    ✅     | `{"url":"https://xxx.com/search","method":"post","headers":{"token":"111"},"body":{"keyword":"$keyword"}}` |
+| @js  |    ✅     | `@js:(() => { return {url, method, body, encoding, headers}; })();`                                        |
 
 #### 变量
 
 | 字段名     | 支持情况 | 说明                         |
 | ---------- | :------: | ---------------------------- |
-| $keyword   |    ✅    | 搜索用的关键字               |
-| searchKey  |    ✅    | 同 `$keyword` , ⚠️不推荐使用 |
-| $host      |    ✅    | 替换规则的 `host`            |
-| $result    |    ✅    | 上一个步骤 result 字段的结果 |
-| lastResult |    ✅    |                              |
-| searchPage |    ❌    |                              |
-| $page      |    ❌    |                              |
-| $pageSize  |    ❌    |                              |
+| $keyword   |    ✅     | 搜索用的关键字               |
+| searchKey  |    ✅     | 同 `$keyword` , ⚠️不推荐使用  |
+| $host      |    ✅     | 替换规则的 `host`            |
+| $result    |    ✅     | 上一个步骤 result 字段的结果 |
+| lastResult |    ✅     |                              |
+| searchPage |    ❌     |                              |
+| $page      |    ❌     |                              |
+| $pageSize  |    ❌     |                              |
 
 ### 取内容规则
 
 | 特性       | 支持情况 | 说明                             | 示例                                    |
 | ---------- | :------: | -------------------------------- | --------------------------------------- |
-| `@css`     |    ✅    |                                  | `@css:.box1 .box2@text`                 |
-| `@json`    |    ✅    |                                  | `@json:$.list[:1].title`                |
-| `@xpath`   |    ✅    |                                  | `@xpath://*[@class="box3"]/text()`      |
-| `@js`      |    ✅    |                                  |                                         |
-| `@filter`  |    ✅    | 模拟浏览器加载地址后匹配指定链接 | `@filter:(?:m3u8\|mp4)(?:$\|/\|\\?\|&)` |
-| `@replace` |    ✅    |                                  | `@replace:.*?url=\|.*?v=`               |
-| `##`       |    ✅    | 正则替换                         | `@css:.c2 a@href##\\d+\\.html`          |
-| `{‍​‍{}}`  |    ✅    | 使用变量                         | `http://www.aaa.com/{‍{$.id}}`          |
-| 嵌套组合   |    ✅    |                                  | `$.info.body@css:.box1 .box2@text`      |
-| `\|\|`     |    ✅    |                                  |                                         |
-| `&&`       |    ✅    |                                  |                                         |
+| `@css`     |    ✅     |                                  | `@css:.box1 .box2@text`                 |
+| `@json`    |    ✅     |                                  | `@json:$.list[:1].title`                |
+| `@xpath`   |    ✅     |                                  | `@xpath://*[@class="box3"]/text()`      |
+| `@js`      |    ✅     |                                  |                                         |
+| `@filter`  |    ✅     | 模拟浏览器加载地址后匹配指定链接 | `@filter:(?:m3u8\|mp4)(?:$\|/\|\\?\|&)` |
+| `@replace` |    ✅     |                                  | `@replace:.*?url=\|.*?v=`               |
+| `##`       |    ✅     | 正则替换                         | `@css:.c2 a@href##\\d+\\.html`          |
+| `{‍​‍{}}`   |    ✅     | 使用变量                         | `http://www.aaa.com/{‍{$.id}}`           |
+| 嵌套组合   |    ✅     |                                  | `$.info.body@css:.box1 .box2@text`      |
+| `\|\|`     |    ✅     |                                  |                                         |
+| `&&`       |    ✅     |                                  |                                         |
 
 规则可以省略开头的,**@css**、**@xpath**、**@json**, 因为解析器会尝试自动识别。
 
