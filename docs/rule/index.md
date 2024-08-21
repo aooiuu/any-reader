@@ -111,12 +111,12 @@ enum ContentType {
   VIDEO = 2, // 视频
   AUDIO = 3, // 音频
   RSS = 4,
-  NOVELMORE = 5,
+  NOVELMORE = 5
 }
 ```
 
 > [!TIP]
-> `eso://:xxxxx` 是压缩后的规则, 软件也会自动识别
+> 格式 `eso://:xxxxx` 是压缩后的规则, 软件也会自动识别, 也可以使用命令工具解码还原成json
 
 > [!IMPORTANT]
 > 并不是每个字段都是必填的, 按需填写既可。
@@ -131,6 +131,11 @@ enum ContentType {
 - **取列表规则**, 这类规则通常后面有 `List`, 比如 `searchList`。 这类规则通常用来获取列表，比如搜索结果列表、章节列表，拿到的结果通常是一个数组
 - **取内容规则**, 比如 `searchName`。 这类规则通常用来获取具体的某项内容，比如书名、作者
 - **结果规则**, 这类规则通常后面有 `Result`, 比如 `searchResult`。 这类规则获取的结果一般用于供下一个流程的 `URL地址规则` 使用。比如搜索时，`searchResult` 拿到的结果将会给获取章节列表的流程使用，获取章节列表的URL规则里可以使用 `result` 变量拿到 `searchResult` 的结果。
+
+> [!TIP]
+> **结果规则**的结果会成为下一个解析流程**URL地址规则**的 `result` 变量，成为下一个解析流程**URL地址规则**外其它规则的 `lastResult` 变量。
+>
+> **URL地址规则**的结果会成为当前解析流程其他规则的 `result` 变量
 
 ## 解析流程
 
@@ -153,7 +158,9 @@ enum ContentType {
 1. 通过 `host`、`contentItems`、`chapterResult` 字段获取请求地址、方式、参数等
 2. 通过 `contentType` 按类型解析内容
 
-## 规则类型
+### 发现页分类
+
+### 发现页列表
 
 ## 规则支持情况
 
@@ -181,8 +188,6 @@ enum ContentType {
 | searchPage |    ❌    |                              |
 | $page      |    ❌    |                              |
 | $pageSize  |    ❌    |                              |
-
-> 结果规则会成为下一条地址规则的 `result`，成为下一条除地址规则的 `lastResult`。地址规则的响应会成为其他规则的 `result`
 
 ### 取内容规则
 
