@@ -184,8 +184,8 @@ export class RuleManager {
             .trim()
             .split('\n')
             .map((e) => e.trim());
-          result.push(...list);
         }
+        result.push(...list);
       } catch (error) {
         console.warn(error);
         break;
