@@ -24,6 +24,7 @@ outline: deep
   "userAgent": "",
   "enableDiscover": false,
   "discoverUrl": "",
+  "discoverNextUrl": "",
   "discoverList": "",
   "discoverTags": "",
   "discoverName": "",
@@ -48,26 +49,30 @@ outline: deep
   "chapterRoads": "",
   "chapterRoadName": "",
   "chapterUrl": "",
+  "chapterNextUrl": "",
   "chapterList": "",
   "chapterName": "",
   "chapterResult": "",
   "contentUrl": "",
+  "contentNextUrl": "",
   "contentItems": ""
 }
 ```
 
 ```typescript
 export interface Rule {
+  // ===== 通用字段 =====
   host: string; // 域名
   id: string; // uuid
   name: string; // 书源名称
   sort: number; // 书源排序
   contentType: ContentType; // 书源类型
-  cookies?: string;
   loadJs: string; // 全局JS脚本
+  author: string; // 规则作者
+  userAgent: string; // Headers JSON字符串
 
-  // 搜索
-  enableSearch?: boolean; // 搜索 - 启用
+  // ===== 解析流程 - 搜索 =====
+  enableSearch: boolean; // 搜索 - 启用
   searchUrl: string; // 搜索 - 地址
   searchList: string; // 搜索 - 列表
   searchCover: string; // 搜索 - 封面
@@ -77,16 +82,19 @@ export interface Rule {
   searchDescription: string; // 搜索 - 描述
   searchResult: string; // 搜索 - 结果
 
-  // 章节列表
+  // ===== 解析流程 - 章节列表 =====
   chapterUrl: string; // 章节列表 - 请求地址
   chapterName: string; // 章节列表 - 标题
   chapterList: string; // 章节列表 - 列表
   chapterCover: string; // 章节列表 - 封面
   chapterTime: string; // 章节列表 - 时间
+  chapterResult: string; // 章节列表 - 结果
   contentItems: string; // 章节列表 - 内容
-  chapterResult: string; // 章节列表 - 结果 ? 暂未使用
+  enableMultiRoads: boolean; // 启用多线路 暂不支持
+  chapterRoads: string; // 线路列表 暂不支持
+  chapterNextUrl: string; // 章节列表下一页地址
 
-  // 发现
+  // ===== 解析流程 - 发现页 =====
   enableDiscover: boolean; // 发现页 - 是否启用
   discoverUrl: string; // 发现页 - 请求地址
   discoverList: string; // 发现页 - 列表
@@ -95,14 +103,14 @@ export interface Rule {
   discoverAuthor: string; // 发现页 - 作者
   discoverDescription: string; // 发现页 - 描述
   discoverResult: string; // 发现页 - 结果
-  // discoverItems: string; // ? 暂未使用
+  // discoverItems: string
   discoverTags: string;
   discoverChapter: string;
-  discoverNextUrl?: string;
+  discoverNextUrl: string; // 下一页地址
 
-  // 线路
-  enableMultiRoads: boolean; // 启用多线路
-  chapterRoads: string; // 线路列表
+  // ===== 解析流程 - 正文 =====
+  contentUrl: string;
+  contentNextUrl: string;
 }
 
 enum ContentType {

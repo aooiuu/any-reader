@@ -65,7 +65,7 @@
     <div ref="tableWarpRef" class="flex-1 overflow-hidden" @drop="drop" @dragover.prevent @dragenter.prevent>
       <a-table
         row-key="id"
-        :loading="loading"
+        :loading="loading || loading2"
         :pagination="{
           defaultPageSize: 10,
           showTotal: (total: number) => `总数: ${total}`
@@ -517,7 +517,11 @@ function delTimeoutRules() {
 //   };
 // }
 
-const { drop, dropFile } = useDropRules(({ count }) => {
+const {
+  drop,
+  dropFile,
+  loading: loading2
+} = useDropRules(({ count }) => {
   message.success({
     content: `导入${count}条数据`
   });

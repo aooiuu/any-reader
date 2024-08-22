@@ -124,28 +124,76 @@ export class RuleManager {
     return chapterItems;
   }
 
-  async getContent(result: string): Promise<string[]> {
+  async getContent(lastResult: string): Promise<string[]> {
     JSEngine.setEnvironment({
-      result
+      result: lastResult
     });
-    const contentUrl = this.rule.contentUrl !== 'null' ? this.rule.contentUrl : null;
-    const { body, params } = await fetch(await this.parseUrl(contentUrl || result), '', result, this.rule);
-    JSEngine.setEnvironment({
-      page: 1,
-      lastResult: result,
-      result: body,
-      baseUrl: params.url
-    });
-    let list = await this.analyzerManager.getStringList(this.rule.contentItems, body);
-    if (this.rule.contentType === ContentType.NOVEL) {
-      list = list
-        .join('\n')
-        .replace(/\n+/g, '\n')
-        .trim()
-        .split('\n')
-        .map((e) => e.trim());
-    }
-    return list;
+    const hasNextUrlRule = !!this.rule.contentNextUrl;
+    const url = this.rule.contentUrl || lastResult;
+
+    const result: string[] = [];
+    let page = 1;
+    let contentUrlRule = '';
+    let next = '';
+    const pagePattern = /(\$page)|((^|[^a-zA-Z'"_/-])page([^a-zA-Z0-9'"]|$))/;
+
+    do {
+      contentUrlRule = '';
+      if (page === 1) {
+        contentUrlRule = url;
+      } else if (hasNextUrlRule) {
+        if (next) {
+          contentUrlRule = next;
+        }
+      } else if (pagePattern.test(url)) {
+        contentUrlRule = url;
+      }
+
+      if (!contentUrlRule) {
+        return result;
+      }
+
+      try {
+        let contentUrl = '';
+        let body = '';
+
+        if (contentUrlRule !== 'null') {
+          const res = await fetch(await this.parseUrl(contentUrlRule), '', lastResult, this.rule);
+          contentUrl = res.params.url;
+          body = res.body;
+        }
+
+        JSEngine.setEnvironment({
+          page,
+          lastResult: lastResult,
+          result: body,
+          baseUrl: contentUrl
+        });
+
+        if (hasNextUrlRule) {
+          next = await this.analyzerManager.getString(this.rule.contentNextUrl, body);
+        } else {
+          next = '';
+        }
+
+        let list = await this.analyzerManager.getStringList(this.rule.contentItems, body);
+        if (this.rule.contentType === ContentType.NOVEL) {
+          list = list
+            .join('\n')
+            .replace(/\n+/g, '\n')
+            .trim()
+            .split('\n')
+            .map((e) => e.trim());
+          result.push(...list);
+        }
+      } catch (error) {
+        console.warn(error);
+        break;
+      }
+      page++;
+      // eslint-disable-next-line no-constant-condition
+    } while (true);
+    return result;
   }
 
   // 获取获取分类

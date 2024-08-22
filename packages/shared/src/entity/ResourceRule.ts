@@ -326,4 +326,34 @@ export class ResourceRule {
   })
   @JoinColumn({ name: 'id' })
   extra!: RuleExtra;
+
+  @Column({
+    name: 'content_next_url',
+    type: 'text',
+    default: '',
+    comment: '正文下一页地址'
+  })
+  contentNextUrl!: string;
+
+  @Column({
+    name: 'chapter_next_url',
+    type: 'text',
+    default: '',
+    comment: '章节列表下一页地址'
+  })
+  chapterNextUrl!: string;
+
+  @Column({
+    name: 'discover_next_url',
+    type: 'text',
+    default: ''
+  })
+  discoverNextUrl!: string;
+
+  @Column({
+    name: 'load_js',
+    type: 'text',
+    default: ''
+  })
+  loadJs!: string;
 }
