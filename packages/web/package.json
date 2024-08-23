@@ -56,7 +56,7 @@
     "electron-localshortcut": "^3.2.1",
     "electron-updater": "^6.2.1",
     "file-saver": "^2.0.5",
-    "hls.js": "^1.5.3",
+    "hls.js": "^1.5.15",
     "lodash-es": "^4.17.21",
     "monaco-editor": "0.47.0",
     "nprogress": "^0.2.0",
