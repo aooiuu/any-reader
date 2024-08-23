@@ -78,10 +78,10 @@ importers:
         version: 10.9.1
       vitepress:
         specifier: ^1.3.0
-        version: 1.3.1(@algolia/client-search@4.24.0)(@types/node@20.14.12)(async-validator@4.2.5)(axios@1.7.2)(nprogress@0.2.0)(postcss@8.4.39)(react@18.3.1)(sass@1.77.8)(search-insights@2.15.0)(terser@5.31.3)(typescript@5.5.4)
+        version: 1.3.1(@algolia/client-search@4.24.0)(@types/node@20.14.12)(async-validator@4.2.5)(axios@1.7.5)(nprogress@0.2.0)(postcss@8.4.39)(react@18.3.1)(sass@1.77.8)(search-insights@2.15.0)(terser@5.31.3)(typescript@5.5.4)
       vitepress-plugin-mermaid:
         specifier: ^2.0.16
-        version: 2.0.16(mermaid@10.9.1)(vitepress@1.3.1(@algolia/client-search@4.24.0)(@types/node@20.14.12)(async-validator@4.2.5)(axios@1.7.2)(nprogress@0.2.0)(postcss@8.4.39)(react@18.3.1)(sass@1.77.8)(search-insights@2.15.0)(terser@5.31.3)(typescript@5.5.4))
+        version: 2.0.16(mermaid@10.9.1)(vitepress@1.3.1(@algolia/client-search@4.24.0)(@types/node@20.14.12)(async-validator@4.2.5)(axios@1.7.5)(nprogress@0.2.0)(postcss@8.4.39)(react@18.3.1)(sass@1.77.8)(search-insights@2.15.0)(terser@5.31.3)(typescript@5.5.4))
 
   packages/cli:
     dependencies:
@@ -114,8 +114,8 @@ importers:
   packages/core:
     dependencies:
       axios:
-        specifier: ^1.5.1
-        version: 1.7.2
+        specifier: ^1.7.5
+        version: 1.7.5
       chardet:
         specifier: ^2.0.0
         version: 2.0.0
@@ -200,8 +200,8 @@ importers:
         specifier: ^0.8.10
         version: 0.8.10
       axios:
-        specifier: ^1.5.1
-        version: 1.7.2
+        specifier: ^1.7.5
+        version: 1.7.5
       chardet:
         specifier: ^2.0.0
         version: 2.0.0
@@ -251,8 +251,8 @@ importers:
   packages/rule-utils:
     dependencies:
       axios:
-        specifier: ^1.7.2
-        version: 1.7.2
+        specifier: ^1.7.5
+        version: 1.7.5
       base64-js:
         specifier: ^1.5.1
         version: 1.5.1
@@ -333,8 +333,8 @@ importers:
         specifier: workspace:^
         version: link:../rule-utils
       axios:
-        specifier: ^1.7.2
-        version: 1.7.2
+        specifier: ^1.7.5
+        version: 1.7.5
       blueimp-md5:
         specifier: ^2.19.0
         version: 2.19.0
@@ -530,8 +530,8 @@ importers:
         specifier: ^4.2.3
         version: 4.2.3(vue@3.4.31(typescript@5.5.4))
       axios:
-        specifier: ^1.6.0
-        version: 1.7.2
+        specifier: ^1.7.5
+        version: 1.7.5
       bcryptjs:
         specifier: ^2.4.3
         version: 2.4.3
@@ -2733,8 +2733,8 @@ packages:
   axios@1.2.3:
     resolution: {integrity: sha512-pdDkMYJeuXLZ6Xj/Q5J3Phpe+jbGdsSzlQaFVkMQzRUL05+6+tetX8TV3p4HrU4kzuO9bt+io/yGQxuyxA/xcw==}
 
-  axios@1.7.2:
-    resolution: {integrity: sha512-2A8QhOMrbomlDuiLeK9XibIBzuHeRcqqNOHp0Cyp5EoJ1IFDh+XZH3A6BkXtv0K4gFGCI0Y4BM7B1wOEi0Rmgw==}
+  axios@1.7.5:
+    resolution: {integrity: sha512-fZu86yCo+svH3uqJ/yTdQ0QHpQu5oL+/QE+QPSv6BZSkDAoky9vytxp7u5qk83OJFS3kEBcesWni9WTZAv3tSw==}
 
   b4a@1.6.6:
     resolution: {integrity: sha512-5Tk1HLk6b6ctmjIkAcU/Ujv/1WqiDl0F0JdRCR80VsOcUlHcu7pWeWRlOqQLHfDEsVx9YH/aif5AG4ehoCtTmg==}
@@ -9417,14 +9417,14 @@ snapshots:
       - '@vue/composition-api'
       - vue
 
-  '@vueuse/integrations@10.11.0(async-validator@4.2.5)(axios@1.7.2)(focus-trap@7.5.4)(nprogress@0.2.0)(vue@3.4.31(typescript@5.5.4))':
+  '@vueuse/integrations@10.11.0(async-validator@4.2.5)(axios@1.7.5)(focus-trap@7.5.4)(nprogress@0.2.0)(vue@3.4.31(typescript@5.5.4))':
     dependencies:
       '@vueuse/core': 10.11.0(vue@3.4.31(typescript@5.5.4))
       '@vueuse/shared': 10.11.0(vue@3.4.31(typescript@5.5.4))
       vue-demi: 0.14.8(vue@3.4.31(typescript@5.5.4))
     optionalDependencies:
       async-validator: 4.2.5
-      axios: 1.7.2
+      axios: 1.7.5
       focus-trap: 7.5.4
       nprogress: 0.2.0
     transitivePeerDependencies:
@@ -9798,7 +9798,7 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  axios@1.7.2:
+  axios@1.7.5:
     dependencies:
       follow-redirects: 1.15.6
       form-data: 4.0.0
@@ -15025,14 +15025,14 @@ snapshots:
       sass: 1.77.8
       terser: 5.31.3
 
-  vitepress-plugin-mermaid@2.0.16(mermaid@10.9.1)(vitepress@1.3.1(@algolia/client-search@4.24.0)(@types/node@20.14.12)(async-validator@4.2.5)(axios@1.7.2)(nprogress@0.2.0)(postcss@8.4.39)(react@18.3.1)(sass@1.77.8)(search-insights@2.15.0)(terser@5.31.3)(typescript@5.5.4)):
+  vitepress-plugin-mermaid@2.0.16(mermaid@10.9.1)(vitepress@1.3.1(@algolia/client-search@4.24.0)(@types/node@20.14.12)(async-validator@4.2.5)(axios@1.7.5)(nprogress@0.2.0)(postcss@8.4.39)(react@18.3.1)(sass@1.77.8)(search-insights@2.15.0)(terser@5.31.3)(typescript@5.5.4)):
     dependencies:
       mermaid: 10.9.1
-      vitepress: 1.3.1(@algolia/client-search@4.24.0)(@types/node@20.14.12)(async-validator@4.2.5)(axios@1.7.2)(nprogress@0.2.0)(postcss@8.4.39)(react@18.3.1)(sass@1.77.8)(search-insights@2.15.0)(terser@5.31.3)(typescript@5.5.4)
+      vitepress: 1.3.1(@algolia/client-search@4.24.0)(@types/node@20.14.12)(async-validator@4.2.5)(axios@1.7.5)(nprogress@0.2.0)(postcss@8.4.39)(react@18.3.1)(sass@1.77.8)(search-insights@2.15.0)(terser@5.31.3)(typescript@5.5.4)
     optionalDependencies:
       '@mermaid-js/mermaid-mindmap': 9.3.0
 
-  vitepress@1.3.1(@algolia/client-search@4.24.0)(@types/node@20.14.12)(async-validator@4.2.5)(axios@1.7.2)(nprogress@0.2.0)(postcss@8.4.39)(react@18.3.1)(sass@1.77.8)(search-insights@2.15.0)(terser@5.31.3)(typescript@5.5.4):
+  vitepress@1.3.1(@algolia/client-search@4.24.0)(@types/node@20.14.12)(async-validator@4.2.5)(axios@1.7.5)(nprogress@0.2.0)(postcss@8.4.39)(react@18.3.1)(sass@1.77.8)(search-insights@2.15.0)(terser@5.31.3)(typescript@5.5.4):
     dependencies:
       '@docsearch/css': 3.6.1
       '@docsearch/js': 3.6.1(@algolia/client-search@4.24.0)(react@18.3.1)(search-insights@2.15.0)
@@ -15043,7 +15043,7 @@ snapshots:
       '@vue/devtools-api': 7.3.6
       '@vue/shared': 3.4.31
       '@vueuse/core': 10.11.0(vue@3.4.31(typescript@5.5.4))
-      '@vueuse/integrations': 10.11.0(async-validator@4.2.5)(axios@1.7.2)(focus-trap@7.5.4)(nprogress@0.2.0)(vue@3.4.31(typescript@5.5.4))
+      '@vueuse/integrations': 10.11.0(async-validator@4.2.5)(axios@1.7.5)(focus-trap@7.5.4)(nprogress@0.2.0)(vue@3.4.31(typescript@5.5.4))
       focus-trap: 7.5.4
       mark.js: 8.11.1
       minisearch: 7.0.1

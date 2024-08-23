@@ -48,7 +48,7 @@
     "@vscode/webview-ui-toolkit": "^1.4.0",
     "@vueuse/core": "^10.9.0",
     "ant-design-vue": "^4.2.3",
-    "axios": "^1.6.0",
+    "axios": "^1.7.5",
     "bcryptjs": "^2.4.3",
     "blueimp-md5": "^2.19.0",
     "dplayer": "^1.27.1",
