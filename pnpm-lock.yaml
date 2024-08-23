@@ -554,8 +554,8 @@ importers:
         specifier: ^2.0.5
         version: 2.0.5
       hls.js:
-        specifier: ^1.5.3
-        version: 1.5.13
+        specifier: ^1.5.15
+        version: 1.5.15
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
@@ -4273,8 +4273,8 @@ packages:
   highlight.js@10.7.3:
     resolution: {integrity: sha512-tzcUFauisWKNHaRkN4Wjl/ZA07gENAjFl3J/c480dprkGTg5EQstgaNFqBfUqCq54kZRIEcreTsAgF/m2quD7A==}
 
-  hls.js@1.5.13:
-    resolution: {integrity: sha512-xRgKo84nsC7clEvSfIdgn/Tc0NOT+d7vdiL/wvkLO+0k0juc26NRBPPG1SfB8pd5bHXIjMW/F5VM8VYYkOYYdw==}
+  hls.js@1.5.15:
+    resolution: {integrity: sha512-6cD7xN6bycBHaXz2WyPIaHn/iXFizE5au2yvY5q9aC4wfihxAr16C9fUy4nxh2a3wOw0fEgLRa9dN6wsYjlpNg==}
 
   hookable@5.5.3:
     resolution: {integrity: sha512-Yc+BQe8SvoXH1643Qez1zqLRmbA5rCL+sSmk6TVos0LWVfNIB7PGncdlId77WzLGSIB5KaWgTaNTs2lNVEI6VQ==}
@@ -11738,7 +11738,7 @@ snapshots:
 
   highlight.js@10.7.3: {}
 
-  hls.js@1.5.13: {}
+  hls.js@1.5.15: {}
 
   hookable@5.5.3: {}
 
