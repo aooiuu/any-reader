@@ -663,8 +663,8 @@ importers:
         specifier: ^5.3.1
         version: 5.3.4(@types/node@20.14.12)(sass@1.77.8)(terser@5.31.3)
       vite-bundle-analyzer:
-        specifier: ^0.10.3
-        version: 0.10.3
+        specifier: ^0.10.6
+        version: 0.10.6
       vite-plugin-electron:
         specifier: ^0.28.7
         version: 0.28.7
@@ -7077,8 +7077,8 @@ packages:
     resolution: {integrity: sha512-veufcmxri4e3XSrT0xwfUR7kguIkaxBeosDg00yDWhk49wdwkSUrvvsm7nc75e1PUyvIeZj6nS8VQRYz2/S4Xg==}
     engines: {node: '>=0.6.0'}
 
-  vite-bundle-analyzer@0.10.3:
-    resolution: {integrity: sha512-Q5ko1EOu808q0mVv//H8OYd7yrijfEPUBlsg2NVx0rvbZ0ncUbnDh7UYqRmZWxaRDj0is4anE9DXatTiwZ1ZLg==}
+  vite-bundle-analyzer@0.10.6:
+    resolution: {integrity: sha512-w/5wvRZeZo2lKdJzRGCTn4YW/mT++fKeii2PQPK3odblfFqsODYHF72V+QTg1Xznbxy543N0WfT5vPiSosVWxA==}
 
   vite-plugin-electron@0.28.7:
     resolution: {integrity: sha512-wsiFUY9AN/HBwn6Jc+i7ehNQISAzUzy6p7NvgJJB1jKCNvZ7PyYlZloH0m3LWFkC+/dFDRGwW89kyAafRRPsLA==}
@@ -14993,9 +14993,7 @@ snapshots:
       extsprintf: 1.4.1
     optional: true
 
-  vite-bundle-analyzer@0.10.3:
-    dependencies:
-      picocolors: 1.0.1
+  vite-bundle-analyzer@0.10.6: {}
 
   vite-plugin-electron@0.28.7: {}
 
