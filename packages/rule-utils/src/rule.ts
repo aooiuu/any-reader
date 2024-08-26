@@ -1,4 +1,6 @@
 import { v4 as uuidV4 } from 'uuid';
+import { decodeRule } from './comparess';
+import axios from 'axios';
 
 export enum ContentType {
   MANGA = 0,
@@ -143,7 +145,11 @@ export function createRule(rule: Partial<Rule>): Rule {
  * @returns {boolean}
  */
 export function isEsoStr(str: string): boolean {
-  return str.startsWith('eso://');
+  return typeof str === 'string' && str.startsWith('eso://');
+}
+
+export function isEsoObj(rule: any): boolean {
+  return typeof rule === 'object' && rule.id && rule.host && typeof rule.contentType !== 'undefined';
 }
 
 /**
@@ -153,8 +159,54 @@ export function isEsoStr(str: string): boolean {
  */
 export function isRule(rule: any): boolean {
   if (typeof rule === 'string') return isEsoStr(rule);
-
   if (typeof rule !== 'object') return false;
+  return isEsoObj(rule);
+}
 
-  return rule.id && rule.host && typeof rule.contentType !== 'undefined';
+export async function text2rules(text: string): Promise<Rule[]> {
+  const result: Rule[] = [];
+  if (typeof text !== 'string') return [];
+  const url = text.trim();
+  // 单个压缩规则
+  if (isEsoStr(url)) {
+    return [decodeRule(url)];
+  }
+
+  // 网络地址
+  if (/^https?:\/\/.{3,}/.test(url)) {
+    const res = await axios
+      .create()
+      .get(url)
+      .catch((e) => {
+        console.warn(e);
+      });
+    const rows = res?.data || [];
+    if (typeof rows === 'string') return await text2rules(rows);
+    if (!Array.isArray(rows)) return result;
+    for (const rule of rows) {
+      if (isEsoObj(rule)) {
+        result.push(rule);
+      } else if (isEsoStr(rule)) {
+        result.push(decodeRule(rule));
+      }
+    }
+    return result;
+  }
+  // json 字符串
+  let json;
+  try {
+    json = JSON.parse(url);
+  } catch (error) {
+    console.warn('导入格式不支持');
+  }
+  if (typeof json !== 'object') return result;
+  const jsons = Array.isArray(json) ? json : [json];
+  for (const json of jsons) {
+    if (isEsoObj(json)) {
+      result.push(json);
+    } else if (isEsoStr(json)) {
+      result.push(decodeRule(json));
+    }
+  }
+  return result;
 }
