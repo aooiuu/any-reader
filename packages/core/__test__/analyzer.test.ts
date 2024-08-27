@@ -1,4 +1,4 @@
-import { createAnalyzerManager } from '..';
+import { createAnalyzerManager } from '../src';
 
 const analyzerManager = createAnalyzerManager();
 
@@ -53,5 +53,12 @@ describe('analyzer', () => {
     });
     const content = await analyzerManager.getString('$.info.body@css:.box1 .box2@text', body);
     expect(content).toEqual('content');
+  });
+
+  it('JS CryptoJS', async () => {
+    const body = 'U2FsdGVkX1+lzrvaz1MagYswnfRUePbcwyo+fZ90+Qs=';
+    const rule = '@js:CryptoJS.AES.decrypt(result, "secret key 123").toString(CryptoJS.enc.Utf8)';
+    const content = await analyzerManager.getString(rule, body);
+    expect(content).toEqual('hello word');
   });
 });

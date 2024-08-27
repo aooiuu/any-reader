@@ -1,4 +1,5 @@
 import vm from 'node:vm';
+import CryptoJS from 'crypto-js';
 import type { Rule } from '@any-reader/rule-utils';
 import { AnalyzerXPath } from '../analyzer/AnalyzerXPath';
 import { JsVmException } from '../exception/JsVmException';
@@ -14,10 +15,17 @@ export class JSEngine {
   static async evaluate(command: string, context: any = {}) {
     const { rule } = JSEngine.environment;
     if (rule?.loadJs) command = `${rule.loadJs};${command}`;
+    const http = function (url: string) {
+      return __http__(url, JSEngine.environment.rule as Rule);
+    };
+    http.get = (url: string) => http(url);
+
     try {
       const p = vm.runInNewContext(
         command,
         vm.createContext({
+          CryptoJS,
+
           // 暂时不考虑使用了 `window` 方法的规则, 理论上规则不应该使用 `window` 变量
           window: {},
 
@@ -28,9 +36,7 @@ export class JSEngine {
           __http__: (url: string) => {
             return __http__(url, JSEngine.environment.rule as Rule);
           },
-          http: (url: string) => {
-            return __http__(url, JSEngine.environment.rule as Rule);
-          },
+          http,
           xpath: async (html: string, xpath: string): Promise<string[]> => {
             const analyzer = new AnalyzerXPath();
             analyzer.parse(html);
