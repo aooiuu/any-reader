@@ -5,7 +5,7 @@ export default defineBuildConfig({
   externals: [],
   clean: true,
   declaration: true,
-  sourcemap: true,
+  sourcemap: false,
   rollup: {
     inlineDependencies: true,
     emitCJS: true,

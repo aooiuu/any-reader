@@ -24,7 +24,7 @@
   "scripts": {
     "build": "unbuild",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsx watch src/run.ts"
+    "dev": "node --experimental-specifier-resolution=node --loader ./loader.mjs src/run.ts"
   },
   "dependencies": {
     "@any-reader/core": "workspace:^",

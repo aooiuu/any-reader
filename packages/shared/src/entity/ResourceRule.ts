@@ -1,4 +1,5 @@
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import type { Relation } from 'typeorm';
 import { RuleExtra } from './RuleExtra';
 
 @Entity({ name: 'resource_rule' })
@@ -325,7 +326,7 @@ export class ResourceRule {
     createForeignKeyConstraints: false
   })
   @JoinColumn({ name: 'id' })
-  extra!: RuleExtra;
+  extra!: Relation<RuleExtra>;
 
   @Column({
     name: 'content_next_url',
