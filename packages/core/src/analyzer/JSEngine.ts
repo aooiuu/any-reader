@@ -25,6 +25,7 @@ export class JSEngine {
         command,
         vm.createContext({
           CryptoJS,
+          fetch,
 
           // 暂时不考虑使用了 `window` 方法的规则, 理论上规则不应该使用 `window` 变量
           window: {},

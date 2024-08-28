@@ -45,6 +45,13 @@ describe('analyzer', () => {
     expect(content).toEqual('c');
   });
 
+  it('JS fetch', async () => {
+    const body = '';
+    const rule = '@js:typeof fetch';
+    const content = await analyzerManager.getString(rule, body);
+    expect(content).toEqual('function');
+  });
+
   it('JSONPath + CSS', async () => {
     const body = JSON.stringify({
       info: {
