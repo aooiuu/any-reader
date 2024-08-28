@@ -179,11 +179,10 @@ export class RuleManager {
         let list = await this.analyzerManager.getStringList(this.rule.contentItems, body);
         if (this.rule.contentType === ContentType.NOVEL) {
           list = list
-            .join('\n')
-            .replace(/\n+/g, '\n')
-            .trim()
+            .join('\n') // ["1\n\n2", "3"]
             .split('\n')
-            .map((e) => e.trim());
+            .map((e) => e.trim())
+            .filter((e) => e);
         }
         result.push(...list);
       } catch (error) {

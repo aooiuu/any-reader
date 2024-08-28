@@ -78,7 +78,12 @@ export class RuleManager extends BaseController {
     // 在线
     if (ruleId) {
       const rule = await this.getRule(ruleId);
-      return await this.contentByRule({ rule, chapterPath });
+      const { contentType, content } = await this.contentByRule({ rule, chapterPath });
+      if (!content.length) throw new Error('获取内容失败');
+      return {
+        contentType,
+        content
+      };
     }
     // 本地
     const content = await createBookParser(filePath).getContent(chapterPath);
