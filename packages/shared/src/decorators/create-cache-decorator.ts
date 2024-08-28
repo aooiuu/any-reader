@@ -16,8 +16,14 @@ function isEmpty(data: any): boolean {
   else return !Object.keys(data).length;
 }
 
+export interface DecoratorArgs {
+  ttl?: number;
+  cacheKey: (arg: { className: string; methodName: string; args: any[] }) => string;
+  verify?: (data: any) => boolean;
+}
+
 export function createCacheDecorator<T>(options: CreateCacheDecoratorOptions<T>) {
-  return (decoratorArgs: { ttl?: number; cacheKey: (arg: { className: string; methodName: string; args: any[] }) => string }): MethodDecorator => {
+  return (decoratorArgs: DecoratorArgs): MethodDecorator => {
     return (_target: unknown, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<any>) => {
       const fn = descriptor.value;
 
@@ -35,8 +41,9 @@ export function createCacheDecorator<T>(options: CreateCacheDecoratorOptions<T>)
         }
 
         const cachedResult = await options.getItem(cacheKey);
+        const verified = typeof decoratorArgs.verify !== 'function' || decoratorArgs.verify(cachedResult);
 
-        if (!isEmpty(cachedResult)) {
+        if (!isEmpty(cachedResult) && verified) {
           return cachedResult;
         } else {
           const result = await fn.apply(this, args);

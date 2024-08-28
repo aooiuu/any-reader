@@ -69,6 +69,9 @@ export class RuleManager extends BaseController {
     cacheKey({ args }) {
       const { filePath = '', chapterPath = '', ruleId = '' } = args[0];
       return `content@${ruleId || '__local__'}@${md5(filePath)}@v3_${md5(chapterPath)}`;
+    },
+    verify(data: any) {
+      return !!data?.content?.length;
     }
   })
   async content({ filePath, chapterPath, ruleId }: { ruleId: string; filePath: string; chapterPath: string }) {
@@ -79,6 +82,9 @@ export class RuleManager extends BaseController {
     }
     // 本地
     const content = await createBookParser(filePath).getContent(chapterPath);
+
+    if (!content.length) throw new Error('获取内容失败');
+
     return {
       content
     };
