@@ -52,6 +52,16 @@ describe('analyzer', () => {
     expect(content).toEqual('function');
   });
 
+  it('JS xpath', async () => {
+    const body = '<div class="box1"><div class="box2">content2</div><div class="box3">content3</div></div>';
+    const rule = `@js:(async() => {
+  return await xpath(result, '//*[@class="box3"]/text()')
+})()
+    `;
+    const content = await analyzerManager.getString(rule, body);
+    expect(content).toEqual('content3');
+  });
+
   it('JSONPath + CSS', async () => {
     const body = JSON.stringify({
       info: {

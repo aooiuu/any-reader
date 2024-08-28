@@ -283,6 +283,49 @@ enum ContentType {
 
 ### JavaScript
 
+例子: `@js:1+1`
+
+
+> [!TIP]
+> 可以搭配解析流程产生的变量使用, 比如 `result`、`lastResult`
+>
+> 如果`URL地址规则`拿到的结果是 `123`, 那么在非`URL地址规则`字段中 `@js:result` 将输出 `123`
+>
+> 如果上一个流程`结果规则`拿到的结果是 `456`, 那么在非`URL地址规则`字段中 `@js:lastResult` 将输出 `456`, 在`URL地址规则`字段中 `@js:result` 将输出 `456`
+
+内置方法: `CryptoJS`、`fetch`、`xpath`
+
+#### CryptoJS
+
+https://github.com/brix/crypto-js
+
+```javascript
+@js:CryptoJS.AES.decrypt('U2FsdGVkX1+lzrvaz1MagYswnfRUePbcwyo+fZ90+Qs=', "secret key 123").toString(CryptoJS.enc.Utf8)
+
+// -> hello word
+```
+
+> 使用变量
+
+```javascript
+@js:CryptoJS.AES.decrypt(result, "secret key 123").toString(CryptoJS.enc.Utf8)
+```
+
+#### fetch
+
+https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API
+
+#### xpath
+
+```javascript
+@js:(async() => {
+  return await xpath('<div class="box1"><div class="box2">content2</div><div class="box3">content3</div></div>', '//*[@class="box3"]/text()')
+})()
+
+// -> content3
+```
+
+
 ### 正则
 
 例子: `rule##match##replacement##replaceFirstFlag`
