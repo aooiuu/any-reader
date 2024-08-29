@@ -52,6 +52,13 @@ describe('analyzer', () => {
     expect(content).toEqual('function');
   });
 
+  it('JS cheerio', async () => {
+    const body = '<h2 class="title">Hello world</h2>';
+    const rule = `@js:(() => cheerio.load(result)('h2.title').text())()`;
+    const content = await analyzerManager.getString(rule, body);
+    expect(content).toEqual('Hello world');
+  });
+
   it('JS xpath', async () => {
     const body = '<div class="box1"><div class="box2">content2</div><div class="box3">content3</div></div>';
     const rule = `@js:(async() => {

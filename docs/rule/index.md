@@ -315,6 +315,11 @@ https://github.com/brix/crypto-js
 
 https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API
 
+
+```javascript
+@js:(async() => fetch('https://api.github.com/').then(e => e.text()))()
+```
+
 #### xpath
 
 ```javascript
@@ -323,6 +328,15 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API
 })()
 
 // -> content3
+```
+
+#### cheerio
+
+https://github.com/cheeriojs/cheerio/wiki/Chinese-README
+
+
+```javascript
+@js:(() => cheerio.load(result)('h2.title').text())()
 ```
 
 

@@ -47,18 +47,18 @@
                 </template>
                 <template v-else-if="item.type === 'number'">
                   <!-- eslint-disable-next-line prettier/prettier -->
-                  <a-input-number v-model:value="(formData[item.prop] as number)" :min="0" :placeholder="item.prop" />
+                  <a-input-number v-model:value="(formData[item.prop] as number)" :min="0"  />
                 </template>
                 <template v-else-if="item.type === 'textarea'">
                   <!-- eslint-disable-next-line prettier/prettier -->
-                  <a-textarea v-model:value="(formData[item.prop] as string)" :placeholder="item.prop" :auto-size="{ minRows: 2,  maxRows: 5  }" />
+                  <a-textarea v-model:value="(formData[item.prop] as string)"  :auto-size="{ minRows: 2,  maxRows: 5  }" />
                 </template>
                 <template v-else-if="item.type === 'switch'">
-                  <a-switch v-model:checked="formData[item.prop]" :placeholder="item.prop" />
+                  <a-switch v-model:checked="formData[item.prop]" />
                 </template>
                 <template v-else>
                   <!-- eslint-disable-next-line prettier/prettier -->
-                  <a-input v-model:value="(formData[item.prop] as string)" :placeholder="item.prop" />
+                  <a-input v-model:value="(formData[item.prop] as string)"  />
                 </template>
               </AFormItem>
             </template>

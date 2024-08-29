@@ -18,18 +18,18 @@
     <a-spin :spinning="loading" class="w-full">
       <AFormItem>
         <template #label>
-          <span>请求参数</span>
-          <CopyOutlined class="ml-10 cursor-pointer hover:op-70" @click="copy(params)" />
-        </template>
-        <a-textarea v-model:value="params" placeholder="点击测试后输出的结果" readonly :auto-size="{ minRows: 2, maxRows: 5 }" />
-      </AFormItem>
-      <AFormItem>
-        <template #label>
           <span>请求结果</span>
           <CopyOutlined class="ml-10 cursor-pointer hover:op-70" @click="copy(body)" />
           <BugOutlined class="ml-10 cursor-pointer hover:op-70" @click="emit('debug', body)" />
         </template>
-        <a-textarea v-model:value="body" placeholder="点击测试后输出的结果" readonly :auto-size="{ minRows: 2, maxRows: 5 }" />
+        <a-textarea v-model:value="body" placeholder="点击测试后输出的结果" readonly :auto-size="{ minRows: 2, maxRows: 10 }" />
+      </AFormItem>
+      <AFormItem>
+        <template #label>
+          <span>请求参数</span>
+          <CopyOutlined class="ml-10 cursor-pointer hover:op-70" @click="copy(params)" />
+        </template>
+        <a-textarea v-model:value="params" placeholder="点击测试后输出的结果" readonly :auto-size="{ minRows: 2, maxRows: 5 }" />
       </AFormItem>
     </a-spin>
   </AForm>

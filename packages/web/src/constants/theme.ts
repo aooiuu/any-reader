@@ -170,10 +170,10 @@ export const THEME = [
 
       colorBorder: '#313131',
 
-      colorText: 'rgba(255,255,255, 0.65)',
-      colorTextSecondary: 'rgba(255,255,255, 0.65)',
-      colorTextTertiary: 'rgba(255,255,255, 0.65)',
-      colorTextQuaternary: 'rgba(255,255,255, 0.65)',
+      colorText: 'rgba(255,255,255, 0.75)',
+      colorTextSecondary: 'rgba(255,255,255, 0.75)',
+      colorTextTertiary: 'rgba(255,255,255, 0.75)',
+      colorTextQuaternary: 'rgba(255,255,255, 0.35)',
 
       // 章节背景颜色
       chapterBg: '#181818'

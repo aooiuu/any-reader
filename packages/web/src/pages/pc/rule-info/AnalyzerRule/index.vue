@@ -8,15 +8,22 @@
     <div class="my-20 flex-1 overflow-auto">
       <a-spin :spinning="loading" class="w-full">
         <div v-if="searchList.length">搜索结果:</div>
-        <a-button v-for="item in searchList" :key="item.id" class="block" type="link" @click="chapterByRule(item)">
-          {{ item.name }}
-        </a-button>
+        <div class="max-h-200 overflow-y-auto">
+          <a-button v-for="item in searchList" :key="item.id" class="block" type="link" @click="chapterByRule(item)">
+            {{ item.name }}
+          </a-button>
+        </div>
         <div v-if="chapterList.length">章节列表:</div>
-        <a-button v-for="item in chapterList" :key="item.id" class="block" type="link" @click="contentByRule(item)">
-          {{ item.name }}
-        </a-button>
+        <div class="max-h-200 overflow-y-auto">
+          <a-button v-for="item in chapterList" :key="item.id" class="block" type="link" @click="contentByRule(item)">
+            {{ item.name }}
+          </a-button>
+        </div>
+
         <div v-if="contentList.length">内容:</div>
-        <div v-for="(item, idx) in contentList" :key="idx">{{ item }}</div>
+        <div class="max-h-200 overflow-y-auto">
+          <div v-for="(item, idx) in contentList" :key="idx">{{ item }}</div>
+        </div>
       </a-spin>
     </div>
   </div>
@@ -71,7 +78,7 @@ async function contentByRule(data: any) {
   }).catch(() => {});
   loading.value = false;
   if (res?.code === 0) {
-    contentList.value = res?.data || [];
+    contentList.value = res?.data?.content || [];
   }
 }
 </script>

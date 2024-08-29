@@ -1,5 +1,6 @@
 import vm from 'node:vm';
 import CryptoJS from 'crypto-js';
+import * as cheerio from 'cheerio';
 import type { Rule } from '@any-reader/rule-utils';
 import { AnalyzerXPath } from '../analyzer/AnalyzerXPath';
 import { JsVmException } from '../exception/JsVmException';
@@ -24,6 +25,7 @@ export class JSEngine {
       const p = vm.runInNewContext(
         command,
         vm.createContext({
+          cheerio,
           CryptoJS,
           fetch,
 
