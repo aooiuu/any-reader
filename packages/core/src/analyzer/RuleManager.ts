@@ -29,6 +29,7 @@ export class RuleManager {
   constructor(rule: Rule, analyzerManager: AnalyzerManager) {
     this.rule = rule;
     this._nextUrl = new Map();
+    JSEngine.init();
     JSEngine.setEnvironment({
       host: this.rule.host,
       $host: this.rule.host,

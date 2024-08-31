@@ -2,11 +2,10 @@ import { JSEngine } from './JSEngine';
 import type { Analyzer } from './Analyzer';
 
 export class AnalyzerJS implements Analyzer {
-  _content!: string;
+  _content!: any;
 
-  parse(content: string | string[]) {
-    if (Array.isArray(content)) this._content = content.join('\n');
-    else this._content = content;
+  parse(content: any) {
+    this._content = content;
   }
 
   async getString(rule: string): Promise<string> {
