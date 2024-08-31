@@ -179,7 +179,16 @@ export abstract class RuleEvaluator extends BaseRuleEvaluator {
       return value;
     }
 
+    override getString(context: AnalyzerManager, value?: any): string {
+      this.eval(context, value);
+      return '';
+    }
+
     override getElement(context: AnalyzerManager, value?: any): any {
+      return this.getElements(context, value);
+    }
+
+    override getElements(context: AnalyzerManager, value: any): any[] {
       this.eval(context, value);
       return [];
     }
