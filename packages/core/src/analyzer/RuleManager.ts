@@ -93,7 +93,8 @@ export class RuleManager {
       ];
     }
     const chapterUrl = this.rule.chapterUrl || result;
-    const { body } = await fetch(await this.parseUrl(chapterUrl), '', result, this.rule);
+    const { body, params } = await fetch(await this.parseUrl(chapterUrl), '', result, this.rule);
+    console.log('[request]', params);
 
     JSEngine.setEnvironment({
       page: 1,
@@ -214,7 +215,7 @@ export class RuleManager {
     const discovers = Array.isArray(discoverUrl)
       ? discoverUrl.map((e) => e.toString())
       : typeof discoverUrl === 'string'
-        ? discoverUrl.split(/[\n*]|&&/)
+        ? discoverUrl.split(/\n\s*|&&/)
         : [];
 
     for (const url of discovers) {
