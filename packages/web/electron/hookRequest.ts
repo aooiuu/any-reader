@@ -1,7 +1,6 @@
 import { Session } from 'electron/main';
 
 export function hookRequest(session: Session) {
-  const HEADER_TOKEN = '@headers';
   const mUrlDetails = new Map<number, any>();
 
   session.webRequest.onBeforeSendHeaders((details, callback) => {
@@ -17,7 +16,7 @@ export function hookRequest(session: Session) {
       urls: ['http://*/*', 'https://*/*']
     },
     (details, callback) => {
-      const urls = details.url.split(HEADER_TOKEN);
+      const urls = details.url.split(/@headers?/);
       if (urls.length === 2) {
         try {
           const headers = JSON.parse(decodeURIComponent(urls[1]));
