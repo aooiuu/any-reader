@@ -66,7 +66,7 @@ export class NetworkUtils {
     for (let i = '0'.charCodeAt(0); i <= '9'.charCodeAt(0); i++) {
       this.notNeedEncoding.add(i);
     }
-    for (const char of '+-_.$:()!*@&#,[]') {
+    for (const char of '+-_.~$:()!*@&#,[]') {
       this.notNeedEncoding.add(char.charCodeAt(0));
     }
   }
