@@ -140,6 +140,10 @@ enum ContentType {
 - **取内容规则**, 比如 `searchName` `chapterCover`。 这类规则通常用来获取具体的某项内容，比如书名、作者
 - **结果规则**, 这类规则通常后面有 `Result`, 比如 `searchResult` `chapterResult`。 这类规则获取的结果一般用于供下一个流程的 `URL地址规则` 使用。比如搜索时，`searchResult` 拿到的结果将会给获取章节列表的流程使用，获取章节列表的URL规则里可以使用 `result` 变量拿到 `searchResult` 的结果。
 
+> 图片字段可以使用 `@headers` 携带请求头 (目前仅桌面端支持)
+>
+> 比如: `https://xxx.jpg@headers{"xxx":"xxx"}`
+
 > [!TIP]
 > **结果规则**的结果会成为下一个解析流程**URL地址规则**的 `result` 变量，成为下一个解析流程**URL地址规则**外其它规则的 `lastResult` 变量。
 >
