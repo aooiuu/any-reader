@@ -1,13 +1,16 @@
-import { app, BrowserWindow, Menu } from 'electron';
+import { app, BrowserWindow, Menu, session } from 'electron';
 import { createAPI } from './api';
 import { useAutoUpdater } from './updater';
 import { useDevTools } from './useDevTools';
+import { hookRequest } from './hookRequest';
 
 app.commandLine.appendSwitch('enable-features', 'PlatformHEVCDecoderSupport');
 app.commandLine.appendSwitch('ignore-certificate-errors');
 app.commandLine.appendSwitch('disable-web-security');
 
 app.whenReady().then(async () => {
+  hookRequest(session.defaultSession);
+
   const win = new BrowserWindow({
     title: 'AnyReader',
     titleBarStyle: 'hidden',
