@@ -123,7 +123,7 @@ export class RuleManager {
     return list;
   }
 
-  async getChapter(result: string): Promise<ChapterItem[]> {
+  async getChapter(result: string, page = 1): Promise<ChapterItem[]> {
     JSEngine.setEnvironment({
       result
     });
@@ -136,14 +136,24 @@ export class RuleManager {
       ];
     }
     const chapterUrl = this.rule.chapterUrl || result;
-    const { body, params } = await fetch(await this.parseUrl(chapterUrl), '', result, this.rule);
-    console.log('[request]', params);
+    let body = '';
 
     JSEngine.setEnvironment({
-      page: 1,
+      page
+    });
+
+    if (chapterUrl !== 'null') {
+      const res = await fetch(await this.parseUrl(chapterUrl), '', result, this.rule, page);
+      console.log('[request]', res.params);
+      body = res.body;
+      JSEngine.setEnvironment({
+        baseUrl: res.params.url
+      });
+    }
+
+    JSEngine.setEnvironment({
       lastResult: result,
-      result: body,
-      baseUrl: chapterUrl
+      result: body
     });
 
     let list = [];
