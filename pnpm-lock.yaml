@@ -69,10 +69,10 @@ importers:
         version: 4.2.0
       tsup:
         specifier: ^8.1.2
-        version: 8.1.2(jiti@1.21.6)(postcss@8.4.39)(tsx@4.16.2)(typescript@5.5.4)(yaml@2.4.5)
+        version: 8.1.2(jiti@1.21.6)(postcss@8.4.39)(tsx@4.19.0)(typescript@5.5.4)(yaml@2.4.5)
       tsx:
-        specifier: ^4.16.2
-        version: 4.16.2
+        specifier: ^4.19.0
+        version: 4.19.0
       unbuild:
         specifier: ^2.0.0
         version: 2.0.0(sass@1.77.8)(typescript@5.5.4)(vue-tsc@2.0.26(typescript@5.5.4))
@@ -6867,8 +6867,8 @@ packages:
       typescript:
         optional: true
 
-  tsx@4.16.2:
-    resolution: {integrity: sha512-C1uWweJDgdtX2x600HjaFaucXTilT7tgUZHbOE4+ypskZ1OP8CRCSDkCxG6Vya9EwaFIVagWwpaVAn5wzypaqQ==}
+  tsx@4.19.0:
+    resolution: {integrity: sha512-bV30kM7bsLZKZIOCHeMNVMJ32/LuJzLVajkQI/qf92J2Qr08ueLQvW00PUZGiuLPP760UINwupgUj8qrSCPUKg==}
     engines: {node: '>=18.0.0'}
     hasBin: true
 
@@ -12165,7 +12165,7 @@ snapshots:
       jiti-v1: jiti@1.21.6
       pathe: 1.1.2
       pkg-types: 1.1.3
-      tsx: 4.16.2
+      tsx: 4.19.0
     transitivePeerDependencies:
       - supports-color
 
@@ -13709,13 +13709,13 @@ snapshots:
     dependencies:
       postcss: 8.4.39
 
-  postcss-load-config@6.0.1(jiti@1.21.6)(postcss@8.4.39)(tsx@4.16.2)(yaml@2.4.5):
+  postcss-load-config@6.0.1(jiti@1.21.6)(postcss@8.4.39)(tsx@4.19.0)(yaml@2.4.5):
     dependencies:
       lilconfig: 3.1.2
     optionalDependencies:
       jiti: 1.21.6
       postcss: 8.4.39
-      tsx: 4.16.2
+      tsx: 4.19.0
       yaml: 2.4.5
 
   postcss-merge-longhand@7.0.2(postcss@8.4.39):
@@ -14807,7 +14807,7 @@ snapshots:
 
   tsscmp@1.0.6: {}
 
-  tsup@8.1.2(jiti@1.21.6)(postcss@8.4.39)(tsx@4.16.2)(typescript@5.5.4)(yaml@2.4.5):
+  tsup@8.1.2(jiti@1.21.6)(postcss@8.4.39)(tsx@4.19.0)(typescript@5.5.4)(yaml@2.4.5):
     dependencies:
       bundle-require: 5.0.0(esbuild@0.23.0)
       cac: 6.7.14
@@ -14818,7 +14818,7 @@ snapshots:
       execa: 5.1.1
       globby: 11.1.0
       joycon: 3.1.1
-      postcss-load-config: 6.0.1(jiti@1.21.6)(postcss@8.4.39)(tsx@4.16.2)(yaml@2.4.5)
+      postcss-load-config: 6.0.1(jiti@1.21.6)(postcss@8.4.39)(tsx@4.19.0)(yaml@2.4.5)
       resolve-from: 5.0.0
       rollup: 4.21.0
       source-map: 0.8.0-beta.0
@@ -14833,9 +14833,9 @@ snapshots:
       - tsx
       - yaml
 
-  tsx@4.16.2:
+  tsx@4.19.0:
     dependencies:
-      esbuild: 0.21.5
+      esbuild: 0.23.0
       get-tsconfig: 4.7.5
     optionalDependencies:
       fsevents: 2.3.3
