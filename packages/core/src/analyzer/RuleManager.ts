@@ -50,8 +50,7 @@ export class RuleManager {
     return url;
   }
 
-  async search(query: string) {
-    const page = 1;
+  async search(query: string, page = 1, pageSize = 20) {
     // const hasNextUrlRule = this.rule.searchNextUrl !== null && this.rule.searchNextUrl.length > 0;
     let searchRule = '';
     let url = this.rule.searchUrl;
@@ -82,17 +81,18 @@ export class RuleManager {
     let searchUrl = '';
     let body = '';
 
-    if (this.rule.searchUrl !== 'null') {
-      const res = await fetch(await this.parseUrl(searchRule), query, '', this.rule);
-      body = res.body;
-      searchUrl = res.params.url as string;
-    }
     JSEngine.setEnvironment({
       page,
       $keyword: query,
       keyword: query,
       searchKey: query
     });
+
+    if (this.rule.searchUrl !== 'null') {
+      const res = await fetch(await this.parseUrl(searchRule), query, '', this.rule, page, pageSize);
+      body = res.body;
+      searchUrl = res.params.url as string;
+    }
 
     // if (hasNextUrlRule) {
     //   next = await this.analyzerManager.getString(this.rule.searchNextUrl, body);

@@ -12,7 +12,7 @@ const http = axios.create({
 
 // 替换变量
 function replaceUrl(url: string, vars: any) {
-  return url.replace(/\$keyword|\$page|\$host|\$result|\$pageSize|searchKey|searchPage/g, (m: string | number) => vars[m] || '');
+  return url.replace(/\$keyword|\$pageSize|\$page|\$host|\$result|searchKey|searchPage/g, (m: string | number) => vars[m] || '');
 }
 
 /**
@@ -22,15 +22,15 @@ function replaceUrl(url: string, vars: any) {
  * @param result
  * @returns
  */
-export async function fetch(url: string | object, keyword = '', result = '', rule: Rule) {
+export async function fetch(url: string | object, keyword = '', result = '', rule: Rule, page = 1, pageSize = 20) {
   const vars: any = {
     $keyword: keyword,
     searchKey: keyword,
     $host: rule.host,
     $result: result,
-    searchPage: 1,
-    $page: 1,
-    $pageSize: 20
+    searchPage: page,
+    $pageSize: pageSize,
+    $page: page
   };
 
   let params: any = {
