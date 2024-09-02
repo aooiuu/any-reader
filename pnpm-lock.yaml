@@ -391,8 +391,8 @@ importers:
         specifier: ^4.17.12
         version: 4.17.12
       '@types/ws':
-        specifier: ^8.5.11
-        version: 8.5.11
+        specifier: ^8.5.12
+        version: 8.5.12
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
@@ -2165,8 +2165,8 @@ packages:
   '@types/web-bluetooth@0.0.20':
     resolution: {integrity: sha512-g9gZnnXVq7gM7v3tJCWV/qw7w+KeOlSHAhgF9RytFyifW6AF61hdT2ucrYhPq9hLs5JIryeupHV3qGk95dH9ow==}
 
-  '@types/ws@8.5.11':
-    resolution: {integrity: sha512-4+q7P5h3SpJxaBft0Dzpbr6lmMaqh0Jr2tbhJZ/luAwvD7ohSCniYkwz/pLxuT2h0EOa6QADgJj1Ko+TzRfZ+w==}
+  '@types/ws@8.5.12':
+    resolution: {integrity: sha512-3tPRkv1EtkDpzlgyKyI8pGsGZAGPEaXeu0DOj5DI25Ja91bdAYddYHbADRYVrZMRbfW+1l5YwXVDKohDJNQxkQ==}
 
   '@types/xml2js@0.4.14':
     resolution: {integrity: sha512-4YnrRemBShWRO2QjvUin8ESA41rH+9nQGLUGZV/1IDhi3SL9OhdpNC/MrulTWuptXKwhx/aDxE7toV0f/ypIXQ==}
@@ -9112,7 +9112,7 @@ snapshots:
 
   '@types/web-bluetooth@0.0.20': {}
 
-  '@types/ws@8.5.11':
+  '@types/ws@8.5.12':
     dependencies:
       '@types/node': 20.14.12
 
