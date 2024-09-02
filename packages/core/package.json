@@ -33,7 +33,7 @@
     "content-type": "^1.0.5",
     "crypto-js": "^4.2.0",
     "iconv-lite": "^0.6.3",
-    "jsonpath-plus": "^7.2.0",
+    "jsonpath-plus": "^9.0.0",
     "puppeteer": "^21.7.0",
     "urlencode": "^2.0.0",
     "xmldom": "^0.6.0",
