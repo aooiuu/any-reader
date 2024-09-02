@@ -21,6 +21,8 @@ export interface ChapterItem {
   time?: string;
 }
 
+const PAGE_PATTERN = /(\$page)|((^|[^a-zA-Z'"_/-])page([^a-zA-Z0-9'"]|$))/;
+
 export class RuleManager {
   private rule: Rule;
   private _nextUrl: Map<string, string>;
@@ -48,25 +50,66 @@ export class RuleManager {
     return url;
   }
 
-  async search(keyword: string) {
-    const { searchUrl } = this.rule;
-    JSEngine.setEnvironment({
-      $keyword: keyword,
-      keyword,
-      searchKey: keyword
-    });
-    const { body } = await fetch(await this.parseUrl(searchUrl), keyword, '', this.rule);
-    const list = await this.getList(body, this.rule.searchList);
+  async search(query: string) {
+    const page = 1;
+    // const hasNextUrlRule = this.rule.searchNextUrl !== null && this.rule.searchNextUrl.length > 0;
+    let searchRule = '';
+    let url = this.rule.searchUrl;
 
-    const result: SearchItem[] = [];
-    for (const row of list) {
+    const re = query.match(/url@.+?@url/s);
+    if (re !== null && re[0].length > 0) {
+      url = re[0].substring('url@'.length, re[0].length - '@url'.length);
+      query = query.substring(re[0].length);
+    }
+
+    if (page === 1) {
+      searchRule = url;
+    }
+    // else if (hasNextUrlRule) {
+    //   const next = _nextUrl[url];
+    //   if (next !== null && next.length > 0) {
+    //     searchRule = next;
+    //   }
+    // }
+    else if (PAGE_PATTERN.test(url)) {
+      searchRule = url;
+    }
+
+    if (searchRule === null) {
+      return [];
+    }
+
+    let searchUrl = '';
+    let body = '';
+
+    if (this.rule.searchUrl !== 'null') {
+      const res = await fetch(await this.parseUrl(searchRule), query, '', this.rule);
+      body = res.body;
+      searchUrl = res.params.url as string;
+    }
+    JSEngine.setEnvironment({
+      page,
+      $keyword: query,
+      keyword: query,
+      searchKey: query
+    });
+
+    // if (hasNextUrlRule) {
+    //   next = await this.analyzerManager.getString(this.rule.searchNextUrl, body);
+    // }
+
+    const list = await this.getList(body, this.rule.searchList);
+    const result = [];
+
+    for (const item of list) {
       result.push({
-        cover: await this.analyzerManager.getString(this.rule.searchCover, row),
-        name: (await this.analyzerManager.getString(this.rule.searchName, row)).trim(),
-        author: await this.analyzerManager.getString(this.rule.searchAuthor, row),
-        chapter: await this.analyzerManager.getString(this.rule.searchChapter, row),
-        description: await this.analyzerManager.getString(this.rule.searchDescription, row),
-        url: await this.analyzerManager.getUrl(this.rule.searchResult, this.rule.host, row)
+        searchUrl: searchUrl,
+        cover: await this.analyzerManager.getString(this.rule.searchCover, item),
+        name: (await this.analyzerManager.getString(this.rule.searchName, item)).trim(),
+        author: await this.analyzerManager.getString(this.rule.searchAuthor, item),
+        chapter: await this.analyzerManager.getString(this.rule.searchChapter, item),
+        description: await this.analyzerManager.getString(this.rule.searchDescription, item),
+        url: await this.analyzerManager.getUrl(this.rule.searchResult, this.rule.host, item)
       });
     }
 
@@ -137,7 +180,6 @@ export class RuleManager {
     let page = 1;
     let contentUrlRule = '';
     let next = '';
-    const pagePattern = /(\$page)|((^|[^a-zA-Z'"_/-])page([^a-zA-Z0-9'"]|$))/;
 
     do {
       contentUrlRule = '';
@@ -147,7 +189,7 @@ export class RuleManager {
         if (next) {
           contentUrlRule = next;
         }
-      } else if (pagePattern.test(url)) {
+      } else if (PAGE_PATTERN.test(url)) {
         contentUrlRule = url;
       }
 
