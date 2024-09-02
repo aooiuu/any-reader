@@ -8,7 +8,7 @@ import { __http__ } from './request';
 
 export class JSEngine {
   static environment: any = {};
-  static VMCtx: any = {};
+  static VMCtx: any;
 
   static setEnvironment(env: Record<string, any>) {
     Object.assign(JSEngine.environment || {}, env);
@@ -41,6 +41,7 @@ export class JSEngine {
   }
 
   static async evaluate(command: string, context: any = {}) {
+    if (!JSEngine.VMCtx) JSEngine.init();
     const { rule } = JSEngine.environment;
     let scripts = '';
     if (rule?.loadJs) scripts += rule.loadJs + ';';
