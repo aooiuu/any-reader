@@ -47,7 +47,7 @@
   "devDependencies": {
     "@types/encoding-japanese": "^2.0.5",
     "@types/lodash-es": "^4.17.12",
-    "@types/ws": "^8.5.11",
+    "@types/ws": "^8.5.12",
     "reflect-metadata": "^0.2.2",
     "ts-jest": "^29.1.1",
     "typescript": "^5.5.3"
