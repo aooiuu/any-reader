@@ -18,7 +18,8 @@ export * from './exception';
 export { analyzerUrl } from './analyzer/analyzerUrl';
 
 export function createRuleManager(rule: Rule, analyzerManager?: AnalyzerManager) {
-  if (rule.loadJs && typeof rule.loadJs === 'string' && /^\/\/\s*@any-reader\/parser\/iptv\s*$/.test(rule.loadJs)) {
+  // if (rule.loadJs && typeof rule.loadJs === 'string' && /^\/\/\s*@any-reader\/parser\/iptv\s*$/.test(rule.loadJs)) {
+  if (rule.loadJs === '// @any-reader/parser/iptv') {
     return new IPTV(rule);
   }
   return new RuleManager(rule, analyzerManager || createAnalyzerManager());
