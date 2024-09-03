@@ -8,8 +8,9 @@ import { AnalyzerManager } from './analyzer/AnalyzerManager';
 import { AnalyzerRegExp } from './analyzer/AnalyzerRegExp';
 import { AnalyzerReplace } from './analyzer/AnalyzerReplace';
 import { AnalyzerXPath } from './analyzer/AnalyzerXPath';
-import { RuleManager } from './analyzer/RuleManager';
 import { AnalyzerWeb } from './analyzer/AnalyzerWeb';
+import IPTV from './parser/iptv';
+import { RuleManager } from './analyzer/RuleManager';
 
 export * from './analyzer/RuleManager';
 export * from './analyzer/AnalyzerManager';
@@ -17,6 +18,9 @@ export * from './exception';
 export { analyzerUrl } from './analyzer/analyzerUrl';
 
 export function createRuleManager(rule: Rule, analyzerManager?: AnalyzerManager) {
+  if (rule.loadJs && typeof rule.loadJs === 'string' && /^\/\/\s*@any-reader\/parser\/iptv\s*$/.test(rule.loadJs)) {
+    return new IPTV(rule);
+  }
   return new RuleManager(rule, analyzerManager || createAnalyzerManager());
 }
 

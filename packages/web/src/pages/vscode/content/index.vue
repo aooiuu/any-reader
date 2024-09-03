@@ -21,6 +21,7 @@
 
       <div class="my-10 flex justify-center">
         <div v-if="lastChapter" class="cursor-pointer hover:op-70" @click="onPrevChapter">上一章</div>
+        <div class="cursor-pointer hover:op-70" @click="init(true)">重载</div>
         <div v-if="nextChapter" class="cursor-pointer hover:op-70" @click="onNextChapter">下一章</div>
       </div>
     </div>
@@ -42,7 +43,7 @@ import { useContent, useTheme } from '@/pages/common/content';
 
 const contentRef = ref();
 
-const { content, contentType, settingStore, lastChapter, nextChapter, onPageUp, onPageDown, onPrevChapter, onNextChapter, loading } =
+const { content, contentType, settingStore, lastChapter, nextChapter, onPageUp, onPageDown, onPrevChapter, onNextChapter, loading, init } =
   useContent(contentRef);
 
 useTheme(contentRef);

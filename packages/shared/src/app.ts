@@ -14,6 +14,7 @@ import { RuleManager } from './controller/RuleManager';
 import { Bookshelf } from './controller/Bookshelf';
 import { Config } from './controller/Config';
 import { TTS } from './controller/TTS';
+import { Cache } from './controller/Cache';
 import { mapRoute } from './decorators';
 import { logger } from './utils/logger';
 
@@ -38,7 +39,7 @@ export function createApp(params: { configPath: string; defaultConfig?: any; dat
     config: {},
     configPath: params.configPath,
 
-    controllers: [ChapterHistory, ResourceHistory, ResourceFavorites, ResourceRule, RuleManager, Bookshelf, Config, TTS],
+    controllers: [ChapterHistory, ResourceHistory, ResourceFavorites, ResourceRule, RuleManager, Bookshelf, Config, TTS, Cache],
 
     updateConfig(data: any) {
       ensureFileSync(app.configPath);

@@ -108,11 +108,14 @@ export function useContent(contentRef: Ref<HTMLElement>) {
   }
 
   // 初始化
-  async function init() {
+  async function init(noCache = false) {
     const { chapterPath: _chapterPath, filePath, ruleId, percentage } = route.query as Record<string, string>;
     content.value = [];
     loading.value = true;
-    const res = await getContent(route.query).catch(() => {});
+    const res = await getContent({
+      ...route.query,
+      noCache
+    }).catch(() => {});
     loading.value = false;
     chapterPath.value = _chapterPath as string;
     chaptersStore.getChapters(filePath as string, ruleId as string).then(() => {
@@ -145,10 +148,14 @@ export function useContent(contentRef: Ref<HTMLElement>) {
   }
 
   // 路由被改变
-  watch(() => route.query, init, {
-    immediate: true,
-    deep: true
-  });
+  watch(
+    () => route.query,
+    () => init(),
+    {
+      immediate: true,
+      deep: true
+    }
+  );
 
   onUnmounted(() => {
     readStore.setPath('');
@@ -216,6 +223,7 @@ export function useContent(contentRef: Ref<HTMLElement>) {
   );
 
   return {
+    init,
     settingStore,
     content,
     contentType,

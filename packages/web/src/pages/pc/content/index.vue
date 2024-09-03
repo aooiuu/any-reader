@@ -32,6 +32,7 @@
               上一章
             </a-button>
             <a-button type="text" :style="{ color: settingStore.data.readStyle.textColor }" @click="showChapters">目录</a-button>
+            <a-button type="text" :style="{ color: settingStore.data.readStyle.textColor }" @click="init(true)">重载</a-button>
             <a-button type="text" :disabled="!nextChapter" :style="{ color: settingStore.data.readStyle.textColor }" @click="onNextChapter">
               下一章
               <icon-right />
@@ -98,7 +99,8 @@ const topTarget = () => contentRef.value as HTMLElement;
 
 onClickOutside(chaptersRef, () => (chaptersVisible.value = false));
 
-const { settingStore, content, contentType, toChapter, lastChapter, nextChapter, onPrevChapter, onNextChapter, loading } = useContent(contentRef);
+const { settingStore, content, contentType, toChapter, lastChapter, nextChapter, onPrevChapter, onNextChapter, loading, init } =
+  useContent(contentRef);
 useTheme(contentRef);
 
 function scrollIntoViewChapter() {

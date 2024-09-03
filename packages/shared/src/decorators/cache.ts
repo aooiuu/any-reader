@@ -13,7 +13,7 @@ export function getCachePath(key: string) {
   return path.join(dir, `${fileName}.json`);
 }
 
-export const Cacheable = createCacheDecorator<any>({
+export const cacheUtils = {
   getItem: async (key: string) => {
     const cachePath = getCachePath(key);
     if (!fs.existsSync(cachePath)) return;
@@ -37,5 +37,12 @@ export const Cacheable = createCacheDecorator<any>({
       exp: options.ttl ? Date.now() + options.ttl : 0
     });
     fs.writeFile(getCachePath(key), data, 'utf-8', () => {});
+  },
+
+  removeItem: async (key: string) => {
+    const cachePath = getCachePath(key);
+    fs.existsSync(cachePath) && fs.unlinkSync(cachePath);
   }
-});
+};
+
+export const Cacheable = createCacheDecorator<any>(cacheUtils);

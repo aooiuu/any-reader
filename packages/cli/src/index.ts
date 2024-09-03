@@ -4,6 +4,7 @@ import useWeb from './command/web';
 import useRuleEncode from './command/rule-encode';
 import useRuleDecode from './command/rule-decode';
 import useCheck from './command/check';
+import useAnalyze from './command/analyze';
 
 async function main() {
   const program = new Command();
@@ -12,6 +13,7 @@ async function main() {
   useRuleEncode(program);
   useRuleDecode(program);
   useCheck(program);
+  useAnalyze(program);
 
   await program.parseAsync(process.argv);
 }

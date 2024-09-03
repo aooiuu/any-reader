@@ -3,6 +3,7 @@ import type { Rule } from '@any-reader/rule-utils';
 import { ContentType } from '@any-reader/rule-utils';
 import { analyzerUrl, createAnalyzerManager, createRuleManager } from '../utils/rule-parse';
 import { Cacheable, Controller, Post } from '../decorators';
+import { cacheUtils } from '../decorators/cache';
 import { createBookParser } from '../utils/book-manager';
 import { BaseController } from './BaseController';
 
@@ -65,34 +66,37 @@ export class RuleManager extends BaseController {
   }
 
   @Post('content')
-  @Cacheable({
-    cacheKey({ args }) {
-      const { filePath = '', chapterPath = '', ruleId = '' } = args[0];
-      return `content@${ruleId || '__local__'}@${md5(filePath)}@v3_${md5(chapterPath)}`;
-    },
-    verify(data: any) {
-      return !!data?.content?.length;
+  async content({ filePath, chapterPath, ruleId, noCache }: { ruleId: string; filePath: string; chapterPath: string; noCache: boolean }) {
+    const cacheKey = `content@${ruleId || '__local__'}@${md5(filePath)}@v3_${md5(chapterPath)}`;
+    const result: {
+      contentType?: number;
+      content: string[] | string;
+    } = {
+      content: []
+    };
+    if (noCache) {
+      // 移除缓存
+      cacheUtils.removeItem(cacheKey);
+    } else {
+      const res = await cacheUtils.getItem(cacheKey);
+      if (res) return res;
     }
-  })
-  async content({ filePath, chapterPath, ruleId }: { ruleId: string; filePath: string; chapterPath: string }) {
-    // 在线
+
     if (ruleId) {
+      // 在线
       const rule = await this.getRule(ruleId);
       const { contentType, content } = await this.contentByRule({ rule, chapterPath });
-      if (!content.length) throw new Error('获取内容失败');
-      return {
-        contentType,
-        content
-      };
+      result.content = content;
+      result.contentType = contentType;
+    } else {
+      // 本地
+      const content = await createBookParser(filePath).getContent(chapterPath);
+      result.content = content;
     }
-    // 本地
-    const content = await createBookParser(filePath).getContent(chapterPath);
+    if (!result.content.length) throw new Error('获取内容失败');
 
-    if (!content.length) throw new Error('获取内容失败');
-
-    return {
-      content
-    };
+    cacheUtils.setItem(cacheKey, result, { ttl: 0 });
+    return result;
   }
 
   @Post('search-by-rule')
