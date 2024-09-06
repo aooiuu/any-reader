@@ -1,4 +1,4 @@
-import fs from 'fs';
+import { promises as fs, existsSync } from 'fs';
 import path from 'path';
 import { Command } from 'commander';
 import { SingleBar } from 'cli-progress';
@@ -27,16 +27,16 @@ type CheckOptions = {
 async function checkRules(options: CheckOptions) {
   const input = path.resolve(options.input);
   const output = path.resolve(options.output);
-  if (!fs.existsSync(input)) {
+  if (!existsSync(input)) {
     console.warn('文件不存在 -> ' + input);
     return;
   }
-  if (fs.existsSync(output)) {
+  if (existsSync(output)) {
     console.warn('文件已存在 -> ' + output);
     return;
   }
   const limit = pLimit(+options.concurrency);
-  const rows: Rule[] = JSON.parse(fs.readFileSync(input, 'utf-8'));
+  const rows: Rule[] = JSON.parse(await fs.readFile(input, 'utf-8'));
 
   const progressBar = new SingleBar({
     format: '[检查规则] [{bar}] {percentage}% | {value}/{total}'
@@ -61,11 +61,11 @@ async function checkRules(options: CheckOptions) {
     )
   )
     .catch(() => {})
-    .finally(() => {
+    .finally(async () => {
       progressBar.update(rows.length);
       progressBar.stop();
       console.log(`[校验完成] 全部: ${rows.length} 正常: ${validRules.length}`);
-      fs.writeFileSync(options.output, JSON.stringify(validRules, null, 4), 'utf-8');
+      await fs.writeFile(options.output, JSON.stringify(validRules, null, 4), 'utf-8');
       process.exit();
     });
 }

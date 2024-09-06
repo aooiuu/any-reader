@@ -1,4 +1,4 @@
-import fs from 'fs';
+import { promises as fs } from 'fs';
 import path from 'path';
 import { Controller, Post } from '../decorators';
 import { BaseController } from './BaseController';
@@ -8,22 +8,20 @@ import { CACHE_DIR } from '../constants';
 export class Cache extends BaseController {
   @Post('clear')
   async clear() {
-    const dirs = fs
-      .readdirSync(CACHE_DIR)
+    const dirs = (await fs.readdir(CACHE_DIR))
       .map((file) => path.resolve(CACHE_DIR, file))
-      .filter((dir) => {
-        const stat = fs.statSync(dir);
+      .filter(async (dir) => {
+        const stat = await fs.stat(dir);
         return stat?.isDirectory();
       });
-
-    dirs.forEach((dir) => {
-      try {
-        fs.rmdirSync(dir, {
+    for (const dir of dirs) {
+      await fs
+        .rmdir(dir, {
           recursive: true
+        })
+        .catch((err) => {
+          console.warn(err);
         });
-      } catch (error) {
-        console.warn(error);
-      }
-    });
+    }
   }
 }

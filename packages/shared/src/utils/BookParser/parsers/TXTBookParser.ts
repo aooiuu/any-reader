@@ -1,4 +1,4 @@
-import * as fs from 'node:fs';
+import { promises as fs } from 'node:fs';
 import iconv from 'iconv-lite';
 import chardet from 'chardet';
 import type { BookChapter, IBookParser } from '../types';
@@ -8,15 +8,15 @@ export default class TXTBookParser extends BaseBookParser implements IBookParser
   private chapterPattern =
     /^第\s{0,4}[\d〇零一二两三四五六七八九十百千万壹贰叁肆伍陆柒捌玖拾佰仟]+?\s{0,4}(?:章|节(?!课)|卷|页|集|部|篇(?!张)).{0,40}$/;
 
-  private _getText(filePath: string): string {
-    const sourceFile = fs.readFileSync(filePath);
+  private async _getText(filePath: string): Promise<string> {
+    const sourceFile = await fs.readFile(filePath);
     const encoding = chardet.detect(sourceFile);
     const text = iconv.decode(sourceFile, encoding as string);
     return text;
   }
 
-  getChapter(): Promise<BookChapter[]> {
-    const text = this._getText(this.filePath);
+  async getChapter(): Promise<BookChapter[]> {
+    const text = await this._getText(this.filePath);
     const lines = text.split(/\r?\n/);
     const result: BookChapter[] = [];
     let firstText: string = '';
@@ -53,8 +53,8 @@ export default class TXTBookParser extends BaseBookParser implements IBookParser
     ]);
   }
 
-  getContent(chapterPath: string): Promise<string[]> {
-    const text = this._getText(this.filePath);
+  async getContent(chapterPath: string): Promise<string[]> {
+    const text = await this._getText(this.filePath);
     const lines = text.split(/\r?\n/);
     if (chapterPath === '') return Promise.resolve([text]);
     const result = [];
