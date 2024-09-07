@@ -139,7 +139,7 @@
     "sql.js": "^1.10.3",
     "ts-loader": "^9.3.1",
     "typescript": "^5.5.3",
-    "uuid": "^9.0.1"
+    "uuid": "^10.0.0"
   },
   "dependencies": {
     "sqlite3": "5.1.6"

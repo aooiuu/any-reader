@@ -27,7 +27,7 @@
     "cli-progress": "^3.12.0",
     "commander": "^12.1.0",
     "open": "^10.1.0",
-    "p-limit": "^5.0.0"
+    "p-limit": "^6.0.0"
   },
   "devDependencies": {
     "@types/cli-progress": "^3.11.6",

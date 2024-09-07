@@ -32,8 +32,8 @@ importers:
         specifier: ^20.14.12
         version: 20.14.12
       '@types/uuid':
-        specifier: ^9.0.8
-        version: 9.0.8
+        specifier: ^10.0.0
+        version: 10.0.0
       '@unocss/eslint-config':
         specifier: ^0.61.9
         version: 0.61.9(eslint@8.57.0)(typescript@5.5.4)
@@ -90,10 +90,10 @@ importers:
         version: 11.0.2
       vitepress:
         specifier: ^1.3.4
-        version: 1.3.4(@algolia/client-search@4.24.0)(@types/node@20.14.12)(async-validator@4.2.5)(axios@1.7.5)(nprogress@0.2.0)(postcss@8.4.41)(react@18.3.1)(sass@1.77.8)(search-insights@2.15.0)(terser@5.31.3)(typescript@5.5.4)
+        version: 1.3.4(@algolia/client-search@4.24.0)(@types/node@20.14.12)(async-validator@4.2.5)(axios@1.7.7)(nprogress@0.2.0)(postcss@8.4.41)(react@18.3.1)(sass@1.77.8)(search-insights@2.15.0)(terser@5.31.3)(typescript@5.5.4)
       vitepress-plugin-mermaid:
         specifier: ^2.0.16
-        version: 2.0.16(mermaid@11.0.2)(vitepress@1.3.4(@algolia/client-search@4.24.0)(@types/node@20.14.12)(async-validator@4.2.5)(axios@1.7.5)(nprogress@0.2.0)(postcss@8.4.41)(react@18.3.1)(sass@1.77.8)(search-insights@2.15.0)(terser@5.31.3)(typescript@5.5.4))
+        version: 2.0.16(mermaid@11.0.2)(vitepress@1.3.4(@algolia/client-search@4.24.0)(@types/node@20.14.12)(async-validator@4.2.5)(axios@1.7.7)(nprogress@0.2.0)(postcss@8.4.41)(react@18.3.1)(sass@1.77.8)(search-insights@2.15.0)(terser@5.31.3)(typescript@5.5.4))
 
   packages/cli:
     dependencies:
@@ -116,8 +116,8 @@ importers:
         specifier: ^10.1.0
         version: 10.1.0
       p-limit:
-        specifier: ^5.0.0
-        version: 5.0.0
+        specifier: ^6.0.0
+        version: 6.1.0
     devDependencies:
       '@types/cli-progress':
         specifier: ^3.11.6
@@ -132,8 +132,8 @@ importers:
         specifier: ^0.7.5
         version: 0.7.13
       axios:
-        specifier: ^1.7.5
-        version: 1.7.5
+        specifier: ^1.7.7
+        version: 1.7.7
       chardet:
         specifier: ^2.0.0
         version: 2.0.0
@@ -215,8 +215,8 @@ importers:
         specifier: ^0.8.10
         version: 0.8.10
       axios:
-        specifier: ^1.7.5
-        version: 1.7.5
+        specifier: ^1.7.7
+        version: 1.7.7
       chardet:
         specifier: ^2.0.0
         version: 2.0.0
@@ -266,8 +266,8 @@ importers:
   packages/rule-utils:
     dependencies:
       axios:
-        specifier: ^1.7.5
-        version: 1.7.5
+        specifier: ^1.7.7
+        version: 1.7.7
       base64-js:
         specifier: ^1.5.1
         version: 1.5.1
@@ -278,8 +278,8 @@ importers:
         specifier: ^2.1.0
         version: 2.1.0
       uuid:
-        specifier: ^9.0.1
-        version: 9.0.1
+        specifier: ^10.0.0
+        version: 10.0.0
 
   packages/server:
     dependencies:
@@ -302,8 +302,8 @@ importers:
         specifier: ^2.15.2
         version: 2.15.3
       koa-bodyparser:
-        specifier: '2'
-        version: 2.5.0
+        specifier: ^4.4.1
+        version: 4.4.1
       koa-router:
         specifier: ^12.0.1
         version: 12.0.1
@@ -348,8 +348,8 @@ importers:
         specifier: workspace:^
         version: link:../rule-utils
       axios:
-        specifier: ^1.7.5
-        version: 1.7.5
+        specifier: ^1.7.7
+        version: 1.7.7
       blueimp-md5:
         specifier: ^2.19.0
         version: 2.19.0
@@ -381,15 +381,12 @@ importers:
         specifier: ^0.3.20
         version: 0.3.20(sql.js@1.10.3)(sqlite3@5.1.6(encoding@0.1.13))(ts-node@10.9.2(@types/node@20.14.12)(typescript@5.5.4))
       uuid:
-        specifier: ^9.0.1
-        version: 9.0.1
+        specifier: ^10.0.0
+        version: 10.0.0
       ws:
         specifier: ^8.18.0
         version: 8.18.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
     devDependencies:
-      '@types/encoding-japanese':
-        specifier: ^2.0.5
-        version: 2.2.0
       '@types/lodash-es':
         specifier: ^4.17.12
         version: 4.17.12
@@ -420,9 +417,6 @@ importers:
       '@rollup/plugin-node-resolve':
         specifier: ^15.1.0
         version: 15.2.3(rollup@4.21.0)
-      '@types/encoding-japanese':
-        specifier: ^2.0.5
-        version: 2.2.0
       '@types/lodash-es':
         specifier: ^4.17.12
         version: 4.17.12
@@ -506,8 +500,8 @@ importers:
         specifier: ^5.5.3
         version: 5.5.4
       uuid:
-        specifier: ^9.0.1
-        version: 9.0.1
+        specifier: ^10.0.0
+        version: 10.0.0
 
   packages/web:
     dependencies:
@@ -542,8 +536,8 @@ importers:
         specifier: ^4.2.3
         version: 4.2.3(vue@3.4.31(typescript@5.5.4))
       axios:
-        specifier: ^1.7.5
-        version: 1.7.5
+        specifier: ^1.7.7
+        version: 1.7.7
       bcryptjs:
         specifier: ^2.4.3
         version: 2.4.3
@@ -578,8 +572,8 @@ importers:
         specifier: ^0.2.0
         version: 0.2.0
       p-limit:
-        specifier: ^5.0.0
-        version: 5.0.0
+        specifier: ^6.0.0
+        version: 6.1.0
       pinia:
         specifier: ^2.1.7
         version: 2.1.7(typescript@5.5.4)(vue@3.4.31(typescript@5.5.4))
@@ -590,8 +584,8 @@ importers:
         specifier: 5.1.6
         version: 5.1.6(encoding@0.1.13)
       uuid:
-        specifier: ^9.0.1
-        version: 9.0.1
+        specifier: ^10.0.0
+        version: 10.0.0
       vue:
         specifier: ^3.4.15
         version: 3.4.31(typescript@5.5.4)
@@ -1850,9 +1844,6 @@ packages:
   '@types/electron-localshortcut@3.1.3':
     resolution: {integrity: sha512-D+CRdDTRZ4/9UmcSaZ5qvW4uq2VyyVmqsH9cdNReB4CL6MSIgyhr9w2PKeNEb0J/ZS7db7irJM/+ZiA5uSQsLw==}
 
-  '@types/encoding-japanese@2.2.0':
-    resolution: {integrity: sha512-fCtfHERDAOTnG3qO8b848p6gkSOD9U4j7+Z9f/v/6kQSbOyy/dOOL6YZGxEdG5jl9ZbDaFIVJ/3AQq45S+LRQA==}
-
   '@types/eslint-scope@3.7.7':
     resolution: {integrity: sha512-MzMFlSLBqNF2gcHWO0G1vP/YQyfvrxZ0bF+u7mzUdZ1/xK4A4sru+nraZz5i3iEIk1l1uyicaDVTB4QbbEkAYg==}
 
@@ -1991,8 +1982,8 @@ packages:
   '@types/unist@3.0.2':
     resolution: {integrity: sha512-dqId9J8K/vGi5Zr7oo212BGii5m3q5Hxlkwy3WpYuKPklmBEvsbMYYyLxAQpSffdLl/gdW0XUpKWFvYmyoWCoQ==}
 
-  '@types/uuid@9.0.8':
-    resolution: {integrity: sha512-jg+97EGIcY9AGHJJRaaPVgetKDsrTgbRjQ5Msgjh/DQKEFl0DtyRr/VCOyD1T2R1MNeWPK/u7JoGhlDZnKBAfA==}
+  '@types/uuid@10.0.0':
+    resolution: {integrity: sha512-7gqG38EyHgyP1S+7+xomFtL+ZNHcKv6DwNaCZmJmo1vgMugyF3TCnXVg4t1uk89mLNwnLtnY3TpOpCOyp1/xHQ==}
 
   '@types/verror@1.10.10':
     resolution: {integrity: sha512-l4MM0Jppn18hb9xmM6wwD1uTdShpf9Pn80aXTStnK1C94gtPvJcV2FrDmbOQUAQfJ1cKZHktkQUDwEqaAKXMMg==}
@@ -2664,8 +2655,8 @@ packages:
   axios@1.2.3:
     resolution: {integrity: sha512-pdDkMYJeuXLZ6Xj/Q5J3Phpe+jbGdsSzlQaFVkMQzRUL05+6+tetX8TV3p4HrU4kzuO9bt+io/yGQxuyxA/xcw==}
 
-  axios@1.7.5:
-    resolution: {integrity: sha512-fZu86yCo+svH3uqJ/yTdQ0QHpQu5oL+/QE+QPSv6BZSkDAoky9vytxp7u5qk83OJFS3kEBcesWni9WTZAv3tSw==}
+  axios@1.7.7:
+    resolution: {integrity: sha512-S4kL7XrjgBmvdGut0sN3yJxqYzrDOnivkBiN0OFs6hLiUam3UPvswUo0kqGyhqUZGEOytHyumEdXsAkgCOUf3Q==}
 
   b4a@1.6.6:
     resolution: {integrity: sha512-5Tk1HLk6b6ctmjIkAcU/Ujv/1WqiDl0F0JdRCR80VsOcUlHcu7pWeWRlOqQLHfDEsVx9YH/aif5AG4ehoCtTmg==}
@@ -2951,9 +2942,6 @@ packages:
   clone@1.0.4:
     resolution: {integrity: sha512-JQHZ2QMW6l3aH/j6xCqQThY/9OH4D/9ls34cgkUBiEeocRTU04tHfKPBsUK1PqZCUQM7GiA0IIXJSuXHI64Kbg==}
     engines: {node: '>=0.8'}
-
-  co-body@5.2.0:
-    resolution: {integrity: sha512-sX/LQ7LqUhgyaxzbe7IqwPeTr2yfpfUIQ/dgpKo6ZI4y4lpQA0YxAomWIY+7I7rHWcG02PG+OuPREzMW/5tszQ==}
 
   co-body@6.2.0:
     resolution: {integrity: sha512-Kbpv2Yd1NdL1V/V4cwLVxraHDV6K8ayohr2rmH0J87Er8+zJjcTa6dAn9QMPC9CRgU8+aNajKbSf1TzDB1yKPA==}
@@ -4466,9 +4454,9 @@ packages:
     resolution: {integrity: sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==}
     engines: {node: '>=6'}
 
-  koa-bodyparser@2.5.0:
-    resolution: {integrity: sha512-HIX/b+B/WhlYRaAFQCRC3ojEIrgffESfO8M8OhgZPBe1FhlGKOTw2ZE6qdDqzeDZgTJylN16eiTOsQxxrU9g4A==}
-    engines: {node: '>=0.12'}
+  koa-bodyparser@4.4.1:
+    resolution: {integrity: sha512-kBH3IYPMb+iAXnrxIhXnW+gXV8OTzCu8VPDqvcDHW9SQrbkHmqPQtiZwrltNmSq6/lpipHnT7k7PsjlVD7kK0w==}
+    engines: {node: '>=8.0.0'}
 
   koa-compose@4.1.0:
     resolution: {integrity: sha512-8ODW8TrDuMYvXRwra/Kh7/rJo9BtOfPc6qO8eAfC80CnCvSjSl0bkRM24X6/XBBEyj0v1nRUQ1LyOy3dbqOWXw==}
@@ -5053,8 +5041,8 @@ packages:
     resolution: {integrity: sha512-TYOanM3wGwNGsZN2cVTYPArw454xnXj5qmWF1bEoAc4+cU/ol7GVh7odevjp1FNHduHc3KZMcFduxU5Xc6uJRQ==}
     engines: {node: '>=10'}
 
-  p-limit@5.0.0:
-    resolution: {integrity: sha512-/Eaoq+QyLSiXQ4lyYV23f14mZRQcXnxfHrN0vCai+ak9G0pp9iEQukIIZq5NccEvwRB8PUnZT0KsOoDCINS1qQ==}
+  p-limit@6.1.0:
+    resolution: {integrity: sha512-H0jc0q1vOzlEk0TqAKXKZxdl7kX3OFUzCnNVUnq5Pc3DGo0kpeaMuPqxQn235HibwBEb0/pm9dgKTjXy66fBkg==}
     engines: {node: '>=18'}
 
   p-locate@5.0.0:
@@ -6444,6 +6432,10 @@ packages:
   utils-merge@1.0.1:
     resolution: {integrity: sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==}
     engines: {node: '>= 0.4.0'}
+
+  uuid@10.0.0:
+    resolution: {integrity: sha512-8XkAphELsDnEGrDxUOHB3RGvXz6TeuYSGEZBOjtTtPm2lwhGBjLgOzLHB63IUWfBpNucQjND6d3AOudO+H3RWQ==}
+    hasBin: true
 
   uuid@8.3.2:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
@@ -8010,8 +8002,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@types/encoding-japanese@2.2.0': {}
-
   '@types/eslint-scope@3.7.7':
     dependencies:
       '@types/eslint': 8.56.10
@@ -8181,7 +8171,7 @@ snapshots:
 
   '@types/unist@3.0.2': {}
 
-  '@types/uuid@9.0.8': {}
+  '@types/uuid@10.0.0': {}
 
   '@types/verror@1.10.10':
     optional: true
@@ -8779,14 +8769,14 @@ snapshots:
       - '@vue/composition-api'
       - vue
 
-  '@vueuse/integrations@11.0.3(async-validator@4.2.5)(axios@1.7.5)(focus-trap@7.5.4)(nprogress@0.2.0)(vue@3.4.38(typescript@5.5.4))':
+  '@vueuse/integrations@11.0.3(async-validator@4.2.5)(axios@1.7.7)(focus-trap@7.5.4)(nprogress@0.2.0)(vue@3.4.38(typescript@5.5.4))':
     dependencies:
       '@vueuse/core': 11.0.3(vue@3.4.38(typescript@5.5.4))
       '@vueuse/shared': 11.0.3(vue@3.4.38(typescript@5.5.4))
       vue-demi: 0.14.10(vue@3.4.38(typescript@5.5.4))
     optionalDependencies:
       async-validator: 4.2.5
-      axios: 1.7.5
+      axios: 1.7.7
       focus-trap: 7.5.4
       nprogress: 0.2.0
     transitivePeerDependencies:
@@ -9151,7 +9141,7 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  axios@1.7.5:
+  axios@1.7.7:
     dependencies:
       follow-redirects: 1.15.6
       form-data: 4.0.0
@@ -9545,13 +9535,6 @@ snapshots:
       mimic-response: 1.0.1
 
   clone@1.0.4: {}
-
-  co-body@5.2.0:
-    dependencies:
-      inflation: 2.1.0
-      qs: 6.12.3
-      raw-body: 2.5.2
-      type-is: 1.6.18
 
   co-body@6.2.0:
     dependencies:
@@ -11250,10 +11233,11 @@ snapshots:
 
   kleur@3.0.3: {}
 
-  koa-bodyparser@2.5.0:
+  koa-bodyparser@4.4.1:
     dependencies:
-      co-body: 5.2.0
+      co-body: 6.2.0
       copy-to: 2.0.1
+      type-is: 1.6.18
 
   koa-compose@4.1.0: {}
 
@@ -11930,7 +11914,7 @@ snapshots:
     dependencies:
       yocto-queue: 0.1.0
 
-  p-limit@5.0.0:
+  p-limit@6.1.0:
     dependencies:
       yocto-queue: 1.1.1
 
@@ -13387,6 +13371,8 @@ snapshots:
 
   utils-merge@1.0.1: {}
 
+  uuid@10.0.0: {}
+
   uuid@8.3.2: {}
 
   uuid@9.0.1: {}
@@ -13477,14 +13463,14 @@ snapshots:
       sass: 1.77.8
       terser: 5.31.3
 
-  vitepress-plugin-mermaid@2.0.16(mermaid@11.0.2)(vitepress@1.3.4(@algolia/client-search@4.24.0)(@types/node@20.14.12)(async-validator@4.2.5)(axios@1.7.5)(nprogress@0.2.0)(postcss@8.4.41)(react@18.3.1)(sass@1.77.8)(search-insights@2.15.0)(terser@5.31.3)(typescript@5.5.4)):
+  vitepress-plugin-mermaid@2.0.16(mermaid@11.0.2)(vitepress@1.3.4(@algolia/client-search@4.24.0)(@types/node@20.14.12)(async-validator@4.2.5)(axios@1.7.7)(nprogress@0.2.0)(postcss@8.4.41)(react@18.3.1)(sass@1.77.8)(search-insights@2.15.0)(terser@5.31.3)(typescript@5.5.4)):
     dependencies:
       mermaid: 11.0.2
-      vitepress: 1.3.4(@algolia/client-search@4.24.0)(@types/node@20.14.12)(async-validator@4.2.5)(axios@1.7.5)(nprogress@0.2.0)(postcss@8.4.41)(react@18.3.1)(sass@1.77.8)(search-insights@2.15.0)(terser@5.31.3)(typescript@5.5.4)
+      vitepress: 1.3.4(@algolia/client-search@4.24.0)(@types/node@20.14.12)(async-validator@4.2.5)(axios@1.7.7)(nprogress@0.2.0)(postcss@8.4.41)(react@18.3.1)(sass@1.77.8)(search-insights@2.15.0)(terser@5.31.3)(typescript@5.5.4)
     optionalDependencies:
       '@mermaid-js/mermaid-mindmap': 9.3.0
 
-  vitepress@1.3.4(@algolia/client-search@4.24.0)(@types/node@20.14.12)(async-validator@4.2.5)(axios@1.7.5)(nprogress@0.2.0)(postcss@8.4.41)(react@18.3.1)(sass@1.77.8)(search-insights@2.15.0)(terser@5.31.3)(typescript@5.5.4):
+  vitepress@1.3.4(@algolia/client-search@4.24.0)(@types/node@20.14.12)(async-validator@4.2.5)(axios@1.7.7)(nprogress@0.2.0)(postcss@8.4.41)(react@18.3.1)(sass@1.77.8)(search-insights@2.15.0)(terser@5.31.3)(typescript@5.5.4):
     dependencies:
       '@docsearch/css': 3.6.1
       '@docsearch/js': 3.6.1(@algolia/client-search@4.24.0)(react@18.3.1)(search-insights@2.15.0)
@@ -13495,7 +13481,7 @@ snapshots:
       '@vue/devtools-api': 7.3.9
       '@vue/shared': 3.4.38
       '@vueuse/core': 11.0.3(vue@3.4.38(typescript@5.5.4))
-      '@vueuse/integrations': 11.0.3(async-validator@4.2.5)(axios@1.7.5)(focus-trap@7.5.4)(nprogress@0.2.0)(vue@3.4.38(typescript@5.5.4))
+      '@vueuse/integrations': 11.0.3(async-validator@4.2.5)(axios@1.7.7)(focus-trap@7.5.4)(nprogress@0.2.0)(vue@3.4.38(typescript@5.5.4))
       focus-trap: 7.5.4
       mark.js: 8.11.1
       minisearch: 7.1.0

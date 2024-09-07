@@ -1,5 +1,5 @@
 import xpath from 'xpath.js';
-import { DOMParser } from 'xmldom';
+import { DOMParser } from '@xmldom/xmldom';
 import type { Analyzer } from './Analyzer';
 
 export class AnalyzerXPath implements Analyzer {
