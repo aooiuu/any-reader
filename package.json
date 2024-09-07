@@ -41,8 +41,7 @@
     "docs": "pnpm --filter docs docs:dev",
     "build:docs": "pnpm --filter docs docs:build",
     "run:server": "run-p server run:web",
-    "test": "jest",
-    "coveralls": "jest --coverage",
+    "test": "vitest",
     "prepare": "husky install",
     "web:server": "pnpm --filter=@any-reader/web dev",
     "web:build-b": "pnpm --filter=@any-reader/web build:b",
@@ -90,7 +89,9 @@
     "tsconfig-paths": "^4.2.0",
     "tsup": "^8.1.2",
     "tsx": "^4.19.0",
-    "unbuild": "^2.0.0"
+    "unbuild": "^2.0.0",
+    "vite-tsconfig-paths": "^5.0.1",
+    "vitest": "^2.0.5"
   },
   "lint-staged": {
     "*.{vue,js,ts}": "eslint --fix"

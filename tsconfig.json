@@ -17,9 +17,7 @@
       "@any-reader/shared": ["./packages/shared/src/index.ts"]
     }
   },
-
   "exclude": ["**/dist/**", "**/node_modules/**"],
-
   "ts-node": {
     "esm": true,
     "transpileOnly": true,

@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { createAnalyzerManager } from '../src';
 
 const analyzerManager = createAnalyzerManager();
