@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - name: check out git repository
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v4.1.7
         with:
           fetch-depth: 0
 
