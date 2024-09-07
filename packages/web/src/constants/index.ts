@@ -12,7 +12,7 @@ export const CONTENT_TYPES = [
   // { value: 4, label: 'RSS' },
   // { value: 5, label: 'NOVELMORE' },
 
-  { value: 101, label: '游戏', platform: ['browser', 'electron', 'vscode', 'utools'] }
+  { value: 101, label: '游戏', platform: ['vscode'] }
 ].filter((e) => e.platform.includes(PLATFORM));
 
 export const BASE_URL = import.meta.env.VITE_APP_BASE_URL || '/api';

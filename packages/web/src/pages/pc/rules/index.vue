@@ -28,6 +28,11 @@
           </a-menu>
         </template>
       </a-dropdown>
+      <a-button shape="circle" type="primary" :loading="loading" @click="getRules">
+        <template #icon>
+          <ReloadOutlined></ReloadOutlined>
+        </template>
+      </a-button>
 
       <div class="flex-1" />
       <a-dropdown>
@@ -114,11 +119,11 @@ const selectedKeys = ref<string[]>([]);
 const loading = ref(false);
 const fileInputRef = ref();
 
-onMounted(async () => {
+async function getRules() {
   loading.value = true;
   await rulesStore.sync();
   loading.value = false;
-});
+}
 
 const searchText = ref('');
 const contentTypes = ref(CONTENT_TYPES.map((e) => e.value).flat());
@@ -573,4 +578,8 @@ function exportSelected() {
   });
   saveAs(blob, 'rules.json');
 }
+
+onMounted(() => {
+  getRules();
+});
 </script>
