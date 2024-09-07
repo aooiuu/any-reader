@@ -77,18 +77,18 @@ export class SourceRuleParser {
           rootEvals.push(this.sequenceIfNeed(evals));
           continue;
         }
+      }
 
-        // 解析 正则
-        const regexResult = this.parseRegexRule(rule);
-        if (regexResult) {
-          rule = regexResult[0];
-          regexEval = regexResult[1];
-        }
-        if (!rule) {
-          if (regexEval) evals.push(regexEval);
-          rootEvals.push(this.sequenceIfNeed(evals));
-          continue;
-        }
+      // 解析 正则
+      const regexResult = this.parseRegexRule(rule);
+      if (regexResult) {
+        rule = regexResult[0];
+        regexEval = regexResult[1];
+      }
+      if (!rule) {
+        if (regexEval) evals.push(regexEval);
+        rootEvals.push(this.sequenceIfNeed(evals));
+        continue;
       }
 
       // 解析规则
@@ -221,6 +221,9 @@ export class SourceRuleParser {
     }
 
     for (const ruleStrX of ruleStrS) {
+      if (!ruleStrX.trim()) {
+        continue;
+      }
       const subEvals: RuleEvaluator[] = [];
       const rule = new RuleAnalyzer(ruleStrX); // 创建解析
       rule.trim(); // 修建前置赘余符号
@@ -244,6 +247,9 @@ export class SourceRuleParser {
   }
 
   private parseCombineOperate(op: string, evals: RuleEvaluator[]): RuleEvaluator {
+    if (evals.length === 1) {
+      return evals[0];
+    }
     switch (op) {
       case '&&':
         return new CombineEvaluator.And(evals);
