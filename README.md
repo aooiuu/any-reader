@@ -20,7 +20,7 @@
 **QQ群**: 50057637
 **注意**: 软件不提供内容, 也不提供任何规则, 但你可以通过编写 [规则](https://aooiuu.github.io/any-reader/rule/), 控制呈现内容, [查看文档](https://aooiuu.github.io/any-reader/)
 
-**注意**: ⚠️目前在运行不受信任的规则时有安全性风险!规则可以利用JS越权！请慎重使用未知的规则！后面可能会用[isolated-vm](https://www.npmjs.com/package/isolated-vm)解决这个问题
+**⚠️注意**: 在运行不受信任规则时有安全性风险!因为规则可以利用JS越权！请慎重使用未知的规则！
 
 <details>
 <summary>展开查看软件是如何工作的</summary>
