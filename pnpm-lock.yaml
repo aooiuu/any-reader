@@ -555,7 +555,7 @@ importers:
         version: 3.2.1
       electron-updater:
         specifier: ^6.2.1
-        version: 6.2.1
+        version: 6.3.4
       file-saver:
         specifier: ^2.0.5
         version: 2.0.5
@@ -2766,6 +2766,10 @@ packages:
     resolution: {integrity: sha512-upp+biKpN/XZMLim7aguUyW8s0FUpDvOtK6sbanMFDAMBzpHDqdhgVYm6zc9HJ6nWo7u2Lxk60i2M6Jd3aiNrA==}
     engines: {node: '>=12.0.0'}
 
+  builder-util-runtime@9.2.5:
+    resolution: {integrity: sha512-HjIDfhvqx/8B3TDN4GbABQcgpewTU4LMRTQPkVpKYV3lsuxEJoIfvg09GyWTNmfVNSUAYf+fbTN//JX4TH20pg==}
+    engines: {node: '>=12.0.0'}
+
   builder-util@24.13.1:
     resolution: {integrity: sha512-NhbCSIntruNDTOVI9fdXz0dihaqX2YuE1D6zZMrwiErzH4ELZHE6mdiB40wEgZNprDia+FghRFgKoAqMZRRjSA==}
 
@@ -3590,8 +3594,8 @@ packages:
   electron-to-chromium@1.5.18:
     resolution: {integrity: sha512-1OfuVACu+zKlmjsNdcJuVQuVE61sZOLbNM4JAQ1Rvh6EOj0/EUKhMJjRH73InPlXSh8HIJk1cVZ8pyOV/FMdUQ==}
 
-  electron-updater@6.2.1:
-    resolution: {integrity: sha512-83eKIPW14qwZqUUM6wdsIRwVKZyjmHxQ4/8G+1C6iS5PdDt7b1umYQyj1/qPpH510GmHEQe4q0kCPe3qmb3a0Q==}
+  electron-updater@6.3.4:
+    resolution: {integrity: sha512-uZUo7p1Y53G4tl6Cgw07X1yF8Jlz6zhaL7CQJDZ1fVVkOaBfE2cWtx80avwDVi8jHp+I/FWawrMgTAeCCNIfAg==}
 
   electron@30.0.6:
     resolution: {integrity: sha512-PkhEPFdpYcTzjAO3gMHZ+map7g2+xCrMDedo/L1i0ir2BRXvAB93IkTJX497U6Srb/09r2cFt+k20VPNVCdw3Q==}
@@ -9314,6 +9318,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  builder-util-runtime@9.2.5:
+    dependencies:
+      debug: 4.3.7
+      sax: 1.4.1
+    transitivePeerDependencies:
+      - supports-color
+
   builder-util@24.13.1:
     dependencies:
       7zip-bin: 5.2.0
@@ -10289,9 +10300,9 @@ snapshots:
 
   electron-to-chromium@1.5.18: {}
 
-  electron-updater@6.2.1:
+  electron-updater@6.3.4:
     dependencies:
-      builder-util-runtime: 9.2.4
+      builder-util-runtime: 9.2.5
       fs-extra: 10.1.0
       js-yaml: 4.1.0
       lazy-val: 1.0.5
