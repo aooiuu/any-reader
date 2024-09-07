@@ -143,6 +143,9 @@ importers:
       jsonpath-plus:
         specifier: ^9.0.0
         version: 9.0.0
+      lodash-es:
+        specifier: ^4.17.21
+        version: 4.17.21
       puppeteer:
         specifier: ^21.7.0
         version: 21.11.0(bufferutil@4.0.8)(encoding@0.1.13)(typescript@5.5.4)(utf-8-validate@6.0.4)

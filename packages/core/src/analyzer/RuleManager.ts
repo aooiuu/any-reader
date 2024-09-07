@@ -3,27 +3,11 @@ import type { Rule } from '@any-reader/rule-utils';
 import { JSEngine } from './JSEngine';
 import type { AnalyzerManager } from './AnalyzerManager';
 import { fetch } from './request';
-
-export interface SearchItem {
-  name: string;
-  cover: string;
-  author: string;
-  chapter: string;
-  description: string;
-  url: string;
-}
-
-export interface ChapterItem {
-  url: string;
-  name: string;
-  cover?: string;
-  contentUrl?: string;
-  time?: string;
-}
+import { ChapterItem, DiscoverItem, IParser } from '../parser/parser';
 
 const PAGE_PATTERN = /(\$page)|((^|[^a-zA-Z'"_/-])page([^a-zA-Z0-9'"]|$))/;
 
-export class RuleManager {
+export class RuleManager implements IParser {
   private rule: Rule;
   private _nextUrl: Map<string, string>;
   private analyzerManager: AnalyzerManager;
@@ -131,7 +115,9 @@ export class RuleManager {
       return [
         {
           url: result,
-          name: this.rule.chapterUrl
+          name: this.rule.chapterUrl,
+          cover: '',
+          time: ''
         }
       ];
     }
@@ -251,7 +237,7 @@ export class RuleManager {
 
   // 获取获取分类
   async discoverMap() {
-    const map: DiscoverList[] = [];
+    const map: DiscoverItem[] = [];
     const table = new Map();
 
     let discoverUrl = this.rule.discoverUrl.trimStart();
@@ -395,15 +381,4 @@ export class RuleManager {
 
     return result;
   }
-}
-
-// 分类列表
-export interface DiscoverList {
-  name: string;
-  pairs: Discover[];
-}
-
-export interface Discover {
-  name: string;
-  value: string;
 }
