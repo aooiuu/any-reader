@@ -37,7 +37,7 @@
     "lodash-es": "^4.17.21",
     "puppeteer": "^21.7.0",
     "urlencode": "^2.0.0",
-    "xmldom": "^0.6.0",
+    "@xmldom/xmldom": "^0.7.5",
     "xpath.js": "^1.1.0"
   },
   "devDependencies": {
