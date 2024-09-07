@@ -31,7 +31,7 @@
     "@xmldom/xmldom": "^0.8.10",
     "axios": "^1.7.7",
     "chardet": "^2.0.0",
-    "cheerio": "1.0.0-rc.12",
+    "cheerio": "1.0.0",
     "content-type": "^1.0.5",
     "iconv-lite": "^0.6.3",
     "isolated-vm": "^5.0.1",
