@@ -37,7 +37,6 @@
 
 <script setup lang="ts">
 import { useClipboard } from '@vueuse/core';
-import { BugOutlined, CopyOutlined } from '@ant-design/icons-vue';
 import type { Rule } from '@any-reader/rule-utils';
 import { analyzerUrl } from '@/api/modules/rule-manager';
 

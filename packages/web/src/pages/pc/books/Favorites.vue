@@ -20,7 +20,6 @@
 </template>
 
 <script setup>
-import { StarOutlined, StarFilled } from '@ant-design/icons-vue';
 import { useFavoritesStore } from '@/stores/favorites';
 import Book from './Book.vue';
 

@@ -80,17 +80,39 @@
         </div>
       </div>
     </div>
+
+    <!-- 悬浮按钮 -->
+    <a-float-button-group trigger="click" type="primary" :style="{ right: '24px' }">
+      <template #icon>
+        <SettingOutlined />
+      </template>
+
+      <a-float-button tooltip="编辑规则" @click="editRule">
+        <template #icon>
+          <EditOutlined />
+        </template>
+      </a-float-button>
+
+      <a-float-button tooltip="禁用规则" @click="disableRule">
+        <template #icon>
+          <StopOutlined />
+        </template>
+      </a-float-button>
+    </a-float-button-group>
   </div>
 </template>
 
-<script setup lang="ts">
-import { StarOutlined, StarFilled, PushpinOutlined } from '@ant-design/icons-vue';
+<script setup lang="tsx">
+import { App } from 'ant-design-vue';
 import { CONTENT_TYPES } from '@/constants';
 import { ContentType } from '@any-reader/rule-utils';
 import { discover, discoverMap } from '@/api';
+import { updateRule } from '@/api/modules/resource-rule';
 import { useFavoritesStore } from '@/stores/favorites';
 import { useRulesStore } from '@/stores/rules';
+import RuleInfo from '@/pages/pc/rule-info/index.vue';
 
+const { modal } = App.useApp();
 const route = useRoute();
 const router = useRouter();
 const favoritesStore = useFavoritesStore();
@@ -140,7 +162,7 @@ watch(
   ruleListDisplay,
   (data) => {
     if (data.length > 0 && activated) {
-      changeRule(data[0].id);
+      !ruleId.value && changeRule(data[0].id);
     }
   },
   {
@@ -161,6 +183,41 @@ onActivated(() => {
 onDeactivated(() => {
   activated = false;
 });
+
+// 编辑规则
+function editRule() {
+  const m = modal.confirm({
+    icon: <SettingOutlined class="!text-[--ar-color-text]" />,
+    closable: true,
+    mask: false,
+    footer: false,
+    title: '编辑规则',
+    class: '!p-0 top-0 !w-full',
+    wrapClassName: 'full-modal',
+    content: (
+      <RuleInfo
+        ruleId={ruleId.value}
+        onClose={() => {
+          m.destroy();
+        }}
+      />
+    )
+  });
+}
+
+// 禁用规则
+async function disableRule() {
+  loading.value = true;
+  const ruleIdx = ruleListDisplay.value.findIndex((e) => e.id === ruleId.value);
+  const nextId = ruleListDisplay.value[Math.min(ruleListDisplay.value.length, ruleIdx + 1)].id;
+  await updateRule({
+    id: ruleId.value,
+    enableDiscover: false
+  });
+  await rulesStore.sync();
+  changeRule(nextId);
+  loading.value = false;
+}
 </script>
 
 <style scoped lang="scss">
@@ -190,6 +247,25 @@ onDeactivated(() => {
     .rule-item__pind {
       display: inline-block !important;
     }
+  }
+}
+</style>
+
+<style lang="scss">
+.full-modal {
+  .ant-modal {
+    max-width: 100%;
+    top: 0;
+    padding-bottom: 0;
+    margin: 0;
+  }
+  .ant-modal-content {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh);
+  }
+  .ant-modal-body {
+    flex: 1;
   }
 }
 </style>

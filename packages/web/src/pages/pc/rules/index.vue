@@ -89,7 +89,6 @@
 
 <script setup lang="tsx">
 import { App } from 'ant-design-vue';
-import { PlusOutlined, DownOutlined } from '@ant-design/icons-vue';
 import _ from 'lodash-es';
 import { encodeRule, type Rule } from '@any-reader/rule-utils';
 import { useClipboard, useElementSize } from '@vueuse/core';

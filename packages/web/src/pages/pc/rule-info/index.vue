@@ -71,7 +71,7 @@
       </div>
 
       <div class="mt-10 flex justify-end gap-5">
-        <a-button @click="router.back">返回</a-button>
+        <a-button @click="cancel">返回</a-button>
         <a-button type="primary" @click="submit">确定</a-button>
       </div>
     </div>
@@ -79,7 +79,6 @@
 </template>
 
 <script setup lang="ts">
-import { BugOutlined } from '@ant-design/icons-vue';
 import type { Rule } from '@any-reader/rule-utils';
 import { ContentType, createRule as createRuleJson } from '@any-reader/rule-utils';
 import { FORM_ITEMS, type FormItem } from './constants';
@@ -97,6 +96,11 @@ const route = useRoute();
 type FormType = 'JSON' | 'Form' | 'AnalyzerRule' | 'AnalyzerText' | 'AnalyzerURL';
 const formType = ref<FormType>('Form');
 const formStep = ref(1);
+const props = defineProps<{
+  ruleId?: string;
+}>();
+const emit = defineEmits(['close']);
+const ruleId = computed<string>(() => route.query.id || props.ruleId);
 
 const formData = reactive<Rule>(Object.assign(createRuleJson({ author: '', contentType: ContentType.NOVEL })));
 
@@ -145,17 +149,25 @@ function debugBody(body: string) {
   });
 }
 
+function cancel() {
+  if (props.ruleId) {
+    emit('close');
+  } else {
+    router.back();
+  }
+}
+
 async function submit() {
   await createRule({
     ...formData
   });
-  router.back();
+  cancel();
 }
 
 onMounted(async () => {
-  if (route.query.id) {
+  if (ruleId.value) {
     loading.value = true;
-    const res = await getRuleById(route.query.id as string);
+    const res = await getRuleById(ruleId.value);
     if (res.code === 0) {
       Object.assign(formData, res.data);
     }

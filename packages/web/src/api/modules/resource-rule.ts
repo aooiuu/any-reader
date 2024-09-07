@@ -3,6 +3,7 @@
  */
 
 import { request } from '@/utils/request';
+import type { Rule } from '@any-reader/rule-utils';
 
 // 导入规则
 export function importCMS(data: any) {
@@ -23,7 +24,7 @@ export function createRule(data: any) {
 }
 
 // 更新规则
-export function updateRule(data: any) {
+export function updateRule(data: Partial<Rule>) {
   return request({
     method: 'post',
     url: 'resource-rule/save',

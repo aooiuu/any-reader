@@ -30,7 +30,6 @@
 </template>
 
 <script setup lang="ts">
-import { StarFilled, StarOutlined } from '@ant-design/icons-vue';
 import TreeItem from '@/components/vsc/TreeItem.vue';
 import { useChapter } from '@/pages/common/chapter';
 

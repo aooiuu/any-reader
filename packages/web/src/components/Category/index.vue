@@ -24,7 +24,6 @@
 </template>
 
 <script setup lang="ts">
-import { LeftOutlined, RightOutlined } from '@ant-design/icons-vue';
 import { useTabs } from '@/components/Tabs/useTabs';
 import Category from './index.vue';
 

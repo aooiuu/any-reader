@@ -116,7 +116,6 @@
 
 <script setup lang="tsx">
 import { App } from 'ant-design-vue';
-import { SettingOutlined, MenuOutlined, SearchOutlined } from '@ant-design/icons-vue';
 import { useBus, EVENT_CHAPTERS_BOX, EVENT_SEARCH_BOX } from '@/utils/bus';
 import { useSettingStore } from '@/stores/setting';
 import { useReadStore } from '@/stores/read';
@@ -125,6 +124,7 @@ import Search from '@/components/Search/index.vue';
 import BaseLayout from './components/BaseLayout.vue';
 import TitleBarRight from './components/TitleBarRight.vue';
 import TopContainer from './components/TopContainer.vue';
+import { SettingOutlined } from '@ant-design/icons-vue';
 
 const { modal } = App.useApp();
 const route = useRoute();

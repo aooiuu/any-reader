@@ -53,7 +53,6 @@
 
 <script setup lang="ts">
 import { useClipboard } from '@vueuse/core';
-import { CopyOutlined } from '@ant-design/icons-vue';
 import { analyzerText } from '@/api/modules/rule-manager';
 
 const { copy } = useClipboard();

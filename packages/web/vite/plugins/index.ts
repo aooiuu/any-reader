@@ -24,7 +24,7 @@ export default function createPlugins({ env, isBuild }: { env: Record<string, st
       dirs: [],
       resolvers: [
         AntDesignVueResolver({
-          // resolveIcons: true,
+          resolveIcons: true,
           importStyle: false
         })
       ]

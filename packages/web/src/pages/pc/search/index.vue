@@ -76,7 +76,6 @@
 </template>
 
 <script setup lang="tsx">
-import { StarOutlined, StarFilled } from '@ant-design/icons-vue';
 import { CONTENT_TYPES } from '@/constants';
 import { useRulesStore } from '@/stores/rules';
 import { useFavoritesStore } from '@/stores/favorites';
