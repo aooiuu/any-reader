@@ -456,7 +456,7 @@ importers:
         version: 7.2.0
       '@types/vscode':
         specifier: ^1.68.0
-        version: 1.92.0
+        version: 1.93.0
       '@vscode/test-electron':
         specifier: ^2.1.5
         version: 2.4.1
@@ -1981,8 +1981,8 @@ packages:
   '@types/verror@1.10.10':
     resolution: {integrity: sha512-l4MM0Jppn18hb9xmM6wwD1uTdShpf9Pn80aXTStnK1C94gtPvJcV2FrDmbOQUAQfJ1cKZHktkQUDwEqaAKXMMg==}
 
-  '@types/vscode@1.92.0':
-    resolution: {integrity: sha512-DcZoCj17RXlzB4XJ7IfKdPTcTGDLYvTOcTNkvtjXWF+K2TlKzHHkBEXNWQRpBIXixNEUgx39cQeTFunY0E2msw==}
+  '@types/vscode@1.93.0':
+    resolution: {integrity: sha512-kUK6jAHSR5zY8ps42xuW89NLcBpw1kOabah7yv38J8MyiYuOHxLQBi0e7zeXbQgVefDy/mZZetqEFC+Fl5eIEQ==}
 
   '@types/web-bluetooth@0.0.20':
     resolution: {integrity: sha512-g9gZnnXVq7gM7v3tJCWV/qw7w+KeOlSHAhgF9RytFyifW6AF61hdT2ucrYhPq9hLs5JIryeupHV3qGk95dH9ow==}
@@ -8188,7 +8188,7 @@ snapshots:
   '@types/verror@1.10.10':
     optional: true
 
-  '@types/vscode@1.92.0': {}
+  '@types/vscode@1.93.0': {}
 
   '@types/web-bluetooth@0.0.20': {}
 
