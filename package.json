@@ -65,7 +65,7 @@
   },
   "dependencies": {
     "sql.js": "^1.11.0",
-    "sqlite3": "5.1.6"
+    "sqlite3": "5.1.7"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.8",
