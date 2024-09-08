@@ -91,7 +91,7 @@
     "sass-loader": "^13.3.3",
     "typescript": "^5.5.4",
     "unocss": "^0.58.9",
-    "unplugin-auto-import": "^0.16.7",
+    "unplugin-auto-import": "^0.18.0",
     "unplugin-vue-components": "^0.27.4",
     "vite": "^5.4.3",
     "vite-bundle-analyzer": "^0.10.6",

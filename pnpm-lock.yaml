@@ -660,8 +660,8 @@ importers:
         specifier: ^0.58.9
         version: 0.58.9(postcss@8.4.45)(rollup@4.21.2)(vite@5.4.3(@types/node@20.16.5)(sass@1.78.0)(terser@5.31.6))
       unplugin-auto-import:
-        specifier: ^0.16.7
-        version: 0.16.7(@vueuse/core@11.0.3(vue@3.5.3(typescript@5.5.4)))(rollup@4.21.2)(webpack-sources@3.2.3)
+        specifier: ^0.18.0
+        version: 0.18.2(@vueuse/core@11.0.3(vue@3.5.3(typescript@5.5.4)))(rollup@4.21.2)(webpack-sources@3.2.3)
       unplugin-vue-components:
         specifier: ^0.27.4
         version: 0.27.4(@babel/parser@7.25.6)(rollup@4.21.2)(vue@3.5.3(typescript@5.5.4))(webpack-sources@3.2.3)
@@ -6282,8 +6282,8 @@ packages:
     resolution: {integrity: sha512-pjy2bYhSsufwWlKwPc+l3cN7+wuJlK6uz0YdJEOlQDbl6jo/YlPi4mb8agUkVC8BF7V8NuzeyPNqRksA3hztKQ==}
     engines: {node: '>= 0.8'}
 
-  unplugin-auto-import@0.16.7:
-    resolution: {integrity: sha512-w7XmnRlchq6YUFJVFGSvG1T/6j8GrdYN6Em9Wf0Ye+HXgD/22kont+WnuCAA0UaUoxtuvRR1u/mXKy63g/hfqQ==}
+  unplugin-auto-import@0.18.2:
+    resolution: {integrity: sha512-Dwb3rAic75harVBrVjwiq6H24PT+nBq2dpxV5BH8NNI6sDFaTytvP+iyo4xy7prQbR3r5K6nMs4f5Wp9PE4g8A==}
     engines: {node: '>=14'}
     peerDependencies:
       '@nuxt/kit': ^3.2.2
@@ -13041,7 +13041,7 @@ snapshots:
 
   unpipe@1.0.0: {}
 
-  unplugin-auto-import@0.16.7(@vueuse/core@11.0.3(vue@3.5.3(typescript@5.5.4)))(rollup@4.21.2)(webpack-sources@3.2.3):
+  unplugin-auto-import@0.18.2(@vueuse/core@11.0.3(vue@3.5.3(typescript@5.5.4)))(rollup@4.21.2)(webpack-sources@3.2.3):
     dependencies:
       '@antfu/utils': 0.7.10
       '@rollup/pluginutils': 5.1.0(rollup@4.21.2)
