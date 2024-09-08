@@ -24,15 +24,15 @@
     "url": "https://github.com/aooiuu/any-reader"
   },
   "dependencies": {
-    "adm-zip": "^0.4.11",
+    "adm-zip": "^0.4.16",
     "base64-js": "^1.5.1",
     "xml2js": "^0.6.2"
   },
   "devDependencies": {
     "@types/adm-zip": "^0.5.5",
     "@types/xml2js": "^0.4.14",
-    "p-event": "^4",
-    "typescript": "^5.5.3"
+    "p-event": "^4.2.0",
+    "typescript": "^5.5.4"
   },
   "keywords": [],
   "author": "julien-c",
