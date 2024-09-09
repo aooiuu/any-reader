@@ -8,7 +8,7 @@
 
   "packageRules": [
     {
-      "depTypeList": ["peerDependencies"],
+      "matchDepTypes": ["peerDependencies", "packageManager", "engines"],
       "enabled": false
     }
   ],
