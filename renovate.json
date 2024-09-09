@@ -1,5 +1,17 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended"],
-  "labels": ["dependencies"]
+  "extends": ["config:base", "schedule:weekly", "group:allNonMajor"],
+
+  "labels": ["dependencies"],
+
+  "rangeStrategy": "bump",
+
+  "packageRules": [
+    {
+      "depTypeList": ["peerDependencies"],
+      "enabled": false
+    }
+  ],
+
+  "ignoreDeps": ["esbuild", "rollup", "node", "typescript"]
 }
