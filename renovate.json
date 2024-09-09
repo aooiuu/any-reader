@@ -13,5 +13,5 @@
     }
   ],
 
-  "ignoreDeps": ["esbuild", "rollup", "node", "typescript"]
+  "ignoreDeps": ["esbuild", "rollup", "node", "typescript", "pnpm", "electron", "vscode"]
 }
