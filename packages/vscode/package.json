@@ -158,6 +158,6 @@
     "uuid": "^10.0.0"
   },
   "dependencies": {
-    "sqlite3": "5.1.7"
+    "sqlite3": "5.1.6"
   }
 }

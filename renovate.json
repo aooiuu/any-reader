@@ -13,5 +13,15 @@
     }
   ],
 
-  "ignoreDeps": ["esbuild", "rollup", "node", "typescript", "pnpm", "electron", "vscode"]
+  "ignoreDeps": [
+    "esbuild",
+    "rollup",
+    "node",
+    "typescript",
+    "electron",
+    "vscode",
+
+    // https://github.com/TryGhost/node-sqlite3/issues/1748
+    "sqlite3"
+  ]
 }

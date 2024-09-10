@@ -65,7 +65,7 @@
   },
   "dependencies": {
     "sql.js": "^1.11.0",
-    "sqlite3": "5.1.7"
+    "sqlite3": "5.1.6"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.8",
@@ -73,7 +73,6 @@
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.10.4",
-    "@types/mime": "4.0.0",
     "@types/node": "^20.16.5",
     "@types/uuid": "^10.0.0",
     "@unocss/eslint-config": "^0.62.3",
