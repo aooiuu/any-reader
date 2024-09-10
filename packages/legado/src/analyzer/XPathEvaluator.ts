@@ -1,5 +1,5 @@
 import xpath from 'xpath';
-import { DOMParser } from '@xmldom/xmldom';
+import { DOMParser, MIME_TYPE } from '@xmldom/xmldom';
 import { AnalyzerManager } from './AnalyzerManager';
 import { RuleEvaluator } from './common';
 
@@ -16,7 +16,7 @@ class JXNode {
   }
 
   sel(rule: string) {
-    const doc = new DOMParser().parseFromString(this._content, 'text/html');
+    const doc = new DOMParser().parseFromString(this._content, MIME_TYPE.HTML);
     const node: any[] = xpath.parse(rule).select({ node: doc, isHtml: true });
     return node.map((e) => e.toString());
   }

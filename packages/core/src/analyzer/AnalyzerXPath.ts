@@ -1,5 +1,5 @@
 import xpath from 'xpath.js';
-import { DOMParser } from '@xmldom/xmldom';
+import { DOMParser, MIME_TYPE } from '@xmldom/xmldom';
 import type { Analyzer } from './Analyzer';
 
 export class AnalyzerXPath implements Analyzer {
@@ -20,7 +20,7 @@ export class AnalyzerXPath implements Analyzer {
   }
 
   async getElements(rule: string): Promise<string[]> {
-    const doc = new DOMParser().parseFromString(this._content);
+    const doc = new DOMParser().parseFromString(this._content, MIME_TYPE.HTML);
     const node: any[] = xpath(doc, rule);
     return node.map((e) => (typeof e.value === 'undefined' ? e.toString() : e.value));
   }
