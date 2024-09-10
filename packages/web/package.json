@@ -70,6 +70,7 @@
     "vue-router": "^4.4.3"
   },
   "devDependencies": {
+    "@electron/rebuild": "^3.6.0",
     "@tsconfig/node20": "^20.1.4",
     "@types/bcryptjs": "^2.4.6",
     "@types/blueimp-md5": "^2.18.2",
@@ -84,7 +85,6 @@
     "chalk": "^5.3.0",
     "electron": "30.0.6",
     "electron-builder": "^24.13.3",
-    "electron-rebuild": "^3.2.9",
     "mockjs": "^1.1.0",
     "npm-run-all2": "^6.2.2",
     "prettier": "^3.3.3",
