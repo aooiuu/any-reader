@@ -15,14 +15,7 @@ function replaceUrl(url: string, vars: any) {
   return url.replace(/\$keyword|\$pageSize|\$page|\$host|\$result|searchKey|searchPage/g, (m: string | number) => vars[m] || '');
 }
 
-/**
- *
- * @param url
- * @param keyword
- * @param result
- * @returns
- */
-export async function fetch(url: string | object, keyword = '', result = '', rule: Rule, page = 1, pageSize = 20) {
+export function parseRequest(url: string | object, keyword = '', result = '', rule: Rule, page = 1, pageSize = 20) {
   const vars: any = {
     $keyword: keyword,
     searchKey: keyword,
@@ -76,16 +69,21 @@ export async function fetch(url: string | object, keyword = '', result = '', rul
   let ruleEncoding = params.encoding;
   if (ruleEncoding === 'gb2312') ruleEncoding = 'gbk';
 
-  const body = await http({
-    ...params,
-    responseType: 'arraybuffer',
-    responseEncoding: undefined
-  })
+  return Object.assign(
+    {
+      responseType: 'arraybuffer',
+      responseEncoding: undefined
+    },
+    params
+  );
+}
+
+export async function fetch(params: any) {
+  const body = await http(params)
     .then((e) => {
       const ct = contentType.parse(e.headers['content-type'] || '');
-      const charset = ct.parameters.charset;
-      let encoding = charset || ruleEncoding;
-      if (!encoding) encoding = chardet.detect(e.data);
+      let encoding = ct.parameters.charset;
+      if (!encoding) encoding = chardet.detect(e.data) as string;
 
       let str = iconv.decode(e.data, encoding || 'utf8');
       if (ct.type === 'text/html' && /<!doctype html>/i.test(str)) str = load(str, null, true).html();
@@ -93,7 +91,7 @@ export async function fetch(url: string | object, keyword = '', result = '', rul
       return str;
     })
     .catch((err) => {
-      throw new FetchException(err.message, params);
+      throw new FetchException(err.message);
     });
 
   return {
@@ -104,5 +102,5 @@ export async function fetch(url: string | object, keyword = '', result = '', rul
 
 // 在 eso 是返回字符串
 export async function __http__(url: string, rule: Rule): Promise<string> {
-  return (await fetch(url, '', '', rule)).body;
+  return (await fetch(parseRequest(url, '', '', rule))).body;
 }

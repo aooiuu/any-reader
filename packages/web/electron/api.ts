@@ -3,6 +3,7 @@ import * as path from 'node:path';
 import { BrowserWindow, app } from 'electron';
 import EasyPostMessage from 'easy-post-message';
 import Adapter from 'easy-post-message/electron-adapter';
+import { createAnalyzerManager, ILogger } from '@any-reader/core';
 import { createApp } from '@any-reader/shared';
 import { useDevTools } from './useDevTools';
 
@@ -20,8 +21,32 @@ function success(data: any, msg = '') {
 export function createAPI() {
   const pm = new EasyPostMessage(Adapter);
 
+  class Logger implements ILogger {
+    log(message: string): void {
+      pm.emit('logger:log', message);
+    }
+    trace(message: any): void {
+      pm.emit('logger:trace', message);
+    }
+    debug(message: any): void {
+      pm.emit('logger:debug', message);
+    }
+    info(message: any): void {
+      pm.emit('logger:info', message);
+    }
+    warn(message: any): void {
+      pm.emit('logger:warn', message);
+    }
+    error(message: any): void {
+      pm.emit('logger:error', message);
+    }
+  }
+
   createApp({
-    configPath: CONFIG_PATH
+    configPath: CONFIG_PATH,
+    analyzerManager: createAnalyzerManager({
+      logger: new Logger()
+    })
   }).useApi(pm.answer.bind(pm));
 
   pm.answer('get@minimize', () => {

@@ -1,8 +1,3 @@
-import { createRuleManager as _createRuleManager, analyzerUrl, createAnalyzerManager } from '@any-reader/core';
-import type { Rule } from '@any-reader/rule-utils';
+import { analyzerUrl } from '@any-reader/core';
 
-export function createRuleManager(rule: Rule) {
-  return _createRuleManager(rule, createAnalyzerManager());
-}
-
-export { analyzerUrl, createAnalyzerManager };
+export { analyzerUrl };

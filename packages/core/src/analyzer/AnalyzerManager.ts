@@ -1,4 +1,5 @@
 import { AnalyzerException } from '../exception/AnalyzerException';
+import { ILogger, LogLevel } from '../logger';
 import type { Analyzer } from './Analyzer';
 import { AnalyzerJS } from './AnalyzerJS';
 
@@ -26,10 +27,14 @@ export interface Analyzers {
 }
 
 export class AnalyzerManager {
-  analyzers: Analyzers[];
+  public analyzers: Analyzers[];
+  public logger: ILogger;
+  public logLevel: LogLevel;
 
-  constructor(analyzers: Analyzers[]) {
-    this.analyzers = analyzers || [];
+  constructor(params: { analyzers: Analyzers[]; logger: ILogger; logLevel: LogLevel }) {
+    this.analyzers = params.analyzers || [];
+    this.logger = params.logger || console;
+    this.logLevel = params.logLevel || LogLevel.Off;
   }
 
   getAnalyzer(rule: string) {
@@ -67,7 +72,7 @@ export class AnalyzerManager {
       try {
         return await r.analyzer.getElements(rule);
       } catch (error: any) {
-        throw new AnalyzerException(error?.message || '', rule);
+        throw new AnalyzerException(error?.message);
       }
     }
 
@@ -87,7 +92,7 @@ export class AnalyzerManager {
     try {
       return await r.analyzer.getElements(rule);
     } catch (error: any) {
-      throw new AnalyzerException(error?.message || '', rule);
+      throw new AnalyzerException(error?.message);
     }
   }
 
@@ -132,7 +137,7 @@ export class AnalyzerManager {
       const res = await r.analyzer.getString(_rule);
       return Array.isArray(res) ? res.join('').trim() : res;
     } catch (error: any) {
-      throw new AnalyzerException(error?.message || '', _rule);
+      throw new AnalyzerException(error?.message);
     }
   }
 
@@ -171,7 +176,7 @@ export class AnalyzerManager {
     try {
       return await r.analyzer.getStringList(rule || r.rule);
     } catch (error: any) {
-      throw new AnalyzerException(error?.message || '', _rule);
+      throw new AnalyzerException(error?.message);
     }
   }
 

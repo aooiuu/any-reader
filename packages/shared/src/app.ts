@@ -2,7 +2,7 @@ import { merge } from 'lodash-es';
 
 // @ts-expect-error
 import { ensureFileSync, readJSONSync, writeJSONSync } from 'fs-extra/esm';
-import { AnalyzerException, FetchException, JsVmException } from '@any-reader/core';
+import { AnalyzerException, AnalyzerManager, FetchException, JsVmException, createAnalyzerManager } from '@any-reader/core';
 import { LOCAL_BOOK_DIR } from './constants';
 import type { DB } from './data-source';
 import { createDB } from './data-source';
@@ -16,7 +16,7 @@ import { Config } from './controller/Config';
 import { TTS } from './controller/TTS';
 import { Cache } from './controller/Cache';
 import { mapRoute } from './decorators';
-import { logger } from './utils/logger';
+import { LogLevel } from '@any-reader/core';
 
 export interface App {
   db: DB;
@@ -26,9 +26,10 @@ export interface App {
   updateConfig: (data: any) => void;
   readConfig: () => void;
   useApi: (register: any) => void;
+  analyzerManager: AnalyzerManager;
 }
 
-export function createApp(params: { configPath: string; defaultConfig?: any; dataSourceOptions?: any }): App {
+export function createApp(params: { configPath: string; defaultConfig?: any; dataSourceOptions?: any; analyzerManager?: AnalyzerManager }): App {
   const { dataSourceOptions } = params;
   const defConfig = params.defaultConfig ?? {};
 
@@ -38,6 +39,7 @@ export function createApp(params: { configPath: string; defaultConfig?: any; dat
     }),
     config: {},
     configPath: params.configPath,
+    analyzerManager: params.analyzerManager || createAnalyzerManager(),
 
     controllers: [ChapterHistory, ResourceHistory, ResourceFavorites, ResourceRule, RuleManager, Bookshelf, Config, TTS, Cache],
 
@@ -74,14 +76,15 @@ async function runApp(app: App, register: any) {
   for (const Controller of app.controllers) {
     const routes = mapRoute(Controller);
     for (const route of routes) {
-      register([route.method.toLowerCase(), route.route].join('@'), async (...arg: any) => {
+      const callName = [route.method.toLowerCase(), route.route].join('@');
+      register(callName, async (...arg: any) => {
         const instance: any = new Controller(app);
+        app.analyzerManager.logLevel >= LogLevel.Debug && app.analyzerManager.logger.debug(`[api] ${callName} ${JSON.stringify(arg)}`);
+
         return await instance[route.methodName](...arg)
           .then((res: any) => result(res))
           .catch((err: Error) => {
-            logger.error({ arg, route: route.route });
-            err.message && logger.error(err.message);
-
+            app.analyzerManager.logLevel >= LogLevel.Error && err.message && app.analyzerManager.logger.error(err.message);
             let message = err?.message || 'error';
             if (err instanceof FetchException) message = '网络请求异常';
             else if (err instanceof JsVmException) message = '执行脚本异常';

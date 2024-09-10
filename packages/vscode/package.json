@@ -117,6 +117,22 @@
         ],
         "priority": "default"
       }
+    ],
+    "configuration": [
+      {
+        "title": "any-reader",
+        "properties": {
+          "any-reader.logLevel": {
+            "type": "string",
+            "enum": [
+              "Off",
+              "Debug"
+            ],
+            "default": "Off",
+            "description": "修改此配置后需要重启VSCode才会生效"
+          }
+        }
+      }
     ]
   },
   "devDependencies": {

@@ -2,8 +2,9 @@ import { ContentType } from '@any-reader/rule-utils';
 import type { Rule } from '@any-reader/rule-utils';
 import { JSEngine } from './JSEngine';
 import type { AnalyzerManager } from './AnalyzerManager';
-import { fetch } from './request';
+import { fetch, parseRequest } from './request';
 import { ChapterItem, DiscoverItem, IParser } from '../parser/parser';
+import { LogLevel } from '../logger';
 
 const PAGE_PATTERN = /(\$page)|((^|[^a-zA-Z'"_/-])page([^a-zA-Z0-9'"]|$))/;
 
@@ -27,15 +28,24 @@ export class RuleManager implements IParser {
       searchPage: 1
     });
     this.analyzerManager = analyzerManager;
+    this.analyzerManager.logLevel >= LogLevel.Debug && this.analyzerManager.logger.debug(`[init] rule:${rule.name}`);
   }
 
-  private async parseUrl(url: string) {
+  private async request(params: any) {
+    this.analyzerManager.logLevel >= LogLevel.Debug && this.analyzerManager.logger.debug(`[request] params:${JSON.stringify(params || {})}`);
+    const res = await fetch(params);
+    this.analyzerManager.logLevel >= LogLevel.Debug && this.analyzerManager.logger.debug(`[request] query:${String(res.body)}`);
+    return res;
+  }
+
+  private async parseJsUrl(url: string) {
     if (url.startsWith('@js:')) url = await JSEngine.evaluate(url.substring(4));
     return url;
   }
 
   async search(query: string, page = 1, pageSize = 20) {
     // const hasNextUrlRule = this.rule.searchNextUrl !== null && this.rule.searchNextUrl.length > 0;
+    this.analyzerManager.logLevel >= LogLevel.Debug && this.analyzerManager.logger.debug(`[search] query:${query}`);
     let searchRule = '';
     let url = this.rule.searchUrl;
 
@@ -72,8 +82,11 @@ export class RuleManager implements IParser {
       searchKey: query
     });
 
+    this.analyzerManager.logLevel >= LogLevel.Debug && this.analyzerManager.logger.debug(`[search] searchRule:${searchRule}`);
     if (this.rule.searchUrl !== 'null') {
-      const res = await fetch(await this.parseUrl(searchRule), query, '', this.rule, page, pageSize);
+      const res = await this.request(parseRequest(await this.parseJsUrl(searchRule), query, '', this.rule, page, pageSize));
+      this.analyzerManager.logLevel >= LogLevel.Debug && this.analyzerManager.logger.debug(`[search] params:${JSON.stringify(res.params || {})}`);
+      this.analyzerManager.logLevel >= LogLevel.Debug && this.analyzerManager.logger.debug(`[search] body:${String(res.body)}`);
       body = res.body;
       searchUrl = res.params.url as string;
     }
@@ -82,7 +95,9 @@ export class RuleManager implements IParser {
     //   next = await this.analyzerManager.getString(this.rule.searchNextUrl, body);
     // }
 
+    this.analyzerManager.logLevel >= LogLevel.Debug && this.analyzerManager.logger.debug(`[search] rule.searchList:${this.rule.searchList}`);
     const list = await this.getList(body, this.rule.searchList);
+    this.analyzerManager.logLevel >= LogLevel.Debug && this.analyzerManager.logger.debug(`[search] list:${JSON.stringify(list || [])}}`);
     const result = [];
 
     for (const item of list) {
@@ -108,6 +123,7 @@ export class RuleManager implements IParser {
   }
 
   async getChapter(result: string, page = 1): Promise<ChapterItem[]> {
+    this.analyzerManager.logLevel >= LogLevel.Debug && this.analyzerManager.logger.debug(`[getChapter] result:${result}`);
     JSEngine.setEnvironment({
       result
     });
@@ -129,8 +145,7 @@ export class RuleManager implements IParser {
     });
 
     if (chapterUrl !== 'null') {
-      const res = await fetch(await this.parseUrl(chapterUrl), '', result, this.rule, page);
-      console.log('[request]', res.params);
+      const res = await this.request(parseRequest(await this.parseJsUrl(chapterUrl), '', result, this.rule, page));
       body = res.body;
       JSEngine.setEnvironment({
         baseUrl: res.params.url
@@ -166,6 +181,8 @@ export class RuleManager implements IParser {
   }
 
   async getContent(lastResult: string): Promise<string[]> {
+    this.analyzerManager.logLevel >= LogLevel.Debug && this.analyzerManager.logger.debug(`[getChapter] result:${lastResult}`);
+
     JSEngine.setEnvironment({
       result: lastResult
     });
@@ -198,7 +215,7 @@ export class RuleManager implements IParser {
         let body = '';
 
         if (contentUrlRule !== 'null') {
-          const res = await fetch(await this.parseUrl(contentUrlRule), '', lastResult, this.rule);
+          const res = await this.request(parseRequest(await this.parseJsUrl(contentUrlRule), '', lastResult, this.rule));
           contentUrl = res.params.url;
           body = res.body;
         }
@@ -341,7 +358,7 @@ export class RuleManager implements IParser {
     let body = '';
 
     if (discoverRule !== 'null') {
-      const { body: res } = await fetch(await this.parseUrl(discoverRule), '', '', this.rule);
+      const { body: res } = await this.request(parseRequest(await this.parseJsUrl(discoverRule), '', '', this.rule));
       body = res;
     }
 

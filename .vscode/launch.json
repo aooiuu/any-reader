@@ -2,6 +2,14 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Run VSCode Extension",
+      "type": "extensionHost",
+      "cwd": "${workspaceFolder}/packages/vscode",
+      "request": "launch",
+      "args": ["--disable-extensions", "--extensionDevelopmentPath=${workspaceFolder}/packages/vscode"],
+      "outFiles": ["${workspaceFolder}/packages/vscode/dist/**/*.js"]
+    },
+    {
       "name": "Debug Main Process",
       "type": "node",
       "request": "launch",
@@ -10,10 +18,7 @@
       "windows": {
         "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
       },
-      "args": [
-        ".",
-        "--remote-debugging-port=9229"
-      ],
+      "args": [".", "--remote-debugging-port=9229"],
       "outputCapture": "std"
     }
   ]
