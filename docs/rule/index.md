@@ -132,7 +132,7 @@ enum ContentType {
 
 ### URL地址规则
 
-字段名通常后面有 `Url`, 比如 `searchUrl` `chapterUrl`。 这类规则通常用来请求网络获取数据
+相关字段: `searchUrl`、`chapterUrl`, 常用来请求网络获取数据
 
 地址规则的几种写法:
 
@@ -142,17 +142,148 @@ enum ContentType {
 | JSON | `{"url":"https://xxx.com/search","method":"post","headers":{"token":"111"},"body":{"keyword":"$keyword"}}` |
 | @js  | `@js:(() => { return {url, method, body, headers}; })();`                                                  |
 
+::: details 例子1
+
+输入:
+
+```http
+https://xxx.com/search?q=$keyword&pageSize=10
+```
+
+效果:
+
+```http
+GET https://xxx.com/search?q=$keyword&pageSize=10
+```
+
+> 在搜索流程里, `$keyword` 会被转换为搜索的关键字
+
+:::
+
+::: details 例子2
+
+输入:
+
+```JSON
+{"url":"https://xxx.com/search","method":"post","headers":{"token":"111"},"body":{"keyword":"$keyword"}}
+```
+
+效果:
+
+```http
+POST https://xxx.com/search HTTP/1.1
+token: 111
+Content-Type: application/json
+
+{"keyword": "$keyword"}
+```
+
+:::
+
+::: details 例子3
+
+输入:
+
+```javascript
+@js:(() => {
+  return { url: 'https://xxx.com/search', method: 'post', headers: { token: '111' }, body: { keyword: '$keyword' } };
+})();
+```
+
+效果:
+
+```http
+POST https://xxx.com/search HTTP/1.1
+token: 111
+Content-Type: application/json
+
+{"keyword": "$keyword"}
+```
+
+:::
+
 ### 取列表规则
 
-有了网络请求的数据, 那么下一步一般是用来获取列表。
+相关字段: `searchList`、`chapterList`、`discoverList`
 
-这类规则一般用于从 `URL地址规则` 的结果提取内容。
-
-字段名通常后面有 `List`, 比如 `searchList` `chapterList`。
+有了网络请求的数据, 那么下一步一般是用来获取列表。一般用于从 `URL地址规则` 的结果提取内容。
 
 拿到的结果通常是一个**数组**
 
 > 列表规则也可以通过 `@js` 规则 `fetch` 等接口发起请求获取数据
+
+::: details 例子1 `@css` 从 `URL规则` 结果获取
+
+假如URL规则拿到的结果:
+
+```html
+<html>
+  <!--  -->
+  <ul id="xxxlist">
+    <li>
+      <p class="q">
+        <a href="http://xxx.xxx/book/xxxx/" target="_blank">名字1</a>
+      </p>
+      <p class="a">
+        <a href="/xxx/xxxx.html" target="_blank">空空如也。</a>
+      </p>
+      <p class="b">张三</p>
+      <p class="c">99k</p>
+      <p class="d">连载中</p>
+      <p class="e">24-01-01</p>
+    </li>
+
+    <li>
+      <p class="q">
+        <a href="http://xxx.xxx/book/xxx1/" target="_blank">名字2</a>
+      </p>
+      <p class="a">
+        <a href="/xxx/xxx1.html" target="_blank">空空如也。</a>
+      </p>
+      <p class="b">李四</p>
+      <p class="c">99k</p>
+      <p class="d">连载中</p>
+      <p class="e">24-01-02</p>
+    </li>
+    <!--  -->
+  </ul>
+  <!--  -->
+</html>
+```
+
+规则:
+
+```css
+#xxxlist li
+```
+
+:::
+
+::: details 例子2 `@js` 网络请求
+
+不通过 `URL地址规则` 获取内容, 直接通过`js`获取
+
+```javascript
+@js:(async () => {
+  return await fetch('https://api.github.com/gists/public').then((e) => e.text());
+})()
+```
+
+:::
+
+::: details 例子3 `@js` 不需要网络请求
+
+不通过 `URL地址规则` 获取内容, 直接通过`js`获取
+
+```javascript
+@js:[{
+  a: 1,
+  b: 2
+  // ...
+}]
+```
+
+:::
 
 ### 取内容规则
 
@@ -163,6 +294,37 @@ enum ContentType {
 > 图片字段可以使用 `@headers` 携带请求头 (目前仅桌面端支持)
 >
 > 比如: `https://xxx.jpg@headers{"xxx":"xxx"}`
+
+::: details 例子1
+
+假设列表规则拿到的是像这样的数组:
+
+```html
+<li>
+  <p class="q">
+    <a href="http://xxx.xxx/book/xxxx/" target="_blank">名字1</a>
+  </p>
+  <p class="a">
+    <a href="/xxx/xxxx.html" target="_blank">空空如也。</a>
+  </p>
+  <p class="b">张三</p>
+  <p class="c">99k</p>
+  <p class="d">连载中</p>
+  <p class="e">24-01-01</p>
+</li>
+```
+
+规则:
+
+```json5
+{
+  searchName: '.q a@text', // 名字1
+  searchAuthor: '.b@text', // 张三
+  searchResult: '.q a@href' // http://xxx.xxx/book/xxxx/
+}
+```
+
+:::
 
 ### 结果规则
 
