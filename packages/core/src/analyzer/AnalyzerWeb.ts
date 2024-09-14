@@ -1,9 +1,8 @@
 import type { Rule } from '@any-reader/rule-utils';
-import type { Analyzer } from './Analyzer';
+import { Analyzer } from './Analyzer';
 import { analyzerUrl } from './analyzerUrl';
-import { JSEngine } from './JSEngine';
 
-export class AnalyzerWeb implements Analyzer {
+export class AnalyzerWeb extends Analyzer {
   _content!: string;
 
   parse(content: string) {
@@ -11,7 +10,7 @@ export class AnalyzerWeb implements Analyzer {
   }
 
   async getString(rule: string): Promise<string> {
-    return (await analyzerUrl(rule, '', '', JSEngine.environment.rule as Rule)).body;
+    return (await analyzerUrl(rule, '', '', this.JSEngine.environment.rule as Rule)).body;
   }
 
   getStringList(_: string): Promise<string[]> {

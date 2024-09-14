@@ -1,5 +1,5 @@
 import { load } from 'cheerio';
-import type { Analyzer } from './Analyzer';
+import { Analyzer } from './Analyzer';
 
 function htmlDecode(str: string) {
   return str
@@ -21,7 +21,7 @@ function getHtmlString(html: string) {
   return htmlDecode(html.replaceAll(/<\/?(?:div|p|br|hr|h\d|article|b|dd|dl)[^>]*>/g, '\n').replace(/<!--[\w\W\r\n]*?-->/gim, ''));
 }
 
-export class AnalyzerHtml implements Analyzer {
+export class AnalyzerHtml extends Analyzer {
   _content!: string;
 
   parse(content: string | string[]) {

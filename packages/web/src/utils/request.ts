@@ -7,7 +7,6 @@ export async function request(config: any): Promise<{
   data: any;
   msg?: string;
 }> {
-  console.log('[request]', config);
   const method = config.method?.toLowerCase() ?? 'get';
   if (PLATFORM === 'browser') {
     // web

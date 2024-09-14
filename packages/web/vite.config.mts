@@ -1,6 +1,7 @@
 import { fileURLToPath, URL } from 'node:url';
 
 import { defineConfig, loadEnv } from 'vite';
+import { alias } from '../../alias';
 import createPlugins from './vite/plugins';
 
 export type TPlatform = 'browser' | 'vscode' | 'electron' | 'utools';
@@ -62,6 +63,8 @@ export default defineConfig(({ mode, command }) => {
     },
     resolve: {
       alias: {
+        ...alias,
+
         '@/router/router': fileURLToPath(new URL('./src/router/router' + (env.VITE_APP_PLATFORM === 'vscode' ? '.vsc' : '.pc'), import.meta.url)),
         '@/stores/setting': fileURLToPath(new URL('./src/stores/setting' + (env.VITE_APP_PLATFORM === 'vscode' ? '.vsc' : '.pc'), import.meta.url)),
         '@': fileURLToPath(new URL('./src', import.meta.url))

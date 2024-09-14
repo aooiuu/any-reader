@@ -79,12 +79,12 @@ async function runApp(app: App, register: any) {
       const callName = [route.method.toLowerCase(), route.route].join('@');
       register(callName, async (...arg: any) => {
         const instance: any = new Controller(app);
-        app.analyzerManager.logLevel >= LogLevel.Debug && app.analyzerManager.logger.debug(`[api] ${callName} ${JSON.stringify(arg)}`);
+        app.analyzerManager.logLevel >= LogLevel.Debug && app.analyzerManager.logger.debug(`[call] ${callName} ${JSON.stringify(arg)}`);
 
         return await instance[route.methodName](...arg)
           .then((res: any) => result(res))
           .catch((err: Error) => {
-            app.analyzerManager.logLevel >= LogLevel.Error && err.message && app.analyzerManager.logger.error(err.message);
+            app.analyzerManager.logLevel >= LogLevel.Error && err.message && app.analyzerManager.logger.error(`[错误] ${err.message}`);
             let message = err?.message || 'error';
             if (err instanceof FetchException) message = '网络请求异常';
             else if (err instanceof JsVmException) message = '执行脚本异常';

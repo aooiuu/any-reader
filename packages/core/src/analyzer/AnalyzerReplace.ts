@@ -1,6 +1,6 @@
-import type { Analyzer } from './Analyzer';
+import { Analyzer } from './Analyzer';
 
-export class AnalyzerReplace implements Analyzer {
+export class AnalyzerReplace extends Analyzer {
   private _content!: string;
 
   replaceSmart(replace: string) {

@@ -1,6 +1,5 @@
 import { ContentType } from '@any-reader/rule-utils';
 import type { Rule } from '@any-reader/rule-utils';
-import { JSEngine } from './JSEngine';
 import type { AnalyzerManager } from './AnalyzerManager';
 import { fetch, parseRequest } from './request';
 import { ChapterItem, DiscoverItem, IParser } from '../parser/parser';
@@ -16,8 +15,9 @@ export class RuleManager implements IParser {
   constructor(rule: Rule, analyzerManager: AnalyzerManager) {
     this.rule = rule;
     this._nextUrl = new Map();
-    JSEngine.init();
-    JSEngine.setEnvironment({
+    this.analyzerManager = analyzerManager;
+    this.JSEngine.init();
+    this.JSEngine.setEnvironment({
       host: this.rule.host,
       $host: this.rule.host,
       cookie: this.rule.cookies,
@@ -27,25 +27,23 @@ export class RuleManager implements IParser {
       $pageSize: 20,
       searchPage: 1
     });
-    this.analyzerManager = analyzerManager;
-    this.analyzerManager.logLevel >= LogLevel.Debug && this.analyzerManager.logger.debug(`[init] rule:${rule.name}`);
+    this.analyzerManager.logLevel >= LogLevel.Debug && this.analyzerManager.logger.debug(`[初始化规则] ${rule.id} ${rule.name}`);
+  }
+
+  private get JSEngine() {
+    return this.analyzerManager.JSEngine;
   }
 
   private async request(params: any) {
-    this.analyzerManager.logLevel >= LogLevel.Debug && this.analyzerManager.logger.debug(`[request] params:${JSON.stringify(params || {})}`);
+    this.analyzerManager.logLevel >= LogLevel.Debug && this.analyzerManager.logger.debug(`[网络请求] -> ${JSON.stringify(params || {})}`);
     const res = await fetch(params);
-    this.analyzerManager.logLevel >= LogLevel.Debug && this.analyzerManager.logger.debug(`[request] query:${String(res.body)}`);
+    this.analyzerManager.logLevel >= LogLevel.Debug && this.analyzerManager.logger.debug(`[网络请求] <- ${String(res.body)}`);
     return res;
-  }
-
-  private async parseJsUrl(url: string) {
-    if (url.startsWith('@js:')) url = await JSEngine.evaluate(url.substring(4));
-    return url;
   }
 
   async search(query: string, page = 1, pageSize = 20) {
     // const hasNextUrlRule = this.rule.searchNextUrl !== null && this.rule.searchNextUrl.length > 0;
-    this.analyzerManager.logLevel >= LogLevel.Debug && this.analyzerManager.logger.debug(`[search] query:${query}`);
+    this.analyzerManager.logLevel >= LogLevel.Debug && this.analyzerManager.logger.debug(`[搜索] ${query}`);
     let searchRule = '';
     let url = this.rule.searchUrl;
 
@@ -75,18 +73,15 @@ export class RuleManager implements IParser {
     let searchUrl = '';
     let body = '';
 
-    JSEngine.setEnvironment({
+    this.JSEngine.setEnvironment({
       page,
       $keyword: query,
       keyword: query,
       searchKey: query
     });
 
-    this.analyzerManager.logLevel >= LogLevel.Debug && this.analyzerManager.logger.debug(`[search] searchRule:${searchRule}`);
     if (this.rule.searchUrl !== 'null') {
-      const res = await this.request(parseRequest(await this.parseJsUrl(searchRule), query, '', this.rule, page, pageSize));
-      this.analyzerManager.logLevel >= LogLevel.Debug && this.analyzerManager.logger.debug(`[search] params:${JSON.stringify(res.params || {})}`);
-      this.analyzerManager.logLevel >= LogLevel.Debug && this.analyzerManager.logger.debug(`[search] body:${String(res.body)}`);
+      const res = await this.request(parseRequest(await this.analyzerManager.parseJsUrl(searchRule), query, '', this.rule, page, pageSize));
       body = res.body;
       searchUrl = res.params.url as string;
     }
@@ -95,9 +90,7 @@ export class RuleManager implements IParser {
     //   next = await this.analyzerManager.getString(this.rule.searchNextUrl, body);
     // }
 
-    this.analyzerManager.logLevel >= LogLevel.Debug && this.analyzerManager.logger.debug(`[search] rule.searchList:${this.rule.searchList}`);
     const list = await this.getList(body, this.rule.searchList);
-    this.analyzerManager.logLevel >= LogLevel.Debug && this.analyzerManager.logger.debug(`[search] list:${JSON.stringify(list || [])}}`);
     const result = [];
 
     for (const item of list) {
@@ -124,7 +117,7 @@ export class RuleManager implements IParser {
 
   async getChapter(result: string, page = 1): Promise<ChapterItem[]> {
     this.analyzerManager.logLevel >= LogLevel.Debug && this.analyzerManager.logger.debug(`[getChapter] result:${result}`);
-    JSEngine.setEnvironment({
+    this.JSEngine.setEnvironment({
       result
     });
     if (this.rule.chapterUrl === '正文') {
@@ -140,19 +133,19 @@ export class RuleManager implements IParser {
     const chapterUrl = this.rule.chapterUrl || result;
     let body = '';
 
-    JSEngine.setEnvironment({
+    this.JSEngine.setEnvironment({
       page
     });
 
     if (chapterUrl !== 'null') {
-      const res = await this.request(parseRequest(await this.parseJsUrl(chapterUrl), '', result, this.rule, page));
+      const res = await this.request(parseRequest(await this.analyzerManager.parseJsUrl(chapterUrl), '', result, this.rule, page));
       body = res.body;
-      JSEngine.setEnvironment({
+      this.JSEngine.setEnvironment({
         baseUrl: res.params.url
       });
     }
 
-    JSEngine.setEnvironment({
+    this.JSEngine.setEnvironment({
       lastResult: result,
       result: body
     });
@@ -183,7 +176,7 @@ export class RuleManager implements IParser {
   async getContent(lastResult: string): Promise<string[]> {
     this.analyzerManager.logLevel >= LogLevel.Debug && this.analyzerManager.logger.debug(`[getChapter] result:${lastResult}`);
 
-    JSEngine.setEnvironment({
+    this.JSEngine.setEnvironment({
       result: lastResult
     });
     const hasNextUrlRule = !!this.rule.contentNextUrl;
@@ -215,12 +208,12 @@ export class RuleManager implements IParser {
         let body = '';
 
         if (contentUrlRule !== 'null') {
-          const res = await this.request(parseRequest(await this.parseJsUrl(contentUrlRule), '', lastResult, this.rule));
+          const res = await this.request(parseRequest(await this.analyzerManager.parseJsUrl(contentUrlRule), '', lastResult, this.rule));
           contentUrl = res.params.url;
           body = res.body;
         }
 
-        JSEngine.setEnvironment({
+        this.JSEngine.setEnvironment({
           page,
           lastResult: lastResult,
           result: body,
@@ -260,11 +253,11 @@ export class RuleManager implements IParser {
     let discoverUrl = this.rule.discoverUrl.trimStart();
 
     if (discoverUrl.startsWith('@js:')) {
-      JSEngine.setEnvironment({
+      this.JSEngine.setEnvironment({
         page: 1,
         baseUrl: this.rule.host
       });
-      discoverUrl = await JSEngine.evaluate(`${discoverUrl.substring(4)};`);
+      discoverUrl = (await this.JSEngine.evaluate(`${discoverUrl.substring(4)};`)) as string;
     }
 
     const discovers = Array.isArray(discoverUrl)
@@ -337,7 +330,7 @@ export class RuleManager implements IParser {
 
   // 获取分类下内容
   async discover(url: string, page = 1) {
-    JSEngine.setEnvironment({
+    this.JSEngine.setEnvironment({
       result: url
     });
     const hasNextUrlRule = this.rule.discoverNextUrl !== undefined && this.rule.discoverNextUrl.length > 0;
@@ -358,11 +351,11 @@ export class RuleManager implements IParser {
     let body = '';
 
     if (discoverRule !== 'null') {
-      const { body: res } = await this.request(parseRequest(await this.parseJsUrl(discoverRule), '', '', this.rule));
+      const { body: res } = await this.request(parseRequest(await this.analyzerManager.parseJsUrl(discoverRule), '', '', this.rule));
       body = res;
     }
 
-    JSEngine.setEnvironment({
+    this.JSEngine.setEnvironment({
       page: 1,
       lastResult: url,
       result: body,

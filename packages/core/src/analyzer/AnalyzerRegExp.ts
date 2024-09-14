@@ -1,6 +1,6 @@
-import type { Analyzer } from './Analyzer';
+import { Analyzer } from './Analyzer';
 
-export class AnalyzerRegExp implements Analyzer {
+export class AnalyzerRegExp extends Analyzer {
   _content!: string;
 
   parse(content: string) {

@@ -5,8 +5,9 @@ import type { Rule } from '@any-reader/rule-utils';
 import { AnalyzerXPath } from '../analyzer/AnalyzerXPath';
 import { JsVmException } from '../exception/JsVmException';
 import { __http__ } from './request';
+import { JSEngine as BaseJSEngine } from '../sandbox/JSEngine';
 
-export class JSEngine {
+export class JSEngine extends BaseJSEngine {
   static environment: any = {};
   static VMCtx: any;
 
@@ -33,7 +34,9 @@ export class JSEngine {
       },
       http,
       xpath: async (html: string, xpath: string): Promise<string[]> => {
-        const analyzer = new AnalyzerXPath();
+        const analyzer = new AnalyzerXPath({
+          JSEngine: null as unknown as typeof JSEngine
+        });
         analyzer.parse(html);
         return await analyzer.getStringList(xpath);
       }

@@ -2,19 +2,22 @@ import { AnalyzerFilter } from './analyzer/AnalyzerFilter';
 import { AnalyzerHtml } from './analyzer/AnalyzerHtml';
 import { AnalyzerJS } from './analyzer/AnalyzerJS';
 import { AnalyzerJSONPath } from './analyzer/AnalyzerJSONPath';
-import { AnalyzerManager, Analyzers } from './analyzer/AnalyzerManager';
 import { AnalyzerRegExp } from './analyzer/AnalyzerRegExp';
 import { AnalyzerReplace } from './analyzer/AnalyzerReplace';
 import { AnalyzerXPath } from './analyzer/AnalyzerXPath';
 import { AnalyzerWeb } from './analyzer/AnalyzerWeb';
-import { ILogger, LogLevel, NoLogger } from './logger';
+import { AnalyzerManager, AnalyzerManagerOption } from './analyzer/AnalyzerManager';
+import { LogLevel, NoLogger } from './logger';
+import { JSEngine } from './analyzer/JSEngine';
 
 export { analyzerUrl } from './analyzer/analyzerUrl';
+export { AnalyzerHtml, AnalyzerJS, AnalyzerJSONPath, AnalyzerRegExp, AnalyzerReplace, AnalyzerXPath, AnalyzerFilter, AnalyzerWeb };
 
-export function createAnalyzerManager(params: { analyzers?: Analyzers[]; logger?: ILogger; logLevel?: LogLevel } = {}): AnalyzerManager {
+export function createAnalyzerManager(params: Partial<AnalyzerManagerOption> = {}): AnalyzerManager {
   return new AnalyzerManager({
     logger: params.logger || new NoLogger(),
     logLevel: params.logLevel || LogLevel.Off,
+    JSEngine: params.JSEngine || JSEngine,
     analyzers: params.analyzers || [
       {
         pattern: /^@css:/i,

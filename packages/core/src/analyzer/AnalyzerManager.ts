@@ -2,6 +2,7 @@ import { AnalyzerException } from '../exception/AnalyzerException';
 import { ILogger, LogLevel } from '../logger';
 import type { Analyzer } from './Analyzer';
 import { AnalyzerJS } from './AnalyzerJS';
+import type { JSEngine } from '../sandbox/JSEngine';
 
 const RULE_TYPE_PATTERN = /@js:|@hetu:|@web:|@webview:|@css:|@json:|@http:|@xpath:|@match:|@regex:|@regexp:|@filter:|@replace:|@encode:|@decode:|^/gi;
 
@@ -26,15 +27,24 @@ export interface Analyzers {
   Analyzer: typeof Analyzer;
 }
 
+export interface AnalyzerManagerOption {
+  analyzers: Analyzers[];
+  logger: ILogger;
+  logLevel: LogLevel;
+  JSEngine: typeof JSEngine;
+}
+
 export class AnalyzerManager {
   public analyzers: Analyzers[];
   public logger: ILogger;
   public logLevel: LogLevel;
+  public JSEngine: typeof JSEngine;
 
-  constructor(params: { analyzers: Analyzers[]; logger: ILogger; logLevel: LogLevel }) {
+  constructor(params: AnalyzerManagerOption) {
     this.analyzers = params.analyzers || [];
     this.logger = params.logger || console;
     this.logLevel = params.logLevel || LogLevel.Off;
+    this.JSEngine = params.JSEngine;
   }
 
   getAnalyzer(rule: string) {
@@ -57,9 +67,25 @@ export class AnalyzerManager {
       r = r.replace(analyzer.replace || analyzer.pattern, '');
       const position = r.indexOf('##');
       if (position > -1) {
-        ruleList.push(new SingleRule(new analyzer.Analyzer(), r.substring(0, position), r.substring(position + 2)));
+        ruleList.push(
+          new SingleRule(
+            new analyzer.Analyzer({
+              JSEngine: this.JSEngine
+            }),
+            r.substring(0, position),
+            r.substring(position + 2)
+          )
+        );
       } else {
-        ruleList.push(new SingleRule(new analyzer.Analyzer(), r, ''));
+        ruleList.push(
+          new SingleRule(
+            new analyzer.Analyzer({
+              JSEngine: this.JSEngine
+            }),
+            r,
+            ''
+          )
+        );
       }
     }
     return ruleList.reverse();
@@ -96,7 +122,7 @@ export class AnalyzerManager {
     }
   }
 
-  async getElements(rule: string, body: string): Promise<any[]> {
+  public async getElements(rule: string, body: string): Promise<any[]> {
     let temp: string | string[] = body;
 
     for (const r of this.splitRuleReversed(rule)) {
@@ -141,7 +167,7 @@ export class AnalyzerManager {
     }
   }
 
-  async getString(rule: string, body: string): Promise<string> {
+  public async getString(rule: string, body: string): Promise<string> {
     if (!rule) return '';
     const expressionPattern = /\{\{(.*?)\}\}/g;
 
@@ -180,7 +206,7 @@ export class AnalyzerManager {
     }
   }
 
-  async getStringList(rule: string, body: string): Promise<string[]> {
+  public async getStringList(rule: string, body: string): Promise<string[]> {
     if (!rule) return [];
     const expressionPattern = /\{\{(.*?)\}\}/g;
 
@@ -209,7 +235,12 @@ export class AnalyzerManager {
     return Array.isArray(temp) ? temp : [temp];
   }
 
-  async getUrl(rule: string, host: string, body: string): Promise<string> {
+  public async parseJsUrl(url: string) {
+    if (url.startsWith('@js:')) return await this.JSEngine.evaluate(url.substring(4));
+    return url;
+  }
+
+  public async getUrl(rule: string, host = '', body = ''): Promise<string> {
     let url = await this.getString(rule, body);
     if (typeof url !== 'string') return url;
 

@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer';
-import type { Analyzer } from './Analyzer';
+import { Analyzer } from './Analyzer';
 
-export class AnalyzerFilter implements Analyzer {
+export class AnalyzerFilter extends Analyzer {
   private _content!: string;
   private _url!: string;
 

@@ -1,8 +1,8 @@
 import xpath from 'xpath.js';
 import { DOMParser, MIME_TYPE } from '@xmldom/xmldom';
-import type { Analyzer } from './Analyzer';
+import { Analyzer } from './Analyzer';
 
-export class AnalyzerXPath implements Analyzer {
+export class AnalyzerXPath extends Analyzer {
   _content!: string;
 
   parse(content: string | string[]) {

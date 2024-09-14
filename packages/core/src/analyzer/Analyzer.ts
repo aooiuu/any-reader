@@ -1,3 +1,5 @@
+import type { JSEngine } from '../sandbox/JSEngine';
+
 export abstract class IAnalyzer {
   abstract parse(content: string): void;
   abstract getString(rule: string): Promise<string>;
@@ -6,6 +8,12 @@ export abstract class IAnalyzer {
 }
 
 export class Analyzer implements IAnalyzer {
+  JSEngine: typeof JSEngine;
+
+  constructor(options: { JSEngine: typeof JSEngine }) {
+    this.JSEngine = options.JSEngine;
+  }
+
   parse(_: string): void {
     throw new Error('Method not implemented.');
   }

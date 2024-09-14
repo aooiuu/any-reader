@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite';
+import { alias } from '../alias';
 
 export default defineConfig({
   optimizeDeps: {
@@ -8,5 +9,9 @@ export default defineConfig({
     hmr: {
       overlay: false
     }
+  },
+
+  resolve: {
+    alias
   }
 });

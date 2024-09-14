@@ -1,11 +1,7 @@
 import electron from 'vite-plugin-electron';
-import path from 'path';
-
-const r = (...args: string[]) => path.resolve(...args);
+import { alias } from '../../../../alias';
 
 export default (isBuild: boolean) => {
-  const cwd = process.cwd();
-
   return electron({
     entry: 'electron/main.ts',
     vite: {
@@ -17,10 +13,7 @@ export default (isBuild: boolean) => {
         }
       },
       resolve: {
-        alias: {
-          '@any-reader/core': r(cwd, '../../packages/core/src'),
-          '@any-reader/shared': r(cwd, '../../packages/shared/src')
-        }
+        alias
       }
     }
   });

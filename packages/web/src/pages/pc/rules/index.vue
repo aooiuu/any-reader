@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full flex flex-col bg-[--ar-main-background] px-10 py-10 text-[--ar-color-text]">
+  <div class="relative h-full flex flex-col bg-[--ar-main-background] px-10 py-10 text-[--ar-color-text]">
     <div class="mb-10 flex gap-10">
       <div class="flex flex-1 items-center gap-10">
         <a-input-search v-model:value="searchText" placeholder="搜索" class="!w-140px" />
@@ -89,11 +89,17 @@
         </template>
       </a-table>
     </div>
+
+    <!-- 规则编辑 -->
+    <a-drawer v-model:open="ruleInfoVisible" width="100%" title="编辑规则" placement="right" :get-container="false" :closable="false">
+      <RuleInfo v-if="ruleInfoVisible" :rule-id="ruleId" @close="ruleInfoVisible = false" />
+    </a-drawer>
   </div>
 </template>
 
 <script setup lang="tsx">
 import { App } from 'ant-design-vue';
+import type { ColumnsType } from 'ant-design-vue/es/table/Table';
 import _ from 'lodash-es';
 import { encodeRule, type Rule } from '@any-reader/rule-utils';
 import { useClipboard, useElementSize } from '@vueuse/core';
@@ -105,7 +111,7 @@ import { timeoutWith } from '@/utils/promise';
 import { useDropRules } from '@/hooks/useDropRules';
 import ImportRules from './ImportRules.vue';
 import ImportCMS from './ImportCMS.vue';
-import type { ColumnsType } from 'ant-design-vue/es/table/Table';
+import RuleInfo from '@/pages/pc/rule-info/index.vue';
 
 const { modal, message } = App.useApp();
 
@@ -119,6 +125,10 @@ const selectedKeys = ref<string[]>([]);
 const loading = ref(false);
 const fileInputRef = ref();
 
+// 规则编辑
+const ruleInfoVisible = ref(false);
+const ruleId = ref('');
+
 async function getRules() {
   loading.value = true;
   await rulesStore.sync();
@@ -129,12 +139,8 @@ const searchText = ref('');
 const contentTypes = ref(CONTENT_TYPES.map((e) => e.value).flat());
 
 function editRule(row: Rule) {
-  router.push({
-    name: 'ruleInfo',
-    query: {
-      id: row.id
-    }
-  });
+  ruleId.value = row.id;
+  ruleInfoVisible.value = true;
 }
 
 function sortableValue(obj: any, path: string) {

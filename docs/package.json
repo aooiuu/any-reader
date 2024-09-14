@@ -9,6 +9,7 @@
     "docs:preview": "vitepress preview"
   },
   "devDependencies": {
+    "@any-reader/core": "workspace:^",
     "mermaid": "^11.2.0",
     "vitepress": "^1.3.4",
     "vitepress-plugin-mermaid": "^2.0.16"

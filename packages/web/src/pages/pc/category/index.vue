@@ -1,6 +1,6 @@
 <template>
   <ARRuleEmpty v-if="!rulesStore.list.length" />
-  <div v-else class="h-full flex flex-col overflow-hidden bg-[--ar-main-background] text-[--ar-color-text] sm:flex-row">
+  <div v-else class="relative h-full flex flex-col overflow-hidden bg-[--ar-main-background] text-[--ar-color-text] sm:flex-row">
     <div class="rules-panel relative flex flex-col overflow-hidden bg-[--ar-left-bar-bg-secondary] p-10 pb-0 sm:h-full sm:w-140 sm:pb-10">
       <a-select v-if="typeof route.params.contentType === 'undefined'" v-model:value="contentType" class="mb-10">
         <a-select-option v-for="o in CONTENT_TYPES" :key="o.value" :value="o.value">{{ o.label }}</a-select-option>
@@ -87,7 +87,7 @@
         <SettingOutlined />
       </template>
 
-      <a-float-button tooltip="编辑规则" @click="editRule">
+      <a-float-button tooltip="编辑规则" @click="ruleInfoVisible = true">
         <template #icon>
           <EditOutlined />
         </template>
@@ -99,11 +99,14 @@
         </template>
       </a-float-button>
     </a-float-button-group>
+
+    <a-drawer v-model:open="ruleInfoVisible" width="100%" title="编辑规则" placement="right" :get-container="false" :closable="false">
+      <RuleInfo v-if="ruleInfoVisible" :rule-id="ruleId" @close="ruleInfoVisible = false" />
+    </a-drawer>
   </div>
 </template>
 
 <script setup lang="tsx">
-import { App } from 'ant-design-vue';
 import { CONTENT_TYPES } from '@/constants';
 import { ContentType } from '@any-reader/rule-utils';
 import { discover, discoverMap } from '@/api';
@@ -112,7 +115,6 @@ import { useFavoritesStore } from '@/stores/favorites';
 import { useRulesStore } from '@/stores/rules';
 import RuleInfo from '@/pages/pc/rule-info/index.vue';
 
-const { modal } = App.useApp();
 const route = useRoute();
 const router = useRouter();
 const favoritesStore = useFavoritesStore();
@@ -185,25 +187,7 @@ onDeactivated(() => {
 });
 
 // 编辑规则
-function editRule() {
-  const m = modal.confirm({
-    icon: <SettingOutlined class="!text-[--ar-color-text]" />,
-    closable: true,
-    mask: false,
-    footer: false,
-    title: '编辑规则',
-    class: '!p-0 top-0 !w-full',
-    wrapClassName: 'full-modal',
-    content: (
-      <RuleInfo
-        ruleId={ruleId.value}
-        onClose={() => {
-          m.destroy();
-        }}
-      />
-    )
-  });
-}
+const ruleInfoVisible = ref(false);
 
 // 禁用规则
 async function disableRule() {

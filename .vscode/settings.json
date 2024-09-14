@@ -3,6 +3,8 @@
 
   // 使用 eslint 格式化代码
   "eslint.enable": true,
+  "eslint.validate": ["javascript", "html", "vue", "typescript"],
+
   "[vue]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },

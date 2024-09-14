@@ -29,8 +29,8 @@ corepack enable
 # 安装依赖
 pnpm i
 
-# 编译 解析库、工具库、前端模板
-pnpm run build
+# 运行网页版
+pnpm run web:dev
 ```
 
 ### 源码目录结构

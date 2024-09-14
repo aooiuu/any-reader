@@ -1,7 +1,6 @@
-import { JSEngine } from './JSEngine';
-import type { Analyzer } from './Analyzer';
+import { Analyzer } from './Analyzer';
 
-export class AnalyzerJS implements Analyzer {
+export class AnalyzerJS extends Analyzer {
   _content!: any;
 
   parse(content: any) {
@@ -14,11 +13,11 @@ export class AnalyzerJS implements Analyzer {
   }
 
   async getStringList(rule: string): Promise<string[]> {
-    return this.getElements(rule);
+    return this.getElements(rule) as Promise<string[]>;
   }
 
   async getElements(rule: string) {
-    return await JSEngine.evaluate(rule, {
+    return await this.JSEngine.evaluate(rule, {
       result: this._content
     });
   }
