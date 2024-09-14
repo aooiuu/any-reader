@@ -1,7 +1,7 @@
 {
   "name": "docs",
   "type": "module",
-  "version": "1.10.10",
+  "version": "1.10.11",
   "private": true,
   "scripts": {
     "docs:dev": "vitepress dev",

@@ -80,7 +80,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           draft: true
-          # prerelease: true
+          prerelease: true
           files: |
             packages/web/dist/electron/latest*.yml
             packages/web/dist/electron/*.AppImage
