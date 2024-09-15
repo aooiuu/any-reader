@@ -31,15 +31,25 @@ export default withMermaid({
     nav: [
       { text: '指南', link: '/desktop/' },
       { text: '规则', link: '/rule/' },
-      { text: '规则测试', link: '/play/' },
+      { text: '规则测试', link: '/play/' }
     ],
     search: {
       provider: 'local'
     },
-    sidebar: guide.reduce((p, v) => {
-      p[v.link] = guide;
-      return p;
-    }, {}),
+    sidebar: guide.reduce(
+      (p, v) => {
+        p[v.link] = guide;
+        return p;
+      },
+      {
+        '/play/': {
+          items: [
+            { text: '取文本测试', link: '/play/' },
+            { text: '规则编解码', link: '/play/comparess' }
+          ]
+        }
+      }
+    ),
     editLink: {
       pattern: 'https://github.com/aooiuu/any-reader/edit/master/docs/:path',
       text: '编辑此页面'

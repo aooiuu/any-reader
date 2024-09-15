@@ -91,6 +91,9 @@ importers:
       '@any-reader/core':
         specifier: workspace:^
         version: link:../packages/core
+      '@any-reader/rule-utils':
+        specifier: workspace:^
+        version: link:../packages/rule-utils
       '@shikijs/vitepress-twoslash':
         specifier: ^1.17.6
         version: 1.17.6(typescript@5.5.4)

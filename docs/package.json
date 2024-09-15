@@ -10,6 +10,7 @@
   },
   "devDependencies": {
     "@any-reader/core": "workspace:^",
+    "@any-reader/rule-utils": "workspace:^",
     "@shikijs/vitepress-twoslash": "^1.17.6",
     "js-base64": "^3.7.7",
     "mermaid": "^11.2.0",

@@ -13,7 +13,7 @@
       <input class="w-full" v-model="rule" placeholder="这里输入规则, 比如 xpath, jsonpath 等等组合" />
     </div>
     <div class="details custom-block !p-10px">
-      <div class="min-h-40px">
+      <div class="min-h-40px break-words">
         {{ outputText || '' }}
       </div>
     </div>
