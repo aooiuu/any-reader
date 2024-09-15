@@ -10,6 +10,8 @@ outline: deep
 
 ## 规则结构
 
+::: details 规则结构
+
 ::: code-group
 
 ```json
@@ -62,47 +64,64 @@ outline: deep
 ```typescript
 export interface Rule {
   // ===== 通用字段 =====
-  host: string; // 域名
-  id: string; // uuid
-  name: string; // 书源名称
-  sort: number; // 书源排序
-  contentType: ContentType; // 书源类型
+  // 域名
+  // 当发起网络请求时, 如果最终的地址非 `http` 开头, 那么请求的时候会自动拼接上 `host`
+  // 规则里也可以使用变量 `$host` 来获取它
+  host: string;
+  id: string; // uuid, 用于区分规则的唯一性
+  name: string; // 规则名称
+  sort: number; // 规则排序, 越高越靠前
+  contentType: ContentType; // 规则类型
   loadJs: string; // 全局JS脚本
   author: string; // 规则作者
   userAgent: string; // Headers JSON字符串
 
   // ===== 解析流程 - 搜索 =====
-  enableSearch: boolean; // 搜索 - 启用
-  searchUrl: string; // 搜索 - 地址
-  searchList: string; // 搜索 - 列表
-  searchCover: string; // 搜索 - 封面
-  searchName: string; // 搜索 - 标题
-  searchAuthor: string; // 搜索 - 作者
-  searchChapter: string; // 搜索 - 章节
-  searchDescription: string; // 搜索 - 描述
-  searchResult: string; // 搜索 - 结果
+  enableSearch: boolean; // 表示搜索功能开启的状态
+  searchUrl: string; // 用法可参考 `URL地址规则`
+  // 以下规则用法可参考 `取列表规则`
+  // 可以使用变量: `result` 获取 `searchUrl` 的结果
+  searchList: string;
+  // 以下规则用法可参考 `取内容规则`
+  // 可以使用变量: `result` 获取 `searchList` 数组当前项的结果
+  searchCover: string; // 封面
+  searchName: string; // 标题
+  searchAuthor: string; // 作者
+  searchChapter: string; // 最新章节
+  searchDescription: string; // 描述
+  searchResult: string; // 结果
 
   // ===== 解析流程 - 章节列表 =====
-  chapterUrl: string; // 章节列表 - 请求地址
-  chapterName: string; // 章节列表 - 标题
-  chapterList: string; // 章节列表 - 列表
-  chapterCover: string; // 章节列表 - 封面
-  chapterTime: string; // 章节列表 - 时间
-  chapterResult: string; // 章节列表 - 结果
-  contentItems: string; // 章节列表 - 内容
-  enableMultiRoads: boolean; // 启用多线路 暂不支持
-  chapterRoads: string; // 线路列表 暂不支持
-  chapterNextUrl: string; // 章节列表下一页地址
+  // 以下规则用法可参考 `URL地址规则`
+  // 可以使用变量: `result` 获取 `searchResult` 或者 `discoverResult` 的结果
+  chapterUrl: string;
+  // 以下规则用法可参考 `取列表规则`
+  // 可以使用变量: `result` 获取 `chapterUrl` 的结果
+  // 可以使用变量: `lastResult` 获取 `searchResult` 或者 `discoverResult` 的结果
+  chapterList: string; // 列表
+  // 以下规则用法可参考 `取内容规则`
+  // 可以使用变量: `result` 获取 `chapterList` 数组当前项的结果
+  // 可以使用变量: `lastResult` 获取 `searchResult` 或者 `discoverResult` 的结果
+  chapterName: string; // 标题
+  chapterCover: string; // 封面
+  chapterTime: string; // 时间
+  contentItems: string; // 内容
+  chapterNextUrl: string; // 下一页地址
+  chapterResult: string; // 结果
 
   // ===== 解析流程 - 发现页 =====
-  enableDiscover: boolean; // 发现页 - 是否启用
-  discoverUrl: string; // 发现页 - 请求地址
-  discoverList: string; // 发现页 - 列表
-  discoverName: string; // 发现页 - 标题
-  discoverCover: string; // 发现页 - 封面
-  discoverAuthor: string; // 发现页 - 作者
-  discoverDescription: string; // 发现页 - 描述
-  discoverResult: string; // 发现页 - 结果
+  enableDiscover: boolean; // 是否启用发现页
+  discoverUrl: string; // 用法可参考 `发现页分类规则`
+  // 以下规则用法可参考 `取列表规则`
+  // 可以使用变量: `result` 获取 `discoverUrl` 的结果
+  discoverList: string; // 列表
+  // 以下规则用法可参考 `取内容规则`
+  // 可以使用变量: `result` 获取 `discoverList` 数组当前项的结果
+  discoverName: string; // 标题
+  discoverCover: string; // 封面
+  discoverAuthor: string; // 作者
+  discoverDescription: string; // 描述
+  discoverResult: string; // 结果
   // discoverItems: string
   discoverTags: string;
   discoverChapter: string;
@@ -124,6 +143,7 @@ enum ContentType {
 ```
 
 > 格式 `eso://:xxxxx` 是压缩后的规则, 软件也会自动识别, 也可以使用命令工具解码还原成json
+>
 > 并不是每个字段都是必填的, 按需填写既可。
 
 :::
@@ -142,7 +162,7 @@ enum ContentType {
 | JSON | `{"url":"https://xxx.com/search","method":"post","headers":{"token":"111"},"body":{"keyword":"$keyword"}}` |
 | @js  | `@js:(() => { return {url, method, body, headers}; })();`                                                  |
 
-::: details 例子1
+::: details 例子1 - 简单的GET请求
 
 输入:
 
@@ -160,7 +180,7 @@ GET https://xxx.com/search?q=$keyword&pageSize=10
 
 :::
 
-::: details 例子2
+::: details 例子2 - POST 请求
 
 输入:
 
@@ -180,12 +200,13 @@ Content-Type: application/json
 
 :::
 
-::: details 例子3
+::: details 例子3 - 复杂点的可以用JS获取请求参数
 
 输入:
 
 ```javascript
 @js:(() => {
+  // 处理一些事情
   return { url: 'https://xxx.com/search', method: 'post', headers: { token: '111' }, body: { keyword: '$keyword' } };
 })();
 ```
@@ -257,6 +278,12 @@ Content-Type: application/json
 #xxxlist li
 ```
 
+> 规则用法可以参考下面的 `规则表达式`
+>
+> 这里使用的是默认的 `@css`, `#xxxlist li` 效果类似于 `document.querySelectorAll('#xxxlist li')`
+>
+> 也可以使用 `xpath` `js` 等方式去获取, `规则表达式` 里有介绍
+
 :::
 
 ::: details 例子2 `@js` 网络请求
@@ -297,7 +324,7 @@ Content-Type: application/json
 
 ::: details 例子1
 
-假设列表规则拿到的是像这样的数组:
+假设列表规则拿到的数组每一项内容是这样的:
 
 ```html
 <li>
@@ -334,34 +361,11 @@ Content-Type: application/json
 
 比如搜索时，`searchResult` 拿到的结果将会给获取章节列表的流程使用，获取章节列表的URL规则里可以使用 `result` 变量拿到 `searchResult` 的结果。
 
-> **结果规则**的结果会成为下一个解析流程**URL地址规则**的 `result` 变量，成为下一个解析流程**URL地址规则**外其它规则的 `lastResult` 变量。
->
-> **URL地址规则**的结果会成为当前解析流程其他规则的 `result` 变量
+> **结果规则**的结果会成为下一个解析流程**URL地址规则**的 `result` 变量，成为下一个解析流程**取列表规则**的 `lastResult` 变量。
 
-## 解析流程
+### 发现页分类规则
 
-### 搜索
-
-1. 通过 `host` 和 `searchUrl` 获取数据
-2. 通过 `searchList` 字段获取搜索结果列表数组
-3. 通过 `searchCover`、 `searchName`、 `searchAuthor`、 `searchChapter`、 `searchDescription` 字段获取每单个搜索结果的具体内容
-4. 通过 `searchResult` 字段匹配数据以用来给 `获取章节列表` 使用
-
-### 获取章节列表
-
-1. 通过 `host`、`chapterUrl`、`searchResult` 获取数据
-2. 通过 `chapterList` 字段获取章节列表数组
-3. 通过 `chapterName`、 `chapterCover`、 `chapterTime` 字段获取单个章节的具体内容
-4. 通过 `chapterResult` 字段匹配数据以用来给 `获取内容` 使用
-
-### 获取内容
-
-1. 通过 `host`、`contentItems`、`chapterResult` 获取数据
-2. 通过 `contentType` 按类型解析内容
-
-### 发现页分类
-
-通过 `discoverUrl` 处理, 例子:
+`discoverUrl` 例子:
 
 ::: code-group
 
@@ -395,12 +399,7 @@ Content-Type: application/json
 
 :::
 
-### 发现页列表
-
-1. 通过 发现页分类 的 url 获取数据
-2. 通过 `discoverList` 字段获取列表数组
-3. 通过 `discoverName`、 `discoverCover`、 `discoverAuthor` 等字段获取单个章节的具体内容
-4. 通过 `discoverResult` 字段匹配数据以用来给 `获取内容` 使用
+> `discoverUrl` 虽然规则看起来像 `URL地址规则`, 但是用法截然不同, 所以这里单独说明
 
 ## 规则支持情况
 
@@ -414,22 +413,9 @@ Content-Type: application/json
 | ---- | :------: | ---------------------------------------------------------------------------------------------------------- |
 | URL  |    ✅    | `https://xxx.com/search?q=$keyword&pageSize=10`                                                            |
 | JSON |    ✅    | `{"url":"https://xxx.com/search","method":"post","headers":{"token":"111"},"body":{"keyword":"$keyword"}}` |
-| @js  |    ✅    | `@js:(() => { return {url, method, body, encoding, headers}; })();`                                        |
+| @js  |    ✅    | `@js:(() => { return {url, method, body, headers}; })();`                                        |
 
-#### 变量
-
-| 字段名     | 支持情况 | 说明                         |
-| ---------- | :------: | ---------------------------- |
-| $keyword   |    ✅    | 搜索用的关键字               |
-| searchKey  |    ✅    | 同 `$keyword` , ⚠️不推荐使用 |
-| $host      |    ✅    | 替换规则的 `host`            |
-| $result    |    ✅    | 上一个步骤 result 字段的结果 |
-| lastResult |    ✅    |                              |
-| searchPage |    ❌    |                              |
-| $page      |    ❌    |                              |
-| $pageSize  |    ❌    |                              |
-
-### 取内容规则
+### 规则表达式
 
 | 特性       | 支持情况 | 说明                             | 示例                                    |
 | ---------- | :------: | -------------------------------- | --------------------------------------- |
@@ -480,9 +466,9 @@ Content-Type: application/json
 
 > 可以搭配解析流程产生的变量使用, 比如 `result`、`lastResult`
 >
-> 如果`URL地址规则`拿到的结果是 `123`, 那么在非`URL地址规则`字段中 `@js:result` 将输出 `123`
+> 如果`URL地址规则`拿到的结果是 `123`, 那么在`取列表规则`字段中 `@js:result` 将输出 `123`
 >
-> 如果上一个流程`结果规则`拿到的结果是 `456`, 那么在非`URL地址规则`字段中 `@js:lastResult` 将输出 `456`, 在`URL地址规则`字段中 `@js:result` 将输出 `456`
+> 如果上一个流程`结果规则`拿到的结果是 `456`, 那么在`取列表规则`字段中 `@js:lastResult` 将输出 `456`, 在`URL地址规则`字段中 `@js:result` 将输出 `456`
 
 内置方法: `CryptoJS`、`fetch`、`xpath`
 
