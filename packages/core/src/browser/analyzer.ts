@@ -6,7 +6,7 @@ import { AnalyzerReplace } from '../analyzer/AnalyzerReplace';
 import { AnalyzerXPath } from '../analyzer/AnalyzerXPath';
 import { AnalyzerManager, AnalyzerManagerOption } from '../analyzer/AnalyzerManager';
 import { LogLevel, NoLogger } from '../logger';
-import { JSEngine } from '../analyzer/JSEngine';
+import { JSEngine } from './analyzer/JSEngine';
 
 export { AnalyzerHtml, AnalyzerJS, AnalyzerJSONPath, AnalyzerRegExp, AnalyzerReplace, AnalyzerXPath };
 
