@@ -158,13 +158,54 @@ export class AnalyzerManager {
   }
 
   async _getString(r: SingleRule, rule?: string): Promise<string> {
-    const _rule = rule || r.rule;
-    try {
-      const res = await r.analyzer.getString(_rule);
-      return Array.isArray(res) ? res.join('').trim() : res;
-    } catch (error: any) {
-      throw new AnalyzerException(error?.message);
+    if (rule === undefined) {
+      rule = r.rule;
     }
+
+    if (r.analyzer instanceof AnalyzerJS) {
+      const temp = await r.analyzer.getString(rule);
+      if (temp === null) {
+        return '';
+      } else if (Array.isArray(temp)) {
+        return temp
+          .map((s) => typeof s !== 'undefined' && String(s).trim())
+          .filter((s) => s)
+          .join('  ');
+      }
+      return String(temp).trim();
+    }
+
+    let result = '';
+
+    if (rule.includes('&&')) {
+      const rs = [];
+      for (const rSimple of rule.split('&&')) {
+        const temp = await this._getString(r, rSimple);
+        if (temp.length > 0) {
+          rs.push(temp);
+        }
+      }
+      return rs.join('  ');
+    } else if (rule.includes('||')) {
+      for (const rSimple of rule.split('||')) {
+        const temp = await this._getString(r, rSimple);
+        if (temp.length > 0) {
+          return temp;
+        }
+      }
+    } else {
+      const temp = await r.analyzer.getString(rule);
+      if (Array.isArray(temp)) {
+        result = temp
+          .map((s) => typeof s !== 'undefined' && String(s).trim())
+          .filter((s) => s)
+          .join('  ');
+      } else if (temp !== null) {
+        result = String(temp).trim();
+      }
+    }
+
+    return result.length === 0 ? '' : this.replaceSmart(r.replace)(result);
   }
 
   public async getString(rule: string, body: string): Promise<string> {
@@ -197,13 +238,44 @@ export class AnalyzerManager {
     return temp;
   }
 
-  async _getStringList(r: SingleRule, rule?: string): Promise<string[]> {
-    const _rule = rule || r.rule;
-    try {
-      return await r.analyzer.getStringList(rule || r.rule);
-    } catch (error: any) {
-      throw new AnalyzerException(error?.message);
+  async _getStringList(r: SingleRule, rule?: string): Promise<string[] | string> {
+    if (rule === undefined) {
+      rule = r.rule;
     }
+
+    if (r.analyzer instanceof AnalyzerJS) {
+      return await r.analyzer.getStringList(rule);
+    }
+
+    if (rule.includes('&&')) {
+      const result = [];
+      for (const rSimple of rule.split('&&')) {
+        const temp = await this._getStringList(r, rSimple);
+        if (Array.isArray(temp)) {
+          result.push(...temp.map((s) => s?.trim()).filter((s) => s));
+        } else if (temp && temp.trim()) {
+          result.push(temp.trim());
+        }
+      }
+      return result;
+    } else if (rule.includes('||')) {
+      let result: string[] = [];
+      for (const rSimple of rule.split('||')) {
+        const temp = await this._getStringList(r, rSimple);
+        if (Array.isArray(temp)) {
+          result = temp.map((s) => s?.trim()).filter((s) => s);
+        } else if (temp && temp.trim()) {
+          result = [temp.trim()];
+        }
+        if (result.length > 0) {
+          return result;
+        }
+      }
+    } else {
+      return await r.analyzer.getStringList(rule);
+    }
+
+    return [];
   }
 
   public async getStringList(rule: string, body: string): Promise<string[]> {

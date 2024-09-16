@@ -31,7 +31,7 @@ export default withMermaid({
     nav: [
       { text: '指南', link: '/desktop/' },
       { text: '规则', link: '/rule/' },
-      { text: '规则测试', link: '/play/' }
+      { text: '在线工具', link: '/play/' }
     ],
     search: {
       provider: 'local'

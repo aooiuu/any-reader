@@ -16,6 +16,36 @@ describe('analyzer', () => {
     expect(content).toEqual('iPhone');
   });
 
+  it('|| getString', async () => {
+    const body = '{"a": "1"}';
+    const content = await analyzerManager.getString('$.b||$.a', body);
+    expect(content).toEqual('1');
+  });
+
+  it('|| getStringList', async () => {
+    const body = '{"a": "1"}';
+    const content = await analyzerManager.getStringList('$.b||$.a', body);
+    expect(content).toEqual(['1']);
+  });
+
+  it('##', async () => {
+    const body = '{"a": "123"}';
+    const content = await analyzerManager.getString('$.a##2##替换文本', body);
+    expect(content).toEqual('1替换文本3');
+  });
+
+  it('{{}}', async () => {
+    const body = '{"a": 1}';
+    const content = await analyzerManager.getString('q{{$.x||$.a}}w', body);
+    expect(content).toEqual('q1w');
+  });
+
+  it('@replace', async () => {
+    const body = '123';
+    const content = await analyzerManager.getString('@replace:2', body);
+    expect(content).toEqual('13');
+  });
+
   it('XPath', async () => {
     const body = '<div class="box1"><div class="box2">content2</div><div class="box3">content3</div></div>';
     const content = await analyzerManager.getString('//*[@class="box3"]/text()', body);

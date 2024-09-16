@@ -14,53 +14,6 @@ outline: deep
 
 ::: code-group
 
-```json
-{
-  "id": "xxx-xxx-xxx-xxx-xxx",
-  "author": "",
-  "name": "",
-  "host": "",
-  "icon": "",
-  "contentType": 1,
-  "sort": 0,
-  "userAgent": "",
-  "enableDiscover": false,
-  "discoverUrl": "",
-  "discoverNextUrl": "",
-  "discoverList": "",
-  "discoverTags": "",
-  "discoverName": "",
-  "discoverCover": "",
-  "discoverChapter": "",
-  "discoverDescription": "",
-  "discoverResult": "",
-  "enableSearch": false,
-  "searchUrl": "",
-  "searchAuthor": "",
-  "chapterCover": "",
-  "chapterTime": "",
-  "discoverAuthor": "",
-  "searchList": "",
-  "searchTags": "",
-  "searchName": "",
-  "searchCover": "",
-  "searchChapter": "",
-  "searchDescription": "",
-  "searchResult": "",
-  "enableMultiRoads": false,
-  "chapterRoads": "",
-  "chapterRoadName": "",
-  "chapterUrl": "",
-  "chapterNextUrl": "",
-  "chapterList": "",
-  "chapterName": "",
-  "chapterResult": "",
-  "contentUrl": "",
-  "contentNextUrl": "",
-  "contentItems": ""
-}
-```
-
 ```typescript
 export interface Rule {
   // ===== 通用字段 =====
@@ -142,11 +95,58 @@ enum ContentType {
 }
 ```
 
+```json
+{
+  "id": "xxx-xxx-xxx-xxx-xxx",
+  "author": "",
+  "name": "",
+  "host": "",
+  "icon": "",
+  "contentType": 1,
+  "sort": 0,
+  "userAgent": "",
+  "enableDiscover": false,
+  "discoverUrl": "",
+  "discoverNextUrl": "",
+  "discoverList": "",
+  "discoverTags": "",
+  "discoverName": "",
+  "discoverCover": "",
+  "discoverChapter": "",
+  "discoverDescription": "",
+  "discoverResult": "",
+  "enableSearch": false,
+  "searchUrl": "",
+  "searchAuthor": "",
+  "chapterCover": "",
+  "chapterTime": "",
+  "discoverAuthor": "",
+  "searchList": "",
+  "searchTags": "",
+  "searchName": "",
+  "searchCover": "",
+  "searchChapter": "",
+  "searchDescription": "",
+  "searchResult": "",
+  "enableMultiRoads": false,
+  "chapterRoads": "",
+  "chapterRoadName": "",
+  "chapterUrl": "",
+  "chapterNextUrl": "",
+  "chapterList": "",
+  "chapterName": "",
+  "chapterResult": "",
+  "contentUrl": "",
+  "contentNextUrl": "",
+  "contentItems": ""
+}
+```
+
+:::
+
 > 格式 `eso://:xxxxx` 是压缩后的规则, 软件也会自动识别, 也可以使用 [在线规则编解码工具](/play/comparess) 还原成json
 >
 > 并不是每个字段都是必填的, 按需填写既可。
-
-:::
 
 ## 规则字段类型
 
@@ -405,39 +405,13 @@ Content-Type: application/json
 
 > `discoverUrl` 虽然规则看起来像 `URL地址规则`, 但是用法截然不同, 所以这里单独说明
 
-## 规则支持情况
-
-- ✅ 理论支持
-- ⚠️ 支持部分
-- ❌ 暂不支持
-
-### URL地址规则
-
-| 特性 | 支持情况 | 示例                                                                                                       |
-| ---- | :------: | ---------------------------------------------------------------------------------------------------------- |
-| URL  |    ✅    | `https://xxx.com/search?q=$keyword&pageSize=10`                                                            |
-| JSON |    ✅    | `{"url":"https://xxx.com/search","method":"post","headers":{"token":"111"},"body":{"keyword":"$keyword"}}` |
-| @js  |    ✅    | `@js:(() => { return {url, method, body, headers}; })();`                                        |
-
-### 规则表达式
-
-| 特性       | 支持情况 | 说明                             | 示例                                    |
-| ---------- | :------: | -------------------------------- | --------------------------------------- |
-| `@css`     |    ✅    |                                  | `@css:.box1 .box2@text`                 |
-| `@json`    |    ✅    |                                  | `@json:$.list[:1].title`                |
-| `@xpath`   |    ✅    |                                  | `@xpath://*[@class="box3"]/text()`      |
-| `@js`      |    ✅    |                                  |                                         |
-| `@filter`  |    ✅    | 模拟浏览器加载地址后匹配指定链接 | `@filter:(?:m3u8\|mp4)(?:$\|/\|\\?\|&)` |
-| `@replace` |    ✅    |                                  | `@replace:.*?url=\|.*?v=`               |
-| `##`       |    ✅    | 正则替换                         | `@css:.c2 a@href##\\d+\\.html`          |
-| `{‍​‍{}}`  |    ✅    | 使用变量                         | `http://www.aaa.com/{‍{$.id}}`          |
-| 嵌套组合   |    ✅    |                                  | `$.info.body@css:.box1 .box2@text`      |
-| `\|\|`     |    ✅    |                                  |                                         |
-| `&&`       |    ✅    |                                  |                                         |
-
-规则可以省略开头的,**@css**、**@xpath**、**@json**, 因为解析器会尝试自动识别。
-
 ## 规则表达式
+
+[在线练习](/play/)
+
+<!--@include: ./expression.md-->
+
+---
 
 ### CSS
 
@@ -474,7 +448,7 @@ Content-Type: application/json
 >
 > 如果上一个流程`结果规则`拿到的结果是 `456`, 那么在`取列表规则`字段中 `@js:lastResult` 将输出 `456`, 在`URL地址规则`字段中 `@js:result` 将输出 `456`
 
-内置方法: `CryptoJS`、`fetch`、`xpath`
+内置方法: `CryptoJS`、`fetch`、`xpath`、`cheerio`
 
 #### CryptoJS
 

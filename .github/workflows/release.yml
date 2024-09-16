@@ -37,9 +37,9 @@ jobs:
         run: sed -i 's/\/usr\/bin\/env node/node/g' C:/Users/runneradmin/setup-pnpm/node_modules/.pnpm/pnpm@9.4.0/node_modules/pnpm/bin/pnpm.cjs
         shell: bash
 
-      - run: npx changelogithub
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - run: npx changelogithub
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - run: pnpm install
       - run: pnpm run build
