@@ -84,15 +84,15 @@
     "eslint": "^8.57.0",
     "eslint-plugin-vue": "^9.28.0",
     "husky": "^8.0.3",
-    "npm-run-all2": "^6.2.2",
+    "npm-run-all2": "^6.2.3",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "tsup": "^8.2.4",
-    "tsx": "^4.19.0",
+    "tsx": "^4.19.1",
     "unbuild": "^2.0.0",
     "unocss": "^0.62.3",
     "vite-tsconfig-paths": "^5.0.1",
-    "vitest": "^2.0.5"
+    "vitest": "^2.1.1"
   },
   "lint-staged": {
     "*.{vue,js,ts}": "eslint --fix"
