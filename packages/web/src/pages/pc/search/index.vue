@@ -37,7 +37,7 @@
                     :preview="false"
                     alt=""
                     srcset=""
-                    class="cover h-136 w-102"
+                    class="cover !h-136px !w-102px"
                     width="100%"
                     height="100%"
                     fit="cover"

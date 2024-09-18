@@ -50,7 +50,7 @@
             "
           >
             <div class="mb-5 h-136 w-102 overflow-hidden rounded-5">
-              <ARCover :src="row.cover" :preview="false" alt="" srcset="" class="h-136 w-102" width="100%" height="100%" fit="cover" />
+              <ARCover :src="row.cover" :preview="false" alt="" srcset="" class="!h-136px !w-102px" width="100%" height="100%" fit="cover" />
             </div>
             <div class="mb-2 overflow-hidden text-ellipsis whitespace-nowrap">{{ row.name }}</div>
             <div class="overflow-hidden text-ellipsis whitespace-nowrap text-12 op-70">{{ row.author }}</div>
