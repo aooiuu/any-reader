@@ -445,8 +445,8 @@ importers:
         specifier: ^6.1.1
         version: 6.1.1(rollup@4.21.2)(typescript@5.5.4)
       rollup-plugin-esbuild:
-        specifier: ^5.0.0
-        version: 5.0.0(esbuild@0.23.1)(rollup@4.21.2)
+        specifier: ^6.1.1
+        version: 6.1.1(esbuild@0.23.1)(rollup@4.21.2)
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -5876,12 +5876,12 @@ packages:
       rollup: ^3.29.4 || ^4
       typescript: ^4.5 || ^5.0
 
-  rollup-plugin-esbuild@5.0.0:
-    resolution: {integrity: sha512-1cRIOHAPh8WQgdQQyyvFdeOdxuiyk+zB5zJ5+YOwrZP4cJ0MT3Fs48pQxrZeyZHcn+klFherytILVfE4aYrneg==}
-    engines: {node: '>=14.18.0', npm: '>=8.0.0'}
+  rollup-plugin-esbuild@6.1.1:
+    resolution: {integrity: sha512-CehMY9FAqJD5OUaE/Mi1r5z0kNeYxItmRO2zG4Qnv2qWKF09J2lTy5GUzjJR354ZPrLkCj4fiBN41lo8PzBUhw==}
+    engines: {node: '>=14.18.0'}
     peerDependencies:
-      esbuild: '>=0.10.1'
-      rollup: ^1.20.0 || ^2.0.0 || ^3.0.0
+      esbuild: '>=0.18.0'
+      rollup: ^1.20.0 || ^2.0.0 || ^3.0.0 || ^4.0.0
 
   rollup@3.29.4:
     resolution: {integrity: sha512-oWzmBZwvYrU0iJHtDmhsm662rC15FRXmcjCk1xD771dFDx5jJ02ufAQQTn0etB2emNk4J9EZg/yWKpsn9BWGRw==}
@@ -13349,14 +13349,13 @@ snapshots:
     optionalDependencies:
       '@babel/code-frame': 7.24.7
 
-  rollup-plugin-esbuild@5.0.0(esbuild@0.23.1)(rollup@4.21.2):
+  rollup-plugin-esbuild@6.1.1(esbuild@0.23.1)(rollup@4.21.2):
     dependencies:
       '@rollup/pluginutils': 5.1.0(rollup@4.21.2)
       debug: 4.3.7
       es-module-lexer: 1.5.4
       esbuild: 0.23.1
-      joycon: 3.1.1
-      jsonc-parser: 3.3.1
+      get-tsconfig: 4.8.0
       rollup: 4.21.2
     transitivePeerDependencies:
       - supports-color
