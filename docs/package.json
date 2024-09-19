@@ -11,9 +11,9 @@
   "devDependencies": {
     "@any-reader/core": "workspace:^",
     "@any-reader/rule-utils": "workspace:^",
-    "@shikijs/vitepress-twoslash": "^1.17.7",
+    "@shikijs/vitepress-twoslash": "^1.18.0",
     "js-base64": "^3.7.7",
-    "mermaid": "^11.2.0",
+    "mermaid": "^11.2.1",
     "vitepress": "^1.3.4",
     "vitepress-plugin-mermaid": "^2.0.16"
   }

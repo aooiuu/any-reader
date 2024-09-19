@@ -143,7 +143,7 @@
     "@types/vscode": "^1.93.0",
     "@vscode/test-electron": "^2.4.1",
     "easy-post-message": "^0.1.0",
-    "eslint": "^8.57.0",
+    "eslint": "^8.57.1",
     "eslint-config-prettier": "^8.10.0",
     "eslint-plugin-prettier": "^4.2.1",
     "execa": "^8.0.1",
