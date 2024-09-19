@@ -87,7 +87,7 @@
     "npm-run-all2": "^6.2.3",
     "prettier": "^3.3.3",
     "sass": "^1.79.1",
-    "sass-loader": "^13.3.3",
+    "sass-loader": "^16.0.1",
     "typescript": "^5.5.4",
     "unplugin-auto-import": "^0.18.3",
     "unplugin-vue-components": "^0.27.4",
