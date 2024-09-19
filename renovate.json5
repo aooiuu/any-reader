@@ -1,9 +1,9 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:base", "schedule:weekly", "group:allNonMajor"],
-
   "labels": ["dependencies"],
-
+  // https://docs.renovatebot.com/configuration-options/#basebranches
+  "baseBranches": ["dev"],
   "rangeStrategy": "bump",
 
   "packageRules": [
