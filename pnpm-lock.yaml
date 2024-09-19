@@ -442,8 +442,8 @@ importers:
         specifier: ^4.21.2
         version: 4.21.2
       rollup-plugin-dts:
-        specifier: ^5.3.1
-        version: 5.3.1(rollup@4.21.2)(typescript@5.5.4)
+        specifier: ^6.1.1
+        version: 6.1.1(rollup@4.21.2)(typescript@5.5.4)
       rollup-plugin-esbuild:
         specifier: ^5.0.0
         version: 5.0.0(esbuild@0.23.1)(rollup@4.21.2)
@@ -5813,13 +5813,6 @@ packages:
 
   robust-predicates@3.0.2:
     resolution: {integrity: sha512-IXgzBWvWQwE6PrDI05OvmXUIruQTcoMDzRsOd5CDvHCVLcLHMTSYvOK5Cm46kWqlV3yAbuSpBZdJ5oP5OUoStg==}
-
-  rollup-plugin-dts@5.3.1:
-    resolution: {integrity: sha512-gusMi+Z4gY/JaEQeXnB0RUdU82h1kF0WYzCWgVmV4p3hWXqelaKuCvcJawfeg+EKn2T1Ie+YWF2OiN1/L8bTVg==}
-    engines: {node: '>=v14.21.3'}
-    peerDependencies:
-      rollup: ^3.0
-      typescript: ^4.1 || ^5.0
 
   rollup-plugin-dts@6.1.1:
     resolution: {integrity: sha512-aSHRcJ6KG2IHIioYlvAOcEq6U99sVtqDDKVhnwt70rW6tsz3tv5OSjEiWcgzfsHdLyGXZ/3b/7b/+Za3Y6r1XA==}
@@ -13167,18 +13160,18 @@ snapshots:
 
   robust-predicates@3.0.2: {}
 
-  rollup-plugin-dts@5.3.1(rollup@4.21.2)(typescript@5.5.4):
-    dependencies:
-      magic-string: 0.30.11
-      rollup: 4.21.2
-      typescript: 5.5.4
-    optionalDependencies:
-      '@babel/code-frame': 7.24.7
-
   rollup-plugin-dts@6.1.1(rollup@3.29.4)(typescript@5.5.4):
     dependencies:
       magic-string: 0.30.11
       rollup: 3.29.4
+      typescript: 5.5.4
+    optionalDependencies:
+      '@babel/code-frame': 7.24.7
+
+  rollup-plugin-dts@6.1.1(rollup@4.21.2)(typescript@5.5.4):
+    dependencies:
+      magic-string: 0.30.11
+      rollup: 4.21.2
       typescript: 5.5.4
     optionalDependencies:
       '@babel/code-frame': 7.24.7
