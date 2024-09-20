@@ -31,5 +31,8 @@
     "fast-xml-parser": "^4.5.0",
     "pako": "^2.1.0",
     "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "@types/pako": "^2.0.3"
   }
 }

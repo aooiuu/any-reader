@@ -1,0 +1,12 @@
+diff --git a/package.json b/package.json
+index 53039f1bba816092a7159d5c7dbd60f78128ba05..4a220b48140417a173b9585d25ac3ac76f00ec7f 100644
+--- a/package.json
++++ b/package.json
+@@ -1,6 +1,7 @@
+ {
+   "name": "vue-codemirror",
+   "description": "CodeMirror code editor component for Vue",
++  "type": "module",
+   "version": "6.1.1",
+   "author": "Surmon",
+   "license": "MIT",

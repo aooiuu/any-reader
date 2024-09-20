@@ -13,7 +13,7 @@ import { javascript } from '@codemirror/lang-javascript';
 import { createRuleManager } from '@any-reader/core/browser';
 import { decodeHash, encodeHash } from '../../utils/hash';
 
-window.createRuleManager = createRuleManager;
+globalThis.createRuleManager = createRuleManager;
 
 const tpl = `
 const rule = {

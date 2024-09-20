@@ -102,5 +102,10 @@
   },
   "lint-staged": {
     "*.{vue,js,ts}": "eslint --fix"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "vue-codemirror@6.1.1": "patches/vue-codemirror@6.1.1.patch"
+    }
   }
 }

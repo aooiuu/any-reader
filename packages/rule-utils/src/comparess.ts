@@ -1,5 +1,7 @@
 import { fromByteArray, toByteArray } from 'base64-js';
-import { deflate, inflate } from 'pako';
+import pako from 'pako';
+
+const { deflate, inflate } = pako;
 
 /**
  * 规则解码
