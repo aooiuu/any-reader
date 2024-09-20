@@ -4,6 +4,7 @@ import '@shikijs/vitepress-twoslash/style.css';
 import 'uno.css';
 import RulePlay from '../components/RulePlay/index.vue';
 import RuleComparess from '../components/RuleComparess/index.vue';
+import Playground from '../components/Playground/index.vue';
 
 export default {
   ...Theme,
@@ -12,5 +13,6 @@ export default {
     app.use(TwoslashFloatingVue);
     app.component('RulePlay', RulePlay);
     app.component('RuleComparess', RuleComparess);
+    app.component('Playground', Playground);
   }
 };

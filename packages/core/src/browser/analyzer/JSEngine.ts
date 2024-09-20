@@ -24,7 +24,7 @@ export class JSEngine extends BaseJSEngine {
     Object.assign(JSEngine.VMCtx, {
       cheerio,
       CryptoJS,
-      fetch,
+      fetch: fetch.bind(window), // Failed to execute 'fetch' on 'Window'
 
       // 处理 eso 规则中的注入JS
       __http__: (url: string) => {
@@ -47,7 +47,7 @@ export class JSEngine extends BaseJSEngine {
     let scripts = '';
     if (rule?.loadJs) scripts += rule.loadJs + ';';
     scripts += command + ';';
-    Object.assign(JSEngine.VMCtx, context);
+    Object.assign(JSEngine.VMCtx, JSEngine.environment, context);
     (0, eval)('window').proxy = JSEngine.VMCtx;
     // 处理作用域
     const code = `(function(window, self, globalThis){with(window){;return ${scripts}}}).bind(window.proxy)(window.proxy, window.proxy, window.proxy);`;

@@ -45,6 +45,7 @@ export default withMermaid({
         '/play/': {
           items: [
             { text: '取文本测试', link: '/play/' },
+            { text: '规则测试', link: '/play/core' },
             { text: '规则编解码', link: '/play/comparess' }
           ]
         }

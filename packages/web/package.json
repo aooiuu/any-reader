@@ -33,7 +33,6 @@
     "vscode:build": "cross-env VITE_APP_PLATFORM=vscode run-p build-only",
     "utools:build": "cross-env VITE_APP_PLATFORM=utools run-p build-only",
     "cli:build": "cross-env VITE_APP_PLATFORM=browser outDir=../cli/public vite build",
-    "postinstall": "electron-builder install-app-deps",
     "rebuild": "electron-rebuild -f -w sqlite3"
   },
   "main": "dist/electron-js/main.js",

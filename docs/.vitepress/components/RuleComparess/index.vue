@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="details custom-block !p-10px">
-      <textarea rows="5" class="w-full bg-[transparent]" v-model="inputText" placeholder="输入规则,'eso://:xxxxx' 或者 json 字符串" />
+      <textarea v-model="inputText" rows="5" class="w-full bg-[transparent]" placeholder="输入规则,'eso://:xxxxx' 或者 json 字符串" />
     </div>
 
     <div class="details custom-block !p-10px">
@@ -12,48 +12,52 @@
   </div>
 </template>
 
-
 <script setup>
-import { ref, watch, nextTick, onMounted } from 'vue'
-import { encode, decode } from 'js-base64';
-import { decodeRule, encodeRule } from '@any-reader/rule-utils'
+import { ref, watch, nextTick, onMounted } from 'vue';
+import { useEventListener } from '@vueuse/core';
+import { decodeRule, encodeRule } from '@any-reader/rule-utils';
+import { decodeHash, encodeHash } from '../../utils/hash';
 
+const inputText = ref('');
+const outputText = ref('');
 
-const inputText = ref('')
-const outputText = ref('')
-
-watch([inputText,], () => {
-  outputText.value = ''
+watch([inputText], () => {
+  outputText.value = '';
   nextTick(() => {
-    const rule = inputText.value.trim()
+    const rule = inputText.value.trim();
     if (rule.startsWith('eso://')) {
-      outputText.value = decodeRule(rule)
+      outputText.value = JSON.stringify(JSON.parse(decodeRule(rule)), null, 4);
     } else {
-      outputText.value = encodeRule(rule)
+      outputText.value = encodeRule(rule);
     }
-  })
+  });
 
   try {
-    const newHash = decodeURI(encode(JSON.stringify({
-      inputText: inputText.value,
-    })))
-    history.replaceState({}, '', '#' + newHash)
-
+    history.replaceState(
+      {},
+      '',
+      '#' +
+        encodeHash({
+          inputText: inputText.value
+        })
+    );
   } catch (error) {
     console.error(error);
-
   }
-})
+});
+
+function hashchange() {
+  try {
+    const data = decodeHash();
+    inputText.value = data.inputText || '';
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 onMounted(() => {
-  const hash = location.hash.slice(1)
-  if (hash) {
-    try {
-      const data = JSON.parse(decodeURI(decode(hash)))
-      inputText.value = data.inputText
-    } catch (error) {
-      console.error(error);
-    }
-  }
-})
+  hashchange();
+});
+
+useEventListener('hashchange', hashchange);
 </script>

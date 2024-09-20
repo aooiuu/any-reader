@@ -1,5 +1,9 @@
 /* eslint-env node */
 require('@rushstack/eslint-patch/modern-module-resolution');
+const { includeIgnoreFile } = require('@eslint/compat');
+
+const path = require('node:path');
+const gitignorePath = path.resolve(__dirname, '.gitignore');
 
 module.exports = {
   root: true,
@@ -7,6 +11,7 @@ module.exports = {
     browser: true,
     node: true
   },
+  ignorePatterns: includeIgnoreFile(gitignorePath).ignores,
   extends: [
     './packages/web/.eslintrc-auto-import.json',
     '@unocss',
@@ -18,7 +23,6 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest'
   },
-  ignorePatterns: ['*.d.ts'],
   rules: {
     'vue/multi-word-component-names': 0,
     'vue/no-v-html': 0,
