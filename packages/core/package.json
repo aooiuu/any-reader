@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@any-reader/rule-utils": "workspace:^",
-    "@xmldom/xmldom": "^0.9.2",
+    "@xmldom/xmldom": "^0.9.3",
     "axios": "^1.7.7",
     "chardet": "^2.0.0",
     "cheerio": "1.0.0",
