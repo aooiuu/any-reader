@@ -90,7 +90,7 @@
     "eslint-plugin-vue": "^9.28.0",
     "husky": "^8.0.3",
     "npm-run-all2": "^6.2.3",
-    "playwright": "^1.47.1",
+    "playwright": "^1.47.2",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "tsup": "^8.3.0",
