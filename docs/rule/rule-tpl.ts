@@ -66,7 +66,7 @@ export interface Rule {
   contentUrl: string;
   contentItems: string; // 内容
   contentNextUrl: string; // 用于一篇正文存在多个页面的场景
-  contentDecoder: string; // 用户正文图片需要解密的场景
+  contentDecoder: string; // 用于正文图片需要解密的场景
 }
 
 enum ContentType {
