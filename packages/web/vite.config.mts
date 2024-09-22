@@ -47,7 +47,7 @@ export default defineConfig(({ mode, command }) => {
       rollupOptions: {
         output: {
           manualChunks: (id) => {
-            const vendors = ['monaco-editor', 'ant-design-vue', 'hls.js'];
+            const vendors = ['ant-design-vue', 'hls.js'];
             for (const vendor of vendors) {
               if (id.includes(vendor)) {
                 return vendor;

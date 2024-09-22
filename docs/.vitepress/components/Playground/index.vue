@@ -6,10 +6,11 @@
 </template>
 
 <script setup>
-import { ref, shallowRef, watch, onMounted } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import { useEventListener } from '@vueuse/core';
 import { Codemirror } from 'vue-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
+import { oneDark } from '@codemirror/theme-one-dark';
 import { createRuleManager } from '@any-reader/core/browser';
 import { decodeHash, encodeHash } from '../../utils/hash';
 
@@ -62,12 +63,7 @@ watch([inputText], () => {
   }
 });
 
-const extensions = [javascript()];
-
-const view = shallowRef();
-const handleReady = (payload) => {
-  view.value = payload.view;
-};
+const extensions = [javascript(), oneDark];
 
 function exec() {
   eval(inputText.value);

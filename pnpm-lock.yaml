@@ -117,12 +117,21 @@ importers:
       '@any-reader/rule-utils':
         specifier: workspace:^
         version: link:../packages/rule-utils
+      '@codemirror/lang-javascript':
+        specifier: ^6.2.2
+        version: 6.2.2
+      '@codemirror/theme-one-dark':
+        specifier: ^6.1.2
+        version: 6.1.2
       '@shikijs/vitepress-twoslash':
         specifier: ^1.18.0
         version: 1.18.0(typescript@5.5.4)
       '@vueuse/core':
         specifier: ^11.1.0
         version: 11.1.0(vue@3.5.3(typescript@5.5.4))
+      codemirror:
+        specifier: ^6.0.1
+        version: 6.0.1(@lezer/common@1.2.1)
       js-base64:
         specifier: ^3.7.7
         version: 3.7.7
@@ -556,6 +565,12 @@ importers:
       '@any-reader/shared':
         specifier: workspace:^
         version: link:../shared
+      '@codemirror/lang-json':
+        specifier: ^6.0.1
+        version: 6.0.1
+      '@codemirror/theme-one-dark':
+        specifier: ^6.1.2
+        version: 6.1.2
       '@v-c/utils':
         specifier: ^0.0.26
         version: 0.0.26(typescript@5.5.4)
@@ -580,6 +595,9 @@ importers:
       blueimp-md5:
         specifier: ^2.19.0
         version: 2.19.0
+      codemirror:
+        specifier: ^6.0.1
+        version: 6.0.1(@lezer/common@1.2.1)
       dplayer:
         specifier: ^1.27.1
         version: 1.27.1
@@ -601,9 +619,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      monaco-editor:
-        specifier: 0.52.0
-        version: 0.52.0
       nprogress:
         specifier: ^0.2.0
         version: 0.2.0
@@ -995,6 +1010,9 @@ packages:
 
   '@codemirror/state@6.4.1':
     resolution: {integrity: sha512-QkEyUiLhsJoZkbumGZlswmAhA7CBU02Wrz7zvH4SrcifbsqwlXShVXg65f3v/ts57W3dqyamEriMhij1Z3Zz4A==}
+
+  '@codemirror/theme-one-dark@6.1.2':
+    resolution: {integrity: sha512-F+sH0X16j/qFLMAfbciKTxVOwkdAS336b7AXTKOZhy8BR3eH/RelsnLgLFINrpST63mmN2OuwUt0W2ndUgYwUA==}
 
   '@codemirror/view@6.33.0':
     resolution: {integrity: sha512-AroaR3BvnjRW8fiZBalAaK+ZzB5usGgI014YKElYZvQdNH5ZIidHlO+cyf/2rWzyBFRkvG6VhiXeAEbC53P2YQ==}
@@ -5420,9 +5438,6 @@ packages:
     resolution: {integrity: sha512-eQsKcWzIaZzEZ07NuEyO4Nw65g0hdWAyurVol1IPl1gahRwY+svqzfgfey8U8dahLwG44d6/RwEzuK52rSa/JQ==}
     hasBin: true
 
-  monaco-editor@0.52.0:
-    resolution: {integrity: sha512-OeWhNpABLCeTqubfqLMXGsqf6OmPU6pHM85kF3dhy6kq5hnhuVS1p3VrEW/XhWHc71P2tHyS5JFySD8mgs1crw==}
-
   mri@1.2.0:
     resolution: {integrity: sha512-tzzskb3bG8LvYGFF/mDTpq3jpI6Q9wc3LEmBaghu+DdCssd1FakN7Bc0hVNmEyGq1bq3RgfkCb3cmQLpNPOroA==}
     engines: {node: '>=4'}
@@ -8098,6 +8113,13 @@ snapshots:
       crelt: 1.0.6
 
   '@codemirror/state@6.4.1': {}
+
+  '@codemirror/theme-one-dark@6.1.2':
+    dependencies:
+      '@codemirror/language': 6.10.3
+      '@codemirror/state': 6.4.1
+      '@codemirror/view': 6.33.0
+      '@lezer/highlight': 1.2.1
 
   '@codemirror/view@6.33.0':
     dependencies:
@@ -13514,8 +13536,6 @@ snapshots:
   mockjs@1.1.0:
     dependencies:
       commander: 12.1.0
-
-  monaco-editor@0.52.0: {}
 
   mri@1.2.0: {}
 
