@@ -1,5 +1,21 @@
 <template>
   <div class="h-full overflow-auto">
+    <SettingRow title="字体">
+      <a-select
+        v-model:value="settingStore.data.readStyle.font"
+        :options="fontList"
+        show-search
+        allow-clear
+        :filter-option="true"
+        class="!w-180px"
+        option-filter-prop="fullName"
+        :field-names="{
+          label: 'fullName',
+          value: 'family'
+        }"
+      >
+      </a-select>
+    </SettingRow>
     <SettingRow title="字体大小">
       <a-input-number v-model:value="settingStore.data.readStyle.fontSize" class="!w-120px" mode="button" />
     </SettingRow>
@@ -43,9 +59,11 @@
 import { THEME } from '@/constants/theme';
 import { useSettingStore } from '@/stores/setting';
 import SettingRow from '../SettingRow/index.vue';
+import { getFontList } from '@/utils/font';
 
 const setTheme = inject('setTheme');
 const settingStore = useSettingStore();
+const fontList = ref([]);
 
 // 设置颜色
 function changeTheme(color) {
@@ -53,4 +71,10 @@ function changeTheme(color) {
   settingStore.data.readStyle.textColor = color.textColor;
   setTheme(color.theme);
 }
+
+onMounted(() => {
+  getFontList().then((e) => {
+    fontList.value = e;
+  });
+});
 </script>

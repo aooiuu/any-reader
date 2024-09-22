@@ -1,7 +1,10 @@
 import { merge } from 'lodash-es';
 import { readConfig, updateConfig } from '@/api';
+import type { FontData } from '@/utils/font';
 
 export type ReadStyle = {
+  // 字体
+  font: FontData;
   // 字体大小
   fontSize: number;
   // 字体粗细

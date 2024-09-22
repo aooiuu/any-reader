@@ -5,10 +5,7 @@
       class="flex flex-1 flex-col overflow-hidden whitespace-pre-wrap break-words p-10 text-[#b3b3b3] lh-1.5em"
       :style="{
         fontSize: settingStore.data.readStyle.fontSize + 'px',
-        lineHeight: settingStore.data.readStyle.lineHeight,
-        letterSpacing: settingStore.data.readStyle.letterSpacing + 'px',
-        color: settingStore.data.readStyle.textColor,
-        backgroundColor: settingStore.data.readStyle.backgroundColor
+        letterSpacing: settingStore.data.readStyle.letterSpacing + 'px'
       }"
     >
       <!-- 加载 -->
@@ -125,6 +122,13 @@ useBus(EVENT_CHAPTERS_BOX).on(showChapters);
   max-width: 100%;
   margin: 0 auto;
   display: block;
+}
+
+#text-container {
+  font-family: var(--font);
+  background-color: var(--background-color);
+  color: var(--text-color);
+  line-height: var(--line-height);
 }
 
 .center-row {

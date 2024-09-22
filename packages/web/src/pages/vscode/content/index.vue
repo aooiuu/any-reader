@@ -4,11 +4,11 @@
       <vscode-progress-ring></vscode-progress-ring>
     </div>
     <div
+      id="text-container"
       ref="contentRef"
       class="flex-1 overflow-y-auto whitespace-pre-wrap break-words p-10 indent-2em lh-1.5em"
       :style="{
         fontSize: settingStore.data.readStyle.fontSize + 'px',
-        lineHeight: settingStore.data.readStyle.lineHeight,
         letterSpacing: settingStore.data.readStyle.letterSpacing + 'px'
       }"
     >
@@ -71,6 +71,13 @@ useTheme(contentRef);
       transform: translateY(0);
     }
   }
+}
+
+#text-container {
+  /* font-family: var(--font); */
+  background-color: var(--background-color);
+  color: var(--text-color);
+  line-height: var(--line-height);
 }
 
 .center-row {

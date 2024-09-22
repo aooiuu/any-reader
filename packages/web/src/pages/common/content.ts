@@ -1,13 +1,13 @@
 import type { Ref } from 'vue';
 import { useEventListener } from '@vueuse/core';
 import PQueue from 'p-queue';
-import { debounce } from 'lodash-es';
+import { debounce, kebabCase } from 'lodash-es';
 import { ContentType } from '@any-reader/rule-utils';
 import { getContent } from '@/api';
 import { saveChapterHistory } from '@/api/modules/chapter-history';
 import { contentDecoder } from '@/api/modules/rule-manager';
 import { useChaptersStore } from '@/stores/chapters';
-import { useSettingStore } from '@/stores/setting';
+import { useSettingStore, type ReadStyle } from '@/stores/setting';
 import { useReadStore } from '@/stores/read';
 import { useKeyboardShortcuts } from '@/hooks/useMagicKeys';
 import { TTS } from '@/utils/tts';
@@ -41,23 +41,21 @@ export function useTheme(contentRef: Ref<HTMLElement>) {
   watchEffect(
     () => {
       if (!contentRef.value) return;
-      if (settingStore.data.readStyle.textColor) {
-        contentRef.value.style.color = settingStore.data.readStyle.textColor;
-      }
 
-      if (settingStore.data.readStyle.backgroundColor) {
-        contentRef.value.style.backgroundColor = settingStore.data.readStyle.backgroundColor;
-      }
-
-      if (settingStore.data.readStyle.textOpacity) {
-        contentRef.value.style.setProperty('--text-opacity', String(settingStore.data.readStyle.textOpacity));
-      }
-
-      if (settingStore.data.readStyle.sectionSpacing) {
-        contentRef.value.style.setProperty('--section-spacing', String(settingStore.data.readStyle.sectionSpacing));
-      }
-      if (settingStore.data.readStyle.fontWeight) {
-        contentRef.value.style.setProperty('--font-weight', String(settingStore.data.readStyle.fontWeight));
+      const cssVars: (keyof ReadStyle)[] = [
+        'textOpacity',
+        'sectionSpacing',
+        'fontWeight',
+        'font',
+        'textColor',
+        'backgroundColor',
+        'fontSize',
+        'lineHeight',
+        'letterSpacing'
+      ];
+      for (const vssVar of cssVars) {
+        const val = settingStore.data.readStyle[vssVar];
+        typeof val !== 'undefined' && contentRef.value.parentElement!.style.setProperty('--' + kebabCase(vssVar), String(val));
       }
     },
     {
