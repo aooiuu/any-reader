@@ -58,7 +58,8 @@ RUN \
   yarn config set registry https://registry.npmmirror.com && \
   pnpm config set registry https://registry.npmmirror.com ;
 
-COPY ["./pnpm-lock.yaml", ".npmrc",  "./pnpm-workspace.yaml", "./package.json",  "/app/"]
+COPY ["./pnpm-lock.yaml", ".npmrc",  "./pnpm-workspace.yaml", "./package.json", "/app/"]
+COPY ./patches /app/patches
 
 RUN pnpm fetch
 
