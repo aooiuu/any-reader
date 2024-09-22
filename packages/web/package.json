@@ -59,11 +59,12 @@
     "monaco-editor": "0.51.0",
     "nprogress": "^0.2.0",
     "p-limit": "^6.1.0",
+    "p-queue": "^8.0.1",
     "pinia": "^2.2.2",
     "qs": "^6.13.0",
     "sqlite3": "5.1.6",
     "uuid": "^10.0.0",
-    "vue": "^3.5.6",
+    "vue": "^3.5.8",
     "vue-router": "^4.4.5"
   },
   "devDependencies": {

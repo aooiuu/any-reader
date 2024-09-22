@@ -1,9 +1,11 @@
 import type { Ref } from 'vue';
 import { useEventListener } from '@vueuse/core';
+import PQueue from 'p-queue';
 import { debounce } from 'lodash-es';
 import { ContentType } from '@any-reader/rule-utils';
 import { getContent } from '@/api';
 import { saveChapterHistory } from '@/api/modules/chapter-history';
+import { contentDecoder } from '@/api/modules/rule-manager';
 import { useChaptersStore } from '@/stores/chapters';
 import { useSettingStore } from '@/stores/setting';
 import { useReadStore } from '@/stores/read';
@@ -74,6 +76,16 @@ export function useContent(contentRef: Ref<HTMLElement>) {
   const readStore = useReadStore();
   const options = computed(() => route.query);
   const loading = ref(false);
+  let contentDecoderTasks: PQueue;
+  const _onUnmounted: (() => void)[] = [];
+  _onUnmounted.push(() => {
+    readStore.setPath('');
+    readStore.setTitle('');
+    if (contentDecoderTasks) contentDecoderTasks.clear();
+  });
+  onUnmounted(() => {
+    _onUnmounted.forEach((fn) => fn());
+  });
 
   useSaveHistory(contentRef, options);
   const tts = useTTS(contentRef, onNextChapter);
@@ -131,9 +143,31 @@ export function useContent(contentRef: Ref<HTMLElement>) {
       }
     });
     if (res?.code === 0) {
-      contentType.value = res?.data?.contentType;
-      content.value = res?.data?.content || [];
+      const { contentType: _contentType, content: _content, contentDecoder: _contentDecoder } = res.data;
+      contentType.value = _contentType;
+      // 处理正文解密
+      if (_contentDecoder) {
+        if (contentDecoderTasks) {
+          contentDecoderTasks.clear();
+        } else {
+          contentDecoderTasks = new PQueue({ concurrency: 4 });
+        }
+        for (const url of _content) {
+          contentDecoderTasks.add(async () => {
+            const res = await contentDecoder({
+              content: url,
+              ruleId: ruleId
+            });
+            if (res?.code === 0) {
+              content.value.push(res.data);
+            }
+          });
+        }
+      } else {
+        content.value = _content || [];
+      }
     }
+
     nextTick(() => {
       let scrollTop = 0;
       if (percentage) {
@@ -156,11 +190,6 @@ export function useContent(contentRef: Ref<HTMLElement>) {
       deep: true
     }
   );
-
-  onUnmounted(() => {
-    readStore.setPath('');
-    readStore.setTitle('');
-  });
 
   function toChapter(chapterPath: string) {
     if (!chapterPath) return;

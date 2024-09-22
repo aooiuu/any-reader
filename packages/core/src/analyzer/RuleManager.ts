@@ -391,4 +391,8 @@ export class RuleManager implements IParser {
 
     return result;
   }
+
+  contentDecoder(result: string): Promise<string> {
+    return this.analyzerManager.getString(this.rule.contentDecoder, result);
+  }
 }

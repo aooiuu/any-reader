@@ -12,6 +12,8 @@ export interface FormItem {
   debug?: boolean;
 }
 
+const { MANGA, NOVEL, VIDEO, GAME } = ContentType;
+
 export const FORM_ITEMS: FormItem[] = [
   { prop: 'id', label: 'uuid', show: () => false },
   { prop: 'name', label: '名称', formStep: 1 },
@@ -20,7 +22,7 @@ export const FORM_ITEMS: FormItem[] = [
     label: '类型',
     type: 'select',
     formStep: 1,
-    options: CONTENT_TYPES.filter((v) => [ContentType.GAME, ContentType.MANGA, ContentType.NOVEL, ContentType.VIDEO].includes(v.value))
+    options: CONTENT_TYPES.filter((v) => [GAME, MANGA, NOVEL, VIDEO].includes(v.value))
   },
   { prop: 'host', label: '域名', formStep: 1 },
   { prop: 'sort', label: '排序', formStep: 1, type: 'number' },
@@ -32,63 +34,63 @@ export const FORM_ITEMS: FormItem[] = [
     prop: 'enableSearch',
     label: '是否启用',
     type: 'switch',
-    show: (item: Rule) => [ContentType.NOVEL, ContentType.VIDEO, ContentType.MANGA].includes(item.contentType),
+    show: (item: Rule) => [NOVEL, VIDEO, MANGA].includes(item.contentType),
     formStep: 2
   },
   {
     prop: 'searchUrl',
     label: '搜索地址',
     type: 'textarea',
-    show: (item: Rule) => [ContentType.NOVEL, ContentType.VIDEO, ContentType.MANGA].includes(item.contentType),
+    show: (item: Rule) => [NOVEL, VIDEO, MANGA].includes(item.contentType),
     formStep: 2,
     debug: true
   },
   {
     prop: 'searchList',
     label: '搜索列表',
-    show: (item: Rule) => [ContentType.NOVEL, ContentType.VIDEO, ContentType.MANGA].includes(item.contentType),
+    show: (item: Rule) => [NOVEL, VIDEO, MANGA].includes(item.contentType),
     formStep: 2,
     debug: true
   },
   {
     prop: 'searchCover',
     label: '封面',
-    show: (item: Rule) => [ContentType.NOVEL, ContentType.VIDEO, ContentType.MANGA].includes(item.contentType),
+    show: (item: Rule) => [NOVEL, VIDEO, MANGA].includes(item.contentType),
     formStep: 2,
     debug: true
   },
   {
     prop: 'searchName',
     label: '标题',
-    show: (item: Rule) => [ContentType.NOVEL, ContentType.VIDEO, ContentType.MANGA].includes(item.contentType),
+    show: (item: Rule) => [NOVEL, VIDEO, MANGA].includes(item.contentType),
     formStep: 2,
     debug: true
   },
   {
     prop: 'searchAuthor',
     label: '作者',
-    show: (item: Rule) => [ContentType.NOVEL, ContentType.VIDEO, ContentType.MANGA].includes(item.contentType),
+    show: (item: Rule) => [NOVEL, VIDEO, MANGA].includes(item.contentType),
     formStep: 2,
     debug: true
   },
   {
     prop: 'searchChapter',
     label: '章节',
-    show: (item: Rule) => [ContentType.NOVEL, ContentType.VIDEO, ContentType.MANGA].includes(item.contentType),
+    show: (item: Rule) => [NOVEL, VIDEO, MANGA].includes(item.contentType),
     formStep: 2,
     debug: true
   },
   {
     prop: 'searchDescription',
     label: '描述',
-    show: (item: Rule) => [ContentType.NOVEL, ContentType.VIDEO, ContentType.MANGA].includes(item.contentType),
+    show: (item: Rule) => [NOVEL, VIDEO, MANGA].includes(item.contentType),
     formStep: 2,
     debug: true
   },
   {
     prop: 'searchResult',
     label: '搜索结果',
-    show: (item: Rule) => [ContentType.NOVEL, ContentType.VIDEO, ContentType.MANGA].includes(item.contentType),
+    show: (item: Rule) => [NOVEL, VIDEO, MANGA].includes(item.contentType),
     formStep: 2,
     debug: true
   },
@@ -97,64 +99,71 @@ export const FORM_ITEMS: FormItem[] = [
     prop: 'chapterUrl',
     label: '章节地址',
     type: 'textarea',
-    show: (item: Rule) => [ContentType.NOVEL, ContentType.VIDEO, ContentType.MANGA].includes(item.contentType),
-    formStep: 3,
-    debug: true
-  },
-  {
-    prop: 'chapterName',
-    label: '标题',
-    show: (item: Rule) => [ContentType.NOVEL, ContentType.VIDEO, ContentType.MANGA].includes(item.contentType),
+    show: (item: Rule) => [NOVEL, VIDEO, MANGA].includes(item.contentType),
     formStep: 3,
     debug: true
   },
   {
     prop: 'chapterList',
     label: '列表',
-    show: (item: Rule) => [ContentType.NOVEL, ContentType.VIDEO, ContentType.MANGA].includes(item.contentType),
+    show: (item: Rule) => [NOVEL, VIDEO, MANGA].includes(item.contentType),
+    formStep: 3,
+    debug: true
+  },
+  {
+    prop: 'chapterName',
+    label: '标题',
+    show: (item: Rule) => [NOVEL, VIDEO, MANGA].includes(item.contentType),
     formStep: 3,
     debug: true
   },
   {
     prop: 'chapterCover',
     label: '封面',
-    show: (item: Rule) => [ContentType.NOVEL, ContentType.VIDEO, ContentType.MANGA].includes(item.contentType),
+    show: (item: Rule) => [NOVEL, VIDEO, MANGA].includes(item.contentType),
     formStep: 3,
     debug: true
   },
   {
     prop: 'chapterTime',
     label: '时间',
-    show: (item: Rule) => [ContentType.NOVEL, ContentType.VIDEO, ContentType.MANGA].includes(item.contentType),
+    show: (item: Rule) => [NOVEL, VIDEO, MANGA].includes(item.contentType),
     formStep: 3,
     debug: true
   },
   {
     prop: 'chapterResult',
     label: '结果',
-    show: (item: Rule) => [ContentType.NOVEL, ContentType.VIDEO, ContentType.MANGA].includes(item.contentType),
+    show: (item: Rule) => [NOVEL, VIDEO, MANGA].includes(item.contentType),
     formStep: 3,
     debug: true
   },
-
   {
     prop: 'contentUrl',
     label: '正文地址',
-    show: (item: Rule) => [ContentType.NOVEL, ContentType.VIDEO, ContentType.MANGA].includes(item.contentType),
+    show: (item: Rule) => [NOVEL, VIDEO, MANGA].includes(item.contentType),
     formStep: 4,
     debug: true
   },
   {
     prop: 'contentNextUrl',
     label: '正文下一页地址',
-    show: (item: Rule) => [ContentType.NOVEL, ContentType.VIDEO, ContentType.MANGA].includes(item.contentType),
+    show: (item: Rule) => [NOVEL, VIDEO, MANGA].includes(item.contentType),
     formStep: 4,
     debug: true
   },
   {
     prop: 'contentItems',
     label: '内容',
-    show: (item: Rule) => [ContentType.NOVEL, ContentType.VIDEO, ContentType.MANGA].includes(item.contentType),
+    show: (item: Rule) => [NOVEL, VIDEO, MANGA].includes(item.contentType),
+    formStep: 4,
+    debug: true
+  },
+
+  {
+    prop: 'contentDecoder',
+    label: '正文解密',
+    show: (item: Rule) => [NOVEL, VIDEO, MANGA].includes(item.contentType),
     formStep: 4,
     debug: true
   },
@@ -163,7 +172,7 @@ export const FORM_ITEMS: FormItem[] = [
     prop: 'enableDiscover',
     label: '是否启用',
     type: 'switch',
-    show: (item: Rule) => [ContentType.NOVEL, ContentType.VIDEO, ContentType.MANGA].includes(item.contentType),
+    show: (item: Rule) => [NOVEL, VIDEO, MANGA].includes(item.contentType),
     formStep: 5,
     debug: true
   },
@@ -171,69 +180,69 @@ export const FORM_ITEMS: FormItem[] = [
     prop: 'discoverUrl',
     label: '请求地址',
     type: 'textarea',
-    show: (item: Rule) => [ContentType.NOVEL, ContentType.VIDEO, ContentType.MANGA].includes(item.contentType),
+    show: (item: Rule) => [NOVEL, VIDEO, MANGA].includes(item.contentType),
     formStep: 5,
     debug: true
   },
   {
     prop: 'discoverList',
     label: '列表',
-    show: (item: Rule) => [ContentType.NOVEL, ContentType.VIDEO, ContentType.MANGA].includes(item.contentType),
+    show: (item: Rule) => [NOVEL, VIDEO, MANGA].includes(item.contentType),
     formStep: 5,
     debug: true
   },
   {
     prop: 'discoverName',
     label: '标题',
-    show: (item: Rule) => [ContentType.NOVEL, ContentType.VIDEO, ContentType.MANGA].includes(item.contentType),
+    show: (item: Rule) => [NOVEL, VIDEO, MANGA].includes(item.contentType),
     formStep: 5,
     debug: true
   },
   {
     prop: 'discoverCover',
     label: '封面',
-    show: (item: Rule) => [ContentType.NOVEL, ContentType.VIDEO, ContentType.MANGA].includes(item.contentType),
+    show: (item: Rule) => [NOVEL, VIDEO, MANGA].includes(item.contentType),
     formStep: 5,
     debug: true
   },
   {
     prop: 'discoverAuthor',
     label: '作者',
-    show: (item: Rule) => [ContentType.NOVEL, ContentType.VIDEO, ContentType.MANGA].includes(item.contentType),
+    show: (item: Rule) => [NOVEL, VIDEO, MANGA].includes(item.contentType),
     formStep: 5,
     debug: true
   },
   {
     prop: 'discoverDescription',
     label: '描述',
-    show: (item: Rule) => [ContentType.NOVEL, ContentType.VIDEO, ContentType.MANGA].includes(item.contentType),
+    show: (item: Rule) => [NOVEL, VIDEO, MANGA].includes(item.contentType),
     formStep: 5,
     debug: true
   },
   {
     prop: 'discoverResult',
     label: '结果',
-    show: (item: Rule) => [ContentType.NOVEL, ContentType.VIDEO, ContentType.MANGA].includes(item.contentType),
+    show: (item: Rule) => [NOVEL, VIDEO, MANGA].includes(item.contentType),
     formStep: 5,
     debug: true
   },
   // {
   //   prop: 'discoverItems',
   //   label: '内容',
-  //   show: (item: Rule) => [ContentType.NOVEL, ContentType.VIDEO, ContentType.MANGA].includes(item.contentType),
+  //   show: (item: Rule) => [NOVEL, VIDEO, MANGA].includes(item.contentType),
   //   formStep: 5
   // },
   {
     prop: 'discoverTags',
     label: '标签',
-    show: (item: Rule) => [ContentType.NOVEL, ContentType.VIDEO, ContentType.MANGA].includes(item.contentType),
+    show: (item: Rule) => [NOVEL, VIDEO, MANGA].includes(item.contentType),
     formStep: 5,
     debug: true
   },
   {
     prop: 'discoverChapter',
     label: '章节',
-    show: (item: Rule) => [ContentType.NOVEL, ContentType.VIDEO, ContentType.MANGA].includes(item.contentType),
+    show: (item: Rule) => [NOVEL, VIDEO, MANGA].includes(item.contentType),
     formStep: 5,
     debug: true
   }

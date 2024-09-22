@@ -10,7 +10,7 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "lib": ["esnext"],
-    "types": ["node", "vite/client", "vitest/importMeta"],
+    "types": ["node", "jsdom", "vite/client", "vitest/importMeta"],
     "paths": {
       "@any-reader/rule-utils": ["./packages/rule-utils/src/index.ts"],
       "@any-reader/core": ["./packages/core/src/index.ts"],

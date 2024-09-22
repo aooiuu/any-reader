@@ -31,4 +31,5 @@ export interface IParser {
   getContent(result: string): Promise<string[]>;
   discoverMap(): Promise<DiscoverItem[]>;
   discover(result: string): Promise<SearchItem[]>;
+  contentDecoder(result: string): Promise<string>;
 }

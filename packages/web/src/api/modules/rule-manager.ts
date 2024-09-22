@@ -113,3 +113,11 @@ export function analyzerUrl(data: any) {
     data
   });
 }
+
+export function contentDecoder(data: any) {
+  return request({
+    method: 'post',
+    url: 'rule-manager/content-decoder',
+    data
+  });
+}

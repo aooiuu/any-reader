@@ -357,4 +357,11 @@ export class ResourceRule {
     default: ''
   })
   loadJs!: string;
+
+  @Column({
+    name: 'content_decoder',
+    type: 'text',
+    default: ''
+  })
+  contentDecoder!: string;
 }

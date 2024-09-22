@@ -10,6 +10,7 @@ export default defineConfig({
   plugins: [UnoCSS()],
 
   server: {
+    port: 8897,
     hmr: {
       overlay: false
     }

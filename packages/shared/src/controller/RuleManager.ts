@@ -35,6 +35,13 @@ export class RuleManager extends BaseController {
     return await this.discoverByRule({ rule, data });
   }
 
+  @Post('content-decoder')
+  async contentDecoder({ ruleId, content }: { ruleId: string; content: string }) {
+    const rule = await this.getRule(ruleId);
+    const ruleManager = this.createRuleManager(rule);
+    return await ruleManager.contentDecoder(content);
+  }
+
   @Post('search-by-rule-id')
   // @Cacheable({
   //   ttl: 1000 * 60 * 5,
@@ -69,9 +76,11 @@ export class RuleManager extends BaseController {
   async content({ filePath, chapterPath, ruleId, noCache }: { ruleId: string; filePath: string; chapterPath: string; noCache: boolean }) {
     const cacheKey = `content@${ruleId || '__local__'}@${md5(filePath)}@v3_${md5(chapterPath)}`;
     const result: {
+      contentDecoder: boolean; // 是否需要正文解密
       contentType?: number;
       content: string[] | string;
     } = {
+      contentDecoder: false,
       content: []
     };
     if (noCache) {
@@ -86,6 +95,7 @@ export class RuleManager extends BaseController {
       // 在线
       const rule = await this.getRule(ruleId);
       const { contentType, content } = await this.contentByRule({ rule, chapterPath });
+      result.contentDecoder = !!rule.contentDecoder;
       result.content = content;
       result.contentType = contentType;
     } else {

@@ -32,6 +32,9 @@ export default class IPTV implements IParser {
   constructor(rule: Rule) {
     this._rule = rule;
   }
+  async contentDecoder(result: string): Promise<string> {
+    return result;
+  }
 
   async _getM3UList() {
     if (this._m3u.length) return;

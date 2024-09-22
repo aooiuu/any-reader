@@ -64,6 +64,7 @@ export interface Rule {
   // ===== 解析流程 - 正文 =====
   contentUrl: string;
   contentNextUrl: string;
+  contentDecoder: string;
 
   // ===== 暂不支持 =====
   createTime?: number;
@@ -133,6 +134,7 @@ export function createRule(rule: Partial<Rule>): Rule {
       contentUrl: '',
       contentNextUrl: '',
       contentItems: '',
+      contentDecoder: '',
       viewStyle: 0
     },
     rule
