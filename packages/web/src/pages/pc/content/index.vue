@@ -28,14 +28,14 @@
         <div class="flex justify-center">
           <a-button-group>
             <a-button type="text" :disabled="!lastChapter" :style="{ color: settingStore.data.readStyle.textColor }" @click="onPrevChapter">
-              <icon-left />
+              <LeftOutlined />
               上一章
             </a-button>
             <a-button type="text" :style="{ color: settingStore.data.readStyle.textColor }" @click="showChapters">目录</a-button>
             <a-button type="text" :style="{ color: settingStore.data.readStyle.textColor }" @click="init(true)">重载</a-button>
             <a-button type="text" :disabled="!nextChapter" :style="{ color: settingStore.data.readStyle.textColor }" @click="onNextChapter">
               下一章
-              <icon-right />
+              <RightOutlined />
             </a-button>
           </a-button-group>
         </div>

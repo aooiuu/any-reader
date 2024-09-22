@@ -21,14 +21,14 @@
   "devDependencies": {
     "@any-reader/shared": "workspace:^",
     "@rollup/plugin-alias": "^5.1.0",
-    "@rollup/plugin-commonjs": "^25.0.8",
+    "@rollup/plugin-commonjs": "^26.0.1",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@types/lodash-es": "^4.17.12",
     "fs-extra": "^11.2.0",
     "rollup": "^4.21.2",
-    "rollup-plugin-dts": "^5.3.1",
-    "rollup-plugin-esbuild": "^5.0.0",
+    "rollup-plugin-dts": "^6.1.1",
+    "rollup-plugin-esbuild": "^6.1.1",
     "typescript": "^5.5.4"
   }
 }
