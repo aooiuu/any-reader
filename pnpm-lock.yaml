@@ -22,6 +22,9 @@ importers:
       '@unocss/reset':
         specifier: ^0.62.4
         version: 0.62.4
+      '@vueuse/core':
+        specifier: ^11.1.0
+        version: 11.1.0(vue@3.5.8(typescript@5.5.4))
       codemirror:
         specifier: ^6.0.1
         version: 6.0.1(@lezer/common@1.2.1)
@@ -126,9 +129,6 @@ importers:
       '@shikijs/vitepress-twoslash':
         specifier: ^1.18.0
         version: 1.18.0(typescript@5.5.4)
-      '@vueuse/core':
-        specifier: ^11.1.0
-        version: 11.1.0(vue@3.5.3(typescript@5.5.4))
       codemirror:
         specifier: ^6.0.1
         version: 6.0.1(@lezer/common@1.2.1)

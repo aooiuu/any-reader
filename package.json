@@ -66,8 +66,9 @@
   "dependencies": {
     "@codemirror/lang-javascript": "^6.2.2",
     "@codemirror/lang-json": "^6.0.1",
-    "codemirror": "^6.0.1",
     "@unocss/reset": "^0.62.4",
+    "@vueuse/core": "^11.1.0",
+    "codemirror": "^6.0.1",
     "sql.js": "^1.11.0",
     "sqlite3": "5.1.6"
   },
@@ -80,8 +81,8 @@
     "@rushstack/eslint-patch": "^1.10.4",
     "@types/node": "^20.16.5",
     "@types/uuid": "^10.0.0",
-    "@vitest/browser": "^2.1.1",
     "@unocss/eslint-config": "^0.62.4",
+    "@vitest/browser": "^2.1.1",
     "@vue/eslint-config-prettier": "^8.0.0",
     "@vue/eslint-config-typescript": "^13.0.0",
     "bumpp": "^9.5.2",

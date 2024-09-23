@@ -14,7 +14,6 @@
     "@codemirror/lang-javascript": "^6.2.2",
     "@codemirror/theme-one-dark": "^6.1.2",
     "@shikijs/vitepress-twoslash": "^1.18.0",
-    "@vueuse/core": "^11.1.0",
     "codemirror": "^6.0.1",
     "js-base64": "^3.7.7",
     "mermaid": "^11.2.1",
