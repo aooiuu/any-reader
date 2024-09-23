@@ -14,14 +14,39 @@ outline: deep
 
 ::: code-group
 
-<<< ./rule-tpl.ts [typescript]
-<<< ./rule-tpl.json [json]
+<<< ./rule-tpl.ts [带注释的]
+<<< ./rule-tpl.json5 [json]
+
+:::
+
+::: details 字段太多看着很复杂?
+
+并不是每个字段都是必填的, 按需填写既可。
+
+以搜索为例, 实际上只用实现以下几个关键字段。
+
+```json5
+{
+  "host": "", // 域名
+  "contentType": 1, // 规则类型, 告诉软件这是小说还是漫画还是视频
+  "enableSearch": true, // 开启搜索功能
+
+  "searchUrl": "", // 搜索请求地址
+  "searchList": "", // 搜索列表
+  "searchName": "", // 每一个书或者视频的名称
+  "searchResult": "", // 用于给下一个流程使用, 一般是章节列表地址
+
+  "chapterList": "", // 章节列表
+  "chapterName": "", // 章节名
+  "chapterResult": "", // 用于给下一个流程使用, 一般是正文地址
+
+  "contentItems": "" // 正文
+}
+```
 
 :::
 
 > 格式 `eso://:xxxxx` 是压缩后的规则, 软件也会自动识别, 也可以使用 [在线规则编解码工具](/play/comparess) 还原成json
->
-> 并不是每个字段都是必填的, 按需填写既可。
 
 ## 规则字段类型
 
