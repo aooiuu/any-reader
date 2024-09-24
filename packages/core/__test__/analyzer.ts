@@ -51,11 +51,32 @@ export default function runTest(analyzerManager: AnalyzerManager) {
       expect(content).toEqual('content3');
     });
 
+    it('XPath Array', async () => {
+      const body = '<div class="box1"><div class="box2">content2</div><div class="box2">content3</div></div>';
+      const content = await analyzerManager.getStringList('//*[@class="box2"]', body);
+      expect(content.length).toEqual(2);
+      expect(typeof content[0]).toEqual('string');
+      expect(/content2/.test(content[0])).toEqual(true);
+      expect(/content3/.test(content[0])).toEqual(false);
+      expect(/content3/.test(content[1])).toEqual(true);
+    });
+
     it('JS', async () => {
       const body = '{"a": "c"}';
       const content = await analyzerManager.getString('@js:JSON.parse(result).a', body);
       expect(content).toEqual('c');
     });
+
+    // it('JS 多行', async () => {
+    //   const content = await analyzerManager.getString(
+    //     `@js:
+    //     function a(){}
+    //     1
+    //     `,
+    //     ''
+    //   );
+    //   expect(content).toEqual('1');
+    // });
 
     it('JS ES6', async () => {
       const body = '{"a": "c"}';

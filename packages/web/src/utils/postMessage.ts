@@ -17,8 +17,7 @@ const VSCAdapter: IAdapter = () => {
      * @param data
      * @returns
      */
-    postMessage: (target, data) => {
-      console.log('[postMessage]', { target, data });
+    postMessage: (_target, data) => {
       window.acquireVsCodeApi().postMessage(JSON.parse(JSON.stringify(data)));
     },
 
@@ -47,7 +46,6 @@ export const pm = new EasyPostMessage(VSCAdapter);
 
 export function useMessage(type: string, cb: any) {
   const fn = (arg: any) => {
-    console.log('[on]', { type, arg });
     cb(arg?.data);
   };
   pm.on(type, fn);

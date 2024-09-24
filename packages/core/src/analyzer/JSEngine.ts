@@ -1,11 +1,7 @@
 import vm from 'node:vm';
-import CryptoJS from 'crypto-js';
-import * as cheerio from 'cheerio';
-import type { Rule } from '@any-reader/rule-utils';
-import { AnalyzerXPath } from '../analyzer/AnalyzerXPath';
 import { JsVmException } from '../exception/JsVmException';
-import { __http__ } from './request';
 import { JSEngine as BaseJSEngine } from '../sandbox/JSEngine';
+import { injectJs } from '../utils/inject-js';
 
 export class JSEngine extends BaseJSEngine {
   static environment: any = {};
@@ -16,31 +12,11 @@ export class JSEngine extends BaseJSEngine {
   }
 
   static init() {
-    const http = function (url: string) {
-      return __http__(url, JSEngine.environment.rule as Rule);
-    };
-    http.get = (url: string) => http(url);
-    JSEngine.VMCtx = vm.createContext({
-      cheerio,
-      CryptoJS,
-      fetch,
-
-      // 暂时不考虑使用了 `window` 方法的规则, 理论上规则不应该使用 `window` 变量
-      window: {},
-
-      // 处理 eso 规则中的注入JS
-      __http__: (url: string) => {
-        return __http__(url, JSEngine.environment.rule as Rule);
-      },
-      http,
-      xpath: async (html: string, xpath: string): Promise<string[]> => {
-        const analyzer = new AnalyzerXPath({
-          JSEngine: null as unknown as typeof JSEngine
-        });
-        analyzer.parse(html);
-        return await analyzer.getStringList(xpath);
-      }
-    });
+    JSEngine.VMCtx = vm.createContext(
+      Object.assign(Object.create(null), injectJs(JSEngine.environment.rule), {
+        window: {}
+      })
+    );
   }
 
   static async evaluate(command: string, context: any = {}) {

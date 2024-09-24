@@ -1,12 +1,8 @@
 import * as vscode from 'vscode';
 import { stringify } from 'qs';
-import { ensureDirSync } from 'fs-extra';
-import { openExplorer } from 'explorer-opener';
-import { CONSTANTS } from '@any-reader/shared';
 import { COMMANDS } from './constants';
 import { webviewProvider } from './sidebar/webviewProvider';
 import { WebView } from './webview';
-import { getConfig } from './utils/config';
 import { CustomEditorProvider } from './editorProvider/CustomEditorProvider';
 
 class App {
@@ -23,7 +19,6 @@ class App {
       registerCommand(COMMANDS.discover, this.discover, this),
       registerCommand(COMMANDS.openUrl, this.openUrl, this),
       registerCommand(COMMANDS.openFile, this.openFile, this),
-      registerCommand(COMMANDS.openLocalBookDir, this.openLocalBookDir, this),
       registerCommand(COMMANDS.home, () => this.webView.navigateTo('/rules'), this.webView)
     ].forEach((command) => context.subscriptions.push(command));
 
@@ -81,13 +76,6 @@ class App {
         );
       }
     );
-  }
-
-  // 打开本地书籍目录
-  openLocalBookDir() {
-    const dir = getConfig().bookDir || CONSTANTS.LOCAL_BOOK_DIR;
-    ensureDirSync(dir);
-    openExplorer(dir);
   }
 }
 

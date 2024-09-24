@@ -11,3 +11,10 @@ export function getLocalBooks() {
     url: 'bookshelf/list'
   });
 }
+
+export function openDir() {
+  return request({
+    method: 'post',
+    url: 'bookshelf/open-dir'
+  });
+}

@@ -20,3 +20,5 @@ export const BASE_URL = import.meta.env.VITE_APP_BASE_URL || '/api';
 export const VERSION = version;
 
 export const IS_MOBILE = /mobi/i.test(navigator.userAgent.toLowerCase());
+
+export const IS_VSCODE = PLATFORM === 'vscode';

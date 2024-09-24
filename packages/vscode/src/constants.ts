@@ -5,7 +5,6 @@ export enum COMMANDS {
   searchBook = 'any-reader.search',
   getChapter = 'any-reader.getChapter',
   discover = 'any-reader.discover',
-  openLocalBookDir = 'any-reader.openLocalBookDir',
   home = 'any-reader.home',
   openUrl = 'any-reader.openUrl',
   openFile = 'any-reader.openFile'

@@ -141,7 +141,15 @@ export function useContent(contentRef: Ref<HTMLElement>) {
       }
     });
     if (res?.code === 0) {
-      const { contentType: _contentType, content: _content, contentDecoder: _contentDecoder } = res.data;
+      const {
+        contentType: _contentType,
+        content: _content,
+        contentDecoder: _contentDecoder
+      }: {
+        contentType: number;
+        content: string[];
+        contentDecoder: boolean;
+      } = res.data;
       contentType.value = _contentType;
       // 处理正文解密
       if (_contentDecoder) {
@@ -150,17 +158,18 @@ export function useContent(contentRef: Ref<HTMLElement>) {
         } else {
           contentDecoderTasks = new PQueue({ concurrency: 4 });
         }
-        for (const url of _content) {
+        content.value = new Array(_content.length).fill('');
+        _content.forEach((url, i) => {
           contentDecoderTasks.add(async () => {
             const res = await contentDecoder({
               content: url,
               ruleId: ruleId
             });
             if (res?.code === 0) {
-              content.value.push(res.data);
+              content.value[i] = res.data;
             }
           });
-        }
+        });
       } else {
         content.value = _content || [];
       }

@@ -15,7 +15,6 @@ export function createAdapter(webview: Webview): IAdapter {
        * @returns
        */
       postMessage: (target: any, data: any) => {
-        console.log('[postMessage]', { target, data });
         target.postMessage(data);
       },
 

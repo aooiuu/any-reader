@@ -58,7 +58,6 @@ export class WebView {
         this,
         this.context!.subscriptions
       );
-      // @ts-ignore
       const we = useWebviewEvent(this.webviewPanel.webview, this.context.extensionPath);
       this.pm = we.pm;
     }

@@ -3,6 +3,7 @@ import { merge } from 'lodash-es';
 // @ts-expect-error
 import { ensureFileSync, readJSONSync, writeJSONSync } from 'fs-extra/esm';
 import { AnalyzerException, AnalyzerManager, FetchException, JsVmException, createAnalyzerManager } from '@any-reader/core';
+import { LogLevel } from '@any-reader/core';
 import { LOCAL_BOOK_DIR } from './constants';
 import type { DB } from './data-source';
 import { createDB } from './data-source';
@@ -16,7 +17,6 @@ import { Config } from './controller/Config';
 import { TTS } from './controller/TTS';
 import { Cache } from './controller/Cache';
 import { mapRoute } from './decorators';
-import { LogLevel } from '@any-reader/core';
 
 export interface App {
   db: DB;

@@ -1,5 +1,13 @@
 <template>
   <div class="relative h-full flex flex-col bg-[--ar-main-background] px-10 py-10 text-[--ar-color-text]">
+    <a-alert
+      v-if="IS_VSCODE"
+      class="mb-10"
+      message="VSCode 插件修改规则后仅对当前的标签页生效, 其它标签页需要重启 VSCode 或重新打开标签页才会生效, 建议使用桌面端编辑规则"
+      type="warning"
+      closable
+    />
+
     <div class="mb-10 flex gap-10">
       <div class="flex flex-1 items-center gap-10">
         <a-input-search v-model:value="searchText" placeholder="搜索" class="!w-140px" />
@@ -34,7 +42,7 @@
         </template>
       </a-button>
 
-      <div class="flex-1" />
+      <div class="flex-1 overflow-hidden"></div>
       <a-dropdown>
         <a-button>
           测速
@@ -104,7 +112,7 @@ import _ from 'lodash-es';
 import { encodeRule, type Rule } from '@any-reader/rule-utils';
 import { useClipboard, useElementSize } from '@vueuse/core';
 import { saveAs } from 'file-saver';
-import { CONTENT_TYPES } from '@/constants';
+import { CONTENT_TYPES, IS_VSCODE } from '@/constants';
 import { useRulesStore } from '@/stores/rules';
 import { ping, batchUpdateRules, delRules } from '@/api';
 import { timeoutWith } from '@/utils/promise';
@@ -400,7 +408,7 @@ function addCMS() {
 }
 
 async function pingAll() {
-  const chunks = _.chunk(tableData.value, 5);
+  const chunks: any[][] = _.chunk(tableData.value, 5);
   for (const rules of chunks) {
     pingIds.value = rules.map((e) => e.id);
     await timeoutWith(
