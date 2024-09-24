@@ -1,7 +1,7 @@
 <template>
   <div class="details custom-block !p-10px">
     <button class="mb-10 rounded-4 bg-[#3ca877] px-5 text-[#fff]" @click="exec">执行</button>
-    <codemirror v-model="inputText" :autofocus="true" :extensions="extensions" @ready="handleReady" />
+    <codemirror v-model="inputText" :autofocus="true" :extensions="extensions" />
   </div>
 </template>
 

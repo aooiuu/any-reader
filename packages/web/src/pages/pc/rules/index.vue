@@ -563,7 +563,7 @@ function getSelectedRuleStr() {
       const rule = rulesStore.list.find((e) => e.id === id);
       if (!rule) return;
       try {
-        return encodeRule(rule);
+        return encodeRule(_.omit(rule, ['extra']));
       } catch (error) {
         console.error(error);
       }

@@ -5,7 +5,7 @@
     </div>
 
     <div class="details custom-block !p-10px">
-      <div class="min-h-40px break-words">
+      <div class="min-h-40px whitespace-pre-wrap break-words">
         {{ outputText || '' }}
       </div>
     </div>
@@ -26,7 +26,7 @@ watch([inputText], () => {
   nextTick(() => {
     const rule = inputText.value.trim();
     if (rule.startsWith('eso://')) {
-      outputText.value = JSON.stringify(JSON.parse(decodeRule(rule)), null, 4);
+      outputText.value = JSON.stringify(decodeRule(rule), null, 4);
     } else {
       outputText.value = encodeRule(rule);
     }
