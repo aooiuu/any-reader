@@ -56,7 +56,7 @@ XPath、JSONPath、CSS选择器、正则让规则编写更简洁, 而 JS 脚本�
 
 ## 功能亮点
 
-- **跨平台**: Windows、Mac、Linux
+- **跨平台**: Windows `>=win10`、Mac、Linux
 - **多应用**: 桌面端、网页端、Docker、VSCode插件
 - **多类型**：小说、漫画、视频、~~音频~~
 - **自定义源**：通过 XPath、JSONPath、CSS选择器、正则、JS等轻松编写[规则](https://aooiuu.github.io/any-reader/rule/)
