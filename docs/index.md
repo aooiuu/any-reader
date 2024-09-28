@@ -49,6 +49,8 @@ features:
     details: 代码开源，免费、透明、开放、开源
 ---
 
+> 软件不提供内容, 也不提供任何规则, 但你可以通过编写 [规则](./rule/), 控制呈现内容
+
 <style>
 :root {
   --vp-home-hero-name-color: transparent;
