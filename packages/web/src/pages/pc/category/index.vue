@@ -5,7 +5,7 @@
       <a-select v-if="typeof route.params.contentType === 'undefined'" v-model:value="contentType" class="mb-10">
         <a-select-option v-for="o in CONTENT_TYPES" :key="o.value" :value="o.value">{{ o.label }}</a-select-option>
       </a-select>
-      <a-input v-model:value="searchText" class="mb-10" placeholder="过滤" />
+      <a-input v-model:value="searchText" class="mb-10" placeholder="过滤" allow-clear />
 
       <!-- 分类 -->
       <ARTabs v-model="ruleId" :options="ruleListDisplay" value-key="id" label-key="name" @update:model-value="changeRule">

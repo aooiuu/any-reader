@@ -7,7 +7,14 @@
       boxShadow: '0px 0px 5px 5px rgba(0, 0, 0, 0.2)'
     }"
   >
-    <a-input-search ref="inputRef" v-model:value="searchText" placeholder="输入关键词，回车键搜索" class="w-full" @keyup.enter="onSearch" />
+    <a-input-search
+      ref="inputRef"
+      v-model:value="searchText"
+      placeholder="输入关键词，回车键搜索"
+      class="w-full"
+      allow-clear
+      @keyup.enter="onSearch"
+    />
   </div>
 </template>
 

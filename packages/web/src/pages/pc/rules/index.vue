@@ -10,7 +10,7 @@
 
     <div class="mb-10 flex gap-10">
       <div class="flex flex-1 items-center gap-10">
-        <a-input-search v-model:value="searchText" placeholder="搜索" class="!w-140px" />
+        <a-input-search v-model:value="searchText" placeholder="搜索" class="!w-140px" allow-clear />
         <a-checkbox-group v-model:value="contentTypes" :options="CONTENT_TYPES"> </a-checkbox-group>
       </div>
     </div>
@@ -248,16 +248,6 @@ const tableColumns = ref<ColumnsType<any>>([
     title: '置顶',
     width: 120,
     align: 'center',
-    filters: [
-      {
-        text: '启用',
-        value: true
-      },
-      {
-        text: '禁用',
-        value: false
-      }
-    ],
     customRender: ({ record }) => <a-switch checked={rulesStore.pindStore.includes(record.id)} onUpdate:checked={() => rulesStore.pindRule(record)} />
   },
   {
@@ -336,12 +326,8 @@ const tableColumns = ref<ColumnsType<any>>([
     fixed: 'right',
     customRender: ({ record }) => (
       <div class="flex gap-5 text-12">
-        <a-button size="small" type="text" onClick={() => editRule(record)}>
-          编辑
-        </a-button>
-        <a-button size="small" type="text" danger onClick={() => delRule(record.id)}>
-          删除
-        </a-button>
+        <a-button type="primary" shape="circle" onClick={() => editRule(record)} icon={<EditOutlined />}></a-button>
+        <a-button type="primary" shape="circle" danger onClick={() => delRule(record.id)} icon={<DeleteOutlined />}></a-button>
       </div>
     )
   }

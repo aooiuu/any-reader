@@ -7,7 +7,7 @@
           <a-select v-model:value="contentType">
             <a-select-option v-for="item in CONTENT_TYPES" :key="item.value" :value="item.value">{{ item.label }}</a-select-option>
           </a-select>
-          <a-input v-model:value="searchText" placeholder="输入关键词，回车键搜索" :disabled="loading" @keyup.enter="onSearch()" />
+          <a-input v-model:value="searchText" placeholder="输入关键词，回车键搜索" :disabled="loading" allow-clear @keyup.enter="onSearch()" />
         </a-input-group>
       </div>
     </div>

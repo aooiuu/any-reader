@@ -11,7 +11,7 @@
       <!-- 加载 -->
       <a-spin v-if="loading" :spinning="loading" class="h-full w-full items-center justify-center !flex" />
       <!-- 阅读区域 -->
-      <div ref="contentRef" class="relative h-full flex flex-1 flex-col overflow-y-auto indent-2em sm:mx-60">
+      <div ref="contentRef" tabindex="0" class="relative h-full flex flex-1 flex-col overflow-y-auto indent-2em outline-none sm:px-60">
         <!-- 漫画 -->
         <template v-if="contentType === ContentType.MANGA">
           <img v-for="(row, idx) in content" :key="idx" :src="row" />

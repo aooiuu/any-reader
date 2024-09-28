@@ -6,7 +6,8 @@
     <div
       id="text-container"
       ref="contentRef"
-      class="flex-1 overflow-y-auto whitespace-pre-wrap break-words p-10 indent-2em lh-1.5em"
+      tabindex="0"
+      class="flex-1 overflow-y-auto whitespace-pre-wrap break-words p-10 indent-2em lh-1.5em outline-none"
       :style="{
         fontSize: settingStore.data.readStyle.fontSize + 'px',
         letterSpacing: settingStore.data.readStyle.letterSpacing + 'px'

@@ -17,9 +17,8 @@ const contentRef = ref();
 
 const { keyText } = useMagicKeys({
   target: contentRef,
-  passive: false,
   onEventFired(e) {
-    e.preventDefault();
+    e.stopImmediatePropagation();
   }
 });
 

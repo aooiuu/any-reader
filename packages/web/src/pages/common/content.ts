@@ -240,6 +240,7 @@ export function useContent(contentRef: Ref<HTMLElement>) {
   useKeyboardShortcuts(
     {
       passive: false,
+      target: contentRef,
       onEventFired: (e) => {
         e.preventDefault();
       }

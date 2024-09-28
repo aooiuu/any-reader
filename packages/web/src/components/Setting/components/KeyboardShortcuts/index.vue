@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div ref="rootRef">
     <KeyRow v-model="settingStore.data.keyboardShortcuts.prevChapter" title="上一章" :key-text="keyText" />
     <KeyRow v-model="settingStore.data.keyboardShortcuts.nextChapter" title="下一章" :key-text="keyText" />
     <KeyRow v-model="settingStore.data.keyboardShortcuts.pageUp" title="上一屏" :key-text="keyText" />
@@ -13,10 +13,12 @@ import { useMagicKeys } from '@/hooks/useMagicKeys';
 import { useSettingStore } from '@/stores/setting';
 import KeyRow from './KeyRow.vue';
 
+const rootRef = ref();
+
 const { keyText } = useMagicKeys({
-  passive: false,
+  target: rootRef,
   onEventFired(e) {
-    e.preventDefault();
+    e.stopImmediatePropagation();
   }
 });
 
