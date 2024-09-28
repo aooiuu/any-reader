@@ -1,106 +1,72 @@
 ---
-outline: deep
+layout: home
+
+title: any-reader
+titleTemplate: 开源的多平台自定义源资源聚合工具。支持小说、漫画阅读、视频播放、聚合搜索等, 也支持本地资源TXT、EPUB
+
+hero:
+  name: AnyReader
+  text: 开源的多平台自定义规则资源聚合工具
+  tagline: 小说、漫画、视频等自由聚合
+  actions:
+    - theme: brand
+      text: 什么是 规则?
+      link: /rule/
+    - theme: alt
+      text: 快速开始
+      link: /desktop/
+    - theme: alt
+      text: 在线工具
+      link: /play/
+  image:
+    src: https://github.com/user-attachments/assets/ebf6291e-a51a-4a9e-8e81-f0cf1f10cb1f
+    alt: AnyReader
+
+features:
+  - icon: 📖
+    title: 多类型
+    details: 小说、漫画、视频, 通过编写规则, 把不同的来源的数据以相同的格式呈现, 实现聚合搜索、查看
+  - icon: 💻️
+    title: 多平台
+    details: 得益于JS的生态, 可以运行在Windows、Mac、Linux、Docker、网页版、VSCode插件等
+  - icon: 🪄
+    title: 自定义规则
+    details: 通过 XPath、JSONPath、CSS选择器、正则、JS等轻松编写规则
+  - icon: 🌍️
+    title: 开放解析库
+    details: 规则解析库分离, 你可以使用解析库开发自己的程序
+  - icon: 📘
+    title: 规则生态
+    details: 兼容亦搜规则, 避免重复造轮子, 规则和亦搜兼容
+  - icon: 🎞️
+    title: 资源站支持
+    details: 支持导入苹果CMS、ZyPlayer规则
+  - icon: 📁
+    title: 本地资源支持
+    details: 支持本地小说格式 TXT、Epub
+  - icon: 🚀
+    title: 代码开源
+    details: 代码开源，免费、透明、开放、开源
 ---
 
-# any-reader
+<style>
+:root {
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: -webkit-linear-gradient(120deg, #bd34fe 30%, #41d1ff);
 
-开源的多平台自定义源资源聚合工具。支持小说、漫画阅读、视频播放、聚合搜索等, 也支持本地资源TXT、EPUB
-
-软件不提供内容, 也不提供任何规则, 但你可以通过编写 [规则](./rule/), 控制呈现内容
-
-## 参与开发
-
-```sh
-# 克隆项目
-git clone git@github.com:aooiuu/any-reader.git
-
-# 进入项目根目录
-cd any-reader
-
-# 启用 Corepack
-corepack enable
-
-# 安装依赖
-pnpm i
-
-# 运行网页版
-pnpm run web:dev
-```
-
-### 源码目录结构
-
-```
-├── docs
-├── packages
-|  ├── cli                命令行工具
-|  ├── core               规则解析库
-|  ├── legado             阅读3规则解析库(开发中)
-|  ├── rule-utils         规则转换
-|  ├── epub               epub解析
-|  ├── shared             多端通用逻辑
-|  ├── vscode             vscode插件
-|  ├── utools             utools插件
-|  ├── rubick             rubick插件
-|  ├── server             web端需要的服务端
-|  └── web                模板
-├── README.md
-└── scripts
-```
-
-## 常见问题
-
-### 无法使用搜索功能
-
-需要配置规则
-
-### 搜索失败
-
-如果您是从网络上找到的源，那么可能是源过期了，也可能是规则部分没有支持。
-
-如果使用 `eso` 可以搜索， 那说明没过期。请提交 [issues](https://github.com/aooiuu/any-reader/issues)
-
-### 本地书籍怎么导入
-
-`设置` -> `本地书籍目录` 填写本地目录
-
-软件会自动加载目录下的 `.txt` 和 `.epub` 文件
-
-### 数据文件在哪
-
-windows: `C:\Users\%USERNAME%\.any-reader\`
-
-对应的源码: `path.join(os.homedir(), '.any-reader')`
-
-### 导入 ZyPlayer 源
-
-`any-reader` 会从 `tbl_site` 列表转换为可以使用的规则。 目前仅支持 `type=0` 或者 `type=1` 的源
-
-`ZyPlayer` 配置一般长这样:
-
-```json
-{
-  "tbl_site": [
-    {
-      "key": "xxx",
-      "name": "xxx",
-      "api": "xxx",
-      "playUrl": "",
-      "search": 1,
-      "group": "xxx",
-      "status": false,
-      "type": 1,
-      "id": "1",
-      "isActive": true
-    }
-  ]
-  // ...
+  --vp-home-hero-image-background-image: linear-gradient(-45deg, #bd34fe 50%, #47caff 50%);
+  --vp-home-hero-image-filter: blur(44px);
 }
-```
 
-> 转换后的规则不但 `any-reader` 可以使用, `ESO` 一样可以使用哦
+@media (min-width: 640px) {
+  :root {
+    --vp-home-hero-image-filter: blur(56px);
+  }
+}
 
-### 朗读功能怎么用
-
-`设置` -> `热键` -> `朗读`
-
-设置热键后, 阅读页面按热键既可, 朗读状态下再按一次暂停。
+@media (min-width: 960px) {
+  :root {
+    --vp-home-hero-image-filter: blur(68px);
+  }
+}
+</style>

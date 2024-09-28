@@ -7,7 +7,8 @@ const guide = [
   { text: '网页端', link: '/browser/' },
   { text: 'Docker', link: '/docker/' },
   { text: '命令行工具', link: '/cli/' },
-  { text: '规则解析库', link: '/core/' }
+  { text: '规则解析库', link: '/core/' },
+  { text: '常见问题', link: '/help/' }
 ];
 
 export default withMermaid({
