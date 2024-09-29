@@ -19,7 +19,7 @@ hero:
       text: 在线工具
       link: /play/
   image:
-    src: https://github.com/user-attachments/assets/ebf6291e-a51a-4a9e-8e81-f0cf1f10cb1f
+    src: https://github.com/user-attachments/assets/a374d42d-f02e-4301-b738-9742662a11f9
     alt: AnyReader
 
 features:
@@ -50,25 +50,3 @@ features:
 ---
 
 > 软件不提供内容, 也不提供任何规则, 但你可以通过编写 [规则](./rule/), 控制呈现内容
-
-<style>
-:root {
-  --vp-home-hero-name-color: transparent;
-  --vp-home-hero-name-background: -webkit-linear-gradient(120deg, #bd34fe 30%, #41d1ff);
-
-  --vp-home-hero-image-background-image: linear-gradient(-45deg, #bd34fe 50%, #47caff 50%);
-  --vp-home-hero-image-filter: blur(44px);
-}
-
-@media (min-width: 640px) {
-  :root {
-    --vp-home-hero-image-filter: blur(56px);
-  }
-}
-
-@media (min-width: 960px) {
-  :root {
-    --vp-home-hero-image-filter: blur(68px);
-  }
-}
-</style>

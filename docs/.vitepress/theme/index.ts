@@ -2,6 +2,7 @@ import Theme from 'vitepress/theme';
 import TwoslashFloatingVue from '@shikijs/vitepress-twoslash/client';
 import '@shikijs/vitepress-twoslash/style.css';
 import 'uno.css';
+import './style.css';
 import RulePlay from '../components/RulePlay/index.vue';
 import RuleComparess from '../components/RuleComparess/index.vue';
 import Playground from '../components/Playground/index.vue';
