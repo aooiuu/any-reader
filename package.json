@@ -82,7 +82,7 @@
     "@types/uuid": "^10.0.0",
     "@vitest/browser": "^2.1.2",
     "@unocss/eslint-config": "^0.63.3",
-    "@vue/eslint-config-prettier": "^8.0.0",
+    "@vue/eslint-config-prettier": "^9.0.0",
     "@vue/eslint-config-typescript": "^13.0.0",
     "bumpp": "^9.6.1",
     "cross-env": "^7.0.3",
