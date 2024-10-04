@@ -67,7 +67,7 @@
     "@codemirror/lang-javascript": "^6.2.2",
     "@codemirror/lang-json": "^6.0.1",
     "codemirror": "^6.0.1",
-    "@unocss/reset": "^0.62.4",
+    "@unocss/reset": "^0.63.3",
     "sql.js": "^1.11.0",
     "sqlite3": "5.1.6"
   },
@@ -78,13 +78,13 @@
   "devDependencies": {
     "@eslint/compat": "^1.1.1",
     "@rushstack/eslint-patch": "^1.10.4",
-    "@types/node": "^20.16.5",
+    "@types/node": "^20.16.10",
     "@types/uuid": "^10.0.0",
-    "@vitest/browser": "^2.1.1",
-    "@unocss/eslint-config": "^0.62.4",
+    "@vitest/browser": "^2.1.2",
+    "@unocss/eslint-config": "^0.63.3",
     "@vue/eslint-config-prettier": "^8.0.0",
     "@vue/eslint-config-typescript": "^13.0.0",
-    "bumpp": "^9.5.2",
+    "bumpp": "^9.6.1",
     "cross-env": "^7.0.3",
     "eslint": "^8.57.1",
     "eslint-plugin-vue": "^9.28.0",
@@ -96,9 +96,9 @@
     "tsup": "^8.3.0",
     "tsx": "^4.19.1",
     "unbuild": "^2.0.0",
-    "unocss": "^0.62.4",
+    "unocss": "^0.63.3",
     "vite-tsconfig-paths": "^5.0.1",
-    "vitest": "^2.1.1"
+    "vitest": "^2.1.2"
   },
   "lint-staged": {
     "*.{vue,js,ts}": "eslint --fix"
