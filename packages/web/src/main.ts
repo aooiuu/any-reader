@@ -1,7 +1,8 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
-import { useComponent } from './components';
+import useComponent from './components';
+import useDirective from './directive';
 import './assets';
 import './plugins/vsc-ui';
 import './plugins/antd';
@@ -17,6 +18,7 @@ const app = createApp(App);
 app.use(router);
 app.use(createPinia());
 useComponent(app);
+useDirective(app);
 
 router.beforeEach((to, _from, next) => {
   const { query, path } = to;

@@ -6,6 +6,7 @@
     <div
       id="text-container"
       ref="contentRef"
+      v-focus
       tabindex="0"
       class="flex-1 overflow-y-auto whitespace-pre-wrap break-words p-10 indent-2em lh-1.5em outline-none"
       :style="{
