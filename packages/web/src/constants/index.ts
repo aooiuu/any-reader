@@ -22,3 +22,4 @@ export const VERSION = version;
 export const IS_MOBILE = /mobi/i.test(navigator.userAgent.toLowerCase());
 
 export const IS_VSCODE = PLATFORM === 'vscode';
+export const IS_BROWSER = PLATFORM === 'browser';
