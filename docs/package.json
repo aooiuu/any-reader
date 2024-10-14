@@ -13,6 +13,7 @@
     "@any-reader/rule-utils": "workspace:^",
     "@codemirror/lang-javascript": "^6.2.2",
     "@codemirror/theme-one-dark": "^6.1.2",
+    "@giscus/vue": "^3.0.0",
     "@shikijs/vitepress-twoslash": "^1.18.0",
     "codemirror": "^6.0.1",
     "js-base64": "^3.7.7",
