@@ -133,7 +133,7 @@
     "@any-reader/core": "workspace:^",
     "@any-reader/shared": "workspace:^",
     "@types/fs-extra": "^11.0.4",
-    "@types/vscode": "^1.93.0",
+    "@types/vscode": "^1.94.0",
     "@vscode/test-electron": "^2.4.1",
     "easy-post-message": "^0.1.0",
     "eslint": "^8.57.1",
