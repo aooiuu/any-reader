@@ -3,6 +3,14 @@
  */
 
 import { request } from '@/utils/request';
+import { ContentType } from '@any-reader/rule-utils';
+
+export interface ContentResponse {
+  contentType?: ContentType;
+  content: string[];
+  /** 是否需要正文解密 */
+  contentDecoder: boolean;
+}
 
 // 发现页分类列表
 export function discoverMap(ruleId: string) {
@@ -61,7 +69,7 @@ export function searchByRule(data: any) {
 
 // 获取内容
 export function getContent(data: any) {
-  return request({
+  return request<ContentResponse>({
     method: 'post',
     url: 'rule-manager/content',
     data

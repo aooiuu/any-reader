@@ -74,11 +74,13 @@ export function useContent(contentRef: Ref<HTMLElement>) {
   const readStore = useReadStore();
   const options = computed(() => route.query);
   const loading = ref(false);
-  let contentDecoderTasks: PQueue;
+  let contentDecoderTasks: PQueue | undefined;
   const _onUnmounted: (() => void)[] = [];
   _onUnmounted.push(() => {
     readStore.setPath('');
     readStore.setTitle('');
+    readStore.setPreTitle('');
+    readStore.setNextTitle('');
     if (contentDecoderTasks) contentDecoderTasks.clear();
   });
   onUnmounted(() => {
@@ -119,7 +121,10 @@ export function useContent(contentRef: Ref<HTMLElement>) {
     }
   }
 
-  // 初始化
+  /**
+   * 初始化
+   * @param noCache 是否不使用缓存
+   */
   async function init(noCache = false) {
     const { chapterPath: _chapterPath, filePath, ruleId, percentage } = route.query as Record<string, string>;
     content.value = [];
@@ -143,15 +148,7 @@ export function useContent(contentRef: Ref<HTMLElement>) {
       }
     });
     if (res?.code === 0) {
-      const {
-        contentType: _contentType,
-        content: _content,
-        contentDecoder: _contentDecoder
-      }: {
-        contentType: number;
-        content: string[];
-        contentDecoder: boolean;
-      } = res.data;
+      const { contentType: _contentType, content: _content, contentDecoder: _contentDecoder } = res.data;
       contentType.value = _contentType;
       // 处理正文解密
       if (_contentDecoder) {
@@ -162,7 +159,7 @@ export function useContent(contentRef: Ref<HTMLElement>) {
         }
         content.value = new Array(_content.length).fill('');
         _content.forEach((url, i) => {
-          contentDecoderTasks.add(async () => {
+          contentDecoderTasks?.add(async () => {
             const res = await contentDecoder({
               content: url,
               ruleId: ruleId
@@ -172,22 +169,24 @@ export function useContent(contentRef: Ref<HTMLElement>) {
             }
           });
         });
+        // 等待所有内容解密完成
+        await contentDecoderTasks.onIdle();
       } else {
         content.value = _content || [];
       }
     }
 
-    nextTick(() => {
-      let scrollTop = 0;
-      if (percentage) {
-        scrollTop = contentRef.value.scrollHeight * (+percentage / 100000);
-      }
-      contentRef.value.scrollTop = scrollTop;
+    // 确保内容已经渲染完成后再设置滚动位置
+    await nextTick();
 
-      if (ttsStatus) {
-        tts.start();
-      }
-    });
+    if (percentage && contentRef.value) {
+      const scrollTop = contentRef.value.scrollHeight * (+percentage / 100000);
+      contentRef.value.scrollTop = scrollTop;
+    }
+
+    if (ttsStatus) {
+      tts.start();
+    }
   }
 
   // 路由被改变
