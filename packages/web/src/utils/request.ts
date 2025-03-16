@@ -2,9 +2,11 @@ import { message } from 'ant-design-vue';
 import { PLATFORM } from '@/constants';
 import axios from './axios';
 
-export async function request(config: any): Promise<{
+export async function request<T = any>(
+  config: any
+): Promise<{
   code: number;
-  data: any;
+  data: T;
   msg?: string;
 }> {
   const method = config.method?.toLowerCase() ?? 'get';
