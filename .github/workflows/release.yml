@@ -57,7 +57,7 @@ jobs:
       # https://github.com/HaaLeo/publish-vscode-extension
       - name: build vscode vsx
         if: matrix.os == 'windows-latest'
-        uses: HaaLeo/publish-vscode-extension@v1
+        uses: HaaLeo/publish-vscode-extension@v1.6.2
         id: publishVSX
         with:
           packagePath: ./packages/vscode
