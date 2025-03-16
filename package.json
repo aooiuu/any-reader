@@ -1,7 +1,7 @@
 {
   "name": "any-reader",
   "type": "module",
-  "version": "1.11.4",
+  "version": "1.11.5",
   "private": true,
   "packageManager": "pnpm@9.4.0",
   "description": "",
@@ -39,7 +39,6 @@
     "build:web-w": "pnpm --filter=@any-reader/web build:w",
     "docs": "pnpm --filter docs docs:dev",
     "build:docs": "pnpm --filter docs docs:build",
-    "run:server": "run-p server run:web",
     "test": "vitest",
     "prepare": "husky install",
     "web:server": "pnpm --filter=@any-reader/web dev",
