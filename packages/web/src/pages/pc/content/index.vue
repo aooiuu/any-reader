@@ -68,6 +68,7 @@
     >
       <div
         class="app-region-drag mb-4 cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap b-b-1 b-b-[#00000033] b-b-solid p-10 pb-4 text-center"
+        :title="readStore.title"
         @click="scrollIntoViewChapter"
       >
         {{ readStore.title || '-' }}

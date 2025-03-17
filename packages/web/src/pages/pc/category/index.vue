@@ -11,7 +11,7 @@
       <ARTabs v-model="ruleId" :options="ruleListDisplay" value-key="id" label-key="name" @update:model-value="changeRule">
         <template #default="{ label, item }">
           <div class="rule-item flex items-center">
-            <div class="flex-1 overflow-hidden text-ellipsis whitespace-nowrap pr-5">{{ label }}</div>
+            <div class="flex-1 overflow-hidden text-ellipsis whitespace-nowrap pr-5" :title="label">{{ label }}</div>
             <div class="hidden sm:block">
               <PushpinOutlined
                 class="rule-item__pind"
@@ -37,6 +37,7 @@
             v-for="(row, idx) in list"
             :key="idx"
             class="node relative w-102 flex flex-shrink-0 flex-col cursor-pointer hover:op-70"
+            :title="row.name"
             @click="
               router.push({
                 path: '/chapter',
@@ -53,7 +54,7 @@
               <ARCover :src="row.cover" :preview="false" alt="" srcset="" class="!h-136px !w-102px" width="100%" height="100%" fit="cover" />
             </div>
             <div class="mb-2 overflow-hidden text-ellipsis whitespace-nowrap">{{ row.name }}</div>
-            <div class="overflow-hidden text-ellipsis whitespace-nowrap text-12 op-70">{{ row.author }}</div>
+            <div class="overflow-hidden text-ellipsis whitespace-nowrap text-12 op-70" :title="row.author">{{ row.author }}</div>
 
             <div
               class="star invisible absolute right-5 top-5 flex items-center justify-center rounded-10 bg-[#000000cc] px-2 py-2"

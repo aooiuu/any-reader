@@ -49,7 +49,7 @@
         >
           <div class="flex flex-1 items-center overflow-hidden">
             <i class="codicon mr-6" :class="[item.opened ? 'codicon-chevron-down' : 'codicon-chevron-right']"></i>
-            <div class="flex-1 overflow-hidden text-ellipsis whitespace-nowrap">{{ item.rule.name }}</div>
+            <div class="flex-1 overflow-hidden text-ellipsis whitespace-nowrap" :title="item.rule.name">{{ item.rule.name }}</div>
           </div>
           <span class="ml-6 op-70">{{ item.list.length }}</span>
         </div>

@@ -20,7 +20,7 @@
               :title="readStore.title"
               @click.stop="openChaptersBox.emit"
             >
-              <span class="overflow-hidden text-ellipsis whitespace-nowrap">{{ readStore.title }}</span>
+              <span class="overflow-hidden text-ellipsis whitespace-nowrap" :title="readStore.title">{{ readStore.title }}</span>
             </div>
             <div v-else class="h-full w-full flex items-center justify-center" @click.stop="searchBox.emit">
               <span class="codicon codicon-search mr-10"></span>

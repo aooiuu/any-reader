@@ -16,6 +16,7 @@
               'op-70': !!findHistory(item)
             }
           ]"
+          :title="item.name"
           :data-url="item.chapterPath"
           @click="showContent(item)"
         >

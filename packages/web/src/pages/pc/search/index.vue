@@ -28,6 +28,7 @@
                 v-for="(row, idx) in item.list"
                 :key="idx"
                 class="node relative w-102 flex flex-shrink-0 flex-col cursor-pointer hover:op-70"
+                :title="row.name"
                 @click="getChapter(row, item.rule)"
               >
                 <div class="mb-5 h-136 w-102 overflow-hidden rounded-5">
@@ -44,7 +45,7 @@
                   />
                 </div>
                 <div class="mb-2 overflow-hidden text-ellipsis whitespace-nowrap">{{ row.name }}</div>
-                <div class="overflow-hidden text-ellipsis whitespace-nowrap text-12 op-70">{{ row.author }}</div>
+                <div class="overflow-hidden text-ellipsis whitespace-nowrap text-12 op-70" :title="row.author">{{ row.author }}</div>
 
                 <div
                   class="star invisible absolute right-5 top-5 flex items-center justify-center rounded-10 bg-[#000000cc] px-2 py-2"
