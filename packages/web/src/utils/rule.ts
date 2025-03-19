@@ -1,4 +1,4 @@
-import { Rule } from '@any-reader/rule-utils';
+import type { Rule } from '@any-reader/rule-utils';
 
 export const isRule = (rule: Rule | string) => {
   if (typeof rule === 'string') {
