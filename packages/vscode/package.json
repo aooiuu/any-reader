@@ -144,7 +144,7 @@
     "qs": "^6.13.0",
     "sql.js": "^1.11.0",
     "ts-loader": "^9.5.1",
-    "typescript": "^5.5.4",
+    "typescript": "^5.8.2",
     "uuid": "^10.0.0"
   },
   "dependencies": {

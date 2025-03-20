@@ -2,83 +2,153 @@ import { v4 as uuidV4 } from 'uuid';
 import { decodeRule } from './comparess';
 import axios from 'axios';
 
+/**
+ * 内容类型枚举
+ * @enum {number}
+ */
 export enum ContentType {
+  /** 漫画类型 */
   MANGA = 0,
+  /** 小说类型 */
   NOVEL = 1,
+  /** 视频类型 */
   VIDEO = 2,
+  /** 音频类型 */
   AUDIO = 3,
+  /** RSS类型 */
   RSS = 4,
+  /** 小说更多类型 */
   NOVELMORE = 5,
 
+  /** 游戏类型 */
   GAME = 101
 }
 
+/**
+ * 规则接口定义
+ * @interface Rule
+ */
 export interface Rule {
   // ===== 通用字段 =====
-  host: string; // 域名
-  id: string; // uuid
-  name: string; // 书源名称
-  sort: number; // 书源排序
-  contentType: ContentType; // 书源类型
-  loadJs: string; // 全局JS脚本
-  author: string; // 规则作者
-  userAgent: string; // Headers JSON字符串
+  /** 域名 */
+  host: string;
+  /** 规则唯一标识 UUID */
+  id: string;
+  /** 书源名称 */
+  name: string;
+  /** 书源排序 */
+  sort: number;
+  /** 书源类型 */
+  contentType: ContentType;
+  /** 全局JS脚本 */
+  loadJs: string;
+  /** 规则作者 */
+  author: string;
+  /** Headers JSON字符串 */
+  userAgent: string;
 
   // ===== 解析流程 - 搜索 =====
-  enableSearch: boolean; // 搜索 - 启用
-  searchUrl: string; // 搜索 - 地址
-  searchList: string; // 搜索 - 列表
-  searchCover: string; // 搜索 - 封面
-  searchName: string; // 搜索 - 标题
-  searchAuthor: string; // 搜索 - 作者
-  searchChapter: string; // 搜索 - 章节
-  searchDescription: string; // 搜索 - 描述
-  searchResult: string; // 搜索 - 结果
+  /** 搜索 - 是否启用 */
+  enableSearch: boolean;
+  /** 搜索 - 请求地址 */
+  searchUrl: string;
+  /** 搜索 - 列表选择器 */
+  searchList: string;
+  /** 搜索 - 封面选择器 */
+  searchCover: string;
+  /** 搜索 - 标题选择器 */
+  searchName: string;
+  /** 搜索 - 作者选择器 */
+  searchAuthor: string;
+  /** 搜索 - 章节选择器 */
+  searchChapter: string;
+  /** 搜索 - 描述选择器 */
+  searchDescription: string;
+  /** 搜索 - 结果处理脚本 */
+  searchResult: string;
 
   // ===== 解析流程 - 章节列表 =====
-  chapterUrl: string; // 章节列表 - 请求地址
-  chapterName: string; // 章节列表 - 标题
-  chapterList: string; // 章节列表 - 列表
-  chapterCover: string; // 章节列表 - 封面
-  chapterTime: string; // 章节列表 - 时间
-  chapterResult: string; // 章节列表 - 结果
-  contentItems: string; // 章节列表 - 内容
-  enableMultiRoads: boolean; // 启用多线路 暂不支持
-  chapterRoads: string; // 线路列表 暂不支持
-  chapterNextUrl: string; // 章节列表下一页地址
+  /** 章节列表 - 请求地址 */
+  chapterUrl: string;
+  /** 章节列表 - 标题选择器 */
+  chapterName: string;
+  /** 章节列表 - 列表选择器 */
+  chapterList: string;
+  /** 章节列表 - 封面选择器 */
+  chapterCover: string;
+  /** 章节列表 - 时间选择器 */
+  chapterTime: string;
+  /** 章节列表 - 结果处理脚本 */
+  chapterResult: string;
+  /** 章节列表 - 内容选择器 */
+  contentItems: string;
+  /** 是否启用多线路 */
+  enableMultiRoads: boolean;
+  /** 线路列表选择器 */
+  chapterRoads: string;
+  /** 章节列表下一页地址选择器 */
+  chapterNextUrl: string;
 
   // ===== 解析流程 - 发现页 =====
-  enableDiscover: boolean; // 发现页 - 是否启用
-  discoverUrl: string; // 发现页 - 请求地址
-  discoverList: string; // 发现页 - 列表
-  discoverName: string; // 发现页 - 标题
-  discoverCover: string; // 发现页 - 封面
-  discoverAuthor: string; // 发现页 - 作者
-  discoverDescription: string; // 发现页 - 描述
-  discoverResult: string; // 发现页 - 结果
-  // discoverItems: string
+  /** 发现页 - 是否启用 */
+  enableDiscover: boolean;
+  /** 发现页 - 请求地址 */
+  discoverUrl: string;
+  /** 发现页 - 列表选择器 */
+  discoverList: string;
+  /** 发现页 - 标题选择器 */
+  discoverName: string;
+  /** 发现页 - 封面选择器 */
+  discoverCover: string;
+  /** 发现页 - 作者选择器 */
+  discoverAuthor: string;
+  /** 发现页 - 描述选择器 */
+  discoverDescription: string;
+  /** 发现页 - 结果处理脚本 */
+  discoverResult: string;
+  /** 发现页 - 标签选择器 */
   discoverTags: string;
+  /** 发现页 - 章节选择器 */
   discoverChapter: string;
-  discoverNextUrl: string; // 下一页地址
+  /** 发现页 - 下一页地址选择器 */
+  discoverNextUrl: string;
 
   // ===== 解析流程 - 正文 =====
+  /** 正文 - 请求地址 */
   contentUrl: string;
+  /** 正文 - 下一页地址 */
   contentNextUrl: string;
+  /** 正文 - 内容解码脚本 */
   contentDecoder: string;
 
   // ===== 暂不支持 =====
+  /** 创建时间 */
   createTime?: number;
+  /** 修改时间 */
   modifiedTime?: number;
+  /** 是否启用上传 */
   enableUpload?: boolean;
+  /** 图标 */
   icon?: string;
+  /** 分组 */
   group?: string;
+  /** 是否使用 CryptoJS */
   useCryptoJS?: boolean;
+  /** 搜索标签选择器 */
   searchTags?: string;
+  /** 章节路线名称选择器 */
   chapterRoadName?: string;
+  /** 视图样式 */
   viewStyle?: number;
+  /** Cookies */
   cookies?: string;
 }
 
+/**
+ * 创建规则对象
+ * @param rule - 部分规则对象
+ * @returns 完整的规则对象
+ */
 export function createRule(rule: Partial<Rule>): Rule {
   const now = Date.now() * 1000;
 
@@ -115,7 +185,6 @@ export function createRule(rule: Partial<Rule>): Rule {
       chapterCover: '',
       chapterTime: '',
       discoverAuthor: '',
-      // discoverItems: '',
       searchList: '',
       searchTags: '',
       searchName: '',
@@ -142,22 +211,27 @@ export function createRule(rule: Partial<Rule>): Rule {
 }
 
 /**
- *
- * @param {string} str
- * @returns {boolean}
+ * 检查字符串是否为 ESO 格式
+ * @param str - 待检查的字符串
+ * @returns 是否为 ESO 格式
  */
 export function isEsoStr(str: string): boolean {
   return typeof str === 'string' && str.startsWith('eso://');
 }
 
+/**
+ * 检查对象是否为有效的规则对象
+ * @param rule - 待检查的对象
+ * @returns 是否为有效的规则对象
+ */
 export function isEsoObj(rule: any): boolean {
   return typeof rule === 'object' && rule.id && rule.host && typeof rule.contentType !== 'undefined';
 }
 
 /**
- *
- * @param rule
- * @returns {boolean}
+ * 检查输入是否为有效的规则
+ * @param rule - 待检查的规则
+ * @returns 是否为有效的规则
  */
 export function isRule(rule: any): boolean {
   if (typeof rule === 'string') return isEsoStr(rule);
@@ -165,6 +239,12 @@ export function isRule(rule: any): boolean {
   return isEsoObj(rule);
 }
 
+/**
+ * 将文本转换为规则数组
+ * @param text - 输入文本，可以是URL、JSON字符串或ESO格式字符串
+ * @returns 规则数组
+ * @throws 当JSON解析失败时可能抛出错误
+ */
 export async function text2rules(text: string): Promise<Rule[]> {
   const result: Rule[] = [];
   if (typeof text !== 'string') return [];

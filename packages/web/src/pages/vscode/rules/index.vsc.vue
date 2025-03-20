@@ -12,7 +12,7 @@
       <template v-if="rulesStore.list.length">
         <TreeItem v-for="item in rules" :key="item.id">
           <div class="reader-node flex items-center">
-            <div class="flex-1 overflow-hidden text-ellipsis whitespace-nowrap">{{ item.name }}</div>
+            <div class="flex-1 overflow-hidden text-ellipsis whitespace-nowrap" :title="item.name">{{ item.name }}</div>
             <div
               class="codicon codicon-link-external"
               @click.stop="executeCommand({ command: 'any-reader.openUrl', data: ['/iframe?url=' + item.host] })"
