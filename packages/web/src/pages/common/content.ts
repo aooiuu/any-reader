@@ -1,3 +1,6 @@
+/**
+ * 内容阅读相关功能模块
+ */
 import type { Ref } from 'vue';
 import { useEventListener } from '@vueuse/core';
 import PQueue from 'p-queue';
@@ -13,6 +16,9 @@ import { useKeyboardShortcuts } from '@/hooks/useMagicKeys';
 import { TTS } from '@/utils/tts';
 import { base64 } from '@/api/modules/tts';
 
+/**
+ * 保存阅读历史记录的Hook
+ */
 function useSaveHistory(contentRef: Ref<HTMLElement>, options: Ref<any>) {
   const savePercentage = debounce(
     (params: any) => {
@@ -35,6 +41,9 @@ function useSaveHistory(contentRef: Ref<HTMLElement>, options: Ref<any>) {
   });
 }
 
+/**
+ * 主题样式设置Hook
+ */
 export function useTheme(contentRef: Ref<HTMLElement>) {
   const settingStore = useSettingStore();
 
@@ -64,9 +73,12 @@ export function useTheme(contentRef: Ref<HTMLElement>) {
   );
 }
 
+/**
+ * 内容阅读核心Hook
+ */
 export function useContent(contentRef: Ref<HTMLElement>) {
   const content = ref<string[]>([]);
-  const contentType = ref<ContentType>(ContentType.NOVEL);
+  const contentType = ref<ContentType | undefined>(ContentType.NOVEL);
   const route = useRoute();
   const router = useRouter();
   const chaptersStore = useChaptersStore();
@@ -93,6 +105,9 @@ export function useContent(contentRef: Ref<HTMLElement>) {
 
   const chapterPath = ref<string>('');
 
+  /**
+   * 获取上一章节路径
+   */
   const lastChapter = computed<string>(() => {
     if (!chapterPath.value) return '';
     const idx = chaptersStore.chapters.findIndex((e: any) => e.chapterPath === chapterPath.value);
@@ -101,6 +116,9 @@ export function useContent(contentRef: Ref<HTMLElement>) {
     return item?.chapterPath || '';
   });
 
+  /**
+   * 获取下一章节路径
+   */
   const nextChapter = computed<string>(() => {
     if (!chapterPath.value) return '';
     const idx = chaptersStore.chapters.findIndex((e: any) => e.chapterPath === chapterPath.value) + 1;
@@ -110,6 +128,9 @@ export function useContent(contentRef: Ref<HTMLElement>) {
     return item?.chapterPath || '';
   });
 
+  /**
+   * 预加载章节内容
+   */
   function preload(chapterPath: string) {
     const key = 'preload@' + chapterPath;
     if (!sessionStorage.getItem(key)) {
@@ -199,6 +220,9 @@ export function useContent(contentRef: Ref<HTMLElement>) {
     }
   );
 
+  /**
+   * 跳转到指定章节
+   */
   function toChapter(chapterPath: string) {
     if (!chapterPath) return;
     router.replace({
@@ -211,17 +235,23 @@ export function useContent(contentRef: Ref<HTMLElement>) {
     });
   }
 
-  // 上一章
+  /**
+   * 跳转到上一章
+   */
   function onPrevChapter() {
     toChapter(lastChapter.value);
   }
 
-  // 下一章
+  /**
+   * 跳转到下一章
+   */
   function onNextChapter() {
     toChapter(nextChapter.value);
   }
 
-  // 上一页
+  /**
+   * 向上翻页
+   */
   function onPageUp() {
     contentRef.value.scrollTo({
       top: contentRef.value.scrollTop - contentRef.value.offsetHeight + 15,
@@ -229,7 +259,9 @@ export function useContent(contentRef: Ref<HTMLElement>) {
     });
   }
 
-  // 下一页
+  /**
+   * 向下翻页
+   */
   function onPageDown() {
     contentRef.value.scrollTo({
       top: contentRef.value.scrollTop + contentRef.value.offsetHeight - 15,
@@ -276,11 +308,17 @@ export function useContent(contentRef: Ref<HTMLElement>) {
   };
 }
 
+/**
+ * 文本转语音Hook
+ */
 export function useTTS(contentRef: Ref<HTMLElement>, ended: () => void) {
   let tts: TTS | null;
 
   const route = useRoute();
 
+  /**
+   * 销毁TTS实例
+   */
   function destroy() {
     if (tts) {
       tts.destroy();
@@ -298,6 +336,9 @@ export function useTTS(contentRef: Ref<HTMLElement>, ended: () => void) {
   onDeactivated(destroy);
   onUnmounted(destroy);
 
+  /**
+   * 开始TTS
+   */
   function start() {
     tts = new TTS(
       contentRef.value,

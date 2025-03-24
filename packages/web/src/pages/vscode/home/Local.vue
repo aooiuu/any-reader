@@ -7,7 +7,7 @@
     </a-spin>
 
     <vscode-divider />
-    <div class="mx-8 my-4 flex cursor-pointer items-center hover:op-70" @click="openDir">
+    <div class="mx-8 my-4 flex items-center hover:op-70" :class="[openDirLoading ? 'cursor-wait' : 'cursor-pointer']" @click="handleOpenDir">
       <i class="codicon codicon-folder-opened mr-2"></i>
       打开本地目录
     </div>
@@ -24,6 +24,7 @@ const router = useRouter();
 
 const list = ref([]);
 const loading = ref(false);
+const openDirLoading = ref(false);
 
 async function getBookList() {
   try {
@@ -36,6 +37,16 @@ async function getBookList() {
     }
   } finally {
     loading.value = false;
+  }
+}
+
+async function handleOpenDir() {
+  if (openDirLoading.value) return;
+  openDirLoading.value = true;
+  try {
+    await openDir();
+  } finally {
+    openDirLoading.value = false;
   }
 }
 

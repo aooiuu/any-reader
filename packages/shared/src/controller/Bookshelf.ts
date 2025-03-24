@@ -20,6 +20,8 @@ export class Bookshelf extends BaseController {
   // vscode, desktop
   @Post('open-dir')
   async openDir() {
-    isElectron && openExplorer(this.app.config.bookDir);
+    if (isElectron) {
+      await openExplorer(this.app.config.bookDir);
+    }
   }
 }

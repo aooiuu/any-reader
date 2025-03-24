@@ -1,3 +1,6 @@
+/**
+ * 章节相关功能模块
+ */
 import { stringify } from 'qs';
 import { App } from 'ant-design-vue';
 import { ContentType } from '@any-reader/rule-utils';
@@ -7,15 +10,26 @@ import { openWindow } from '@/api/modules/electron';
 import { useRulesStore } from '@/stores/rules';
 import { useFavoritesStore } from '@/stores/favorites';
 
+/**
+ * 收藏相关功能Hook
+ * @param params - 路由参数
+ * @returns 收藏相关的状态和方法
+ */
 function useFavorites(params: Record<string, string>) {
   const favoritesStore = useFavoritesStore();
 
+  /**
+   * 判断当前内容是否已收藏
+   */
   const isStarred = computed<boolean>(() => {
     const { filePath, ruleId } = params;
     if (!ruleId) return false;
     return favoritesStore.starred({ url: filePath, ruleId });
   });
 
+  /**
+   * 收藏当前内容
+   */
   function star() {
     const { ruleId } = params;
     if (!ruleId) return false;
@@ -29,6 +43,10 @@ function useFavorites(params: Record<string, string>) {
   };
 }
 
+/**
+ * 章节列表相关功能Hook
+ * @returns 章节列表相关的状态和方法
+ */
 export function useChapter() {
   const { message } = App.useApp();
 
@@ -37,12 +55,18 @@ export function useChapter() {
   const router = useRouter();
   const rulesStore = useRulesStore();
 
+  /** 当前规则ID */
   const ruleId = computed(() => route.query.ruleId);
 
   const loading = ref(false);
+  /** 章节列表数据 */
   const list = ref<any[]>([]);
+  /** 阅读历史数据 */
   const historys = ref<any[]>([]);
 
+  /**
+   * 获取章节阅读历史
+   */
   async function chapterHistory() {
     const { filePath, ruleId } = route.query;
     const res = await getChapterHistorys({
@@ -52,15 +76,13 @@ export function useChapter() {
     const rows = res?.data || [];
     historys.value = rows;
     if (rows.length && rows[0].chapterPath) {
-      // const item = list.value.find((l) => l.chapterPath === rows[0].chapterPath);
-      // if (item) {
-      //   showContent(item);
-      // } else {
       chaptersRef.value?.querySelector(`[data-url="${rows[0].chapterPath}"]`)?.scrollIntoView({ behavior: 'smooth' });
-      // }
     }
   }
 
+  /**
+   * 初始化章节列表数据
+   */
   async function init() {
     list.value = [];
     const { filePath, ruleId } = route.query as Record<string, string>;
@@ -78,15 +100,29 @@ export function useChapter() {
     init();
   });
 
+  /**
+   * 查找章节的阅读历史记录
+   * @param item - 章节项
+   * @returns 历史记录项
+   */
   function findHistory(item: any) {
     return historys.value.find((history) => history.chapterPath === item.chapterPath);
   }
 
+  /**
+   * 判断是否为最后阅读的章节
+   * @param item - 章节项
+   * @returns 是否为最后阅读
+   */
   function isLastRead(item: any) {
     if (!historys.value.length) return false;
     return historys.value[0].chapterPath === item.chapterPath;
   }
 
+  /**
+   * 显示章节内容
+   * @param item - 章节项
+   */
   async function showContent(item: any) {
     const { filePath, ruleId, name } = route.query;
     const history = findHistory(item);
@@ -95,6 +131,7 @@ export function useChapter() {
       percentage: history?.percentage ?? 0
     };
 
+    // 处理视频类型内容
     if (rule?.contentType === ContentType.VIDEO) {
       loading.value = true;
       const res = await getContent({
@@ -118,8 +155,10 @@ export function useChapter() {
         message.warning('获取地址失败！');
       }
       return;
-    } else if (rule?.contentType === ContentType.AUDIO) {
-      // TODO: 音频规则, 待优化
+    }
+    // 处理音频类型内容
+    // TODO: 音频规则, 待优化
+    else if (rule?.contentType === ContentType.AUDIO) {
       const res = await getContent({
         filePath,
         ruleId,
@@ -140,6 +179,7 @@ export function useChapter() {
       }
     }
 
+    // 处理其他类型内容
     router.push({
       path: '/content',
       query: {

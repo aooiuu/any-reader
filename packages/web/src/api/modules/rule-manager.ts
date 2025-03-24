@@ -3,14 +3,7 @@
  */
 
 import { request } from '@/utils/request';
-import { ContentType } from '@any-reader/rule-utils';
-
-export interface ContentResponse {
-  contentType?: ContentType;
-  content: string[];
-  /** 是否需要正文解密 */
-  contentDecoder: boolean;
-}
+import type { ContentResponse } from '@any-reader/rule-utils';
 
 // 发现页分类列表
 export function discoverMap(ruleId: string) {
