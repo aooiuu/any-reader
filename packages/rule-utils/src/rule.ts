@@ -24,6 +24,13 @@ export enum ContentType {
   GAME = 101
 }
 
+export interface ContentResponse {
+  contentType?: ContentType;
+  content: string[];
+  /** 是否需要正文解密 */
+  contentDecoder: boolean;
+}
+
 /**
  * 规则接口定义
  * @interface Rule

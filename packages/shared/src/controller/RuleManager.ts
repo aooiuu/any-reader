@@ -1,5 +1,5 @@
 import md5 from 'blueimp-md5';
-import type { Rule } from '@any-reader/rule-utils';
+import type { ContentResponse, Rule } from '@any-reader/rule-utils';
 import { ContentType } from '@any-reader/rule-utils';
 import { analyzerUrl } from '../utils/rule-parse';
 import { Cacheable, Controller, Post } from '../decorators';
@@ -75,11 +75,7 @@ export class RuleManager extends BaseController {
   @Post('content')
   async content({ filePath, chapterPath, ruleId, noCache }: { ruleId: string; filePath: string; chapterPath: string; noCache: boolean }) {
     const cacheKey = `content@${ruleId || '__local__'}@${md5(filePath)}@v3_${md5(chapterPath)}`;
-    const result: {
-      contentDecoder: boolean; // 是否需要正文解密
-      contentType?: number;
-      content: string[] | string;
-    } = {
+    const result: ContentResponse = {
       contentDecoder: false,
       content: []
     };
@@ -96,7 +92,7 @@ export class RuleManager extends BaseController {
       const rule = await this.getRule(ruleId);
       const { contentType, content } = await this.contentByRule({ rule, chapterPath });
       result.contentDecoder = !!rule.contentDecoder;
-      result.content = content;
+      result.content = content as string[];
       result.contentType = contentType;
     } else {
       // 本地
