@@ -1,7 +1,7 @@
 <template>
   <div class="h-full w-full flex flex-col">
     <a-spin :spinning="loading" class="flex-1 overflow-auto">
-      <TreeItem v-for="item in list" :key="item.path" @click="showChapter(item)">
+      <TreeItem v-for="item in list" :key="item.path" :title="item.name" @click="showChapter(item)">
         {{ item.name }}
       </TreeItem>
     </a-spin>
