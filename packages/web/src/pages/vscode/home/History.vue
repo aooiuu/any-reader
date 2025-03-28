@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <TreeItem v-for="item in historyStore.list" :key="item.url" class="reader-node" @click="showChapter(item)">
+    <TreeItem v-for="item in historyStore.list" :key="item.url" :title="item.name" class="reader-node" @click="showChapter(item)">
       <div class="flex items-center">
         <div class="flex-1 overflow-hidden text-ellipsis whitespace-nowrap" :title="item.name">{{ item.name }}</div>
         <div class="codicon codicon-close" title="删除" @click.stop="remove(item)"></div>
