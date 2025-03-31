@@ -25,7 +25,12 @@ class App {
     // 侧边栏 - webview
     webviewProvider.setExtensionPath(context.extensionPath);
     vscode.window.registerCustomEditorProvider('any-reader.customEditor.epub', new CustomEditorProvider(context));
-    vscode.window.registerWebviewViewProvider('any-reader-webview', webviewProvider);
+    vscode.window.registerWebviewViewProvider('any-reader-webview', webviewProvider, {
+      webviewOptions: {
+        // 设置当 Webview 隐藏时保留上下文
+        retainContextWhenHidden: true
+      }
+    });
   }
 
   // 搜索

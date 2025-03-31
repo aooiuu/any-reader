@@ -6,9 +6,7 @@ import useDirective from './directive';
 import './assets';
 import './plugins/vsc-ui';
 import './plugins/antd';
-import { PLATFORM } from './constants';
 import { addHistory } from '@/api/modules/resource-history';
-import { saveRoute } from '@/api/modules/vsc';
 import { saveChapterHistory } from '@/api/modules/chapter-history';
 
 import { createPinia } from 'pinia';
@@ -38,11 +36,6 @@ router.beforeEach((to, _from, next) => {
   } else {
     next();
   }
-});
-
-router.afterEach((to) => {
-  // vscode 侧边栏关闭后状态会消失
-  if (PLATFORM === 'vscode') saveRoute({ fullPath: to.fullPath });
 });
 
 app.mount('#app');

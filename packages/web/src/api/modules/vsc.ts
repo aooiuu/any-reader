@@ -11,11 +11,3 @@ export function executeCommand(data: any) {
     data
   });
 }
-
-export function saveRoute(data: any) {
-  return request({
-    method: 'post',
-    url: 'vscode/saveRoute',
-    data
-  });
-}
