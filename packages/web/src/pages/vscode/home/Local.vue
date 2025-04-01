@@ -1,10 +1,12 @@
 <template>
   <div class="h-full w-full flex flex-col">
-    <a-spin :spinning="loading" class="flex-1 overflow-auto">
-      <TreeItem v-for="item in list" :key="item.path" :title="item.name" @click="showChapter(item)">
-        {{ item.name }}
-      </TreeItem>
-    </a-spin>
+    <div class="flex-1 overflow-auto">
+      <a-spin :spinning="loading">
+        <TreeItem v-for="item in list" :key="item.path" :title="item.name" @click="showChapter(item)">
+          {{ item.name }}
+        </TreeItem>
+      </a-spin>
+    </div>
 
     <vscode-divider />
     <div class="mx-8 my-4 flex items-center hover:op-70" :class="[openDirLoading ? 'cursor-wait' : 'cursor-pointer']" @click="handleOpenDir">
