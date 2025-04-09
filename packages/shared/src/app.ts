@@ -25,7 +25,7 @@ export interface App {
   controllers: any[];
   updateConfig: (data: any) => void;
   readConfig: () => void;
-  useApi: (register: any) => void;
+  useApi: (register: any) => Promise<void>;
   analyzerManager: AnalyzerManager;
 }
 
@@ -61,8 +61,8 @@ export function createApp(params: { configPath: string; defaultConfig?: any; dat
       if (!app.config.bookDir) app.config.bookDir = LOCAL_BOOK_DIR;
     },
 
-    useApi(register: any) {
-      runApp(app, register);
+    async useApi(register: any) {
+      await runApp(app, register);
     }
   };
 

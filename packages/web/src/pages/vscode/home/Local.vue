@@ -1,11 +1,12 @@
 <template>
   <div class="h-full w-full flex flex-col">
-    <div class="flex-1 overflow-auto">
-      <a-spin :spinning="loading">
-        <TreeItem v-for="item in list" :key="item.path" :title="item.name" @click="showChapter(item)">
-          {{ item.name }}
-        </TreeItem>
-      </a-spin>
+    <div v-if="loading" class="flex flex-1 items-center justify-center">
+      <vscode-progress-ring></vscode-progress-ring>
+    </div>
+    <div v-else class="flex-1 overflow-auto">
+      <TreeItem v-for="item in list" :key="item.path" :title="item.name" @click="showChapter(item)">
+        {{ item.name }}
+      </TreeItem>
     </div>
 
     <vscode-divider />
@@ -29,27 +30,17 @@ const loading = ref(false);
 const openDirLoading = ref(false);
 
 async function getBookList() {
-  try {
-    loading.value = true;
-    const res = await getLocalBooks();
-    if (res?.code === 0) {
-      list.value = res.data;
-    } else {
-      list.value = [];
-    }
-  } finally {
-    loading.value = false;
-  }
+  loading.value = true;
+  const res = await getLocalBooks().catch(() => {});
+  list.value = res?.data || [];
+  loading.value = false;
 }
 
 async function handleOpenDir() {
   if (openDirLoading.value) return;
   openDirLoading.value = true;
-  try {
-    await openDir();
-  } finally {
-    openDirLoading.value = false;
-  }
+  await openDir().catch(() => {});
+  openDirLoading.value = false;
 }
 
 getBookList();

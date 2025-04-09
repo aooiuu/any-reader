@@ -18,8 +18,10 @@ export class WebviewProvider implements vscode.WebviewViewProvider {
       enableScripts: true
     };
 
-    this.webview.html = getWebViewContent(path.join('template-dist', 'index.html'), this._extensionPath, this.webview);
-    this._event = useWebviewEvent(this.webview, this._extensionPath);
+    useWebviewEvent(this.webview, this._extensionPath).then((e) => {
+      this._event = e;
+      this.webview.html = getWebViewContent(path.join('template-dist', 'index.html'), this._extensionPath, this.webview);
+    });
   }
 
   get webviewView() {

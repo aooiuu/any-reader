@@ -50,6 +50,7 @@ class App {
 
   // 打开文件
   openFile(fileEvent: { fsPath: string }) {
+    if (!fileEvent) return;
     this.webView.navigateTo(
       '/chapter?' +
         stringify({

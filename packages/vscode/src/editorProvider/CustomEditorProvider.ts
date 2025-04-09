@@ -27,15 +27,15 @@ export class CustomEditorProvider implements vscode.CustomReadonlyEditorProvider
     };
 
     // 绑定事件
-    useWebviewEvent(this.webviewPanel.webview, this._context.extensionPath);
-
-    // 打开模板
-    this.navigateTo(
-      '/chapter?' +
-        stringify({
-          filePath: document.uri.fsPath
-        })
-    );
+    useWebviewEvent(this.webviewPanel.webview, this._context.extensionPath).then(() => {
+      // 打开模板
+      this.navigateTo(
+        '/chapter?' +
+          stringify({
+            filePath: document.uri.fsPath
+          })
+      );
+    });
   }
 
   // 跳转到地址

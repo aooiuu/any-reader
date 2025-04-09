@@ -66,6 +66,11 @@
         "command": "any-reader.openUrl",
         "title": "打开URL",
         "category": "any-reader"
+      },
+      {
+        "command": "any-reader.openFile",
+        "title": "打开文件",
+        "category": "any-reader"
       }
     ],
     "viewsContainers": {

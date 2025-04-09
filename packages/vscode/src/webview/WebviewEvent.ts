@@ -13,6 +13,7 @@ import { Logger } from '../Logger';
 
 export class WebviewEvent {
   private _pm!: EasyPostMessage;
+  private _extensionPath: string;
 
   get pm() {
     return this._pm;
@@ -21,6 +22,10 @@ export class WebviewEvent {
   constructor(webview: vscode.Webview, extensionPath: string) {
     this._pm = new EasyPostMessage(createAdapter(webview));
     this._pm.answer('post@vscode/executeCommand', this.executeCommand.bind(this));
+    this._extensionPath = extensionPath;
+  }
+
+  async useApi() {
     const logLevelConfig = vscode.workspace.getConfiguration('any-reader').get('logLevel') as keyof typeof LogLevel;
     const logLevel = logLevelConfig ? (LogLevel[logLevelConfig] ?? LogLevel.Off) : LogLevel.Off;
     const logger = new Logger();
@@ -36,7 +41,7 @@ export class WebviewEvent {
         driver: require('sql.js/dist/sql-wasm'),
         sqlJsConfig: {
           locateFile: (file: string) => {
-            const filePath = path.join(extensionPath, 'dist', file);
+            const filePath = path.join(this._extensionPath, 'dist', file);
             logger.log(`[locateFile] ${filePath}`);
             return filePath;
           }
@@ -44,7 +49,8 @@ export class WebviewEvent {
       }
     });
 
-    app.useApi(this._pm.answer.bind(this._pm));
+    await app.useApi(this._pm.answer.bind(this._pm));
+    return this;
   }
 
   private executeCommand({ command, data }: any) {
@@ -54,5 +60,5 @@ export class WebviewEvent {
 }
 
 export function useWebviewEvent(webView: vscode.Webview, extensionPath: string) {
-  return new WebviewEvent(webView, extensionPath);
+  return new WebviewEvent(webView, extensionPath).useApi();
 }

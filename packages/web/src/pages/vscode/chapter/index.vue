@@ -28,7 +28,10 @@
           ]"
           @click="showContent(item)"
         >
-          {{ item.name }}
+          <div class="flex">
+            <div class="flex-1 overflow-hidden text-ellipsis whitespace-nowrap">{{ item.name }}</div>
+            <FolderOpenOutlined class="cursor-pointer hover:op-70" title="从新页面打开" @click.stop="openPage(item)" />
+          </div>
         </TreeItem>
       </div>
     </template>
@@ -36,10 +39,13 @@
 </template>
 
 <script setup lang="ts">
+import { executeCommand } from '@/api/modules/vsc';
 import TreeItem from '@/components/vsc/TreeItem.vue';
 import { useChapter } from '@/pages/common/chapter';
+import qs from 'qs';
 import { ref, computed } from 'vue';
 
+const route = useRoute();
 const { ruleId, chaptersRef, showContent, list, findHistory, isStarred, star, isLastRead, loading } = useChapter();
 
 // 搜索
@@ -49,4 +55,14 @@ const filteredList = computed(() => {
   const query = searchQuery.value.toLowerCase();
   return list.value.filter((item) => item.name.toLowerCase().includes(query));
 });
+
+function openPage(item: any) {
+  const { filePath, ruleId } = route.query;
+  const params = {
+    filePath,
+    ruleId,
+    chapterPath: item.url || item.chapterPath
+  };
+  executeCommand({ command: 'any-reader.openUrl', data: ['/content?' + qs.stringify(params)] });
+}
 </script>
