@@ -30,7 +30,7 @@ export function useKeyboardShortcuts(options: UseMagicKeysOptions<false> | undef
   const settingKeys = Object.keys(settingStore.data.keyboardShortcuts) as KeyboardEvent[];
   watch(keyText, (text) => {
     for (const settingKey of settingKeys) {
-      if (settingStore.data.keyboardShortcuts[settingKey] === text) {
+      if (settingStore.data.keyboardShortcuts[settingKey] === text && text) {
         cb(settingKey);
         return;
       }
