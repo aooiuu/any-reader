@@ -147,7 +147,7 @@ useBus(EVENT_CHAPTERS_BOX).on(showChapters);
 }
 
 .center-row {
-  margin-bottom: var(--section-spacing);
+  margin-bottom: calc(var(--section-spacing) * 1px);
   font-weight: var(--font-weight);
   opacity: var(--text-opacity);
 }

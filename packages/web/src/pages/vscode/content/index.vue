@@ -96,7 +96,7 @@ useTheme(contentRef);
 }
 
 .center-row {
-  margin-bottom: var(--section-spacing);
+  margin-bottom: calc(var(--section-spacing) * 1px);
   font-weight: var(--font-weight);
   opacity: var(--text-opacity);
 }
