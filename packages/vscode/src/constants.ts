@@ -7,7 +7,8 @@ export enum COMMANDS {
   discover = 'any-reader.discover',
   home = 'any-reader.home',
   openUrl = 'any-reader.openUrl',
-  openFile = 'any-reader.openFile'
+  openFile = 'any-reader.openFile',
+  setTitle = 'any-reader.setTitle'
 }
 
 export const ROOT_PATH = path.join(os.homedir(), '.any-reader');

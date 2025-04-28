@@ -15,6 +15,7 @@ import { useReadStore } from '@/stores/read';
 import { useKeyboardShortcuts } from '@/hooks/useMagicKeys';
 import { TTS } from '@/utils/tts';
 import { base64 } from '@/api/modules/tts';
+import { executeCommand } from '@/api/modules/vsc';
 
 /**
  * 保存阅读历史记录的Hook
@@ -160,6 +161,8 @@ export function useContent(contentRef: Ref<HTMLElement>) {
       const chapterInfo = chaptersStore.chapters.find((e) => e.chapterPath === route.query.chapterPath);
       readStore.setPath(chapterInfo?.chapterPath || '');
       readStore.setTitle(chapterInfo?.name || '');
+      // 设置标题
+      executeCommand({ command: 'any-reader.setTitle', data: [readStore.title] });
 
       if (lastChapter.value) {
         preload(lastChapter.value);

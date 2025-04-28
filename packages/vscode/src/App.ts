@@ -19,6 +19,7 @@ class App {
       registerCommand(COMMANDS.discover, this.discover, this),
       registerCommand(COMMANDS.openUrl, this.openUrl, this),
       registerCommand(COMMANDS.openFile, this.openFile, this),
+      registerCommand(COMMANDS.setTitle, this.setTitle, this),
       registerCommand(COMMANDS.home, () => this.webView.navigateTo('/rules'), this.webView)
     ].forEach((command) => context.subscriptions.push(command));
 
@@ -44,8 +45,13 @@ class App {
   }
 
   // 打开链接
-  openUrl(url: string) {
-    this.webView.navigateTo(url);
+  openUrl(url: string, title?: string) {
+    this.webView.navigateTo(url, title);
+  }
+
+  // 设置标题
+  setTitle(title: string) {
+    this.webView.setTitle(title);
   }
 
   // 打开文件

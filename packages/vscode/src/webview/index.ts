@@ -32,6 +32,12 @@ export class WebView {
     this.webviewPanel!.reveal();
   }
 
+  // 设置标题
+  setTitle(title: string) {
+    if (!this.webviewPanel) return;
+    this.webviewPanel!.title = title;
+  }
+
   // 打开阅读面板
   async openWebviewPanel(title: string, content: string) {
     this.isVue = false;
