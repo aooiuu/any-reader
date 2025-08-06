@@ -9,6 +9,9 @@
     <SettingRow title="缓存">
       <vscode-button @click="clearCache">删除缓存</vscode-button>
     </SettingRow>
+    <SettingRow title="摸鱼时间">
+      <vscode-checkbox :checked="settingStore.timeIsShow" @input="handleInput">显示/隐藏</vscode-checkbox>
+    </SettingRow>
   </div>
 </template>
 
@@ -29,4 +32,9 @@ function clearCache() {
     }
   });
 }
+
+const handleInput = (event) => {
+  console.log('event:', event);
+  console.log('event.target.checked:', event.target.checked);
+};
 </script>

@@ -4,7 +4,7 @@ import type { FontData } from '@/utils/font';
 
 export type ReadStyle = {
   // 字体
-  font: FontData;
+  font?: FontData;
   // 字体大小
   fontSize: number;
   // 字体粗细
@@ -65,6 +65,10 @@ export const useSettingStore = defineStore('setting', () => {
     bookDir: ''
   });
 
+  /** 是否显示摸鱼时间 */
+  const timeIsShow = ref<boolean>(true);
+  const readTime = ref<number>(0);
+
   // 同步
   async function sync() {
     const res = await readConfig().catch(() => {});
@@ -81,6 +85,8 @@ export const useSettingStore = defineStore('setting', () => {
 
   return {
     data,
+    readTime,
+    timeIsShow,
     sync
   };
 });

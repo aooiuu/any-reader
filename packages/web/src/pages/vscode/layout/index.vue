@@ -8,8 +8,9 @@
         <component :is="Component" v-if="!routev.meta.keepAlive" :key="routev.fullPath" />
       </RouterView>
     </div>
-    <div v-if="!hideBtmBar" class="flex gap-4 px-8 py-4">
+    <div v-if="!hideBtmBar" class="flex items-center gap-4 px-8 py-4">
       <div class="codicon codicon-arrow-left vsc-toolbar-btn" @click="router.back()"></div>
+      <div v-if="settingStore.timeIsShow">已摸鱼：{{ showTIme }}</div>
       <div class="flex-1"></div>
       <div
         class="codicon codicon-github-alt vsc-toolbar-btn"
@@ -31,9 +32,22 @@
 import '@/plugins/vsc-ui';
 
 import { executeCommand } from '@/api/modules/vsc';
+import { useSettingStore } from '@/stores/setting';
 
 const route = useRoute();
 const router = useRouter();
+const settingStore = useSettingStore();
 
 const hideBtmBar = computed(() => route.meta?.hideBtmBar);
+
+console.log('settingStore.readTime:', settingStore.readTime);
+const showTIme = computed(() => {
+  const readTime = settingStore.readTime;
+
+  if (readTime <= 0) return 0;
+  const hours = Math.floor(readTime / 3600);
+  const minutes = Math.floor((readTime % 3600) / 60);
+  const seconds = readTime % 60;
+  return `${hours}:${minutes}:${seconds}`;
+});
 </script>
