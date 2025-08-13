@@ -4,11 +4,13 @@
 
 import { EventEmitter } from 'events';
 import { join, dirname } from 'path';
-import { defaults as xml2js, Parser } from 'xml2js';
+import { defaults as xml2js, processors, Parser } from 'xml2js';
 import AdmZip from 'adm-zip';
 import { fromByteArray } from 'base64-js';
 
 const xml2jsOptions = xml2js['0.1'];
+xml2jsOptions.tagNameProcessors = [processors.stripPrefix];
+xml2jsOptions.attrNameProcessors = [processors.stripPrefix];
 
 class Zip {
   admZip: AdmZip;
