@@ -19,13 +19,13 @@ jobs:
 
     steps:
       - name: Check out git repository
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.3.0
         with:
           fetch-depth: 0
 
       - uses: pnpm/action-setup@v3
         with:
-          version: 9.4.0
+          version: 9.15.9
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -54,7 +54,7 @@ jobs:
       # https://github.com/HaaLeo/publish-vscode-extension
       - name: build vscode vsx
         if: matrix.os == 'windows-latest'
-        uses: HaaLeo/publish-vscode-extension@v1.6.2
+        uses: HaaLeo/publish-vscode-extension@v1.7.0
         id: publishVSX
         with:
           packagePath: ./packages/vscode
@@ -73,7 +73,7 @@ jobs:
 
       # https://github.com/softprops/action-gh-release
       - name: release
-        uses: softprops/action-gh-release@v2.0.8
+        uses: softprops/action-gh-release@v2.3.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
