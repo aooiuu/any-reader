@@ -71,7 +71,7 @@
     "vue-router": "^4.4.5"
   },
   "devDependencies": {
-    "@electron/rebuild": "^3.6.0",
+    "@electron/rebuild": "^4.0.1",
     "@tsconfig/node20": "^20.1.4",
     "@types/bcryptjs": "^2.4.6",
     "@types/blueimp-md5": "^2.18.2",
