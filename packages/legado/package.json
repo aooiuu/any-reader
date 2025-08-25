@@ -28,21 +28,21 @@
     "stub": "unbuild --stub"
   },
   "dependencies": {
-    "@xmldom/xmldom": "^0.9.3",
-    "axios": "^1.7.7",
-    "chardet": "^2.0.0",
-    "cheerio": "1.0.0",
+    "@xmldom/xmldom": "^0.9.8",
+    "axios": "^1.11.0",
+    "chardet": "^2.1.0",
+    "cheerio": "1.1.2",
     "content-type": "^1.0.5",
-    "iconv-lite": "^0.6.3",
-    "isolated-vm": "^5.0.1",
+    "iconv-lite": "^0.7.0",
+    "isolated-vm": "^5.0.4",
     "jsonpath-plus": "^9.0.0",
-    "puppeteer": "^23.5.3",
+    "puppeteer": "^23.11.1",
     "urlencode": "^2.0.0",
     "xpath": "^0.0.34"
   },
   "devDependencies": {
     "@any-reader/rule-utils": "workspace:^",
-    "@types/content-type": "^1.1.8",
+    "@types/content-type": "^1.1.9",
     "@types/xmldom": "^0.1.34",
     "eslint": "^8.57.1",
     "typescript": "^5.8.2"
