@@ -2,6 +2,8 @@ export interface BookChapter {
   name: string;
   chapterPath: string;
   filePath: string;
+  chapterHref?: string;
+  spineIndex?: number;
 }
 
 export interface IBookParser {

@@ -50,6 +50,16 @@ outline: deep
 
 ![1](https://github.com/aooiuu/any-reader-vscode/assets/28108111/fff2e255-5e09-4bff-b45c-78070dce8afc)
 
+## EPUB 批注
+
+VSCode 中直接打开本地 EPUB 文件时，可以选中文本创建高亮，也可以给高亮添加文字批注。批注不会写回 EPUB 原文件，而是保存到 EPUB 同目录的 sidecar 文件：
+
+```text
+<book>.epub.any-reader.annotations.json
+```
+
+sidecar 会保存章节、选中文本、前后文、颜色和批注文本，方便后续由脚本或大模型读取。
+
 ### 视频
 
 > 内置视频播放暂时只支持 [vscodium](https://github.com/VSCodium/vscodium) 不支持 vscode
