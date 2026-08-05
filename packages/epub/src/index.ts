@@ -4,11 +4,13 @@
 
 import { EventEmitter } from 'events';
 import { join, dirname } from 'path';
-import { defaults as xml2js, Parser } from 'xml2js';
+import { defaults as xml2js, processors, Parser } from 'xml2js';
 import AdmZip from 'adm-zip';
 import { fromByteArray } from 'base64-js';
 
 const xml2jsOptions = xml2js['0.1'];
+xml2jsOptions.tagNameProcessors = [processors.stripPrefix];
+xml2jsOptions.attrNameProcessors = [processors.stripPrefix];
 
 class Zip {
   admZip: AdmZip;
@@ -373,11 +375,11 @@ class EPub extends EventEmitter {
           if (Array.isArray(metadata[keys[i]])) {
             this.metadata.creator = String((metadata[keys[i]][0] && metadata[keys[i]][0]['#']) || metadata[keys[i]][0] || '').trim();
             this.metadata.creatorFileAs = String(
-              (metadata[keys[i]][0] && metadata[keys[i]][0]['@'] && metadata[keys[i]][0]['@']['opf:file-as']) || this.metadata.creator
+              (metadata[keys[i]][0] && metadata[keys[i]][0]['@'] && metadata[keys[i]][0]['@']['file-as']) || this.metadata.creator
             ).trim();
           } else {
             this.metadata.creator = String(metadata[keys[i]]['#'] || metadata[keys[i]] || '').trim();
-            this.metadata.creatorFileAs = String((metadata[keys[i]]['@'] && metadata[keys[i]]['@']['opf:file-as']) || this.metadata.creator).trim();
+            this.metadata.creatorFileAs = String((metadata[keys[i]]['@'] && metadata[keys[i]]['@']['file-as']) || this.metadata.creator).trim();
           }
           break;
         case 'date':
@@ -387,7 +389,7 @@ class EPub extends EventEmitter {
 
           break;
         case 'identifier':
-          if (metadata[keys[i]]['@'] && metadata[keys[i]]['@']['opf:scheme'] == 'ISBN') {
+          if (metadata[keys[i]]['@'] && metadata[keys[i]]['@']['scheme'] == 'ISBN') {
             this.metadata.ISBN = String(metadata[keys[i]]['#'] || '').trim();
           } else if (metadata[keys[i]]['@'] && metadata[keys[i]]['@'].id && metadata[keys[i]]['@'].id.match(/uuid/i)) {
             this.metadata.UUID = String(metadata[keys[i]]['#'] || '')
@@ -397,7 +399,7 @@ class EPub extends EventEmitter {
           } else if (Array.isArray(metadata[keys[i]])) {
             for (j = 0; j < metadata[keys[i]].length; j++) {
               if (metadata[keys[i]][j]['@']) {
-                if (metadata[keys[i]][j]['@']['opf:scheme'] == 'ISBN') this.metadata.ISBN = String(metadata[keys[i]][j]['#'] || '').trim();
+                if (metadata[keys[i]][j]['@']['scheme'] == 'ISBN') this.metadata.ISBN = String(metadata[keys[i]][j]['#'] || '').trim();
                 else if (metadata[keys[i]][j]['@'].id && metadata[keys[i]][j]['@'].id.match(/uuid/i))
                   this.metadata.UUID = String(metadata[keys[i]][j]['#'] || '')
                     .replace('urn:uuid:', '')
