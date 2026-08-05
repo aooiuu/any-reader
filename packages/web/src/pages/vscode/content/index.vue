@@ -53,6 +53,7 @@
 import { ContentType } from '@any-reader/rule-utils';
 import { useContent, useTheme } from '@/pages/common/content';
 import { useReadStore } from '@/stores/read';
+import { userTimer } from '@/pages/common/timer';
 
 const contentRef = ref();
 
@@ -62,6 +63,8 @@ const { content, contentType, settingStore, lastChapter, nextChapter, onPageUp, 
   useContent(contentRef);
 
 useTheme(contentRef);
+
+userTimer();
 </script>
 
 <style scoped>
