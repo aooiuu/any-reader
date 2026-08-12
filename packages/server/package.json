@@ -29,22 +29,22 @@
   "dependencies": {
     "@any-reader/core": "workspace:^",
     "@any-reader/shared": "workspace:^",
-    "@koa/bodyparser": "^5.1.1",
+    "@koa/bodyparser": "^5.1.2",
     "@koa/cors": "^5.0.0",
     "bcryptjs": "^2.4.3",
-    "koa": "^2.15.3",
+    "koa": "^2.16.4",
     "koa-bodyparser": "^4.4.1",
     "koa-router": "^12.0.1",
     "koa-session": "^6.4.0",
     "koa-static": "^5.0.0",
-    "sql.js": "^1.11.0",
+    "sql.js": "^1.14.1",
     "sqlite3": "5.1.6"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
-    "@types/koa-router": "^7.4.8",
+    "@types/koa-router": "^7.4.9",
     "@types/koa-session": "^6.4.5",
     "@types/koa-static": "^4.0.4",
-    "@types/koa__cors": "^5.0.0"
+    "@types/koa__cors": "^5.0.1"
   }
 }
