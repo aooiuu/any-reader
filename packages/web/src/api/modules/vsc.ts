@@ -11,3 +11,12 @@ export function executeCommand(data: any) {
     data
   });
 }
+
+export function vscodeLog(data: any) {
+  return request({
+    method: 'post',
+    url: 'vscode/log',
+    data,
+    showMsg: false
+  });
+}

@@ -120,7 +120,11 @@
             "type": "string",
             "enum": [
               "Off",
-              "Debug"
+              "Error",
+              "Warn",
+              "Info",
+              "Debug",
+              "Trace"
             ],
             "default": "Off",
             "description": "修改此配置后需要重启VSCode才会生效"

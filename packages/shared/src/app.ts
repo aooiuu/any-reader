@@ -16,6 +16,7 @@ import { Bookshelf } from './controller/Bookshelf';
 import { Config } from './controller/Config';
 import { TTS } from './controller/TTS';
 import { Cache } from './controller/Cache';
+import { Annotations } from './controller/Annotations';
 import { mapRoute } from './decorators';
 
 export interface App {
@@ -41,7 +42,7 @@ export function createApp(params: { configPath: string; defaultConfig?: any; dat
     configPath: params.configPath,
     analyzerManager: params.analyzerManager || createAnalyzerManager(),
 
-    controllers: [ChapterHistory, ResourceHistory, ResourceFavorites, ResourceRule, RuleManager, Bookshelf, Config, TTS, Cache],
+    controllers: [ChapterHistory, ResourceHistory, ResourceFavorites, ResourceRule, RuleManager, Bookshelf, Config, TTS, Cache, Annotations],
 
     updateConfig(data: any) {
       ensureFileSync(app.configPath);

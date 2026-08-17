@@ -14,6 +14,7 @@ import { Logger } from '../Logger';
 export class WebviewEvent {
   private _pm!: EasyPostMessage;
   private _extensionPath: string;
+  private _logger = new Logger();
 
   get pm() {
     return this._pm;
@@ -22,13 +23,15 @@ export class WebviewEvent {
   constructor(webview: vscode.Webview, extensionPath: string) {
     this._pm = new EasyPostMessage(createAdapter(webview));
     this._pm.answer('post@vscode/executeCommand', this.executeCommand.bind(this));
+    this._pm.answer('post@vscode/log', this.webviewLog.bind(this));
     this._extensionPath = extensionPath;
   }
 
   async useApi() {
     const logLevelConfig = vscode.workspace.getConfiguration('any-reader').get('logLevel') as keyof typeof LogLevel;
     const logLevel = logLevelConfig ? (LogLevel[logLevelConfig] ?? LogLevel.Off) : LogLevel.Off;
-    const logger = new Logger();
+    const logger = new Logger(logLevel);
+    this._logger = logger;
     logger.info(`[logLevel] ${logLevel}`);
 
     const app = createApp({
@@ -56,6 +59,10 @@ export class WebviewEvent {
   private executeCommand({ command, data }: any) {
     const args = Array.isArray(data) ? data : typeof data === 'object' ? [data] : [];
     vscode.commands.executeCommand(command, ...args);
+  }
+
+  private webviewLog({ level = 'Debug', scope = 'webview', message = '', data }: any) {
+    this._logger.write(level, `[${scope}] ${message}`, data);
   }
 }
 
